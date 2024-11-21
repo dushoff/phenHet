@@ -47,7 +47,7 @@ We would like to investigate how to generate better interpretations or insights 
 
 Potential Search Key:
 
--   Epidemic & (Heterogeneity \| Structure \| Network) & (Nonlinear Incidence Dynamics )
+-   Epidem\* & Infect\* & (Heterogeneity \| Structure \| Network) & (Nonlinear Incidence \| Dynamics )
     -   Might require finer tuning for different platform
     -   Need to filter the results to focus more on Incidence not R_0 or Final infection size.
 
@@ -60,11 +60,12 @@ Searching Platforms:
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 -   [mathscinet](https://mathscinet.ams.org/mathscinet/publications-search)
 
-
 ## Next Steps
 
 ### Empirical Study
+
 Start with empirical/simulated networks from data and try to investigate the expression of incidence
 
 ### Constructional Study
+
 Start with certain incidence expression or certain network structure and try to construct the corresponding network. (?? such that the result would be numerically close enough)
