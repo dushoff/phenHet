@@ -2,7 +2,9 @@
 title: "Note Nov 14"
 author: "Richard Zhao"
 date: "2024-11-20"
-output: html_document
+output:
+  html_document:
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
@@ -51,7 +53,7 @@ Potential Search Key:
     -   Might require finer tuning for different platform
     -   Need to filter the results to focus more on Incidence not R_0 or Final infection size.
 
-Searching Platforms:
+#### Searching Platforms:
 
 -   [Web of Science](https://www-webofscience-com.libaccess.lib.mcmaster.ca/wos/alldb/basic-search)
 -   [Scopus](https://www.scopus.com/search/form.uri?display=basic#basic)
@@ -60,6 +62,26 @@ Searching Platforms:
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 -   [mathscinet](https://mathscinet.ams.org/mathscinet/publications-search)
 
+#### Searching Jornal
+
+-   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
+
+1.  [epidem\* AND (heterogeneity OR structure OR network)](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+%28heterogeneity+OR+structure+OR+network%29): 283,962
+2.  [epidem\* AND infect\* AND (heterogeneity OR structure OR network)](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29): 70,839
+3.  [2+ AND dynamics](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynamics): 6,683
+4.  [2+ AND dynamics AND nonlinear](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynamics+AND+nonlinear): 276
+    -   [2+ AND dynam\* AND nonlinear](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+nonlinear)
+5.  [2+ AND dynam\* AND nonlinear AND incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+nonlinear+AND+incidence):195
+    -   [2+ AND dynam\* AND nonlinear incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem%2A+AND+infect%2A+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam%2A+AND+nonlinear+incidence&sort=relevance)
+    -   [2+ AND dynam\* AND nonlinear incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+nonlinear+incidence)
+6.  [2+ AND dynam\* AND "nonlinear incidence"](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+%22nonlinear+incidence%22): 17
+
+-   [mathscinet](https://mathscinet.ams.org/mathscinet/publications-search)
+
+1.  [epidem\* AND (heterogeneity OR structure OR network)](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29&page=1&size=20&sort=newest&facets=): 4,492
+2.  [epidem\* AND infect\* AND (heterogeneity OR structure OR network)](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29&page=1&size=20&sort=newest&facets=): 1,674
+3.  [2+ AND dynamics](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynamics&page=1&size=20&sort=newest&facets=): 978
+4.  [2+ AND dynam* AND nonlinear](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20nonlinear&page=1&size=20&sort=newest&facets=): 238
 ## Next Steps
 
 ### Empirical Study
