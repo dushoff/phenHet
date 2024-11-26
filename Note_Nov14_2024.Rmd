@@ -81,14 +81,13 @@ Potential Search Key:
 1.  [epidem\* AND (heterogeneity OR structure OR network)](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29&page=1&size=20&sort=newest&facets=): 4,492
 2.  [epidem\* AND infect\* AND (heterogeneity OR structure OR network)](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29&page=1&size=20&sort=newest&facets=): 1,674
 3.  [2+ AND dynamics](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynamics&page=1&size=20&sort=newest&facets=): 978
-<<<<<<< HEAD
 4.  [2+ AND dynam\* AND nonlinear](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20nonlinear&page=1&size=20&sort=newest&facets=): 238
 5.  [2+ AND dynam\* AND nonlinear incidence](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20nonlinear%20incidence&page=1&size=20&sort=newest&facets=):43
-6.  [2+ AND dynam\* AND "nonlinear incidence"](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20%22nonlinear%20incidence%22&page=2&size=20&sort=newest&facets=):25 \## Next Steps
-=======
-4.  [2+ AND dynam* AND nonlinear](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20nonlinear&page=1&size=20&sort=newest&facets=): 238
+6.  [2+ AND dynam\* AND "nonlinear incidence"](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20%22nonlinear%20incidence%22&page=2&size=20&sort=newest&facets=):25
+
 ## Next Steps
->>>>>>> origin/master
+
+> > > > > > > origin/master
 
 ### Empirical Study
 
