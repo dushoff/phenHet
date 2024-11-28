@@ -2,6 +2,8 @@
 title: "Note Nov 14"
 author: "Richard Zhao"
 date: "2024-11-20"
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "D:/GitHub/Outputs") })
 output:
   html_document:
     keep_md: true
@@ -29,11 +31,10 @@ We would like to investigate how to generate better interpretations or insights 
     -   [G. Dwyer, J.S. Elkinton & J.P. Buonaccorsi (1997)](https://doi.org/10.1086/286089): Host Heterogeneity in Susceptibility and Disease Dynamics: Tests of a Mathematical Model.
     -   [G. Dwyer, J. Dushoff, J.S. Elkinton & S.A. Levin (2000)](https://doi.org/10.1086/303379): Pathogen‐Driven Outbreaks in Forest Defoliators Revisited: Building Models from Experimental Data.”
     -   More?
-    -   (TO DO) Email Chain (Todd's claim)
+    -   (TO DO) Email Chain (Todd's claim) and contact Todd @davidearn
     -   (TO DO) JD Notes <http://dushoff.github.io/notebook/outputs/powerPhenHet.wt.math>
 -   M.J. Keeling & B.T. Grenfell (pair approx)
     -   (??) Any specific paper, especially for Grenfell
-    -   (TO DO) [M.J. Keeling & B.T. Grenfell](https://pubmed.ncbi.nlm.nih.gov/?term=%22Grenfell+BT%22%5BAuthor%5D+%22Keeling+MJ%22%5BAuthor%5D)
     -   [M.J. Keeling (1999)](https://doi.org/10.1098/rspb.1999.0716): The Effects of Local Spatial Structure on Epidemiological Invasions
     -   [D.A. Rand (1999)](https://doi.org/10.1002/9781444311501.ch4): Correlation Equations and Pair Approximations for Spatial Ecologies
     -   More?
@@ -73,7 +74,6 @@ Potential Search Key:
     -   [2+ AND dynam\* AND nonlinear](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+nonlinear)
 5.  [2+ AND dynam\* AND nonlinear AND incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+nonlinear+AND+incidence):195
     -   [2+ AND dynam\* AND nonlinear incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem%2A+AND+infect%2A+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam%2A+AND+nonlinear+incidence&sort=relevance)
-    -   [2+ AND dynam\* AND nonlinear incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+nonlinear+incidence)
 6.  [2+ AND dynam\* AND "nonlinear incidence"](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+%22nonlinear+incidence%22): 17
 
 -   [mathscinet](https://mathscinet.ams.org/mathscinet/publications-search)
@@ -85,9 +85,11 @@ Potential Search Key:
 5.  [2+ AND dynam\* AND nonlinear incidence](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20nonlinear%20incidence&page=1&size=20&sort=newest&facets=):43
 6.  [2+ AND dynam\* AND "nonlinear incidence"](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20infect%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29%20AND%20dynam%2a%20AND%20%22nonlinear%20incidence%22&page=2&size=20&sort=newest&facets=):25
 
-## Next Steps
+### Cheking the references:
+Remove duplicates in two journals and check if the papers interested is in each result of combinations of keywords.
 
-> > > > > > > origin/master
+
+## Next Steps
 
 ### Empirical Study
 
