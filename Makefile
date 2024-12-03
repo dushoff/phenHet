@@ -1,4 +1,5 @@
 ## This is phenomenological heterogeneity
+## https://dushoff.github.io/phenHet/Note_Nov14_2024.html
 
 current: target
 -include target.mk
@@ -17,6 +18,8 @@ Rmdhtml = $(Rmd:.Rmd=.html)
 
 Note_Nov14_2024.html: Note_Nov14_2024.Rmd
 	$(render_rmd)
+
+
 
 Ignore += $(Rmdmd) $(Rmdhtml)
 
