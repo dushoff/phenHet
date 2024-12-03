@@ -16,10 +16,9 @@ Rmd = $(wildcard *.Rmd)
 Rmdmd = $(Rmd:.Rmd=.md)
 Rmdhtml = $(Rmd:.Rmd=.html)
 
-Note_Nov14_2024.html: Note_Nov14_2024.Rmd
+## note.html: note.Rmd
+%.html: %.Rmd
 	$(render_rmd)
-
-
 
 Ignore += $(Rmdmd) $(Rmdhtml)
 
