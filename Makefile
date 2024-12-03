@@ -11,6 +11,11 @@ vim_session:
 
 ######################################################################
 
+Note_Nov14_2024.html: Note_Nov14_2024.Rmd
+	$(render_rmd)
+
+######################################################################
+
 ### Makestuff
 
 Sources += Makefile
@@ -28,7 +33,7 @@ makestuff:
 
 -include makestuff/os.mk
 
-## -include makestuff/pipeR.mk
+-include makestuff/pipeR.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
