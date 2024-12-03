@@ -11,8 +11,14 @@ vim_session:
 
 ######################################################################
 
+Rmd = $(wildcard *.Rmd)
+Rmdmd = $(Rmd:.Rmd=.md)
+Rmdhtml = $(Rmd:.Rmd=.html)
+
 Note_Nov14_2024.html: Note_Nov14_2024.Rmd
 	$(render_rmd)
+
+Ignore += $(Rmdmd) $(Rmdhtml)
 
 ######################################################################
 
