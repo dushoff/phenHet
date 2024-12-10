@@ -1,0 +1,6 @@
+.Rhistory
+## makestuff chaff
+*.args
+*.mk
+makestuff/
+`
