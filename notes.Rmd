@@ -46,6 +46,10 @@ We would like to investigate how to generate better interpretations or insights 
     b.  [W. Liu, H.W. Hethcote & S.A. Levin (1987)](https://doi.org/10.1007/BF00277162): Dynamical behavior of epidemiological models with nonlinear incidence rates(PMID: 3668394, MR0908379)
     c.  [W. Liu, S.A. Levin & Y. Iwasa(1986)](https://doi.org/10.1007/BF00276956): Influence of nonlinear incidence rates upon the behavior of SIRS epidemiological models(PMID: 3958634, MR0829132)
 
+### Others to consider adding above
+
+* [Rose et al. sculpting paper](https://doi.org.libaccess.lib.mcmaster.ca/10.1016/j.jtbi.2021.110839)
+
 ### A more unbiased query to literature
 
 Potential Search Key:

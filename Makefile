@@ -16,6 +16,8 @@ Rmd = $(wildcard *.Rmd)
 Rmdmd = $(Rmd:.Rmd=.md)
 Rmdhtml = $(Rmd:.Rmd=.html)
 
+Sources += $(Rmd)
+
 ## note.html: note.Rmd
 %.html: %.Rmd
 	$(render_rmd)
