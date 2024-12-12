@@ -48,9 +48,9 @@ We would like to investigate how to generate better interpretations or insights 
 
 ### Others to consider adding above
 
-* [Rose et al. sculpting paper](https://doi.org.libaccess.lib.mcmaster.ca/10.1016/j.jtbi.2021.110839)
+-   [C. Rose EtAl. sculpting paper](https://doi.org.libaccess.lib.mcmaster.ca/10.1016/j.jtbi.2021.110839)
 
-### A more unbiased query to literature
+-   [H. Berestycki EtAl.](https://link.springer.com/article/10.1007/s00285-022-01861-w) \### A more unbiased query to literature
 
 Potential Search Key:
 
