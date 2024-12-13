@@ -1,7 +1,9 @@
 # install.packages("devtools")
 # library(devtools)
-# install_github("ropensci/rentrez")
+## install_github("ropensci/rentrez")
+## BMB: OK to use CRAN version instead?
 library("rentrez")
+library("stringr")
 
 query_Q6 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND \"nonlinear incidence\""
 query_Q5 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND nonlinear AND incidence"
@@ -99,3 +101,17 @@ Q9_result$count
 Q9_ids<-Q9_result$ids
 TargetList[TargetList %in% Q9_ids]
 
+## BMB: extract info to data frame (suitable for write.csv)
+
+rentrez_df <- function(x) {
+    csv_df <- t(extract_from_esummary(summs, c("uid", "pubdate", "title", "fulljournalname")))
+    collapse_auths <- function(x) paste(x$authors$name[x$authors$authtype == "Author"], collapse = ";")
+    auths <- (extract_from_esummary(summs, "authors", simplify = FALSE)
+        |> sapply(collapse_auths)
+    )
+    csv_df <- data.frame(csv_df, auths)
+    csv_df$pubdate <- stringr::str_extract(csv_df$pubdate, "[0-9]+")
+    return(csv_df)
+}
+
+Q6_df <- rentrez_df(Q6_result)
