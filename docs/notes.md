@@ -9,8 +9,6 @@ output:
     keep_md: true
 ---
 
-
-
 # Phenomenological Incidence with Network
 
 We would like to investigate how to generate better interpretations or insights to nonlinear/phenomenological incidence $f(S,I)$(instead of $SI$) in compartmental epidemiology model, using graph/network models for the social structure/heterogeneity.
@@ -61,7 +59,7 @@ Potential Search Key:
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
 
-#### Searching Jornal
+#### Searching Journal
 
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 

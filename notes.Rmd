@@ -1,5 +1,5 @@
 ---
-title: "Note"
+title: "Notes"
 author: "Richard Zhao"
 date: "2024-12-05"
 knit: (function(inputFile, encoding) {
@@ -7,6 +7,7 @@ knit: (function(inputFile, encoding) {
 output:
   html_document:
     keep_md: true
+bibliography: phenHet.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -98,7 +99,9 @@ Both easyPM and Rentrenz cannot download record or fetch ids more than 10,000 fr
 
 ### By-path: Author Terms in query
 
-AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]))
+```
+AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]))`
+```
 
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 
@@ -120,3 +123,10 @@ Start with empirical/simulated networks from data and try to investigate the exp
 ### Constructional Study
 
 Start with certain incidence expression or certain network structure and try to construct the corresponding network. (?? such that the result would be numerically close enough)
+
+## Miscellaneous
+
+Just came across @tuschhoffHeterogeneityCorrelationHost2024 in Google's "recommended papers" alert
+
+## References
+
