@@ -4,6 +4,14 @@
 ## BMB: OK to use CRAN version instead?
 library("rentrez")
 library("stringr")
+library("easyPubMed")
+## https://support.nlm.nih.gov/kbArticle/?pn=KA-05317
+## https://account.ncbi.nlm.nih.gov/
+if (!nzchar(ncbi_api_key <- Sys.getenv("NCBI_API_KEY"))) {
+    stop("please get an API key from https://account.ncbi.nlm.nih.gov/ ",
+         "(see https://support.nlm.nih.gov/kbArticle/?pn=KA-05317) ",
+         "and set the environmental variable NCBI_API_KEY to it")
+}
 
 query_Q6 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND \"nonlinear incidence\""
 query_Q5 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND nonlinear AND incidence"
@@ -22,9 +30,40 @@ query_Q2A <- paste(query_Q2, query_Author, sep=" ")
 TargetList <- c("1a"="32511451","2a"="18811331","2b"="10856195","3b"="10343409","4a"="19038438","5a"="16588678","5b"="3668394","5c"="3958634")
 names(TargetList)
 
+## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
 Q1_result <- entrez_search(db="pubmed", term=query_Q1, retmax=10000)
 length(Q1_result$ids)
 Q1_ids<-Q1_result$ids
+
+## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
+
+## need to set the 'retstart' parameter, loop over batches ...
+
+## https://www.nlm.nih.gov/dataguide/eutilities/utilities.html
+## https://github.com/ropensci/rentrez/issues/180
+if (FALSE) {
+    
+    system.time(
+        Q2_results_EPM <- easyPubMed::batch_pubmed_download(
+                                          pubmed_query_string = query_Q2,
+                                          api_key = ncbi_api_key,
+                                          batch_size = 1000,
+                                          ## restart counter
+                                          res_cn = 1, 
+                                          dest_file_prefix = "Test1_Q2", 
+                                          encoding = "ASCII")
+    )
+    ## 72 batches, ~25M each, 1.8G total
+    ## started at approx 5000/minute, but seems throttled after 10 batches?
+
+    ## would like to be able to get *just* PMIDs (rather than fetching PMIDs + metadata), ... ??
+
+}
+
+## we can get just PMIDs by looping over this:
+xx <- readLines("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=cancer&reldate=60&datetype=edat&retmax=100&retstart=101")
+
+## we can definitely make this into a machine, either by brute force (grep "<Id>..." and extract) or by using an XML parser
 
 Q1A_result <- entrez_search(db="pubmed", term=query_Q1A, retmax=10000)
 length(Q1A_result$ids)
