@@ -2,6 +2,14 @@
 # library(devtools)
 ## install_github("ropensci/rentrez")
 ## BMB: OK to use CRAN version instead?
+
+## Richard: Tried several times on Dec 11th, but not working at the moment
+## (It said rentrez is not available for current version of R (V4.3.3, V4.4.1,
+## V4.4.2.) 
+## Tried on Dec 15th on the same device and worked. Seems like an update based
+## on V4.4.2 has just been updated to CRAN.
+## install.packages("rentrez")
+
 library("rentrez")
 library("stringr")
 library("easyPubMed")
@@ -38,6 +46,12 @@ Q1_ids<-Q1_result$ids
 ## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
 
 ## need to set the 'retstart' parameter, loop over batches ...
+
+## Richard: I get the idea of 'retstart' and I'll give it a try if possible(not 
+## sure if I can still connect to NCBI from China use VPNs, I'll see when I arri
+## ve). I think it is reasonable to just get PMIDs for queries with >10k results
+## using entrez_search(with a loop machine), since for these queries we care more 
+## about if they overlap with our target papers.
 
 ## https://www.nlm.nih.gov/dataguide/eutilities/utilities.html
 ## https://github.com/ropensci/rentrez/issues/180
@@ -154,3 +168,5 @@ rentrez_df <- function(x) {
 }
 
 Q6_df <- rentrez_df(Q6_result)
+
+## Richard: Got it! Thanks a lot.
