@@ -2,7 +2,6 @@
 # library(devtools)
 ## install_github("ropensci/rentrez")
 ## BMB: OK to use CRAN version instead?
-
 ## Richard: Tried several times on Dec 11th, but not working at the moment
 ## (It said rentrez is not available for current version of R (V4.3.3, V4.4.1,
 ## V4.4.2.) 
@@ -10,11 +9,14 @@
 ## on V4.4.2 has just been updated to CRAN.
 ## install.packages("rentrez")
 
+#Sys.setenv(LANG = "en")
+
 library("rentrez")
 library("stringr")
 library("easyPubMed")
 ## https://support.nlm.nih.gov/kbArticle/?pn=KA-05317
 ## https://account.ncbi.nlm.nih.gov/
+Sys.setenv(NCBI_API_KEY="255d2beea5df04b9d81d13b9756dd55e3309")
 if (!nzchar(ncbi_api_key <- Sys.getenv("NCBI_API_KEY"))) {
     stop("please get an API key from https://account.ncbi.nlm.nih.gov/ ",
          "(see https://support.nlm.nih.gov/kbArticle/?pn=KA-05317) ",
@@ -39,13 +41,18 @@ TargetList <- c("1a"="32511451","2a"="18811331","2b"="10856195","3b"="10343409",
 names(TargetList)
 
 ## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
-Q1_result <- entrez_search(db="pubmed", term=query_Q1, retmax=10000)
+Q1_result <- entrez_search(db="pubmed", term=query_Q1, retmax=5000)
 length(Q1_result$ids)
+Q1_result$count
 Q1_ids<-Q1_result$ids
+
 
 ## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
 
 ## need to set the 'retstart' parameter, loop over batches ...
+
+## https://www.nlm.nih.gov/dataguide/eutilities/utilities.html
+## https://github.com/ropensci/rentrez/issues/180
 
 ## Richard: I get the idea of 'retstart' and I'll give it a try if possible(not 
 ## sure if I can still connect to NCBI from China use VPNs, I'll see when I arri
@@ -53,8 +60,27 @@ Q1_ids<-Q1_result$ids
 ## using entrez_search(with a loop machine), since for these queries we care more 
 ## about if they overlap with our target papers.
 
-## https://www.nlm.nih.gov/dataguide/eutilities/utilities.html
-## https://github.com/ropensci/rentrez/issues/180
+# entrez_search(db="pubmed", term=query_Q1, retmax=5000,retstart=10001)
+## Not working with retstart>10k: Error in ans[[1]] : subscript out of bounds 
+## Loop with smaller retstart is not working as well
+
+## Try loop over batches, batchsize=5000
+# batchsize <- 5000
+# loop_n_Q1 <- ceiling(Q1_result$count/batchsize)
+# 
+# Q1_ids <- c()
+# for (i in c(1:loop_n_Q1)){
+#   temp_result <- entrez_search(db="pubmed"
+#                                , term=query_Q1
+#                                , retmax=batchsize
+#                                , retstart=batchsize*(i-1))
+#   #print(temp_id$count)
+#   temp_ids <- temp_result$ids
+#   Q1_ids <- append(Q1_ids,temp_ids)
+# }
+# length(Q1_ids)
+
+
 if (FALSE) {
     
     system.time(
