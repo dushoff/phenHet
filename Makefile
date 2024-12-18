@@ -12,6 +12,16 @@ vim_session:
 
 ######################################################################
 
+Sources += pubmed_notes.md
+
+Rentrez.Rout: Rentrez.R
+	$(pipeR)
+
+my_fetch.Rout: my_fetch.R
+	$(pipeR)
+
+######################################################################
+
 Rmd = $(wildcard *.Rmd)
 Rmdmd = $(Rmd:.Rmd=.md)
 Rmdhtml = $(Rmd:.Rmd=.html)
