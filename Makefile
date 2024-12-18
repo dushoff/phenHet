@@ -12,6 +12,8 @@ vim_session:
 
 ######################################################################
 
+Sources += $(wildcard *.R)
+
 Sources += pubmed_notes.md
 
 Rentrez.Rout: Rentrez.R
