@@ -16,6 +16,8 @@ Sources += $(wildcard *.R)
 
 Sources += pubmed_notes.md
 
+Ignore += secrets.mk
+-include secrets.mk
 Rentrez.Rout: Rentrez.R
 	$(pipeR)
 
