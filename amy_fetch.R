@@ -4,7 +4,6 @@ if (packageVersion("easyPubMed") < "3.0.0") {
 }
 library(easyPubMed)
 library(tidyverse)
-
 do_slow <- FALSE
 
 if (!nzchar(ncbi_api_key <- Sys.getenv("NCBI_API_KEY"))) {

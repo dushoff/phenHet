@@ -1,5 +1,5 @@
 ---
-title: "Note"
+title: "Notes"
 author: "Richard Zhao"
 date: "2024-12-05"
 knit: (function(inputFile, encoding) {
@@ -7,7 +7,10 @@ knit: (function(inputFile, encoding) {
 output:
   html_document:
     keep_md: true
+bibliography: phenHet.bib
 ---
+
+
 
 # Phenomenological Incidence with Network
 
@@ -30,10 +33,9 @@ We would like to investigate how to generate better interpretations or insights 
     d.  (TO DO) Email Chain (Todd's claim)
     e.  [JD Notes](http://dushoff.github.io/notebook/outputs/powerPhenHet.wt.math)
 3.  M.J. Keeling & B.T. Grenfell (pair approx)
-    a.  (??) Any specific paper, especially for Grenfell
-    b.  [M.J. Keeling (1999)](https://doi.org/10.1098/rspb.1999.0716): The Effects of Local Spatial Structure on Epidemiological Invasions(<PMID:10343409>)
-    c.  [D.A. Rand (1999)](https://doi.org/10.1002/9781444311501.ch4): Correlation Equations and Pair Approximations for Spatial Ecologies(Book Chapters, no hit in both query yet)
-    d.  More?
+    a.  [M.J. Keeling (1999)](https://doi.org/10.1098/rspb.1999.0716): The Effects of Local Spatial Structure on Epidemiological Invasions(<PMID:10343409>)
+    b.  [D.A. Rand (1999)](https://doi.org/10.1002/9781444311501.ch4): Correlation Equations and Pair Approximations for Spatial Ecologies(Book Chapters, no hit in both query yet)
+    c.  More?
 4.  R.M. Granich
     a.  [R.M. Granich EtAl(2009)](https://doi.org/10.1016/S0140-6736(08)61697-9): Universal voluntary HIV testing with immediate antiretroviral therapy as a strategy for elimination of HIV transmission: a mathematical model(PMID: 19038438)
     b.  More?
@@ -41,6 +43,12 @@ We would like to investigate how to generate better interpretations or insights 
     a.  [E.B. Wilson & J. Worcester(1944)](https://doi.org/10.1073/pnas.31.1.24): The Law of Mass Action in Epidemiology(PMID: 16588678)
     b.  [W. Liu, H.W. Hethcote & S.A. Levin (1987)](https://doi.org/10.1007/BF00277162): Dynamical behavior of epidemiological models with nonlinear incidence rates(PMID: 3668394, MR0908379)
     c.  [W. Liu, S.A. Levin & Y. Iwasa(1986)](https://doi.org/10.1007/BF00276956): Influence of nonlinear incidence rates upon the behavior of SIRS epidemiological models(PMID: 3958634, MR0829132)
+6.  C. Rose
+    a.  [C. Rose EtAl. sculpting paper](https://doi.org.libaccess.lib.mcmaster.ca/10.1016/j.jtbi.2021.110839)
+7.  H. Berestycki
+    a.  [H. Berestycki EtAl.](https://link.springer.com/article/10.1007/s00285-022-01861-w)
+
+## \### Others to consider adding above
 
 ### A more unbiased query to literature
 
@@ -59,7 +67,7 @@ Potential Search Key:
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
 
-#### Searching Journal
+#### Searching Jornal
 
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 
@@ -90,7 +98,9 @@ Both easyPM and Rentrenz cannot download record or fetch ids more than 10,000 fr
 
 ### By-path: Author Terms in query
 
-AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]))
+```         
+AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]))`
+```
 
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 
@@ -112,3 +122,9 @@ Start with empirical/simulated networks from data and try to investigate the exp
 ### Constructional Study
 
 Start with certain incidence expression or certain network structure and try to construct the corresponding network. (?? such that the result would be numerically close enough)
+
+## Miscellaneous
+
+Just came across @tuschhoffHeterogeneityCorrelationHost2024 in Google's "recommended papers" alert
+
+## References
