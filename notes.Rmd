@@ -90,6 +90,12 @@ Potential Search Key:
     -   [2+ AND dynam\* AND nonlinear incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem%2A+AND+infect%2A+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam%2A+AND+nonlinear+incidence&sort=relevance)
 6.  [2+ AND dynam\* AND "nonlinear incidence"](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+%22nonlinear+incidence%22): 17
 
+-   **New Query: Trying to hit every selected paper first**
+
+7.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| network \| variation \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29%22&size=200): 14015
+8.  [7 - \| network](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+variation+OR+nonlinear+OR+non-linear%29&size=200):10218
+9.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| **(individual variation)** \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+%28individual+variation%29+OR+nonlinear+OR+non-linear%29&size=200): 7625 with all hitting like 7+A and 8+A
+
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
 
 1.  [epidem\* AND (heterogeneity OR structure OR network)](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29&page=1&size=20&sort=newest&facets=): 4,492
@@ -106,13 +112,17 @@ Both easyPM and Rentrenz cannot download record or fetch ids more than 10,000 fr
 ### By-path: Author Terms in query
 
 ```         
-AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]))`
+AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]))
 ```
 
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 
-    1.  [1+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 619 results, Include 2b, 3b
-    2.  [2+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 309 results, Include 2b
+    1.  [1+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 619 results, Include 2b, 3b, 6a, 7a
+    2.  [2+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 309 results, Include 2b, 6a, 7a
+    3.  [7+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29+AND+%28%28Gomes%2C+Mgm%5BAuthor%5D%29+OR+%28Dwyer%2C+G%5BAuthor%5D%29+OR+%28Dushoff%2C+J%5BAuthor%5D%29+OR+%28Elkinton%2C+Js%5BAuthor%5D%29+OR+%28Keeling%2C+Mj%5BAuthor%5D%29+OR+%28Grenfell%2C+Bt%5BAuthor%5D%29+OR+%28Granich%2C+Rm%5BAuthor%5D%29+OR+%28Wilson%2C+EB%5BAuthor%5D%29+OR+%28Worcester%2C+J%5BAuthor%5D%29+OR+%28Hethcote%2C+HW%5BAuthor%5D%29+OR+%28Levin%2C+SA%5BAuthor%5D%29+OR+%28Liu%2C+W%5BAuthor%5D%29+OR+%28Berestycki%2C+H%5BAuthor%5D%29+OR+%28Rose%2C+C%5BAuthor%5D%29+OR+%28Korobeinikov%2C+A%5BAuthor%5D%29%29&sort=): 198 results (14015 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b
+        -   Rentrez result: almost hit every selected paper
+        -   3b is a book chapter with no record, 5a is too old with no abstract for hitting
+    4.  [8+Authors]():164 results (10218 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b
 
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
 

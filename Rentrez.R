@@ -1,10 +1,10 @@
-Sys.setenv(LANG = "en")  ## BMB: you should do this locally
 library("rentrez")
 library("stringr")
 library("easyPubMed")
 ## https://support.nlm.nih.gov/kbArticle/?pn=KA-05317
 ## https://account.ncbi.nlm.nih.gov/
 ## please DO NOT PUT API KEYS into public code ...
+
 if (!nzchar(ncbi_api_key <- Sys.getenv("NCBI_API_KEY"))) {
     stop("please get an API key from https://account.ncbi.nlm.nih.gov/ ",
          "(see https://support.nlm.nih.gov/kbArticle/?pn=KA-05317) ",
@@ -20,12 +20,12 @@ query_Q1 <- "epidem* AND (heterogeneity OR structure OR network)"
 
 query_Q7 <- "(epidem* OR disease) AND (hetero* OR structure OR network OR )"
 
-query_Author <- "AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]))"
+query_Author <- "AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]))"
 
 query_Q1A <- paste(query_Q1, query_Author, sep=" ")
 query_Q2A <- paste(query_Q2, query_Author, sep=" ")
 
-TargetList <- c("1a"="32511451","2a"="18811331","2b"="10856195","3b"="10343409","4a"="19038438","5a"="16588678","5b"="3668394","5c"="3958634")
+TargetList <- c("1a"="35189135","2a"="18811331","2b"="10856195","3a"="10343409","4a"="19038438","5a"="16588678","5b"="3668394","5c"="3958634","6a"="34314731","7a"="36964799","8a"="16794947","8b"="17443392")
 names(TargetList)
 
 ## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
@@ -192,7 +192,7 @@ TargetList[TargetList %in% Q1A_ids]
 TargetList[TargetList %in% Q2A_ids]
 
 
-query_Q7 <- "(epidem* OR disease) AND (hetero* OR structure OR network) "
+query_Q7 <- "(epidem* OR disease OR infect*) AND (dynam* OR equilibri*) AND (inciden* OR susceptib* OR spread OR transmission) AND (hetero* OR network OR variation OR nonlinear OR non-linear)"
 query_Q7A <- paste(query_Q7, query_Author, sep=" ")
 
 Q7_result <- entrez_search(db="pubmed", term=query_Q7, retmax=10000)
@@ -204,7 +204,7 @@ length(Q7A_result$ids)
 Q7A_ids<-Q7A_result$ids
 TargetList[TargetList %in% Q7A_ids]
 
-query_Q8 <- "(epidem* OR disease) AND (hetero* OR structure OR network) AND dynamic"
+query_Q8 <- "(epidem* OR disease OR infect*) AND (dynam* OR equilibri*) AND (inciden* OR susceptib* OR spread OR transmission) AND (hetero* OR variation OR nonlinear OR non-linear)"
 query_Q8A <- paste(query_Q8, query_Author, sep=" ")
 
 Q8_result <- entrez_search(db="pubmed", term=query_Q8, retmax=10000)
@@ -218,7 +218,7 @@ length(Q8A_result$ids)
 Q8A_ids<-Q8A_result$ids
 TargetList[TargetList %in% Q8A_ids]
 
-query_Q9 <- "(epidem* OR disease) AND (hetero* OR structure OR network) AND nonlinear"
+query_Q9 <- "(epidem* OR disease OR infect*) AND (dynam* OR equilibri*) AND (inciden* OR susceptib* OR spread OR transmission) AND (hetero* OR (individual variation) OR nonlinear OR non-linear)"
 query_Q9A <- paste(query_Q9, query_Author, sep=" ")
 
 Q9_result <- entrez_search(db="pubmed", term=query_Q9, retmax=10000)
