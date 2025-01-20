@@ -20,12 +20,12 @@ query_Q1 <- "epidem* AND (heterogeneity OR structure OR network)"
 
 query_Q7 <- "(epidem* OR disease) AND (hetero* OR structure OR network OR )"
 
-query_Author <- "AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]))"
+query_Author <- "AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]) OR (Novozhilov, AS[Author]))"
 
 query_Q1A <- paste(query_Q1, query_Author, sep=" ")
 query_Q2A <- paste(query_Q2, query_Author, sep=" ")
 
-TargetList <- c("1a"="35189135","2a"="18811331","2b"="10856195","3a"="10343409","4a"="19038438","5a"="16588678","5b"="3668394","5c"="3958634","6a"="34314731","7a"="36964799","8a"="16794947","8b"="17443392")
+TargetList <- c("1a"="35189135","2a"="18811331","2b"="10856195","3a"="10343409","4a"="19038438","5a"="16588678","5b"="3668394","5c"="3958634","6a"="34314731","7a"="36964799","8a"="16794947","8b"="17443392","9a"="18722386")
 names(TargetList)
 
 ## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
@@ -137,10 +137,10 @@ my_fetch_all <- function(query, batchsize = 1000, verbose = FALSE, pause = 5) {
     browser()
 }
 
-x <- my_fetch0("cancer", 100, 1)
-x <- my_fetch0(query, 100, 1, "count")
-x <- my_fetch0(query_Q1, 100, 1)
-x <- my_fetch0(query_Q1, 100, 1, "count")
+# x <- my_fetch0("cancer", 100, 1)
+# x <- my_fetch0(query, 100, 1, "count")
+# x <- my_fetch0(query_Q1, 100, 1)
+# x <- my_fetch0(query_Q1, 100, 1, "count")
 
 ## still fails once we get to retstart = 10001??
 if (FALSE) {
