@@ -32,7 +32,7 @@ Rmdhtml = $(Rmd:.Rmd=.html)
 
 Sources += $(Rmd)
 
-## note.html: note.Rmd
+## notes.html: notes.Rmd
 %.html: %.Rmd
 	$(render_rmd)
 
