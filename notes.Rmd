@@ -53,7 +53,9 @@ We would like to investigate how to generate better interpretations or insights 
     b.  Others?
 8.  A. Korobeinikov
     a.  [A. Korobeinikov(2006)](https://link.springer.com/article/10.1007/s11538-005-9037-9): Lyapunov Functions and Global Stability for SIR and SIRS Epidemiological Models with Non-Linear Transmission (PMID: 16794947)
-    b.  [A. Korobeinikov(2007)](https://link.springer.com/article/10.1007/s11538-007-9196-y): Global Properties of Infectious Disease Models with Nonlinear Incidence (PMID: 17443392,MR2224783)
+    b.  [A. Korobeinikov(2007)](https://link.springer.com/article/10.1007/s11538-007-9196-y): Global Properties of Infectious Disease Models with Nonlinear Incidence (PMID: 17443392, MR2224783)
+9.  A.S. Novozhilov
+    a.  [Novozhilov(2008)](https://www.sciencedirect.com/science/article/pii/S0025556408001211?via%3Dihub): On the spread of epidemics in a closed heterogeneous population(PMID: 18722386, MR2462419)
 
 ### Others to consider adding above
 
@@ -94,7 +96,7 @@ Potential Search Key:
 
 7.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| network \| variation \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29%22&size=200): 14015
 8.  [7 - \| network](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+variation+OR+nonlinear+OR+non-linear%29&size=200):10218
-9.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| **(individual variation)** \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+%28individual+variation%29+OR+nonlinear+OR+non-linear%29&size=200): 7625 with all hitting like 7+A and 8+A
+9.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| **(individual variation)** \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+%28individual+variation%29+OR+nonlinear+OR+non-linear%29&size=200): 7625 with all hitting
 
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
 
@@ -112,19 +114,21 @@ Both easyPM and Rentrenz cannot download record or fetch ids more than 10,000 fr
 ### By-path: Author Terms in query
 
 ```         
-AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]))
+AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]) OR (Novozhilov, AS[Author]))
 ```
 
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 
     1.  [1+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 619 results, Include 2b, 3b, 6a, 7a
     2.  [2+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 309 results, Include 2b, 6a, 7a
-    3.  [7+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29+AND+%28%28Gomes%2C+Mgm%5BAuthor%5D%29+OR+%28Dwyer%2C+G%5BAuthor%5D%29+OR+%28Dushoff%2C+J%5BAuthor%5D%29+OR+%28Elkinton%2C+Js%5BAuthor%5D%29+OR+%28Keeling%2C+Mj%5BAuthor%5D%29+OR+%28Grenfell%2C+Bt%5BAuthor%5D%29+OR+%28Granich%2C+Rm%5BAuthor%5D%29+OR+%28Wilson%2C+EB%5BAuthor%5D%29+OR+%28Worcester%2C+J%5BAuthor%5D%29+OR+%28Hethcote%2C+HW%5BAuthor%5D%29+OR+%28Levin%2C+SA%5BAuthor%5D%29+OR+%28Liu%2C+W%5BAuthor%5D%29+OR+%28Berestycki%2C+H%5BAuthor%5D%29+OR+%28Rose%2C+C%5BAuthor%5D%29+OR+%28Korobeinikov%2C+A%5BAuthor%5D%29%29&sort=): 198 results (14015 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b
+    3.  [7+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29+AND+%28%28Gomes%2C+Mgm%5BAuthor%5D%29+OR+%28Dwyer%2C+G%5BAuthor%5D%29+OR+%28Dushoff%2C+J%5BAuthor%5D%29+OR+%28Elkinton%2C+Js%5BAuthor%5D%29+OR+%28Keeling%2C+Mj%5BAuthor%5D%29+OR+%28Grenfell%2C+Bt%5BAuthor%5D%29+OR+%28Granich%2C+Rm%5BAuthor%5D%29+OR+%28Wilson%2C+EB%5BAuthor%5D%29+OR+%28Worcester%2C+J%5BAuthor%5D%29+OR+%28Hethcote%2C+HW%5BAuthor%5D%29+OR+%28Levin%2C+SA%5BAuthor%5D%29+OR+%28Liu%2C+W%5BAuthor%5D%29+OR+%28Berestycki%2C+H%5BAuthor%5D%29+OR+%28Rose%2C+C%5BAuthor%5D%29+OR+%28Korobeinikov%2C+A%5BAuthor%5D%29%29&sort=): 198 results (14015 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b, 9a
         -   Rentrez result: almost hit every selected paper
         -   3b is a book chapter with no record, 5a is too old with no abstract for hitting
-    4.  [8+Authors]():164 results (10218 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b
+    4.  [8+Authors]():164 results (10218 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b, 9a
 
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
+
+Idea: Specify fields to better refine the result (TBD)
 
 ### Checking the references:
 

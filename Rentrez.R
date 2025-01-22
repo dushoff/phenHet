@@ -11,28 +11,26 @@ if (!nzchar(ncbi_api_key <- Sys.getenv("NCBI_API_KEY"))) {
          "and set the environmental variable NCBI_API_KEY to it")
 }
 
-query_Q6 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND \"nonlinear incidence\""
-query_Q5 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND nonlinear AND incidence"
-query_Q4 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynamics AND nonlinear"
-query_Q3 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynamics"
-query_Q2 <- "epidem* AND infect* AND (heterogeneity OR structure OR network)"
-query_Q1 <- "epidem* AND (heterogeneity OR structure OR network)"
-
-query_Q7 <- "(epidem* OR disease) AND (hetero* OR structure OR network OR )"
+# query_Q6 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND \"nonlinear incidence\""
+# query_Q5 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynam* AND nonlinear AND incidence"
+# query_Q4 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynamics AND nonlinear"
+# query_Q3 <- "epidem* AND infect* AND (heterogeneity OR structure OR network) AND dynamics"
+# query_Q2 <- "epidem* AND infect* AND (heterogeneity OR structure OR network)"
+# query_Q1 <- "epidem* AND (heterogeneity OR structure OR network)"
 
 query_Author <- "AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]) OR (Novozhilov, AS[Author]))"
 
-query_Q1A <- paste(query_Q1, query_Author, sep=" ")
-query_Q2A <- paste(query_Q2, query_Author, sep=" ")
+# query_Q1A <- paste(query_Q1, query_Author, sep=" ")
+# query_Q2A <- paste(query_Q2, query_Author, sep=" ")
 
 TargetList <- c("1a"="35189135","2a"="18811331","2b"="10856195","3a"="10343409","4a"="19038438","5a"="16588678","5b"="3668394","5c"="3958634","6a"="34314731","7a"="36964799","8a"="16794947","8b"="17443392","9a"="18722386")
 names(TargetList)
 
 ## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
-Q1_result <- entrez_search(db="pubmed", term=query_Q1, retmax=5000)
-length(Q1_result$ids)
-Q1_result$count
-Q1_ids<-Q1_result$ids
+# Q1_result <- entrez_search(db="pubmed", term=query_Q1, retmax=5000)
+# length(Q1_result$ids)
+# Q1_result$count
+# Q1_ids<-Q1_result$ids
 
 
 ## https://academia.stackexchange.com/questions/191088/how-can-i-get-around-the-10000-search-result-limit-in-pubmed
@@ -41,12 +39,6 @@ Q1_ids<-Q1_result$ids
 
 ## https://www.nlm.nih.gov/dataguide/eutilities/utilities.html
 ## https://github.com/ropensci/rentrez/issues/180
-
-## Richard: I get the idea of 'retstart' and I'll give it a try if possible(not 
-## sure if I can still connect to NCBI from China use VPNs, I'll see when I arri
-## ve). I think it is reasonable to just get PMIDs for queries with >10k results
-## using entrez_search(with a loop machine), since for these queries we care more 
-## about if they overlap with our target papers.
 
 # entrez_search(db="pubmed", term=query_Q1, retmax=5000,retstart=10001)
 ## Not working with retstart>10k: Error in ans[[1]] : subscript out of bounds 
@@ -152,44 +144,44 @@ xx <- readLines("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=p
 
 ## we can definitely make this into a machine, either by brute force (grep "<Id>..." and extract) or by using an XML parser
 
-Q1A_result <- entrez_search(db="pubmed", term=query_Q1A, retmax=10000)
-length(Q1A_result$ids)
-Q1A_ids<-Q1A_result$ids
+# Q1A_result <- entrez_search(db="pubmed", term=query_Q1A, retmax=10000)
+# length(Q1A_result$ids)
+# Q1A_ids<-Q1A_result$ids
+# 
+# Q2_result <- entrez_search(db="pubmed", term=query_Q2, retmax=10000)
+# length(Q2_result$ids)
+# Q2_ids<-Q2_result$ids
+# 
+# Q2A_result <- entrez_search(db="pubmed", term=query_Q2A, retmax=10000)
+# length(Q2A_result$ids)
+# Q2A_ids<-Q2A_result$ids
+# 
+# Q3_result <- entrez_search(db="pubmed", term=query_Q3, retmax=10000)
+# length(Q3_result$ids)
+# Q3_ids<-Q3_result$ids
+# 
+# Q4_result <- entrez_search(db="pubmed", term=query_Q4, retmax=10000)
+# length(Q4_result$ids)
+# Q4_ids<-Q4_result$ids
+# 
+# Q5_result <- entrez_search(db="pubmed", term=query_Q5, retmax=10000)
+# length(Q5_result$ids)
+# Q5_ids<-Q5_result$ids
+# 
+# Q6_result <- entrez_search(db="pubmed", term=query_Q6, retmax=10000)
+# length(Q6_result$ids)
+# Q6_ids<-Q6_result$ids
+# 
+# 
+# TargetList[TargetList %in% Q1_ids]
+# TargetList[TargetList %in% Q2_ids]
+# TargetList[TargetList %in% Q3_ids]
+# TargetList[TargetList %in% Q4_ids]
+# TargetList[TargetList %in% Q5_ids]
+# TargetList[TargetList %in% Q6_ids]
 
-Q2_result <- entrez_search(db="pubmed", term=query_Q2, retmax=10000)
-length(Q2_result$ids)
-Q2_ids<-Q2_result$ids
-
-Q2A_result <- entrez_search(db="pubmed", term=query_Q2A, retmax=10000)
-length(Q2A_result$ids)
-Q2A_ids<-Q2A_result$ids
-
-Q3_result <- entrez_search(db="pubmed", term=query_Q3, retmax=10000)
-length(Q3_result$ids)
-Q3_ids<-Q3_result$ids
-
-Q4_result <- entrez_search(db="pubmed", term=query_Q4, retmax=10000)
-length(Q4_result$ids)
-Q4_ids<-Q4_result$ids
-
-Q5_result <- entrez_search(db="pubmed", term=query_Q5, retmax=10000)
-length(Q5_result$ids)
-Q5_ids<-Q5_result$ids
-
-Q6_result <- entrez_search(db="pubmed", term=query_Q6, retmax=10000)
-length(Q6_result$ids)
-Q6_ids<-Q6_result$ids
-
-
-TargetList[TargetList %in% Q1_ids]
-TargetList[TargetList %in% Q2_ids]
-TargetList[TargetList %in% Q3_ids]
-TargetList[TargetList %in% Q4_ids]
-TargetList[TargetList %in% Q5_ids]
-TargetList[TargetList %in% Q6_ids]
-
-TargetList[TargetList %in% Q1A_ids]
-TargetList[TargetList %in% Q2A_ids]
+# TargetList[TargetList %in% Q1A_ids]
+# TargetList[TargetList %in% Q2A_ids]
 
 
 query_Q7 <- "(epidem* OR disease OR infect*) AND (dynam* OR equilibri*) AND (inciden* OR susceptib* OR spread OR transmission) AND (hetero* OR network OR variation OR nonlinear OR non-linear)"
