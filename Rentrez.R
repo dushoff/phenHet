@@ -219,6 +219,20 @@ Q9_result$count
 Q9_ids<-Q9_result$ids
 TargetList[TargetList %in% Q9_ids]
 
+query_Q10 <- "(epidem* OR disease OR infect*) AND (dynam* OR equilibri*) AND (inciden* OR susceptib* OR spread OR transmission) AND (power) AND (hetero* OR (individual variation) OR nonlinear OR non-linear)"
+Q10_result <- entrez_search(db="pubmed", term=query_Q10, retmax=10000)
+length(Q10_result$ids)
+Q10_result$count
+Q10_ids<-Q10_result$ids
+TargetList[TargetList %in% Q10_ids]
+
+query_Q11 <- "(epidem* OR disease OR infect*) AND (dynam* OR equilibri*) AND (inciden* OR susceptib* OR spread OR transmission) AND (exponential) AND (hetero* OR (individual variation) OR nonlinear OR non-linear)"
+Q11_result <- entrez_search(db="pubmed", term=query_Q11, retmax=10000)
+length(Q11_result$ids)
+Q11_result$count
+Q11_ids<-Q11_result$ids
+TargetList[TargetList %in% Q11_ids]
+
 ## BMB: extract info to data frame (suitable for write.csv)
 
 rentrez_df <- function(x) {

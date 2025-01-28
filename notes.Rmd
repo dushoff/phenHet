@@ -95,8 +95,10 @@ Potential Search Key:
 -   **New Query: Trying to hit every selected paper first**
 
 7.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| network \| variation \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29%22&size=200): 14015
-8.  [7 - \| network](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+variation+OR+nonlinear+OR+non-linear%29&size=200):10218
-9.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| **(individual variation)** \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+%28individual+variation%29+OR+nonlinear+OR+non-linear%29&size=200): 7625 with all hitting
+8.  [7 without network](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+variation+OR+nonlinear+OR+non-linear%29&size=200):10218
+9.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| **(individual variation)** \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+%28individual+variation%29+OR+nonlinear+OR+non-linear%29&size=200): 7656 with all hitting
+10. 9 & (power): 226, hit 6a, 9a
+11. 9 & (exponential): 132, hit 6a
 
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
 
