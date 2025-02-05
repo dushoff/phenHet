@@ -111,7 +111,7 @@ Potential Search Key:
 
 Both easyPM and Rentrenz cannot download record or fetch ids more than 10,000 from pubmed/NCBI.
 
--   (TODO?) [Entrez Direct](https://www.ncbi.nlm.nih.gov/books/NBK179288/) Unix based api is requried
+-   (TODO?) [Entrez Direct](https://www.ncbi.nlm.nih.gov/books/NBK179288/) Unix based api is required
 
 ### By-path: Author Terms in query
 
@@ -139,12 +139,6 @@ Remove duplicates in two journals and check if the papers interested is in each 
 ### Literature next steps:
 
 ## Next Steps
-
-### Potential Connection between PhenHet with EBCM network models
-
-- [Novozhilov(2008)](./refs/Novozhilov2008.pdf)
-- [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf)
-- [I.Z. Kiss, J.C. Miller & P.L. Simon(2017)](./refs/KissMIllerSimon2017Book.pdf)
 
 ### Empirical Study
 
