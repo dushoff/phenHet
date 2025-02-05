@@ -136,7 +136,15 @@ Idea: Specify fields to better refine the result (TBD)
 
 Remove duplicates in two journals and check if the papers interested is in each result of combinations of keywords.
 
+### Literature next steps:
+
 ## Next Steps
+
+### Potential Connection between PhenHet with EBCM network models
+
+- [Novozhilov(2008)](./refs/Novozhilov2008.pdf)
+- [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf)
+- [I.Z. Kiss, J.C. Miller & P.L. Simon(2017)](./refs/KissMIllerSimon2017Book.pdf)
 
 ### Empirical Study
 
