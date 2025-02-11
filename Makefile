@@ -26,6 +26,8 @@ my_fetch.Rout: my_fetch.R
 
 ######################################################################
 
+## notes_NovoANDNetwork.html: notes_NovoANDNetwork.Rmd
+
 Rmd = $(wildcard *.Rmd)
 Rmdmd = $(Rmd:.Rmd=.md)
 Rmdhtml = $(Rmd:.Rmd=.html)
