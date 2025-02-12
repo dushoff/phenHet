@@ -88,9 +88,9 @@ takes the values from the domain of traits with the probability corresponding to
 MGF of gamma-distribution is given by $M(0,\lambda)=(1-\lambda/\eta)^{-\alpha}$. Then inverse MGF at $t=0$ is:
 $$
 \begin{align}
-	&M^{-1}(0,\xi)=\eta (1-\xi^{\frac{1}{\alpha}})
+	&M^{-1}(0,\xi)=\eta (1-\xi^{-\frac{1}{\alpha}})
 	\\
-	\Rightarrow &\frac{d}{d\xi}M^{-1}(0,\xi)=\frac{\eta}{\alpha}x^{-1/\alpha-1}
+	\Rightarrow &\frac{d}{d\xi}M^{-1}(0,\xi)=\frac{\eta}{\alpha}\xi^{-\frac{1}{\alpha}-1}
 \end{align}
 $$
 
@@ -117,8 +117,6 @@ $$
 	&=i(t,\omega_i)[-\gamma+\omega_i \bar{\beta_s}(t)S(t)]
 \end{align}
 $$
-
-~~For simplicity, we assume the susceptibility is homogeneous:~~
 
 According to Thm 1, the system can be written as:
 $$
@@ -163,7 +161,7 @@ $$
 $$
 Take into the initial condition $S(0)=S_0$, $q_s(0)=0$ gives
 $$
-S(t)/S_0=M_s(0,q(t))
+S(t)/S_0=M_s(0,q_s(t))
 $$
 
 Similarly, for $I(t)$ we have
@@ -173,12 +171,12 @@ $$
 	\\
 	\Rightarrow & \frac{1}{I(t)}\frac{d}{dt}I(t)=-\gamma+\bar{\beta_i}(t)\frac{d}{dt}q_i(t)
 	\\
-	\Rightarrow & \frac{d}{dt}log(I(t))=-\gamma+\frac{d}{dt}log(M(0,q(t)))
+	\Rightarrow & \frac{d}{dt}log(I(t))=-\gamma+\frac{d}{dt}log(M_i(0,q_i(t)))
 \end{align}
 $$
 Take into the initial condition $I(0)=I_0$, $q_i(0)=0$ gives
 $$
-I(t)/I_0=e^{-\gamma t}M_s(0,q(t))
+I(t)/I_0=e^{-\gamma t}M_i(0,q(t))
 $$
 
 Since MGFs are absolutely monotonic function for non negative traits, we got
@@ -189,3 +187,36 @@ $$
 	q_i(t)&=M_i^{-1}(0,\frac{I(t)e^{\gamma t}}{I_0})
 \end{align}
 $$
+
+Now again, assume both susceptibility and infectivity are initially gamma-distributed with MGF $M(0,\lambda)=(1-\lambda/\eta)^{-\alpha}$ and $M^{-1}(0,\xi)=\eta (1-\xi^{-\frac{1}{\alpha}})$
+and
+$$
+\frac{d}{d\lambda}log(M(0,\lambda))=\frac{d}{d\lambda}(-\alpha log(1-\lambda/\eta))=-\alpha \times \frac{1}{1-\lambda/\eta} \times(-\frac{1}{\eta})=\frac{\alpha}{\eta-\lambda}
+$$
+
+Then
+$$
+\begin{align}
+	q_s(t)&=M_s^{-1}(0,\frac{S(t)}{S_0})=\eta_s(1-(\frac{S(t)}{S_0})^{-\frac{1}{\alpha_s}})
+	\\
+	q_i(t)&=M_i^{-1}(0,\frac{I(t)e^{\gamma t}}{I_0})=\eta_i(1-(\frac{I(t)}{I_0})^{-\frac{1}{\alpha_s}}e^{-\frac{\gamma t}{\alpha_s}})
+\end{align}
+$$
+Take these into $\bar\beta_s(t)$ and $\bar\beta_s(t)$ gives us 
+$$
+\begin{align}
+	\bar{\beta_s}(t)&=\frac{d}{d\lambda}[log(M_s(0,\lambda))]|_{\lambda=q_s(t)}=\frac{\alpha_s}{\eta_s-q_s(t)}=\frac{\alpha_s}{\eta_s}(\frac{S(t)}{S_0})^{1/\alpha_s}
+	\\
+	\bar{\beta_i}(t)&=\frac{d}{d\lambda}[log(M_i(0,\lambda))]|_{\lambda=q_i(t)}=\frac{\alpha_i}{\eta_i-q_i(t)}=\frac{\alpha_i}{\eta_i}(\frac{I(t)e^{\gamma t}}{I_0})^{1/\alpha_i}
+\end{align}
+$$
+Eventually, take this back to ODEs of $S(t)$ and $I(t)$ gives us:
+$$
+\begin{align}
+	\frac{d}{dt}S(t)&=-S(t)\bar{\beta_s}(t)\bar{\beta_i}(t)I(t)=-\frac{\alpha_s\alpha_i}{\eta_s\eta_i}
+	(S_0)^{-1/\alpha_s}(I_0)^{-1/\alpha_i}S(t)^{1+1/\alpha_s}I(t)^{1+1/\alpha_i}e^{\frac{\gamma t}{\alpha_i}}=-A S^p I^q e^{\gamma t(q-1)}
+	\\
+	\frac{d}{dt}I(t)&=I(t)[-\gamma+\bar{\beta_i}(t)\bar{\beta_s}(t)S(t)]=-\gamma I(t)+A S^p I^q e^{\gamma t(q-1)}
+\end{align}
+$$
+where $p=1+\frac{1}{\alpha_s} >1$ and $q=1+\frac{1}{\alpha_i}>1$.

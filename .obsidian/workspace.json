@@ -6,7 +6,7 @@
       {
         "id": "99806000656da90b",
         "type": "tabs",
-        "dimension": 51.10132158590308,
+        "dimension": 43.988269794721404,
         "children": [
           {
             "id": "6d94e993ce58cdca",
@@ -27,7 +27,7 @@
       {
         "id": "1081d37ffae60707",
         "type": "tabs",
-        "dimension": 48.89867841409692,
+        "dimension": 56.01173020527859,
         "children": [
           {
             "id": "fa77287d1ff01bc3",
@@ -190,7 +190,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "fa77287d1ff01bc3",
+  "active": "6d94e993ce58cdca",
   "lastOpenFiles": [
     "docs/notes_NovoANDNetwork.md",
     "I q and Exponential Incident.md",
