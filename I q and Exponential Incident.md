@@ -220,3 +220,13 @@ $$
 \end{align}
 $$
 where $p=1+\frac{1}{\alpha_s} >1$ and $q=1+\frac{1}{\alpha_i}>1$.
+
+# Exponential Incident
+
+Can we get some specific type of nonlinear incident form from [Novozhilov2008](refs/Novozhilov2008.pdf) framework?
+
+Consider first the "exponential" incident like mentioned in [GranichEtAl2009](https://doi.org/10.1016/s0140-6736(08)61697-9), such the incident term like
+$$
+\lambda e^{-\alpha I}SI
+$$
+which let transmission rate decrease with the prevalence exponentially.
