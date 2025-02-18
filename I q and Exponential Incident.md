@@ -324,10 +324,28 @@ $$
 $$
 which let transmission rate decrease with the prevalence exponentially.
 
-An ansatz for now is we would like to have homogeneous in susceptibility and heterogenous infectivity with $p_i(0,\omega_i)$ such that corresponding MGF $M(0,\lambda)$ and corresponding $M^{-1}(0,\zeta)$ satisfy:
+An ansatz for now is we would like to have homogeneous in susceptibility and heterogenous infectivity with $p_i(0,\omega_i)$ such that corresponding MGF $M(0,\lambda)$ and corresponding $M^{-1}(0,\xi)$ satisfy:
 $$
-h(I)=
+\begin{align}
+h(I) =I_0 \frac{d}{d\lambda}M_i(0,\lambda)\bigg|_{\lambda=M^{-1}(0,I/I_0)}&=C I e^{-\alpha I}
+\\
+I_0 (\frac{d}{d\xi}M_i^{-1}(0,\xi)\bigg|_{\xi=I/I_0})^{-1}&=C I e^{-\alpha I}
+\\
+(\frac{d}{d\xi}M_i^{-1}(0,\xi)\bigg|_{\xi=I/I_0})^{-1}& =C\times(\frac{I}{I_0})e^{-\alpha(\frac{I}{I_0})} \quad \leftarrow \alpha \text{ absorb } I_0
+\\
+\frac{d}{d\xi}M_i^{-1}(0,\xi)\bigg|_{\xi=I/I_0}&=C^{-1} (\frac{I}{I_0})^{-1}e^{\alpha(\frac{I}{I_0})}
+\\
+\frac{d}{d\xi} M_i^{-1}(0,\xi)&= \frac{e^{\alpha \xi}}{C\xi} 
+\\
+M_i^{-1}(0,\xi)&=C^{-1}\int \frac{e^{\alpha \xi}}{\xi}  d\xi + K= C^{-1} \int \frac{e^{\alpha \xi}}{ \alpha\xi}  d(\alpha\xi)+K
+
+\end{align}
 $$
+
+
+
+
+
 
 %%Another possible ansatz is assume recovery rate $\gamma \propto I(t)$ for SIR model.%%
 
