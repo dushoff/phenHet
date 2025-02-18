@@ -221,6 +221,32 @@ $$
 $$
 where $p=1+\frac{1}{\alpha_s} >1$ and $q=1+\frac{1}{\alpha_i}>1$.
 
+## Basic Reproduction Ratio/Number $R_0$
+
+Note for the $I^q$ case, initial condition $S_0$ and $I_0$ are part of the constant $A$, such that
+$$
+A=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{-1/\alpha_s}(I_0)^{-1/\alpha_i}=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q}
+$$
+As $t \rightarrow 0$, $I(t) \rightarrow I(0)=I_0 \rightarrow 0^{+}$ and $S(t)\rightarrow S(0)=S_0 \rightarrow 1^{-}$. When calculating 
+$$
+\begin{align}
+R_{\text{eff}} & \approx \lim_{t \rightarrow 0}\frac{AS(t)^p I(t)^qe^{\gamma t (q-1)}}{I(t)}=A \lim_{t \rightarrow 0}S(t)^p I(t)^{q-1}e^{\gamma t (q-1)}
+\\
+&=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q}\lim_{t \rightarrow 0} S(t)^p I(t)^{q-1}e^{\gamma t (q-1)}
+\\
+&=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q} (S_0)^p (I_0)^{q-1}\lim_{t\rightarrow0}e^{\gamma t (q-1)}
+\\
+&=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}S_0
+\end{align}
+$$
+
+To more rigorously derive $R_0$, I take the interpretation and derivation from [DiekmannHeesterbeekMetz(1990)](https://doi-org.libaccess.lib.mcmaster.ca/10.1007/BF00178324).
+
+*The basic reproduction ratio $R_0$ is the expected number of secondary cases produced in a completely susceptible population, by a **typical** infected individual during its entire period of infectiousness.*
+
+
+
+
 # Exponential Incident
 
 Can we get some specific type of nonlinear incident form from [Novozhilov2008](refs/Novozhilov2008.pdf) framework?
