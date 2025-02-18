@@ -67,7 +67,7 @@ $$
 \begin{align}
 	h_s(S)&=S_0[\frac{d}{d\xi}M_s^{-1}(0,\xi)|_{\xi=S(t)/S_0}]^{-1}=S_0 [\frac{d}{d\lambda}M_s(0,\lambda)|_{\lambda=M_s^{-1}(0,S(t)/S_0)}]
 	\\
-	h_i(S)&=I_0[\frac{d}{d\xi}M_i^{-1}(0,\xi)|_{\xi=I(t)/I_0}]^{-1}=I_0 [\frac{d}{d\lambda}M_i(0,\lambda)|_{\lambda=M_i^{-1}(0,I(t)/I_0)}]
+	h_i(I)&=I_0[\frac{d}{d\xi}M_i^{-1}(0,\xi)|_{\xi=I(t)/I_0}]^{-1}=I_0 [\frac{d}{d\lambda}M_i(0,\lambda)|_{\lambda=M_i^{-1}(0,I(t)/I_0)}]
 \end{align}
 $$
 where
@@ -79,8 +79,8 @@ $$
 $$
 
 Now assume both susceptibility and infectivity are initially gamma-distributed with corresponding parameter $\alpha$, $\eta$:
-- $p_s(0,\omega_s) = \frac{\eta_s^k}{\Gamma(\alpha_s)}\omega_s^{\alpha_s-1} e^{-\eta_s \omega_s}, \omega_s\geq0, \alpha_s>0, \eta_s>0$
-- $p_i(0,\omega_i) = \frac{\eta_i^k}{\Gamma(\alpha_i)}\omega_i^{\alpha_i-1} e^{-\eta_i \omega_i}, \omega_i\geq0, \alpha_i>0, \eta_i>0$
+- $p_s(0,\omega_s) = \frac{1}{\Gamma(\alpha_s)}\eta_s^{\alpha_s} \omega_s^{\alpha_s-1} e^{-\eta_s \omega_s}, \omega_s\geq0, \alpha_s>0, \eta_s>0$
+- $p_i(0,\omega_i) = \frac{1}{\Gamma(\alpha_i)}\eta_i^{\alpha_i}\omega_i^{\alpha_i-1} e^{-\eta_i \omega_i}, \omega_i\geq0, \alpha_i>0, \eta_i>0$
 
 ==Also, assume that $\beta_s(\omega_s) = \omega_s$ and $\beta_s(\omega_s)=\omega_s$, i.e., the transmission coefficient
 takes the values from the domain of traits with the probability corresponding to $p_s$ or $p_i$.==
@@ -103,6 +103,32 @@ $$
 \end{align}
 $$
 where $p=1+\frac{1}{\alpha_s} >1$ and $q=1+\frac{1}{\alpha_i}>1$.
+
+Note that based on property of gamma distribution, mean of the initial susceptibility distribution $\bar{\beta_s}(0)$ and mean of the initial infectivity distribution $\bar{\beta_i}(0)$ at $t=0$ is just:
+$$
+\begin{align}
+\bar{\beta_s}(0)&=\int_{\Omega_s}\omega_s p(0,\omega_s)d\omega_s=\frac{\alpha_s}{\eta_s}
+\\
+\bar{\beta_i}(0)&=\int_{\Omega_i}\omega_i p(0,\omega_i)d\omega_i=\frac{\alpha_i}{\eta_i}
+\end{align}
+$$
+Therefore, we further have:
+$$
+\begin{align}
+	h_s(S)&=\frac{\alpha_s}{\eta_s} (S_0)^{-1/\alpha_s} S^{p}=\bar{\beta_s}(0) (S_0)^{1-p} S^{p}
+\\
+	h_i(I)&=\frac{\alpha_i}{\eta_i} (I_0)^{-1/\alpha_i} I^{q}=\bar{\beta_i}(0) (I_0)^{1-q} I^{q}
+\end{align}
+$$
+
+Eventually, the homogeneous version of the SI model is given by:
+$$
+\begin{align}
+	\frac{d}{dt}S(t)&=-h_s(S(t)) h_i(I(t))= -\bar{\beta_s}(0) \bar{\beta_i}(0) (S_0)^{1-p} (I_0)^{1-q} S^{p} I^{q}
+	\\
+	\frac{d}{dt}I(t)&=h_s(S(t)) h_i(I(t))=\bar{\beta_s}(0) \bar{\beta_i}(0) (S_0)^{1-p} (I_0)^{1-q} S^{p} I^{q}
+\end{align}
+$$
 
 ## SIR case
 Now for each trait $\omega_i$, we add the recovery term based on trait.
@@ -205,47 +231,88 @@ $$
 Take these into $\bar\beta_s(t)$ and $\bar\beta_s(t)$ gives us 
 $$
 \begin{align}
-	\bar{\beta_s}(t)&=\frac{d}{d\lambda}[log(M_s(0,\lambda))]|_{\lambda=q_s(t)}=\frac{\alpha_s}{\eta_s-q_s(t)}=\frac{\alpha_s}{\eta_s}(\frac{S(t)}{S_0})^{1/\alpha_s}
+	\bar{\beta_s}(t)&=\frac{d}{d\lambda}[log(M_s(0,\lambda))]|_{\lambda=q_s(t)}=\frac{\alpha_s}{\eta_s-q_s(t)}=\frac{\alpha_s}{\eta_s}(\frac{S(t)}{S_0})^{1/\alpha_s}=\bar{\beta_s}(0)(\frac{S(t)}{S_0})^{1/\alpha_s}
 	\\
-	\bar{\beta_i}(t)&=\frac{d}{d\lambda}[log(M_i(0,\lambda))]|_{\lambda=q_i(t)}=\frac{\alpha_i}{\eta_i-q_i(t)}=\frac{\alpha_i}{\eta_i}(\frac{I(t)e^{\gamma t}}{I_0})^{1/\alpha_i}
+	\bar{\beta_i}(t)&=\frac{d}{d\lambda}[log(M_i(0,\lambda))]|_{\lambda=q_i(t)}=\frac{\alpha_i}{\eta_i-q_i(t)}=\frac{\alpha_i}{\eta_i}(\frac{I(t)e^{\gamma t}}{I_0})^{1/\alpha_i}=\bar{\beta_i}(0)(\frac{I(t) e^{\gamma t}}{I_0})^{1/\alpha_i}
 \end{align}
 $$
+
+
 Eventually, take this back to ODEs of $S(t)$ and $I(t)$ gives us:
 $$
 \begin{align}
-	\frac{d}{dt}S(t)&=-S(t)\bar{\beta_s}(t)\bar{\beta_i}(t)I(t)=-\frac{\alpha_s\alpha_i}{\eta_s\eta_i}
-	(S_0)^{-1/\alpha_s}(I_0)^{-1/\alpha_i}S(t)^{1+1/\alpha_s}I(t)^{1+1/\alpha_i}e^{\frac{\gamma t}{\alpha_i}}=-A S^p I^q e^{\gamma t(q-1)}
+	\frac{d}{dt}S(t)&=-S(t)\bar{\beta_s}(t)\bar{\beta_i}(t)I(t)
 	\\
-	\frac{d}{dt}I(t)&=I(t)[-\gamma+\bar{\beta_i}(t)\bar{\beta_s}(t)S(t)]=-\gamma I(t)+A S^p I^q e^{\gamma t(q-1)}
+	&=-\frac{\alpha_s\alpha_i}{\eta_s\eta_i}
+	(S_0)^{-1/\alpha_s}(I_0)^{-1/\alpha_i}S(t)^{1+1/\alpha_s}I(t)^{1+1/\alpha_i}e^{\frac{\gamma t}{\alpha_i}}
+	\\
+	&=-\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{p-1}(I_0)^{q-1}S(t)^p I(t)^q e^{-\gamma t (q-1)}
+	\\
+	&= -B(\alpha_s, \eta_s,\alpha_i,\eta_i;S_0,I_0) \times S^p I^q e^{-\gamma t (q-1)}
+	\\
+	\frac{d}{dt}I(t)&=I(t)[-\gamma+\bar{\beta_i}(t)\bar{\beta_s}(t)S(t)]
+	\\
+	&=-\gamma I(t)+\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{p-1}(I_0)^{q-1}S(t)^p I(t)^q e^{-\gamma t (q-1)}
+	\\
+	&=-\gamma I(t)+ B(\alpha_s, \eta_s,\alpha_i, \eta_i;S_0,I_0) \times S^p I^q e^{\gamma t(q-1)}
 \end{align}
 $$
 where $p=1+\frac{1}{\alpha_s} >1$ and $q=1+\frac{1}{\alpha_i}>1$.
 
+
 ## Basic Reproduction Ratio/Number $R_0$
 
-Note for the $I^q$ case, initial condition $S_0$ and $I_0$ are part of the constant $A$, such that
+Note for the $I^q$ case, initial condition $S_0$ and $I_0$ are part of the constant $B$, such that
 $$
-A=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{-1/\alpha_s}(I_0)^{-1/\alpha_i}=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q}
+B=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q}=\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{1-p}(I_0)^{1-q}
+
 $$
 As $t \rightarrow 0$, $I(t) \rightarrow I(0)=I_0 \rightarrow 0^{+}$ and $S(t)\rightarrow S(0)=S_0 \rightarrow 1^{-}$. When calculating 
 $$
 \begin{align}
-R_{\text{eff}} & \approx \lim_{t \rightarrow 0}\frac{AS(t)^p I(t)^qe^{\gamma t (q-1)}}{I(t)}=A \lim_{t \rightarrow 0}S(t)^p I(t)^{q-1}e^{\gamma t (q-1)}
+R_{\text{eff}} & \approx \lim_{t \rightarrow 0}\frac{BS(t)^p I(t)^qe^{\gamma t (q-1)}}{I(t)}=B \lim_{t \rightarrow 0}S(t)^p I(t)^{q-1}e^{\gamma t (q-1)}
 \\
 &=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q}\lim_{t \rightarrow 0} S(t)^p I(t)^{q-1}e^{\gamma t (q-1)}
 \\
 &=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q} (S_0)^p (I_0)^{q-1}\lim_{t\rightarrow0}e^{\gamma t (q-1)}
 \\
-&=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}S_0
+&=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}S_0=\bar{\beta_s}(0)\bar{\beta_i}(0)S_0
 \end{align}
 $$
+Therefore, the $p,q$ value won't actually change the calculation of reproduction number.
+$R_{\text{eff}}$ is determined by the mean of inital gamma distribution and initial considition for $S_0$.
 
 To more rigorously derive $R_0$, I take the interpretation and derivation from [DiekmannHeesterbeekMetz(1990)](https://doi-org.libaccess.lib.mcmaster.ca/10.1007/BF00178324).
 
 *The basic reproduction ratio $R_0$ is the expected number of secondary cases produced in a completely susceptible population, by a **typical** infected individual during its entire period of infectiousness.*
 
+Define $A(\tau, \omega_s, \omega_i)$ be the expected infectivity of an individual, which was infected $\tau$ units of time ago, while having infectivity trait $\omega_i$ towards a susceptible individual with susceptible trait $\omega_s$.
+Based on previous assumptions (include exponential recovery time distribution with rate $\gamma$) and derivation, we have:
+$$
+A(\tau, \omega_s, \omega_i)=\beta(\omega_s,\omega_i)e^{-\gamma \tau}=\beta_s(\omega_s)\beta_i(\omega_i)e^{-\gamma \tau}=\omega_s \omega_i e^{-\gamma \tau}
+$$
 
+Consider the independent gamma distribution with pdf $p_s(0,\omega_s), p_i(0, \omega_i)$ for the initial time $t=0$ should be the same as the distribution of completely susceptible population, we have:
+$$
+\begin{align}
+R_0 & =\int_{\Omega_s}p_s(0,\omega_s)\int_{\Omega_i} p_i(0,\omega_i)\int_0^{\infty}A(\tau,\omega_s, \omega_i)d\tau d\omega_i d\omega_s
+\\
+& = \int_{\Omega_s}p_s(0,\omega_s) \int_{\Omega_i} p_i(0,\omega_i)\int_0^{\infty}\omega_s \omega_i e^{-\gamma \tau}d\tau d\omega_i d\omega_s
+\\
+& =\int_{\Omega_s} \omega_s p_s(0,\omega_s) \int_{\Omega_i} \omega_i p_i(0,\omega_i)\int_0^{\infty} e^{-\gamma \tau}d\tau d\omega_i d\omega_s
+\\
+&=\frac{\bar{\beta_s}(0) \bar{\beta_i}(0)}{\gamma}
+\end{align}
+$$
 
+This agree with the homogeneous SIR case and Novozhilov's special result without heterogeneity in infectivity. The invasion of the disease will then only determined by the mean of the heterogeneity distribution, but independent with variance.
+
+The variance of the heterogeneity will affect outbreak dynamics as pointed out by Proposition 3 in [Novozhilov2008](refs/Novozhilov2008.pdf), for general case without specifying distribution.
+Higher variance in susceptibility lower the severity of early outbreak progression: $S(t)$ gets larger for $t \in(0,\epsilon)$ as variance of susceptibility increase.
+
+Without explicit proof, [Novozhilov2008](refs/Novozhilov2008.pdf) also claim that larger variance of infectivity increase the severity of early outbreak. ==(TO DO?)==
+
+==(TO DO?) Final infection size under this framework==
 
 # Exponential Incident
 
@@ -256,3 +323,15 @@ $$
 \lambda e^{-\alpha I}SI
 $$
 which let transmission rate decrease with the prevalence exponentially.
+
+An ansatz for now is we would like to have homogeneous in susceptibility and heterogenous infectivity with $p_i(0,\omega_i)$ such that corresponding MGF $M(0,\lambda)$ and corresponding $M^{-1}(0,\zeta)$ satisfy:
+$$
+h(I)=
+$$
+
+%%Another possible ansatz is assume recovery rate $\gamma \propto I(t)$ for SIR model.%%
+
+# Other type of non-linear incident
+
+[HethcoteDriessche(1991)](https://link.springer.com/article/10.1007/BF00160539):
+$$ SI \frac{I^p}{1+\alpha I^q}$$
