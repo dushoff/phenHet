@@ -1,5 +1,4 @@
 ## This is phenomenological heterogeneity
-## https://dushoff.github.io/phenHet/Note_Nov14_2024.html
 
 current: target
 -include target.mk
