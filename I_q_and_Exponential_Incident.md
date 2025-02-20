@@ -221,7 +221,7 @@ $$
 \begin{align}
     q_s(t)&=M_s^{-1}(0,\frac{S(t)}{S_0})=\eta_s(1-(\frac{S(t)}{S_0})^{-\frac{1}{\alpha_s}})
     \\
-    q_i(t)&=M_i^{-1}(0,\frac{I(t)e^{\gamma t}}{I_0})=\eta_i(1-(\frac{I(t)}{I_0})^{-\frac{1}{\alpha_s}}e^{-\frac{\gamma t}{\alpha_s}})
+    q_i(t)&=M_i^{-1}(0,\frac{I(t)e^{\gamma t}}{I_0})=\eta_i(1-(\frac{I(t)e^{\gamma t}}{I_0})^{-\frac{1}{\alpha_i}})
 \end{align}
 $$ 
 Take these into $\bar\beta_s(t)$ and $\bar\beta_s(t)$ gives us 
@@ -241,13 +241,13 @@ $$
     &=-\frac{\alpha_s\alpha_i}{\eta_s\eta_i}
     (S_0)^{-1/\alpha_s}(I_0)^{-1/\alpha_i}S(t)^{1+1/\alpha_s}I(t)^{1+1/\alpha_i}e^{\frac{\gamma t}{\alpha_i}}
     \\
-    &=-\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{p-1}(I_0)^{q-1}S(t)^p I(t)^q e^{-\gamma t (q-1)}
+    &=-\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{p-1}(I_0)^{q-1}S(t)^p I(t)^q e^{\gamma t (q-1)}
     \\
-    &= -B(\alpha_s, \eta_s,\alpha_i,\eta_i;S_0,I_0) \times S^p I^q e^{-\gamma t (q-1)}
+    &= -B(\alpha_s, \eta_s,\alpha_i,\eta_i;S_0,I_0) \times S^p I^q e^{\gamma t (q-1)}
     \\
     \frac{d}{dt}I(t)&=I(t)[-\gamma+\bar{\beta_i}(t)\bar{\beta_s}(t)S(t)]
     \\
-    &=-\gamma I(t)+\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{p-1}(I_0)^{q-1}S(t)^p I(t)^q e^{-\gamma t (q-1)}
+    &=-\gamma I(t)+\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{p-1}(I_0)^{q-1}S(t)^p I(t)^q e^{\gamma t (q-1)}
     \\
     &=-\gamma I(t)+ B(\alpha_s, \eta_s,\alpha_i, \eta_i;S_0,I_0) \times S^p I^q e^{\gamma t(q-1)}
 \end{align}
@@ -258,7 +258,7 @@ where $p=1+\frac{1}{\alpha_s} >1$ and $q=1+\frac{1}{\alpha_i}>1$.
 
 Note for the $I^q$ case, initial condition $S_0$ and $I_0$ are part of the constant $B$, such that 
 $$ 
-B=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q}=\bar{\beta\_s}(0)\bar{\beta\_i}(0)(S_0)^{1-p}(I_0)^{1-q}
+B=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}(S_0)^{1-p}(I_0)^{1-q}=\bar{\beta_s}(0)\bar{\beta_i}(0)(S_0)^{1-p}(I_0)^{1-q}
 $$
 
 As $t \rightarrow 0$, $I(t) \rightarrow I(0)=I_0 \rightarrow 0^{+}$ and $S(t)\rightarrow S(0)=S_0 \rightarrow 1^{-}$. 
