@@ -23,7 +23,7 @@ We would like to investigate how to generate better interpretations or insights 
 ### Papers/authors we know, but might biased.
 
 1.  MGM. Gomes
-    a.  [MGM. Gomes,EtAl.(2022)](https://doi.org/10.1016/j.jtbi.2022.111063) : Individual variation in susceptibility or exposure to SARS-CoV-2 lowers the herd immunity threshold. (PMID: 32511451)
+    a.  [MGM. Gomes,EtAl.(2022)](https://doi.org/10.1016/j.jtbi.2022.111063) : Individual variation in susceptibility or exposure to SARS-CoV-2 lowers the herd immunity threshold. (PMID: 35189135)
     b.  (??) Argument about COVID with S. Bansal
     c.  More?
 2.  G. Dwyer & J. Dushoff
@@ -35,7 +35,7 @@ We would like to investigate how to generate better interpretations or insights 
 3.  M.J. Keeling & B.T. Grenfell (pair approx)
     a.  [M.J. Keeling (1999)](https://doi.org/10.1098/rspb.1999.0716): The Effects of Local Spatial Structure on Epidemiological Invasions(<PMID:10343409>)
     b.  [D.A. Rand (1999)](https://doi.org/10.1002/9781444311501.ch4): Correlation Equations and Pair Approximations for Spatial Ecologies(Book Chapters, no hit in both query yet)
-    c.  More?
+    c.  [B. Finkenstädt, B.T. Grenfell (2002)](https://doi.org/10.1111/1467-9876.00187): Time series modelling of childhood diseases: A dynamical systems approach. (No hit on PubMed or MathSciNet)
 4.  R.M. Granich
     a.  [R.M. Granich EtAl(2009)](https://doi.org/10.1016/S0140-6736(08)61697-9): Universal voluntary HIV testing with immediate antiretroviral therapy as a strategy for elimination of HIV transmission: a mathematical model(PMID: 19038438)
     b.  More?
@@ -44,11 +44,18 @@ We would like to investigate how to generate better interpretations or insights 
     b.  [W. Liu, H.W. Hethcote & S.A. Levin (1987)](https://doi.org/10.1007/BF00277162): Dynamical behavior of epidemiological models with nonlinear incidence rates(PMID: 3668394, MR0908379)
     c.  [W. Liu, S.A. Levin & Y. Iwasa(1986)](https://doi.org/10.1007/BF00276956): Influence of nonlinear incidence rates upon the behavior of SIRS epidemiological models(PMID: 3958634, MR0829132)
 6.  C. Rose
-    a.  [C. Rose EtAl. sculpting paper](https://doi.org.libaccess.lib.mcmaster.ca/10.1016/j.jtbi.2021.110839)
+    a.  [C. Rose EtAl. sculpting paper](https://doi.org.libaccess.lib.mcmaster.ca/10.1016/j.jtbi.2021.110839): Heterogeneity in susceptibility dictates the order of epidemic models (PMID: 34314731, MR4297041)
+    b.  Others?
 7.  H. Berestycki
-    a.  [H. Berestycki EtAl.](https://link.springer.com/article/10.1007/s00285-022-01861-w)
+    a.  [H. Berestycki EtAl.](https://link.springer.com/article/10.1007/s00285-022-01861-w): Epidemic modeling with heterogeneity and social diffusion (PMID: 36964799, MR4568209)
+    b.  Others?
+8.  A. Korobeinikov
+    a.  [A. Korobeinikov(2006)](https://link.springer.com/article/10.1007/s11538-005-9037-9): Lyapunov Functions and Global Stability for SIR and SIRS Epidemiological Models with Non-Linear Transmission (PMID: 16794947)
+    b.  [A. Korobeinikov(2007)](https://link.springer.com/article/10.1007/s11538-007-9196-y): Global Properties of Infectious Disease Models with Nonlinear Incidence (PMID: 17443392, MR2224783)
+9.  A.S. Novozhilov
+    a.  [Novozhilov(2008)](https://www.sciencedirect.com/science/article/pii/S0025556408001211?via%3Dihub): On the spread of epidemics in a closed heterogeneous population(PMID: 18722386, MR2462419)
 
-## \### Others to consider adding above
+### Others to consider adding above
 
 ### A more unbiased query to literature
 
@@ -83,6 +90,14 @@ Potential Search Key:
     -   [2+ AND dynam\* AND nonlinear incidence](https://pubmed.ncbi.nlm.nih.gov/?term=epidem%2A+AND+infect%2A+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam%2A+AND+nonlinear+incidence&sort=relevance)
 6.  [2+ AND dynam\* AND "nonlinear incidence"](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+dynam*+AND+%22nonlinear+incidence%22): 17
 
+-   **New Query: Trying to hit every selected paper first**
+
+7.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| network \| variation \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29%22&size=200): 14015
+8.  [7 without network](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+variation+OR+nonlinear+OR+non-linear%29&size=200):10218
+9.  [(epidem\* \| disease \| infect\*) AND (dynam\* \| equilibri\*) AND (inciden\* \| susceptib\* \| spread \| transmission) AND (hetero\* \| **(individual variation)** \| nonlinear \| non-linear)](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+OR+disease+OR+infect*%29+AND+%28dynam*+OR+equilibri*%29+AND+%28inciden*+OR+susceptib*+OR+spread+OR+transmission%29+AND+%28hetero*+OR+%28individual+variation%29+OR+nonlinear+OR+non-linear%29&size=200): 7656 with all hitting
+10. 9 & (power): 226, hit 6a, 9a
+11. 9 & (exponential): 132, hit 6a
+
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
 
 1.  [epidem\* AND (heterogeneity OR structure OR network)](https://mathscinet.ams.org/mathscinet/publications-search?query=epidem%2a%20AND%20%28heterogeneity%20OR%20structure%20OR%20network%29&page=1&size=20&sort=newest&facets=): 4,492
@@ -94,24 +109,32 @@ Potential Search Key:
 
 Both easyPM and Rentrenz cannot download record or fetch ids more than 10,000 from pubmed/NCBI.
 
--   (TODO?) [Entrez Direct](https://www.ncbi.nlm.nih.gov/books/NBK179288/) Unix based api is requried
+-   (TODO?) [Entrez Direct](https://www.ncbi.nlm.nih.gov/books/NBK179288/) Unix based api is required
 
 ### By-path: Author Terms in query
 
 ```         
-AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]))`
+AND ((Gomes, Mgm[Author]) OR (Dwyer, G[Author]) OR (Dushoff, J[Author]) OR (Elkinton, Js[Author]) OR (Keeling, Mj[Author]) OR (Grenfell, Bt[Author]) OR (Granich, Rm[Author]) OR (Wilson, EB[Author]) OR (Worcester, J[Author]) OR (Hethcote, HW[Author]) OR (Levin, SA[Author]) OR (Liu, W[Author]) OR (Berestycki, H[Author]) OR (Rose, C[Author]) OR (Korobeinikov, A[Author]) OR (Novozhilov, AS[Author]))
 ```
 
 -   [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
 
-    1.  [1+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 619 results, Include 2b, 3b
-    2.  [2+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 309 results, Include 2b
+    1.  [1+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 619 results, Include 2b, 3b, 6a, 7a
+    2.  [2+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=epidem*+AND+infect*+AND+%28heterogeneity+OR+structure+OR+network%29+AND+%28Gomes%2C+Mgm%5BAuthor%5D+OR+Dwyer%2C+G%5BAuthor%5D+OR+Dushoff%2C+J%5BAuthor%5D+OR+Keeling+MJ%5BAuthor%5D+OR+Grenfell%2C+Bt%5BAuthor%5D+OR+Granich%2C+Rm%5BAuthor%5D+OR+Wilson+EB%5BAuthor%5D+OR+Worcester+J%5BAuthor%5D+OR+Hethcote+HW%5BAuthor%5D+OR+Levin+SA%5BAuthor%5D+OR+Liu%2C+W%5BAuthor%5D%29&sort=): 309 results, Include 2b, 6a, 7a
+    3.  [7+Authors](https://pubmed.ncbi.nlm.nih.gov/?term=%28epidem*+%7C+disease+%7C+infect*%29+AND+%28dynam*+%7C+equilibri*%29+AND+%28inciden*+%7C+susceptib*+%7C+spread+%7C+transmission%29+AND+%28hetero*+%7C+network+%7C+variation+%7C+nonlinear+%7C+non-linear%29+AND+%28%28Gomes%2C+Mgm%5BAuthor%5D%29+OR+%28Dwyer%2C+G%5BAuthor%5D%29+OR+%28Dushoff%2C+J%5BAuthor%5D%29+OR+%28Elkinton%2C+Js%5BAuthor%5D%29+OR+%28Keeling%2C+Mj%5BAuthor%5D%29+OR+%28Grenfell%2C+Bt%5BAuthor%5D%29+OR+%28Granich%2C+Rm%5BAuthor%5D%29+OR+%28Wilson%2C+EB%5BAuthor%5D%29+OR+%28Worcester%2C+J%5BAuthor%5D%29+OR+%28Hethcote%2C+HW%5BAuthor%5D%29+OR+%28Levin%2C+SA%5BAuthor%5D%29+OR+%28Liu%2C+W%5BAuthor%5D%29+OR+%28Berestycki%2C+H%5BAuthor%5D%29+OR+%28Rose%2C+C%5BAuthor%5D%29+OR+%28Korobeinikov%2C+A%5BAuthor%5D%29%29&sort=): 198 results (14015 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b, 9a
+        -   Rentrez result: almost hit every selected paper
+        -   3b is a book chapter with no record, 5a is too old with no abstract for hitting
+    4.  [8+Authors]():164 results (10218 without authors), Include 1a, 2a, 2b, 3a, 4a, 5b, 5c, 6a, 7a, 8a, 8b, 9a
 
 -   [MathSciNet](https://mathscinet.ams.org/mathscinet/publications-search)
+
+Idea: Specify fields to better refine the result (TBD)
 
 ### Checking the references:
 
 Remove duplicates in two journals and check if the papers interested is in each result of combinations of keywords.
+
+### Literature next steps:
 
 ## Next Steps
 

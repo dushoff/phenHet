@@ -1,4 +1,4 @@
-# $I^q$ case under [Novozhilov](Novozhilov2008.pdf) Framework
+# I^q case under [Novozhilov](https://arxiv.org/abs/0802.2059) Framework
 
 Following discussion in [notes_NovoANDNetwork](notes_NovoANDNetwork.Rmd) - Assuming the transmission rate $\beta$ is determined by the traits $\omega_s$ and $\omega_i$ independently, such that $\beta=\beta(\omega_s,\omega_i)=\beta_s(\omega_s) \beta_i(\omega_i)$ - For each traits of S, the density $s(t,\omega_s)$ in trait $\omega_s$ is governed by ODE: 
 $$
@@ -34,7 +34,7 @@ $$
 
 ## SI case
 
-Corollary 2 in [Novozhilov2008](Novozhilov2008.pdf)
+Corollary 2 in [Novozhilov2008](https://arxiv.org/abs/0802.2059)
 
 For each trait $\omega_s$, the PDE for $s(t,\omega_s)$ can be written as 
 $$
@@ -54,7 +54,7 @@ $$
 \bar{\beta_i}(t)=\int_{\Omega_i} \beta_i(\omega_i)\frac{i(t,\omega_i)}{I(t)} d \omega_i
 $$
 
-By Theorem 1 & Proposition 2 in [Novozhilov2008](Novozhilov2008.pdf), the model is equivalent to 
+By Theorem 1 & Proposition 2 in [Novozhilov2008](https://arxiv.org/abs/0802.2059), the model is equivalent to 
 $$
 \begin{align}
     \frac{d}{dt}S(t)&=-h_s(S(t)) h_i(I(t)) 
@@ -254,6 +254,13 @@ $$
 $$ 
 where $p=1+\frac{1}{\alpha_s} >1$ and $q=1+\frac{1}{\alpha_i}>1$.
 
+==Unlike the SI model, the SIR model generates the time dependent exponential term $e^{\gamma t(q-1)}$ which indicate that transmission will increase to infinity as time goes by. This comes from the assumptions:== 
+- ==Unbounded infectiousness (Gamma Distribution)==
+- ==Perfect fidelity/inheritance to infectiousness during transmission==
+==Higher (to infinity) infectiousness traits will be dominant as time goes by.==
+
+==This makes this framework much less useful for $I^q$ and perhaps other nonlinear $I$ case.==
+
 ## Basic Reproduction Ratio/Number $R_0$
 
 Note for the $I^q$ case, initial condition $S_0$ and $I_0$ are part of the constant $B$, such that 
@@ -274,7 +281,9 @@ R_{\text{eff}} & \approx \lim_{t \rightarrow 0}\frac{BS(t)^p I(t)^qe^{\gamma t (
 &=\frac{\alpha_s\alpha_i}{\eta_s\eta_i}S_0=\bar{\beta_s}(0)\bar{\beta_i}(0)S_0
 \end{align} $$ 
 Therefore, the $p,q$ value won't actually change the calculation of reproduction number. 
-$R_{\text{eff}}$ is determined by the mean of inital gamma distribution and initial considition for $S_0$.
+$R_{\text{eff}}$ is determined by the mean of initial gamma distribution and initial condition for $S_0$.
+
+==This shed some lights on how we should construct nonlinearity for $I$. It should contain some form with $f(I/I_0)$ to avoid the absurd $R_0$ issue we previously have.==
 
 To more rigorously derive $R_0$, I take the interpretation and derivation from [DiekmannHeesterbeekMetz(1990)](https://doi-org.libaccess.lib.mcmaster.ca/10.1007/BF00178324).
 
@@ -302,16 +311,16 @@ $$
 This agree with the homogeneous SIR case and Novozhilov's special result without heterogeneity in infectivity. 
 The invasion of the disease will then only determined by the mean of the heterogeneity distribution, but independent with variance.
 
-The variance of the heterogeneity will affect outbreak dynamics as pointed out by Proposition 3 in [Novozhilov2008](refs/Novozhilov2008.pdf), for general case without specifying distribution. 
+The variance of the heterogeneity will affect outbreak dynamics as pointed out by Proposition 3 in [Novozhilov2008](https://arxiv.org/abs/0802.2059), for general case without specifying distribution. 
 Higher variance in susceptibility lower the severity of early outbreak progression: $S(t)$ gets larger for $t \in(0,\epsilon)$ as variance of susceptibility increase.
 
-Without explicit proof, [Novozhilov2008](refs/Novozhilov2008.pdf) also claim that larger variance of infectivity increase the severity of early outbreak. ==(TO DO?)==
+Without explicit proof, [Novozhilov2008](https://arxiv.org/abs/0802.2059) also claim that larger variance of infectivity increase the severity of early outbreak.
 
 ==(TO DO?) Final infection size under this framework==
 
 # Exponential Incident
 
-Can we get some specific type of nonlinear incident form from [Novozhilov2008](refs/Novozhilov2008.pdf) framework?
+Can we get some specific type of nonlinear incident form from [Novozhilov2008](https://arxiv.org/abs/0802.2059) framework?
 
 Consider first the "exponential" incident like mentioned in [GranichEtAl2009](https://doi.org/10.1016/s0140-6736(08)61697-9), such the incident term like $$\lambda e^{-\alpha I}SI$$ which let transmission rate decrease with the prevalence exponentially.
 
@@ -332,7 +341,13 @@ I_0 (\frac{d}{d\xi}M_i^{-1}(0,\xi)\bigg|_{\xi=I/I_0})^{-1}&=C I e^{-\alpha I}
 M_i^{-1}(0,\xi)&=C^{-1}\int \frac{e^{\alpha \xi}}{\xi}  d\xi + K= C^{-1} \int \frac{e^{\alpha \xi}}{ \alpha\xi}  d(\alpha\xi)+K
 \end{align}
 $$
-%%Another possible ansatz is assume recovery rate $\gamma \propto I(t)$ for SIR model.%%
+
+==(TO DO?) Difficulty here: integration and convert back to probability distribution from mgf $M$.==
+
+[Stackexchange](https://math.stackexchange.com/questions/251795/problem-when-integrating-ex-x)
+
+[Wikipedia](https://en.wikipedia.org/wiki/Exponential_integral)
+
 
 # Other type of non-linear incident
 

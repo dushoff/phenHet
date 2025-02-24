@@ -6,7 +6,7 @@
       {
         "id": "99806000656da90b",
         "type": "tabs",
-        "dimension": 38.47283406754772,
+        "dimension": 53.59237536656891,
         "children": [
           {
             "id": "6d94e993ce58cdca",
@@ -37,7 +37,7 @@
       {
         "id": "f89dfe9a22ebf500",
         "type": "tabs",
-        "dimension": 61.52716593245228,
+        "dimension": 46.407624633431084,
         "children": [
           {
             "id": "9e27fdbc2e71f18e",
@@ -46,7 +46,7 @@
               "type": "markdown",
               "state": {
                 "file": "I_q_and_Exponential_Incident.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
@@ -197,28 +197,35 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "markdown-importer:Open format converter": false,
+      "webpage-html-export:Export Vault to HTML": false
     }
   },
-  "active": "9e27fdbc2e71f18e",
+  "active": "6d94e993ce58cdca",
   "lastOpenFiles": [
+    "docs/notes.md",
+    "docs/notes.html",
+    "pandoc7d84780f5d93.html",
+    "notes.knit.md",
+    "docs/notes_NovoANDNetwork.md",
+    "docs/notes_NovoANDNetwork.html",
+    "pandoc42a83ce765dc.html",
+    "notes_NovoANDNetwork.knit.md",
+    "docs/lib/metadata.json",
+    "docs/lib/fonts/MathJax_Vector-Bold.woff",
+    "docs/lib/fonts/MathJax_Vector-Regular.woff",
+    "docs/lib/fonts/MathJax_Typewriter-Regular.woff",
+    "docs/lib/fonts/MathJax_Script-Regular.woff",
+    "docs/lib/fonts/MathJax_SansSerif-Italic.woff",
+    "docs/lib/media/6155340132a851f6089e.svg",
     "I_q_and_Exponential_Incident.md",
     "docs/I-q-and-Exponential-Incident.md",
-    "pandoc6a087890b25.html",
     "I-q-and-Exponential-Incident.knit.md",
-    "I-q-and-Exponential-Incident.Rmd",
-    "I q and Exponential Incident.Rmd",
-    "notes_NovoANDNetwork - 副本.Rmd",
-    "docs/notes_NovoANDNetwork.md",
     "I q and Exponential Incident.md",
-    "pandoc8ca03eb63e4a.html",
-    "notes_NovoANDNetwork.knit.md",
-    "refs/Novozhilov2008.pdf",
     "refs/Novozhilov2008.pdf.md",
     "refs/Novozhilov2008.pdf 1.md",
     "~/refs/Novozhilov2008.pdf.md",
-    "~/refs",
-    "~",
     "~/refs/Novozhilov2008.pdf 1.md",
     "pubmed_notes.md"
   ]
