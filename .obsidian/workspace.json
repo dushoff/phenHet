@@ -4,30 +4,8 @@
     "type": "split",
     "children": [
       {
-        "id": "13109736e1e5ce88",
-        "type": "tabs",
-        "dimension": 66.78885630498533,
-        "children": [
-          {
-            "id": "93d1aa8908fcc3ea",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "notes.md",
-                "mode": "source",
-                "source": true
-              },
-              "icon": "lucide-file",
-              "title": "notes"
-            }
-          }
-        ]
-      },
-      {
         "id": "ab8c76fca2c63335",
         "type": "tabs",
-        "dimension": 33.21114369501466,
         "children": [
           {
             "id": "37eca3a041b6171f",
@@ -41,6 +19,34 @@
               },
               "icon": "lucide-file",
               "title": "notes"
+            }
+          },
+          {
+            "id": "504e0dbb461885ec",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes_NovoANDNetwork.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "notes_NovoANDNetwork"
+            }
+          },
+          {
+            "id": "93f8c181f64785c6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "I_q_and_Exponential_Incident.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "I_q_and_Exponential_Incident"
             }
           }
         ]
@@ -192,50 +198,8 @@
       "webpage-html-export:Export Vault to HTML": false
     }
   },
-  "floating": {
-    "id": "dc7212ac9cecdbd4",
-    "type": "floating",
-    "children": [
-      {
-        "id": "3b1d07f23c0fb6ec",
-        "type": "window",
-        "children": [
-          {
-            "id": "84dfa6e2323233ee",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "87a77f3f6a5fe2f7",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "I_q_and_Exponential_Incident.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "I_q_and_Exponential_Incident"
-                }
-              }
-            ]
-          }
-        ],
-        "direction": "vertical",
-        "x": 402,
-        "y": 518,
-        "width": 900,
-        "height": 502,
-        "maximize": false,
-        "zoom": 0
-      }
-    ]
-  },
-  "active": "87a77f3f6a5fe2f7",
+  "active": "37eca3a041b6171f",
   "lastOpenFiles": [
-    "notes_NovoANDNetwork.md",
-    "notes.md",
-    "I_q_and_Exponential_Incident.md",
     "docs/lib/metadata.json",
     "docs/lib/fonts/MathJax_Vector-Bold.woff",
     "docs/lib/fonts/MathJax_Vector-Regular.woff",
@@ -246,7 +210,11 @@
     "docs/lib/fonts/MathJax_SansSerif-Regular.woff",
     "docs/lib/fonts/MathJax_Fraktur-Bold.woff",
     "docs/lib/fonts/MathJax_Fraktur-Regular.woff",
+    "docs/lib/fonts/MathJax_Calligraphic-Bold.woff",
     "docs/lib/media/6155340132a851f6089e.svg",
+    "notes.md",
+    "I_q_and_Exponential_Incident.md",
+    "notes_NovoANDNetwork.md",
     "docs/notes.md",
     "notes.knit.md",
     "docs/notes_NovoANDNetwork.md",
