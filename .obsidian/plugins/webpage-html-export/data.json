@@ -29,7 +29,7 @@
   "siteURL": "",
   "authorName": "",
   "vaultTitle": "phenHet",
-  "exportPreset": "documents",
+  "exportPreset": "raw-documents",
   "openAfterExport": true,
   "graphAttractionForce": 1,
   "graphLinkLength": 10,
