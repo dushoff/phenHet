@@ -70,7 +70,10 @@ $$
     h_i(I)&=I_0[\frac{d}{d\xi}M_i^{-1}(0,\xi)|_{\xi=I(t)/I_0}]^{-1}=I_0 [\frac{d}{d\lambda}M_i(0,\lambda)|_{\lambda=M_i^{-1}(0,I(t)/I_0)}]
 \end{align}
 $$ 
-where - $M_s$ is the MGF of $p_s(0,\omega_s)=\frac{s(0,\omega_s)}{S_0}$ - $M_i$ is the MGF of $p_i(0,\omega_i)=\frac{i(0,\omega_i)}{I_0}$ - Inverse function theorem: 
+where 
+- $M_s$ is the MGF of $p_s(0,\omega_s)=\frac{s(0,\omega_s)}{S_0}$ 
+- $M_i$ is the MGF of $p_i(0,\omega_i)=\frac{i(0,\omega_i)}{I_0}$ 
+- Inverse function theorem: 
 $$
 \frac{d}{dx}(f^{-1})|_{x=b}=\frac{1}{f'(f^{-1})}|_{x=b}
 $$
@@ -79,7 +82,7 @@ Now assume both susceptibility and infectivity are initially gamma-distributed w
 - $p_s(0,\omega_s) = \frac{1}{\Gamma(\alpha_s)}\eta_s^{\alpha_s} \omega_s^{\alpha_s-1} e^{-\eta_s \omega_s}, \omega_s\geq0, \alpha_s>0, \eta_s>0$ 
 - $p_i(0,\omega_i) = \frac{1}{\Gamma(\alpha_i)}\eta_i^{\alpha_i}\omega_i^{\alpha_i-1} e^{-\eta_i \omega_i}, \omega_i\geq0, \alpha_i>0, \eta_i>0$
 
-==Also, assume that $\beta_s(\omega_s) = \omega_s$ and $\beta_s(\omega_s)=\omega_s$, i.e., the transmission coefficient takes the values from the domain of traits with the probability corresponding to $p_s$ or $p_i$.==
+==Also, assume that $\beta_s(\omega_s) = \omega_s$ and $\beta_i(\omega_i)=\omega_i$, i.e., the transmission coefficient takes the values from the domain of traits with the probability corresponding to $p_s$ or $p_i$.==
 
 MGF of gamma-distribution is given by $M(0,\lambda)=(1-\lambda/\eta)^{-\alpha}$. Then inverse MGF at $t=0$ is: 
 $$
