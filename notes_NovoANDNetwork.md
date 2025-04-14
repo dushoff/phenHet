@@ -18,7 +18,7 @@ bibliography: phenHet.bib
 
 The Novozhilov framework provide a connection between
 
--   heterogeneous in susceptibility and/or infectivity with some known distributions parameterized by a single variable (trait) $\omega_s$ or $\omega_i$ and time $t$.
+-  heterogeneous in susceptibility and/or infectivity with some known distributions parameterized by a single variable (trait) $\omega_s$ or $\omega_i$ and time $t$.
     - Density of susceptible/infected individuals with trait $\omega_s$ or $\omega_i$ is $s(t,\omega_s), i(t, \omega_i)$
     - pdf $p_s(t,\omega_s)=\frac{s(t,\omega_s)}{S(t)}, p_i(t,\omega_i)=\frac{i(t,\omega_s)}{I(t)}$ respectively
     - The transmission rate $\beta$ is determined by the traits $\omega_s$ and $\omega_i$ independently, such that $\beta=\beta(\omega_s,\omega_i)=\beta_s(\omega_s) \beta_i(\omega_i)$
