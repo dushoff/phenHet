@@ -50,3 +50,4 @@ $$
 \frac{d R}{dt} & = +(1-\phi)\gamma I 
 \end{align}
 $$
+

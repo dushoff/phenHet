@@ -63,8 +63,7 @@
               "title": "notes_NovoANDNetwork"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -213,10 +212,10 @@
       "webpage-html-export:Export Vault to HTML": false
     }
   },
-  "active": "22349b60f686d719",
+  "active": "93f8c181f64785c6",
   "lastOpenFiles": [
-    "I_q_and_Exponential_Incident.md",
     "notes_NovoANDNetwork.md",
+    "I_q_and_Exponential_Incident.md",
     "notes_GomesPapers.md",
     "notes.md",
     "2025-02-24.md",
