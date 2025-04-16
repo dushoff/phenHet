@@ -5,9 +5,6 @@ date: 2025-02-24
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_dir = "docs") })
 bibliography: phenHet.bib
 ---
-
-
-
 # Connection between Novozhilov with network models
 
 -   [Novozhilov(2008)](./refs/Novozhilov2008.pdf)
