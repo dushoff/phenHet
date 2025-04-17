@@ -6,6 +6,6 @@ makestuff/
 \#*
 .#*
 *~
-.json
+*.json
 .RData
 
