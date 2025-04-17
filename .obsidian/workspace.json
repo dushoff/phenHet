@@ -116,11 +116,12 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "c4d547346951eee8",
@@ -214,9 +215,10 @@
   },
   "active": "93f8c181f64785c6",
   "lastOpenFiles": [
-    "notes.md",
+    "docs/notes_GomesPapers.pdf",
     "notes_GomesPapers.md",
     "notes_NovoANDNetwork.md",
+    "notes.md",
     "I_q_and_Exponential_Incident.md",
     "2025-02-24.md",
     "docs/lib/media/6155340132a851f6089e.svg",
@@ -229,7 +231,6 @@
     "docs/lib/fonts/MathJax_Size2-Regular.woff",
     "docs/lib/fonts/MathJax_Size1-Regular.woff",
     "docs/lib/fonts/MathJax_SansSerif-Regular.woff",
-    "docs/lib/fonts/MathJax_Script-Regular.woff",
     "docs/notes.md",
     "notes.knit.md",
     "docs/notes_NovoANDNetwork.md",

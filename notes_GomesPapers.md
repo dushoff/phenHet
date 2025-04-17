@@ -69,8 +69,7 @@ In this model, HIT is reached if where $$\mathcal{R}_{\text{eff}} \leq 1$$
 If only consider natural infection (i.e. no intervention) such that $c(t) \equiv 1$, then the HIT is given by $$\mathcal{H}= 1-(\frac{1}{\mathcal{R}_0})^{\frac{1}{1+v^2}}$$
 - If $S(t) \leq \mathcal{H}$ new epidemic outbreak will not happen naturally if pathogen is re-introduce to the population.
 - For homogeneous model, $$\mathcal{H}= 1-(\frac{1}{\mathcal{R}_0})$$
-The final infected size $R(\infty)$ is given implicitly by $$(1-R(\infty))^{v^2}(v^2 \mathcal{R}_0 R(\infty)+1)=1$$
-
+The final infected size $R(\infty)$ is given implicitly by $$(1-R(\infty))^{v^2}(v^2 \mathcal{R}_0 R(\infty)+1)=1$$<div style="page-break-after: always;"></div>
 ## Heterogeneous/Variable Connectivity Model
 
 For this model, they also name it as "variation in exposure to infection" in [MGM. Gomes,EtAl.(2022)](https://doi.org/10.1016/j.jtbi.2022.111063).
@@ -129,14 +128,16 @@ This is not necessary a good approximation: Fig.4 in [A. Montalban, RM. Corder a
 - Parameters: $\mathcal{R}_0=3$; $\delta = 1/4$ per day; $\gamma = 1/3$ per day and $v = 1$
 
 In [MGM. Gomes,EtAl.(2022)](https://doi.org/10.1016/j.jtbi.2022.111063) they mostly just proposed this model and the numerical result and discussion are rarely related to this model.
-
 ### Effective Reproduction Number, Herd Immunity Threshold(HIT) and Epidemic Final Size(EFS) 
 ==**Without the approximation**==, they can still derive the effective Reproduction Number:$$\mathcal{R}_{\text{eff}}(t)=c(t)\mathcal{R}_0(t)(\frac{S(t)}{N})^{1+2v^2}$$
 Therefore, the HIT of this variable connectivity model: $$\mathcal{H}=1-\mathcal{R}_0^{-\frac{1}{1+2v^2}}$$
 Furthermore, the EFS:$$R(\infty)=(1-R(\infty))^{v^2}(2v^2 \mathcal{R}_0 R(\infty)+1)=1$$
+
+
 ## Impact of Heterogeneity to HIT $\mathcal{H}$ and EFS $R(\infty)$
 Fig. 14 of [MGM. Gomes,EtAl.(2022)](https://doi.org/10.1016/j.jtbi.2022.111063)
 ![Fig14](docs/pix/Fig14.png)
+
 As coefficient of variation $v$ increase, the HIT $\mathcal{H}$ and EFS $R(\infty)$ both decrease. 
 The homogeneous model will have same HIT as $v=0$.
 Vertical lines are fitted $v$ values of different outbreaks based on literatures or their fitting results.
@@ -154,6 +155,7 @@ As a corollary, the HIT can only be reached by random vaccination if the vaccine
 use are more than $1-1/\mathcal{R}_0$ efficacious against infection.
 
 They also claim that "*such naturally acquired immunity had a much larger role than what might have been expected according to models that take less account of individual variation in susceptibility and exposure to infection*".
+<div style="page-break-after: always;"></div>
 ## Model vs Data
 They first fit all model parameters with COVID-19 England daily deaths data from Feb 2020 to Jul 2020, and then take the best fit parameter to compare with data from Feb 2020 to Nov 2021 as presented in Fig. 15 of [MGM. Gomes,EtAl.(2022)](https://doi.org/10.1016/j.jtbi.2022.111063)
 
