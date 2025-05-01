@@ -10,7 +10,7 @@ library(ggplot2)
 library(rriskDistributions)
 library(tidyr)
 library(cbinom)
-################################### Package Part
+################################### Network Part
 {
   #Degree Distribution data frame
   DDistPK <- function(df){
@@ -223,20 +223,19 @@ library(cbinom)
   }
   
 }
-#################### Package Part END ###########################################
+#################### Network Part END ###########################################
 
 ################################ Distribution part####################################################
 lambda <- 10
-kvalue <- seq(0,200)
+kvalue <- seq(0,100)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
-
+DDist
 ################################ Distribution part END ##############
 
 
 ################################ Initial Condition
-## Temporary Population: 23K by Dr. Cater Estmation
-N <- 26000
+N <- 50000
 
 # Initial Condition Solver based on I0=1-S0-(R0=0)
 Init_theta_func <- function(I0_val){
@@ -254,7 +253,7 @@ S0Count <- PGFG0(1-it_theta,DDist)*N
 
 
 #### Fully mixed/Mass Action SIR Model
-MASIR_Proc <- function(beta, gamma,lambda, init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+MAmod_Proc <- function(beta, gamma,lambda, init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
@@ -286,19 +285,62 @@ MASIR_Proc <- function(beta, gamma,lambda, init_S=1e-3, ODEmaxTime=50, ODEstep=1
   }
 }
 
-beta <- 0.15
+MASIR_Proc <- function(beta, gamma,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+  if (TrackDyn==T){
+    Sys <- function(t, y, parms){
+      with(as.list(c(parms,y)),{
+        dS <- (-b)*I*S
+        dI <- b*I*S-g*I
+        dR <- g*I
+        return(list(c(dS,dI,dR)))
+      })
+    }
+    parms <- c(b=beta,g=gamma)
+    times <- seq(0,ODEmaxTime,by=ODEstep)
+    y <- c(S=init_S,I=1-init_S,R=0)
+    
+    Sys_out <- ode(y,times,Sys,parms)
+  }
+  
+  g <- gamma
+  b <- beta
+  S_0 <- init_S
+  R_0 <- 0
+  
+  R0 <- b/g
+  RInf <- Sys_out[length(Sys_out[,4]),4]
+  
+  if (TrackDyn==T){
+    return(list(R0=R0,RInfinity=RInf, Dynamic=Sys_out))
+  } else {
+    return(list(R0=R0,RInfinity=RInf))
+  }
+}
+
+beta <- 0.25
 gamma <- 0.1
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 500, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
-MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
+MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
+Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 
 CM_out <- CM_Opt$Dynamic
 MA_out <- MA_Opt$Dynamic
+Mod_out <- Mod_Opt$Dynamic
 
-time <- CM_out[1:250,1]
-CM_I <- CM_out[1:250,5]
-MA_I <- MA_out[1:250,3]
-dat <- cbind(time,CM_I, MA_I)
+
+time <- CM_out[,1]
+CM_I <- CM_out[,5]
+MA_I <- MA_out[,3]
+Mod_I <- Mod_out[,3]
+dat <- cbind(time,CM_I, MA_I, Mod_I)
+
 ggplot()+theme_bw()+
-  geom_line(data = dat,aes(x=time, y=CM_I,color="Network model I"))+
-  geom_line(data = dat,aes(x=time, y=MA_I,color="MASIR model I"))
+  geom_line(data = dat,aes(x=time, y=CM_I,color="Network"))+
+  geom_line(data = dat,aes(x=time, y=MA_I,color="MASIR"))+
+  geom_point(data = dat,aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
+  scale_color_manual(values=c("black", "red","blue"))+
+  xlim(0,50)+
+  labs(y = "I(t)") 
+
+  
   
