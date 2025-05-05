@@ -227,7 +227,7 @@ library(cbinom)
 
 ################################ Distribution part####################################################
 lambda <- 10
-kvalue <- seq(0,100)
+kvalue <- seq(0,200)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
 DDist
@@ -254,16 +254,17 @@ S0Count <- PGFG0(1-it_theta,DDist)*N
 
 #### Fully mixed/Mass Action SIR Model
 MAmod_Proc <- function(beta, gamma,lambda, init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+  R_net <- beta/(beta+gamma)*lambda
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
-        dS <- (-b)*(lambda-1)*I*S
-        dI <- b*(lambda-1)*I*S-g*I
+        dS <- (-R_net)*I*S*(1+log(S)/lambda)
+        dI <- R_net*I*S*(1+log(S)/lambda)-g*I
         dR <- g*I
         return(list(c(dS,dI,dR)))
       })
     }
-    parms <- c(b=beta,g=gamma)
+    parms <- c(b=beta,g=gamma,R_net=R_net, lambda=lambda)
     times <- seq(0,ODEmaxTime,by=ODEstep)
     y <- c(S=init_S,I=1-init_S,R=0)
     
@@ -323,10 +324,13 @@ CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 500, ODEstep = 1e-1,init_theta
 MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 
+CM_Opt$R0
+
+
+
 CM_out <- CM_Opt$Dynamic
 MA_out <- MA_Opt$Dynamic
 Mod_out <- Mod_Opt$Dynamic
-
 
 time <- CM_out[,1]
 CM_I <- CM_out[,5]
@@ -339,7 +343,7 @@ ggplot()+theme_bw()+
   geom_line(data = dat,aes(x=time, y=MA_I,color="MASIR"))+
   geom_point(data = dat,aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
-  xlim(0,50)+
+  xlim(0,100)+
   labs(y = "I(t)") 
 
   
