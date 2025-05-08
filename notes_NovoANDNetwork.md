@@ -138,3 +138,18 @@ Strong connection with random-network models with assumptions other than MFSH ar
 Also, Newman & [I.Z. Kiss, J.C. Miller & P.L. Simon(2017)](https://link.springer.com/book/10.1007/978-3-319-50806-1) has proved that in static/configuration network with large network limit (\$N\$ large enough), the final epidemic size and epidemic threshold of parametric heterogeneous transmission probability ($\tau(x)$) and recovery ($\gamma(x)$) model is the same with homogeneous model with expectation as parameter ($\tau=\langle \tau \rangle, \gamma=\langle \gamma \rangle$).
 
 However, the dynamic will be different and [I.Z. Kiss, J.C. Miller & P.L. Simon(2017)](https://link.springer.com/book/10.1007/978-3-319-50806-1) has discussion in Chapter 9.
+
+
+## New findings
+(TO DO)Just some primary results, need to be formally write down systematically later.
+
+[J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf) type of network:
+
+Consider the effective "incidence" term using $\rho=\mathcal{R}_{\text{eff}}/\mathcal{R}_0$ 
+For general MSV type network model:
+$$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
+
+For a Poisson degree distribution $$\rho=S(1+\frac{\log{S}}{\delta})$$
+Agree both with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708)
+
+A generalized version to negative binomial degree distribution (which could be seen as a discrete analog of gamma) $$\rho=S(S^\kappa+\frac{S^\kappa-1}{\kappa \delta})$$
