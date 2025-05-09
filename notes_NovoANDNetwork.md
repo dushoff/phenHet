@@ -141,9 +141,20 @@ However, the dynamic will be different and [I.Z. Kiss, J.C. Miller & P.L. Simon(
 
 
 ## New findings
-(TO DO)Just some primary results, need to be formally write down systematically later.
 
-[J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf) type of network:
+### MSV type network model
+Network model formalized by [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf)
+
+#### Assumptions
+1. 
+
+
+
+
+
+
+
+
 
 Consider the effective "incidence" term using $\rho=\mathcal{R}_{\text{eff}}/\mathcal{R}_0$ 
 For general MSV type network model:

@@ -227,7 +227,7 @@ library(cbinom)
 
 ################################ Distribution part####################################################
 lambda <- 10
-kvalue <- seq(0,200)
+kvalue <- seq(0,300)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
 DDist
@@ -254,7 +254,7 @@ S0Count <- PGFG0(1-it_theta,DDist)*N
 
 #### Fully mixed/Mass Action SIR Model
 MAmod_Proc <- function(beta, gamma,lambda, init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
-  R_net <- beta/(beta+gamma)*lambda
+  R_net <- beta/gamma
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
@@ -325,7 +325,7 @@ MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 
 CM_Opt$R0
-
+beta/(beta+gamma)*lambda
 
 
 CM_out <- CM_Opt$Dynamic
