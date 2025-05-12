@@ -235,7 +235,7 @@ DDist
 
 
 ################################ Initial Condition
-N <- 50000
+N <- 20000
 
 # Initial Condition Solver based on I0=1-S0-(R0=0)
 Init_theta_func <- function(I0_val){
@@ -318,7 +318,7 @@ MASIR_Proc <- function(beta, gamma,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,Trac
   }
 }
 
-beta <- 0.25
+beta <- 0.35
 gamma <- 0.1
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 500, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
 MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)

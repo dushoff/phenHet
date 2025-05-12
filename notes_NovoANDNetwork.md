@@ -156,7 +156,9 @@ Network model formalized by [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/Mi
 
 
 
-Consider the effective "incidence" term using $\rho=\mathcal{R}_{\text{eff}}/\mathcal{R}_0$ 
+Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$
+
+
 For general MSV type network model:
 $$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
 
