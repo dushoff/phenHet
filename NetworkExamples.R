@@ -227,7 +227,7 @@ library(cbinom)
 
 ################################ Distribution part####################################################
 lambda <- 10
-kvalue <- seq(0,300)
+kvalue <- seq(0,400)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
 DDist
@@ -253,8 +253,8 @@ S0Count <- PGFG0(1-it_theta,DDist)*N
 
 
 #### Fully mixed/Mass Action SIR Model
-MAmod_Proc <- function(beta, gamma,lambda, init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
-  R_net <- beta/gamma
+MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+  R_net <- lambda
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
@@ -318,25 +318,33 @@ MASIR_Proc <- function(beta, gamma,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,Trac
   }
 }
 
-beta <- 0.35
-gamma <- 0.1
+beta <- 0.45
+gamma <- 0.2
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 500, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
 MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 
 CM_Opt$R0
 beta/(beta+gamma)*lambda
+Mod_Opt$R0
 
+1+log((N-1)/N)/lambda
 
 CM_out <- CM_Opt$Dynamic
 MA_out <- MA_Opt$Dynamic
 Mod_out <- Mod_Opt$Dynamic
+
+CM_out[2,]
+MA_out[2,]
+Mod_out[2,]
 
 time <- CM_out[,1]
 CM_I <- CM_out[,5]
 MA_I <- MA_out[,3]
 Mod_I <- Mod_out[,3]
 dat <- cbind(time,CM_I, MA_I, Mod_I)
+
+(1+log(Mod_out[1,2])/lambda)*(Mod_out[1,2])*beta/gamma-gamma;
 
 ggplot()+theme_bw()+
   geom_line(data = dat,aes(x=time, y=CM_I,color="Network"))+

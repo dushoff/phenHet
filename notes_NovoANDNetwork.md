@@ -143,10 +143,12 @@ However, the dynamic will be different and [I.Z. Kiss, J.C. Miller & P.L. Simon(
 ## New findings
 
 ### MSV type network model
-Network model formalized by [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf)
+Network model formalized by [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf).
+Result agreed with a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708)  and [Novozhilov(2008)](./refs/Novozhilov2008.pdf)
 
 #### Assumptions
-1. 
+1. Neighbors are independent
+2. Infinite size random network: a.s. no loop network
 
 
 
@@ -154,13 +156,31 @@ Network model formalized by [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/Mi
 
 
 
+For random distribution given a degree distribution with PDF: $\mathbb{P}(K=d)=p_d$.
+Following [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf) at any moment $t$ we define $\theta(t)$:
+- (MSV definition) the probability that randomly chosen neighbor vertex $b$ of a randomly chosen vertex $a$ has not yet transmit the infectious to $a$.
+- (JD definition) the probability of a randomly chosen edge in the network has not yet transmit infection. Let $\phi=1-\theta$ be the probability that the infection has transmitted.
 
-
+The probability generating function(PGF) of degree distribution is denoted by:$$G_p(x)=\sum_{d=0}^{\infty}p_d x^{d}$$
+- A useful expression would be the mean degree $\delta$ is given by:$$\delta=\sum_{d=0}^{\infty}p_d d=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)$$
+Also for network model, **Excess degree** is also important, as during the outbreak, any newly infected vertex with degree $k$ could only infect at most $k-1$ of its susceptible neighbors, as its infection must come from one neighbor that already being infected.
+Based on given degree distribution with PDF $p_d$, we could define the distribution of excess degree with PDF denoted by $q$, such that:$$\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_d d}{\delta}$$
+The corresponding PGF for excess degree is $$G_q(x)=\frac{G_p'(x)}{\delta}$$
 Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$
+- Follow JD's idea: $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\sigma_{\phi}}{\sigma_0}$$
+	- (??) How to define $\sigma_{\phi}$: Expected number of susceptible neighbors???? Expected number of edges that can still transmit the infection for each newly infected vertex??$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times(1-\phi)^{d}=\sum_{d=0}^{\infty}p_d \times d \times \theta^{d}=\theta\sum_{d=0}^{\infty}p_d \times d \times\theta^{d-1}=\theta G_p'(\theta)$$
+	- (??) How to define $\sigma_0$: $$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\theta\rightarrow1} \theta G_p'(\theta)=\delta$$
+	- Therefore, $$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
+- Follow [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708): $\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for one infected individual $X_t$ at time $t$.
+	- Consider the 
+- Since neighbors are assumed to be independent, they claim 
 
 
-For general MSV type network model:
-$$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
+
+
+
+
+
 
 For a Poisson degree distribution $$\rho=S(1+\frac{\log{S}}{\delta})$$
 Agree both with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708)
