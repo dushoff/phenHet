@@ -227,7 +227,7 @@ library(cbinom)
 
 ################################ Distribution part####################################################
 lambda <- 10
-kvalue <- seq(0,400)
+kvalue <- seq(0,300)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
 DDist
@@ -235,7 +235,7 @@ DDist
 
 
 ################################ Initial Condition
-N <- 20000
+N <- 50000
 
 # Initial Condition Solver based on I0=1-S0-(R0=0)
 Init_theta_func <- function(I0_val){
@@ -254,12 +254,12 @@ S0Count <- PGFG0(1-it_theta,DDist)*N
 
 #### Fully mixed/Mass Action SIR Model
 MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
-  R_net <- lambda
+  R_net <- beta*gamma*lambda/(beta+gamma)
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
-        dS <- (-R_net)*I*S*(1+log(S)/lambda)
-        dI <- R_net*I*S*(1+log(S)/lambda)-g*I
+        dS <- lambda*S*(-(b+g)*(1+log(S)/lambda)+b*S+g)
+        dI <- -lambda*S*(-(b+g)*(1+log(S)/lambda)+b*S+g)-g*I
         dR <- g*I
         return(list(c(dS,dI,dR)))
       })
@@ -280,7 +280,7 @@ MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEst
   RInf <- Sys_out[length(Sys_out[,4]),4]
   
   if (TrackDyn==T){
-    return(list(R0=R0,RInfinity=RInf, Dynamic=Sys_out))
+    return(list(R0=R0,RInfinity=RInf,Rnet=R_net, Dynamic=Sys_out))
   } else {
     return(list(R0=R0,RInfinity=RInf))
   }
@@ -325,26 +325,39 @@ MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 
 CM_Opt$R0
-beta/(beta+gamma)*lambda
-Mod_Opt$R0
+#beta/(beta+gamma)*lambda
+Mod_Opt$Rnet/gamma
 
-1+log((N-1)/N)/lambda
+
+#1+log((N-1)/N)/lambda
 
 CM_out <- CM_Opt$Dynamic
 MA_out <- MA_Opt$Dynamic
 Mod_out <- Mod_Opt$Dynamic
 
-CM_out[2,]
-MA_out[2,]
-Mod_out[2,]
+CM_out[1,]*N
+CM_out[2,]*N
+#MA_out[2,]
+Mod_out[1,]*N
+Mod_out[2,]*N
 
 time <- CM_out[,1]
 CM_I <- CM_out[,5]
 MA_I <- MA_out[,3]
 Mod_I <- Mod_out[,3]
+
+
+theta <- CM_out[,2]
+
+St<-CM_out[,4]
+
+CM_S <- CM_out[,4]
+MA_S <- MA_out[,2]
+Mod_S <- Mod_out[,2]
+
+dat_S <- cbind(time,CM_S, MA_S, Mod_S)
 dat <- cbind(time,CM_I, MA_I, Mod_I)
 
-(1+log(Mod_out[1,2])/lambda)*(Mod_out[1,2])*beta/gamma-gamma;
 
 ggplot()+theme_bw()+
   geom_line(data = dat,aes(x=time, y=CM_I,color="Network"))+
@@ -354,5 +367,35 @@ ggplot()+theme_bw()+
   xlim(0,100)+
   labs(y = "I(t)") 
 
+ggplot(data=dat_S)+theme_bw()+
+  geom_line(aes(x=time, y=CM_S,color="Network"))+
+  geom_line(aes(x=time, y=MA_S,color="MASIR"))+
+  geom_point(aes(x=time, y=Mod_S,color="Modified"),alpha=0.1)+
+  scale_color_manual(values=c("black", "red","blue"))+
+  xlim(0,100)+
+  labs(y = "S(t)") 
+
   
-  
+Mod_S
+Mod_I
+beta
+gamma
+lambda
+
+def_reff<- -lambda*Mod_S*(-(beta+gamma)*(1+log(Mod_S)/lambda)+beta*Mod_S+gamma)/Mod_I
+cal_reff<- beta/(beta+gamma)*lambda*Mod_S*(1+log(Mod_S)/lambda)
+
+
+
+
+test[3]
+ttest[1:50]
+
+dat_reff <- cbind(time,def_reff,cal_reff)
+ggplot(data=dat_reff)+theme_bw()+
+  geom_line(aes(x=time, y=def_reff,color="Def"))+
+  geom_line(aes(x=time, y=cal_reff,color="Cal"))+
+  scale_color_manual(values=c("red", "black"))+
+  xlim(0,15)+
+  labs(y = "R_eff") 
+

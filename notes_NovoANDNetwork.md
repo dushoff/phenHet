@@ -172,7 +172,12 @@ Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{ef
 	- (??) How to define $\sigma_0$: $$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\theta\rightarrow1} \theta G_p'(\theta)=\delta$$
 	- Therefore, $$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
 - Follow [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708): $\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for one infected individual $X_t$ at time $t$.
-	- Consider the 
+	- Proportion of susceptible vertices with degree $k$ at time $t$ in the entire population $p^S_k(t)=p_k \theta^k$
+	- Total proportion of susceptible nodes at time $t$ is $S(t)=G_p(\theta(t))$
+	- Corresponding PGF is $\frac{G_p(x \theta)}{G_p(\theta)}=\frac{G_p(x \theta)}{S}$
+- Observe the process by which a susceptible individual becomes infected. 
+	- Consider a random edge that has the potential to transmit infection at time $t$. The uninfected individual at the end of this edge is chosen from the susceptible set, but not at random: an individual's chance of being selected is proportional to their degree, in the absence of higher-order features. Thus, the relative frequency of an individual of degree _k_ becoming infected at the next time step is proportional to $k p^S_k(t)$.
+- 
 - Since neighbors are assumed to be independent, they claim 
 
 
@@ -180,7 +185,9 @@ Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{ef
 
 
 
+$\theta=G^{-1}_p(S)$
 
+Consider Poisson distribution with $p_k=k!$ 
 
 For a Poisson degree distribution $$\rho=S(1+\frac{\log{S}}{\delta})$$
 Agree both with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708)
