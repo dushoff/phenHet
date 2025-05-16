@@ -11,6 +11,7 @@ vim_session:
 
 ######################################################################
 
+
 Sources += $(wildcard *.R)
 
 Sources += pubmed_notes.md
@@ -35,10 +36,10 @@ Rmdhtml = $(Rmd:.Rmd=.html)
 Sources += $(Rmd)
 
 ## notes.html: notes.Rmd
+
+Ignore += *.html
 %.html: %.Rmd
 	$(render_rmd)
-
-Ignore += $(Rmdmd) $(Rmdhtml)
 
 ######################################################################
 
