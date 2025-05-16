@@ -168,7 +168,7 @@ Based on given degree distribution with PDF $p_d$, we could define the distribut
 The corresponding PGF for excess degree is $$G_q(x)=\frac{G_p'(x)}{\delta}$$
 Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$
 - Follow JD's idea: $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\sigma_{\phi}}{\sigma_0}$$
-- (??) How to connect $R_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$R_\text{eff}=\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
+- (??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
 	- (??) How to define $\sigma_{\phi}$: Expected number of susceptible neighbors???? Expected number of edges that can still transmit the infection for each newly infected vertex??$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times(1-\phi)^{d}=\sum_{d=0}^{\infty}p_d \times d \times \theta^{d}=\theta\sum_{d=0}^{\infty}p_d \times d \times\theta^{d-1}=\theta G_p'(\theta)$$
 	- (??) How to define $\sigma_0$: $$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\theta\rightarrow1} \theta G_p'(\theta)=\delta$$
 	- Therefore, $$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
