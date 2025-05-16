@@ -335,12 +335,6 @@ CM_out <- CM_Opt$Dynamic
 MA_out <- MA_Opt$Dynamic
 Mod_out <- Mod_Opt$Dynamic
 
-CM_out[1,]*N
-CM_out[2,]*N
-#MA_out[2,]
-Mod_out[1,]*N
-Mod_out[2,]*N
-
 time <- CM_out[,1]
 CM_I <- CM_out[,5]
 MA_I <- MA_out[,3]
@@ -382,15 +376,8 @@ beta
 gamma
 lambda
 
-def_reff<- -lambda*Mod_S*(-(beta+gamma)*(1+log(Mod_S)/lambda)+beta*Mod_S+gamma)/Mod_I
+def_reff<- -lambda*Mod_S*(-(beta+gamma)*(1+log(Mod_S)/lambda)+beta*Mod_S+gamma)/Mod_I*(1/gamma)
 cal_reff<- beta/(beta+gamma)*lambda*Mod_S*(1+log(Mod_S)/lambda)
-
-
-
-
-test[3]
-ttest[1:50]
-
 dat_reff <- cbind(time,def_reff,cal_reff)
 ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=def_reff,color="Def"))+
