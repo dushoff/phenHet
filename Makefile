@@ -26,7 +26,7 @@ my_fetch.Rout: my_fetch.R
 
 ######################################################################
 
-Sources += notes_NovoANDNetwork.md
+Sources += $(wildcard *.md)
 
 ## notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
 ## I_q_and_Exponential_Incident.html: I_q_and_Exponential_Incident.Rmd
