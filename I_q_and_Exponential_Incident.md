@@ -1,4 +1,4 @@
-# I^q case under [Novozhilov](https://arxiv.org/abs/0802.2059) Framework
+# $I^q$ case under [Novozhilov](https://arxiv.org/abs/0802.2059) Framework
 
 Following discussion in [notes_NovoANDNetwork](notes_NovoANDNetwork.Rmd) - Assuming the transmission rate $\beta$ is determined by the traits $\omega_s$ and $\omega_i$ independently, such that $\beta=\beta(\omega_s,\omega_i)=\beta_s(\omega_s) \beta_i(\omega_i)$ - For each traits of S, the density $s(t,\omega_s)$ in trait $\omega_s$ is governed by ODE: 
 $$

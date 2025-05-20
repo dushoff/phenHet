@@ -325,7 +325,7 @@ MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 
 CM_Opt$R0
-#beta/(beta+gamma)*lambda
+beta/(beta+gamma)*lambda
 Mod_Opt$Rnet/gamma
 
 
@@ -383,6 +383,8 @@ ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=def_reff,color="Def"))+
   geom_line(aes(x=time, y=cal_reff,color="Cal"))+
   scale_color_manual(values=c("red", "black"))+
-  xlim(0,15)+
+  geom_hline(yintercept=beta/(beta+gamma)*lambda)+ 
+  xlim(0,5)+
   labs(y = "R_eff") 
+
 

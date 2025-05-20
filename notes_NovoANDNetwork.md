@@ -151,20 +151,77 @@ Result agreed with a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.10
 2. Infinite size random network: a.s. no loop network
 
 
-
-
-
-
+#### MSV Network Framework
+Consider a random network model that model a population 
+- Vertices represent individual in the population
+	- **Network size**: Number of vertices in the network $N$, also the population size
+	- **Degree**: Number of edges connected to each vertex
+- Edges are connections that allow transmission between two individuals.
+	- **Undirected**: As the frame work is build on random network without specifying any structure other than degree distribution, the edges are undirected, as the transmission can go both way, depends on which side is infected first.
+	- **Simple Network**: All edges are evenly weighted and at most one edges can exit between any two vertices. 
+- A **static network**:
+	- Degree of each vertex is invariant w.r.t. time once assigned
+	- Edges is invariant w.r.t. time once formed
+- A **configuration model**:
+	- A algorithm to form static random network that 
+		- First assigning **stabs**(aka half edges) to each vertices based on degree distribution.
+		- Then ==uniformly randomly== paring all existing stabs into edges until no stabs are remained.
+		- Reject all graph/network that have multiple edges among any given pair of vertices.
+	- The successful graph are kept as a **realization**
+		- Not all degree sequence (as a random sample of degree distribution) are **realizable**. 
+		- Theorem by P. Erdös and T. Gallai gives the necessary and sufficient conditions for a degree sequence to be realizable.
+	- This algorithm guaranteed that all possible realization have same probability to be generated (uniformly randomly realization), which is mathematically necessary for the mean field result to hold.
+	- All algorithm that guarantee uniformly randomly realization should work, but the Configuration model is the earliest, most intuitive and famous one.
+		- However, a draw back is the generating efficiency.
+		- It is still remain an open discussion ([Greenhill, 2021](https://www.cambridge.org/core/books/surveys-in-combinatorics-2021/generating-graphs-randomly/AF8E08B99555E31A6AF1BAEB754911EC)) in random graph field to have a efficient algorithm that guarantee or approximately guarantee the uniformness.
+		- Several algorithm exist but each with some drawbacks.
 
 For random distribution given a degree distribution with PDF: $\mathbb{P}(K=d)=p_d$.
-Following [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf) at any moment $t$ we define $\theta(t)$:
-- (MSV definition) the probability that randomly chosen neighbor vertex $b$ of a randomly chosen vertex $a$ has not yet transmit the infectious to $a$.
-- (JD definition) the probability of a randomly chosen edge in the network has not yet transmit infection. Let $\phi=1-\theta$ be the probability that the infection has transmitted.
-
 The probability generating function(PGF) of degree distribution is denoted by:$$G_p(x)=\sum_{d=0}^{\infty}p_d x^{d}$$
 - A useful expression would be the mean degree $\delta$ is given by:$$\delta=\sum_{d=0}^{\infty}p_d d=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)$$
 Also for network model, **Excess degree** is also important, as during the outbreak, any newly infected vertex with degree $k$ could only infect at most $k-1$ of its susceptible neighbors, as its infection must come from one neighbor that already being infected.
 Based on given degree distribution with PDF $p_d$, we could define the distribution of excess degree with PDF denoted by $q$, such that:$$\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_d d}{\delta}$$
+Following [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf) at any moment $t$ we define $\theta(t)$:
+- (MSV definition) the probability that randomly chosen neighbor vertex $b$ of a randomly chosen vertex $a$ has not yet transmit the infectious to $a$.
+- (JD definition) the probability of a randomly chosen edge in the network has not yet transmit infection. Let $\psi=1-\theta$ be the probability that the infection has transmitted.
+
+MSV claim for network with large enough size, neighbors of a randomly chosen vertex $a$ are independent. 
+So given its degree $d$, $a$ is susceptible at time $t$ with probability $s(d; \theta(t)) = \theta(t)^d$.
+Therefore, the proportion of susceptible vertex $S(t)$ at time $t$ is given by:$$S(t)=G_p(\theta(t))=\sum_{d}p_d \theta(t)^d$$
+Now for the vertices compartment, one can write a system such that"
+$$
+\begin{equation}
+    \begin{cases}
+      S(t)=G_p(\theta(t))
+      \\
+      I(t)=1-S(t)-R(t)
+      \\
+      \frac{dR(t)}{dt}=\gamma I(t)
+    \end{cases}
+\end{equation}
+$$
+Now to find the ODE that governs $\theta(t)$, we consider the 4 compartment of all edges/neighbor of a randomly chosen vertex $a$:
+- $\psi(t)=1-\theta(t)$: the proportion/probability that a neighbor $b$ is infected and the infection has transmitted to $a$.
+- $\phi_S$: the proportion/probability that a neighbor $b$ is susceptible. Given degree $d$, $b$ is susceptible with probability $\theta(t)^{d-1}$ (not consider transmission from u so $d-1$ nodes can infect $b$). A weighted average based on excess degree gives$$\phi_S=\sum_dq_{d-1} \theta(t)^{d-1}{}=\frac{G_p'(\theta(t))}{G_p'(1)}=\frac{G_p'(\theta(t))}{\delta}$$
+- $\phi_I$: the proportion/probability that a neighbor $b$ is infected but the infection has not yet transmitted to $a$.
+- $\phi_R$: the proportion/probability that a neighbor $b$ is recovered but the infection has not transmitted to $a$.
+- As we have a closed system, we have $$1=(1-\theta)+\phi_S+\phi_I+\phi_R \Leftrightarrow\theta=\phi_S+\phi_I+\phi_R$$
+- Consider the infection rate $\beta$, the flux from $\phi_I$ to $1-\theta$ will be $\beta \phi_I$, this gives the starting point: $$\frac{d\theta(t)}{dt}=-\beta\phi_I$$
+- Consider the recovery rate $\gamma$, the flux from $\phi_I$ 
+
+![](docs/pix/EdgeFlow.png)
+
+
+
+
+
+
+
+
+
+
+
+
 The corresponding PGF for excess degree is $$G_q(x)=\frac{G_p'(x)}{\delta}$$
 Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$
 - Follow JD's idea: $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\sigma_{\phi}}{\sigma_0}$$
