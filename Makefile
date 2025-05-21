@@ -11,6 +11,9 @@ vim_session:
 
 ######################################################################
 
+mirrors += resources
+
+######################################################################
 
 Sources += $(wildcard *.R)
 
@@ -63,6 +66,7 @@ makestuff:
 -include makestuff/os.mk
 
 -include makestuff/pipeR.mk
+-include makestuff/mirror.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
