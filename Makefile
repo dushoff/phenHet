@@ -7,13 +7,17 @@ Ignore = target.mk
 # -include makestuff/perl.def
 
 vim_session:
-	bash -cl "vmt"
+	bash -cl "vmt todo.md"
 
 ######################################################################
 
 mirrors += resources
 
+Sources += $(wildcard *.md)
+
 ######################################################################
+
+## Pubmed stuff for scopint review
 
 Sources += $(wildcard *.R)
 
@@ -26,25 +30,6 @@ Rentrez.Rout: Rentrez.R
 
 my_fetch.Rout: my_fetch.R
 	$(pipeR)
-
-######################################################################
-
-Sources += $(wildcard *.md)
-
-## notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
-## I_q_and_Exponential_Incident.html: I_q_and_Exponential_Incident.Rmd
-
-Rmd = $(wildcard *.Rmd)
-Rmdmd = $(Rmd:.Rmd=.md)
-Rmdhtml = $(Rmd:.Rmd=.html)
-
-Sources += $(Rmd)
-
-## notes.html: notes.Rmd
-
-Ignore += *.html
-%.html: %.Rmd
-	$(render_rmd)
 
 ######################################################################
 
