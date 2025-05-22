@@ -382,9 +382,9 @@ dat_reff <- cbind(time,def_reff,cal_reff)
 ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=def_reff,color="Def"))+
   geom_line(aes(x=time, y=cal_reff,color="Cal"))+
-  scale_color_manual(values=c("red", "black"))+
-  geom_hline(yintercept=beta/(beta+gamma)*lambda)+ 
+  geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+ 
   xlim(0,5)+
+  scale_color_manual(values=c("red", "black"))
   labs(y = "R_eff") 
 
 
