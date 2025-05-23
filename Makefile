@@ -21,7 +21,7 @@ Sources += $(wildcard *.md)
 
 ######################################################################
 
-## Pubmed stuff for scopint review
+## Pubmed stuff for scoping review
 
 Sources += $(wildcard *.R)
 
