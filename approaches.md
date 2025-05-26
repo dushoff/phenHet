@@ -1,11 +1,12 @@
 
+
 ## Resources 
 
 notes_NovoANDNetwork.md has the netSusc result; try to pull it out and contextualize a bit more.
 
 ## Draft
 
-In early stages of spread, the reproductive number is given by R0. This can be thought of as a product of the average infectiousness of infectors, and the average susceptibility of susceptible individuals. As the disease spreads through the population, the effective reproductive number, Reff, declines typically declines from R0. Setting aside Behavioral or policy changes, there are still three main reasons for this decreasing infectiousness of the infected population, decreasing susceptibility of the susceptible population, and decreasing proportions susceptible in the population.
+In early stages of spread, the reproductive number is given by $\mathcal{R}_0$. This can be thought of as a product of the average infectiousness of infectors, and the average susceptibility of susceptible individuals. As the disease spreads through the population, the effective reproductive number, $\mathcal{R}_\text{eff}$, declines typically declines from $\mathcal{R}_0$. Setting aside Behavioral or policy changes, there are still three main reasons for this decreasing infectiousness of the infected population, decreasing susceptibility of the susceptible population, and decreasing proportions susceptible in the population.
 
 We are interested in the rate of this decrease, and for this purpose, we like to think about the ratio σ, which is defined as the ratio between Reff, and a naive value of Reff given by S Reff. In a homogeneous, well mixed model σ is one.
 

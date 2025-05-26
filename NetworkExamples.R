@@ -375,16 +375,21 @@ Mod_I
 beta
 gamma
 lambda
+theta<-log(1+log(Mod_S)/lambda)
+
 
 def_reff<- -lambda*Mod_S*(-(beta+gamma)*(1+log(Mod_S)/lambda)+beta*Mod_S+gamma)/Mod_I*(1/gamma)
 cal_reff<- beta/(beta+gamma)*lambda*Mod_S*(1+log(Mod_S)/lambda)
-dat_reff <- cbind(time,def_reff,cal_reff)
+dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,theta)
 ggplot(data=dat_reff)+theme_bw()+
-  geom_line(aes(x=time, y=def_reff,color="Def"))+
+  #geom_line(aes(x=time, y=def_reff,color="Def"))+
   geom_line(aes(x=time, y=cal_reff,color="Cal"))+
-  geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+ 
-  xlim(0,5)+
-  scale_color_manual(values=c("red", "black"))
+  geom_line(aes(x=time, y=theta,color="Theta"))+
+  geom_line(aes(x=time, y=Mod_I*5, color="I"))+
+  geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+
+  geom_hline(yintercept=1,color="green")+
+  xlim(0,10)+
+  #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
 
