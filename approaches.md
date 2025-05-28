@@ -5,12 +5,12 @@
 
 ## Draft
 
-In early stages of spread, the reproductive number is given by $\mathcal{R}_0$. This can be thought of as a product of the average infectiousness of infectors, and the average susceptibility of susceptible individuals. As the disease spreads through the population, the effective reproductive number, $\mathcal{R}_\text{eff}$, declines typically declines from $\mathcal{R}_0$. Setting aside Behavioral or policy changes, there are still three main reasons for this: 
+In early stages of spread, the reproductive number is given by $R_0$. This can be thought of as a product of the average infectiousness of infectors, and the average susceptibility of susceptible individuals. As the disease spreads through the population, the effective reproductive number, $R_\text{eff}$, declines typically declines from $R_0$. Setting aside Behavioral or policy changes, there are still three main reasons for this: 
 - Decreasing infectiousness of the infected population
 - Decreasing susceptibility of the susceptible population
 - And decreasing proportions susceptible in the population.
 
-We are interested in the rate of this decrease, and for this purpose, we like to think about the ratio $\sigma$, which we define as the ratio between $\mathcal{R}_\text{eff}$, and the naive value of $\mathcal{R}_\text{eff}$ given by $S\times\mathcal{R}_0$. In a homogeneous, well mixed model $σ=1$, meaning that $\mathcal{R}_\text{eff}$ is exactly proportional to $S$; in a heterogeneous model, we generally expect $σ<1$.
+We are interested in the rate of this decrease, and for this purpose, we like to think about the ratio $\sigma$, which we define as the ratio between $R_\text{eff}$, and the naive value of $R_\text{eff}$ given by $S\times R_0$. In a homogeneous, well mixed model $\sigma=1$, meaning that $R_\text{eff}$ is exactly proportional to $S$; in a heterogeneous model, we generally expect $\sigma<1$.
 
 We are interested in sensible functional forms for $\sigma$ in a variety of scenarios, in particular with or without accounting for: 1) changes infection in the infected population, 2) the discrete nature of contacts, and 3) over-dispersion. For now, we should set aside the local nature of mixing, but it would be a fun thing to come back to. 
 
