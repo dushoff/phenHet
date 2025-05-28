@@ -17,6 +17,7 @@ Sources += $(wildcard *.md)
 
 ## Why I still can't visualize???
 
+Ignore += approaches.html
 approaches.html: approaches.md
 	$(rmdh_r)
 
