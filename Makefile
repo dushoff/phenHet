@@ -1,5 +1,5 @@
 ## This is phenomenological heterogeneity
-## https://dushoff.github.io/phenHet/approaches.html
+## https://dushoff.github.io/phenHet/
 
 current: target
 -include target.mk
@@ -19,7 +19,11 @@ Sources += $(wildcard *.md)
 ## Why I still can't visualize???
 
 Ignore += *.html
+## https://dushoff.github.io/phenHet/approaches.html
 approaches.html: approaches.md
+	$(rmdh_r)
+
+notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
 	$(rmdh_r)
 
 ######################################################################
