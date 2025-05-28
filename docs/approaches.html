@@ -372,7 +372,9 @@ susceptible in the population.</p>
 we like to think about the ratio σ, which we define as the ratio between
 <span class="math inline">\(\mathcal{R}_\text{eff}\)</span>, and the
 naive value of <span class="math inline">\(\mathcal{R}_\text{eff}\)</span> given by <span class="math inline">\(S \mathcal{R}_0\)</span>. In a homogeneous, well
-mixed model <span class="math inline">\(σ=1\)</span>.</p>
+mixed model <span class="math inline">\(σ=1\)</span>, meaning that <span class="math inline">\(\mathcal{R}_\text{eff}\)</span> is exactly
+proportional to <span class="math inline">\(S\)</span>; in a
+heterogeneous model, we generally expect <span class="math inline">\(σ&lt;1\)</span>.</p>
 <p>We are interested in sensible functional forms for σ in a variety of
 scenarios, in particular with or without accounting for: changes
 infection in the infected population, the discrete nature of contacts,
@@ -391,10 +393,16 @@ approach, and seeing if we can come up with simple approaches that
 account for changing changes in both infectiousness and susceptibility.
 There are some dangers there are some difficulties here in terms of
 accounting for recovery.</p>
-<p>&lt;– Dictation code</p>
-<p>Ignore this.</p>
-<p>:%s/ArnoldR0/g :%s/ArthurReff/g :%s/Sigmaσ/g :%s/NovaNovozhilov/g</p>
-<p>–&gt;</p>
+<!-- Dictation code
+
+Ignore this.
+
+:%s/Arnold\c/R0/g
+:%s/Arthur\c/Reff/g
+:%s/Sigma\c/σ/g
+:%s/Nova\c/Novozhilov/g
+
+-->
 </div>
 
 

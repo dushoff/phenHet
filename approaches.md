@@ -7,7 +7,7 @@
 
 In early stages of spread, the reproductive number is given by $\mathcal{R}_0$. This can be thought of as a product of the average infectiousness of infectors, and the average susceptibility of susceptible individuals. As the disease spreads through the population, the effective reproductive number, $\mathcal{R}_\text{eff}$, declines typically declines from $\mathcal{R}_0$. Setting aside Behavioral or policy changes, there are still three main reasons for this decreasing infectiousness of the infected population, decreasing susceptibility of the susceptible population, and decreasing proportions susceptible in the population.
 
-We are interested in the rate of this decrease, and for this purpose, we like to think about the ratio σ, which we define as the ratio between $\mathcal{R}_\text{eff}$, and the naive value of $\mathcal{R}_\text{eff}$ given by $S \mathcal{R}_0$. In a homogeneous, well mixed model $σ=1$.
+We are interested in the rate of this decrease, and for this purpose, we like to think about the ratio σ, which we define as the ratio between $\mathcal{R}_\text{eff}$, and the naive value of $\mathcal{R}_\text{eff}$ given by $S \mathcal{R}_0$. In a homogeneous, well mixed model $σ=1$, meaning that $\mathcal{R}_\text{eff}$ is exactly proportional to $S$; in a heterogeneous model, we generally expect $σ<1$.
 
 We are interested in sensible functional forms for σ in a variety of scenarios, in particular with or without accounting for: changes infection in the infected population, the discrete nature of contacts, and over-dispersion. For now, we should set aside the local nature of mixing, but it would be a fun thing to come back to. 
 
@@ -15,7 +15,7 @@ The Dwyer-Parsons approach accounts for “over-dispersion” (continuous hetero
 
 We are particularly interested in mining more from the Miller approach, and seeing if we can come up with simple approaches that account for changing changes in both infectiousness and susceptibility. There are some dangers there are some difficulties here in terms of accounting for recovery.
 
-<-- Dictation code
+<!-- Dictation code
 
 Ignore this.
 
