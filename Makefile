@@ -17,7 +17,8 @@ Sources += $(wildcard *.md)
 
 ## Why I still can't visualize???
 
-## approaches.html: approaches.md
+approaches.html: approaches.md
+	$(rmdh_r)
 
 ######################################################################
 
@@ -56,6 +57,8 @@ makestuff:
 
 -include makestuff/pipeR.mk
 -include makestuff/mirror.mk
+## -include makestuff/rmdweb.mk
+-include makestuff/rmd.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
