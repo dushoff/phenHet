@@ -319,7 +319,7 @@ MASIR_Proc <- function(beta, gamma,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,Trac
 }
 
 beta <- 0.45
-gamma <- 0.2
+gamma <- 0.15
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 500, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
 MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
@@ -375,20 +375,20 @@ Mod_I
 beta
 gamma
 lambda
-theta<-log(1+log(Mod_S)/lambda)
-
+theta <- (1-log(Mod_S)/lambda)
 
 def_reff<- -lambda*Mod_S*(-(beta+gamma)*(1+log(Mod_S)/lambda)+beta*Mod_S+gamma)/Mod_I*(1/gamma)
 cal_reff<- beta/(beta+gamma)*lambda*Mod_S*(1+log(Mod_S)/lambda)
-dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,theta)
+dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,Mod_S,theta)
 ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=def_reff,color="Def"))+
-  geom_line(aes(x=time, y=cal_reff,color="Cal"))+
-  geom_line(aes(x=time, y=theta,color="Theta"))+
-  geom_line(aes(x=time, y=Mod_I*5, color="I"))+
+  geom_line(aes(x=time, y=cal_reff,color="R_eff"))+
+  geom_line(aes(x=time, y=disc_reff,color="disc_eff"))+
+  geom_line(aes(x=time, y=theta*5,color="Theta"))+
+  #geom_line(aes(x=time, y=Mod_I, color="I"))+
   geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+
   geom_hline(yintercept=1,color="green")+
-  xlim(0,10)+
+  xlim(0,5)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
