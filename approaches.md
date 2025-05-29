@@ -18,9 +18,7 @@ The Dwyer-Parsons approach accounts for “over-dispersion” (continuous hetero
 
 Recently, Richard and Jonathan have come up with an approach that generalizes these two for a negative binomial degree-distribution, maybe call it the network-susceptibility approach. A straightforward argument gives:
 $$σ=S^κ+\frac{S^κ-1}{κ \delta}, $$
-where $\kappa$ is the Dushoff-style squared CV of an underlying continuous distribution (in this case, the Gamma distribution that underlies the negative binomial), so that $\kappa=1$ corresponds to the Poisson. 
-
-**RZhao: I think $\kappa=\frac{1}{r}=0$ corresponds to Poisson, such that $\sigma=1+\frac{log(S)}{\delta}$. $\delta=+\infty$ in this case corresponding to Dwyer case s.t. $\sigma=S^{\kappa}$. $\kappa=1$ should converge to the geometric case, where $\sigma=S+\frac{S-1}{\delta}$**
+where $\kappa$ is the Dushoff-style squared CV of an underlying continuous distribution (in this case, the Gamma distribution that underlies the negative binomial), so that $\kappa=0$ corresponds to the Poisson, with  $\sigma=1+\frac{log(S)}{\delta}$ (the Novozhilov result), $\delta\to\infty$ corresponds to the Dwyer result $\sigma=S^{\kappa}$, and $\kappa=1$ corresponds to the geometric case, where $\sigma=S+\frac{S-1}{\delta}$ (is this a known result?)
 
 This approach still focuses only on changing susceptibility (not changes in average infectiousness of infectors); this should be the next thing to think about. We're also not addressing locality, which will be more difficult, but we should not shy away from that, because there is too much shying away going on.
 
