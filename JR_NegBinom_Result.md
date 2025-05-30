@@ -35,20 +35,12 @@ Consider a random network model that model a population
 		- Several algorithm exist but each with some drawbacks.
 
 For random distribution given a degree distribution with PDF: $\mathbb{P}(K=d)=p_d$.
-The probability generating function(PGF) of degree distribution is denoted by:
-
-$$G_p(x)=\sum_{d=0}^{\infty}p_d x^{d}$$
-- A useful expression would be the mean degree $\delta$ is given by:
-
-$$\delta=\sum_{d=0}^{\infty}p_d d=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)$$
+The probability generating function(PGF) of degree distribution is denoted by:$$G_p(x)=\sum_{d=0}^{\infty}p_d x^{d}$$
+- A useful expression would be the mean degree $\delta$ is given by:$$\delta=\sum_{d=0}^{\infty}p_d d=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)$$
 
 Also for network model, **Excess degree** could also be important, as during the outbreak, any newly infected vertex with degree $k$ could only infect at most $k-1$ of its susceptible neighbors, as its infection must come from one neighbor that already being infected.
-Based on given degree distribution with PDF $p_d$, we could define the distribution of excess degree with PDF denoted by $q$, such that:
-
-$$\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_d d}{\delta}$$
-The corresponding PGF for excess degree is 
-
-$$G_q(x)=\frac{G_p'(x)}{\delta}$$
+Based on given degree distribution with PDF $p_d$, we could define the distribution of excess degree with PDF denoted by $q$, such that:$$\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_d d}{\delta}$$
+The corresponding PGF for excess degree is $$G_q(x)=\frac{G_p'(x)}{\delta}$$
 
 Following [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf)(MSV), at any moment $t$ we define $\theta(t)$:
 - (MSV definition) the probability that randomly chosen neighbor vertex $b$ of a randomly chosen vertex $a$ has not yet transmit the infectious to $a$.
@@ -56,11 +48,8 @@ Following [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.p
 
 ==MSV claim for network with large enough size, neighbors of a randomly chosen vertex $a$ are independent, which could be a key assumption for the framework to work in large size network.== 
 Given its degree $d$, vertex $a$ is susceptible at time $t$ with probability $s(d; \theta(t)) = \theta(t)^d$.
-Therefore, the proportion of susceptible vertex $S(t)$ at time $t$ is given by:
-
-$$S(t)=G_p(\theta(t))=\sum_{d}p_d \theta(t)^d$$
+Therefore, the proportion of susceptible vertex $S(t)$ at time $t$ is given by:$$S(t)=G_p(\theta(t))=\sum_{d}p_d \theta(t)^d$$
 Now for the vertices compartment, one can write a system such that:
-
 $$
 \begin{equation}
     \begin{cases}
