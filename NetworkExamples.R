@@ -383,7 +383,7 @@ dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,Mod_S,theta)
 ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=def_reff,color="Def"))+
   geom_line(aes(x=time, y=cal_reff,color="R_eff"))+
-  geom_line(aes(x=time, y=disc_reff,color="disc_eff"))+
+  #geom_line(aes(x=time, y=disc_reff,color="disc_eff"))+
   geom_line(aes(x=time, y=theta*5,color="Theta"))+
   #geom_line(aes(x=time, y=Mod_I, color="I"))+
   geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+
