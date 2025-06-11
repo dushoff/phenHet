@@ -157,7 +157,7 @@ Take this into $\rho$ gives us:$$\begin{align}
 	- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
 
 #### Question
-(??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
+(??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
 - ==This does not work for network model!!==
 ![](docs/pix/R_eff.png)
 
