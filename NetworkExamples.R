@@ -286,25 +286,23 @@ MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEst
   }
 }
 
-MASIR_Proc <- function(beta, gamma,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+MASIR_Proc <- function(b, g,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
         dS <- (-b)*I*S
-        dI <- b*I*S-g*I
+        dI <- b*I*S-(g)*I
         dR <- g*I
         return(list(c(dS,dI,dR)))
       })
     }
-    parms <- c(b=beta,g=gamma)
+    parms <- c(b=b,g=g)
     times <- seq(0,ODEmaxTime,by=ODEstep)
     y <- c(S=init_S,I=1-init_S,R=0)
     
     Sys_out <- ode(y,times,Sys,parms)
   }
   
-  g <- gamma
-  b <- beta
   S_0 <- init_S
   R_0 <- 0
   
@@ -340,6 +338,10 @@ CM_I <- CM_out[,5]
 MA_I <- MA_out[,3]
 Mod_I <- Mod_out[,3]
 
+CM_R <- CM_out[,3]
+MA_R <- MA_out[,4]
+Mod_R <- Mod_out[,4]
+
 theta <- CM_out[,2]
 
 St<-CM_out[,4]
@@ -349,29 +351,34 @@ MA_S <- MA_out[,2]
 Mod_S <- Mod_out[,2]
 
 dat_S <- cbind(time,CM_S, MA_S, Mod_S)
+dat_R <- cbind(time,CM_R, MA_R, Mod_R)
 dat <- cbind(time,CM_I, MA_I, Mod_I)
 
-
-ggplot()+theme_bw()+
-  geom_line(data = dat,aes(x=time, y=CM_I,color="Network"))+
-  geom_line(data = dat,aes(x=time, y=MA_I,color="MASIR"))+
-  geom_point(data = dat,aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
+ggplot(data = dat)+theme_bw()+
+  geom_line(aes(x=time, y=CM_I,color="Network"))+
+  geom_line(aes(x=time, y=MA_I,color="MASIR"))+
+  geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
-  xlim(0,5)+
+  xlim(0,10)+
   labs(y = "I(t)") 
-
-Mod_I-CM_I
-Mod_S-CM_S
 
 ggplot(data=dat_S)+theme_bw()+
   geom_line(aes(x=time, y=CM_S,color="Network"))+
   geom_line(aes(x=time, y=MA_S,color="MASIR"))+
   geom_point(aes(x=time, y=Mod_S,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
-  xlim(0,100)+
+  xlim(0,10)+
   labs(y = "S(t)") 
 
-  
+ggplot(data = dat_R)+theme_bw()+
+  geom_line(aes(x=time, y=CM_I,color="Network"))+
+  geom_line(aes(x=time, y=MA_I,color="MASIR"))+
+  geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
+  scale_color_manual(values=c("black", "red","blue"))+
+  xlim(0,10)+
+  labs(y = "R(t)") 
+
+
 Mod_S
 Mod_I
 beta
