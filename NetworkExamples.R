@@ -230,7 +230,7 @@ lambda <- 10
 kvalue <- seq(0,500)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
-DDist
+# DDist
 ################################ Distribution part END ##############
 
 
@@ -286,19 +286,20 @@ MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEst
   }
 }
 
-MASIR_Proc <- function(b, g,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+MASIR_Proc <- function(b,g,lambda,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
-        dS <- (-b)*I*S
-        dI <- b*I*S-(g)*I
+        dS <- (-b*lambda)*X*S
+        dX <- (b*lambda)*X*S-(g+b)*X
+        dI <- (b*lambda)*X*S-(g)*I
         dR <- g*I
-        return(list(c(dS,dI,dR)))
+        return(list(c(dS,dI,dR,dX)))
       })
     }
-    parms <- c(b=b,g=g)
+    parms <- c(b=b,g=g,lambda=lambda)
     times <- seq(0,ODEmaxTime,by=ODEstep)
-    y <- c(S=init_S,I=1-init_S,R=0)
+    y <- c(S=init_S,I=1-init_S,R=0,X=(1-init_S))
     
     Sys_out <- ode(y,times,Sys,parms)
   }
@@ -319,7 +320,7 @@ MASIR_Proc <- function(b, g,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T)
 beta <- 0.45
 gamma <- 0.2
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 100, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
-MA_Opt<- MASIR_Proc(lambda*beta, gamma+beta, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
+MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
 
 CM_Opt$R0
@@ -356,7 +357,7 @@ dat <- cbind(time,CM_I, MA_I, Mod_I)
 
 ggplot(data = dat)+theme_bw()+
   geom_line(aes(x=time, y=CM_I,color="Network"))+
-  geom_line(aes(x=time, y=MA_I,color="MASIR"))+
+  geom_point(aes(x=time, y=MA_I,color="MASIR"),alpha=0.1)+
   geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
   xlim(0,10)+
@@ -371,9 +372,9 @@ ggplot(data=dat_S)+theme_bw()+
   labs(y = "S(t)") 
 
 ggplot(data = dat_R)+theme_bw()+
-  geom_line(aes(x=time, y=CM_I,color="Network"))+
-  geom_line(aes(x=time, y=MA_I,color="MASIR"))+
-  geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
+  geom_line(aes(x=time, y=CM_R,color="Network"))+
+  geom_line(aes(x=time, y=MA_R,color="MASIR"))+
+  geom_point(aes(x=time, y=Mod_R,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
   xlim(0,10)+
   labs(y = "R(t)") 
@@ -393,7 +394,7 @@ ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=def_reff,color="Def"))+
   geom_line(aes(x=time, y=cal_reff,color="cal_eff"))+
   #geom_line(aes(x=time, y=disc_reff,color="disc_eff"))+
-  #geom_line(aes(x=time, y=theta*5,color="Theta"))+
+  geom_line(aes(x=time, y=theta*5,color="Theta"))+
   geom_line(aes(x=time, y=CM_I*5, color="I"))+
   geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+
   geom_hline(yintercept=1,color="green")+
