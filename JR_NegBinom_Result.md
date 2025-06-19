@@ -115,6 +115,8 @@ Then for the first order we have:
 $$\dot{\theta}=\dot{\epsilon}\approx-\beta(1+\epsilon)+\beta\frac{\delta+\epsilon G_p''(1)}{\delta}-\gamma\epsilon=[-(\beta+\gamma)+\beta\frac{G_p''(1)}{\delta}] \times \epsilon$$
 For the outbreak, $\mathcal{R}_0= \frac{\beta}{\beta+\gamma} \frac{G''_p(1)}{\delta}>1 \Leftrightarrow \frac{\dot{\epsilon}}{\epsilon}=[-(\beta+\gamma)+\beta\frac{G_p''(1)}{\delta}]>0$ 
 
+More precisely, since $\dot{\theta}=-\beta\phi_I$, we can further have:
+$$\dot{\phi_I}=[-(\beta+\gamma)+\beta\frac{G''_p(\theta)}{\delta}] \phi_I$$
 
 #### Jonathan-Richard result
 Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$ 
@@ -156,10 +158,48 @@ Take this into $\rho$ gives us:$$\begin{align}
 - Geometry: as $\kappa=1$ we have $$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometry distribution.
 	- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
 
+==JD and RZ doubt this results should only work in a directed network.==
+==RZ: A conjecture now is this apply for a network where in-degree is negative-binomial distributed while the directed edges towards each nodes is uniformly randomly connected to all other nodes==
+
+
 #### Question
 (??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
 - ==This does not work for network model!!==
 ![](docs/pix/R_eff.png)
+
+## $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$ for network model
+
+For MSV network frame with configuration network, I don't think the expression of reproductive number/ratio from homogeneous model, like:
+$$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
+can be directly applied. $\mathcal{R}_\text{eff}$ defined as (expected) number of infection a newly infected individual can cause, which affect the incidence of the system.
+
+For homogeneous model, any individual in $I(t)$ have same infectivity to infect susceptible nodes, because of the fully-mixed mass-action assumption for contact. 
+In this case, a newly infected individual has the same infectivity like any individual in $I(t)$, so the $\mathcal{R}_\text{eff}$ is proportion to new incident $\dot{S}(t)$ averaged on $I(t)$, i.e. the incident is governed by $\mathcal{R}_\text{eff} \times I(t)$
+
+However, this assumption is no longer justifiable on MSV network frame with heterogeneity in contact. 
+Consider transmission on configuration network, it is possible to have an vertex in the $I(t)$ compartment while no longer being able to transmit infection to any of its neighbor at the moment $t$, i.e. all of its neighbor are not susceptible at and after time $t$.
+An obvious example would be infected vertex with degree one, whose only neighbor will be its infector and thus not being able to transmit the infection to any other vertices.
+Unlike homogeneous case, such vertices are counted in $I(t)$ but contribute nothing to new infections, and also flow to $R$ compartment with same rate as those infected vertices with transmission potentials.
+Similar arguments about contact heterogeneity applies to other vertices in $I$, where their heterogeneity in degree affect the their infection potential, but cannot be represented by just the proportion $I(t)$, as it is easily to see that degree distribution of infected nodes is not invariant with time.
+
+Therefore, the incidence $$\dot{S}(t)=G_p'(\theta) \dot{\theta}=- \beta G_p'(\theta) \phi_I$$is not simply proportion to  $\mathcal{R}_\text{eff} \times I(t)$, but actually governed by $\phi_I$ as $\dot{\theta}=-\beta \phi_I$, where $\phi_I$ is defined as the proportion that a neighbor $b$ is infected but the infection has not yet transmitted to a randomly chosen vertex $a$.
+
+A more intuitive understanding for incidence of configuration network would be $$\dot{S}(t)=-\beta x_{SI}$$, where $x_{SI}$ is the proportion of $S$-$I$ e''
+
+
+dge in the network.
+Within MSV's framework, we can write $$x_{SI}=G'_p(\theta) \phi_I=(\theta G'_p(\theta)) \times \frac{\phi_I}{\theta}$$
+The first term $\theta G'_p(\theta)=\sigma_{\phi}=\sum_{d}p_d d \theta^{d}$ is expected number of edges of susceptible vertices.
+The second term $\phi_I/\theta$ is the probability that an edge is connected to an $I$ vertex given it has not yet transmitted the infection.
+This is the probability to forming an $S$-$I$ pair as we consider the random network of being randomly forming edges(pairs) as infection transmitting.
+
+(??) For large network limit which MSV relies on, loops are extremely rare (with probability a.s. 0), so a.s. $I$-$I$ and $I$-$R$ edges has transmitted the infection and has probability $(1-\theta)$
+
+This agree with the idea of $\mathcal{R}_0$ from the MSV framework, where $\mathcal{R}_0>1$ makes $\dot{\phi}_I>0$ at $\theta(0) \rightarrow 1$.
+
+
+
+
 
 #### Romanescu Approach
 A problem for Jonathan-Richard formula is the derivation of $\rho$ might not fit with the MSV network framework properly as it lacks of locality.
