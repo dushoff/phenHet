@@ -166,28 +166,43 @@ Take this into $\rho$ gives us:$$\begin{align}
 (??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
 - ==This does not work for network model!!==
 ![](docs/pix/R_eff.png)
+- Def corresponding to $\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$
+- Cal corresponding to JR's result for Poisson distribution.
+
+Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.$$
+\begin{align}
+	\dot{S}& = -\beta\delta SX_D
+	\\
+	\dot{X}_D & = -\dot{S}-(\beta+\gamma)X_D
+	\\
+	\dot{I} & = -\dot{S}-\gamma I
+	\\
+	\dot{R} & = \gamma I
+\end{align}
+$$
+This indicate that incidence term $\dot{S}$ in network model is not directly determined by $I$.
+Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $\mathcal{R}_0$.
 
 ## $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$ for network model
 
-For MSV network frame with configuration network, I don't think the expression of reproductive number/ratio from homogeneous model, like:
+For MSV network frame with configuration network, I don't think the relationship of reproductive number/ratio and $\dot{S}$ from homogeneous model, like:
 $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
-can be directly applied. $\mathcal{R}_\text{eff}$ defined as (expected) number of infection a newly infected individual can cause, which affect the incidence of the system.
+can be directly applied. $\mathcal{R}_\text{eff}$ defined as (expected) number of infection a **newly** (??) infected individual can cause, which affect the incidence of the system.
 
 For homogeneous model, any individual in $I(t)$ have same infectivity to infect susceptible nodes, because of the fully-mixed mass-action assumption for contact. 
 In this case, a newly infected individual has the same infectivity like any individual in $I(t)$, so the $\mathcal{R}_\text{eff}$ is proportion to new incident $\dot{S}(t)$ averaged on $I(t)$, i.e. the incident is governed by $\mathcal{R}_\text{eff} \times I(t)$
 
-However, this assumption is no longer justifiable on MSV network frame with heterogeneity in contact. 
+(??) However, this assumption might no longer justifiable on MSV network frame with heterogeneity in contact. 
+
 Consider transmission on configuration network, it is possible to have an vertex in the $I(t)$ compartment while no longer being able to transmit infection to any of its neighbor at the moment $t$, i.e. all of its neighbor are not susceptible at and after time $t$.
 An obvious example would be infected vertex with degree one, whose only neighbor will be its infector and thus not being able to transmit the infection to any other vertices.
 Unlike homogeneous case, such vertices are counted in $I(t)$ but contribute nothing to new infections, and also flow to $R$ compartment with same rate as those infected vertices with transmission potentials.
 Similar arguments about contact heterogeneity applies to other vertices in $I$, where their heterogeneity in degree affect the their infection potential, but cannot be represented by just the proportion $I(t)$, as it is easily to see that degree distribution of infected nodes is not invariant with time.
 
-Therefore, the incidence $$\dot{S}(t)=G_p'(\theta) \dot{\theta}=- \beta G_p'(\theta) \phi_I$$is not simply proportion to  $\mathcal{R}_\text{eff} \times I(t)$, but actually governed by $\phi_I$ as $\dot{\theta}=-\beta \phi_I$, where $\phi_I$ is defined as the proportion that a neighbor $b$ is infected but the infection has not yet transmitted to a randomly chosen vertex $a$.
+Therefore, the incidence $$\dot{S}(t)=G_p'(\theta) \dot{\theta}=- \beta G_p'(\theta) \phi_I$$might not simply proportional to $\mathcal{R}_\text{eff} \times I(t)$, but actually governed by $\phi_I$ as $\dot{\theta}=-\beta \phi_I$, where $\phi_I$ is defined as the proportion that a neighbor $b$ is infected but the infection has not yet transmitted to a randomly chosen vertex $a$.
 
-A more intuitive understanding for incidence of configuration network would be $$\dot{S}(t)=-\beta x_{SI}$$, where $x_{SI}$ is the proportion of $S$-$I$ e''
+A more intuitive understanding for incidence of configuration network would be $$\dot{S}(t)=-\beta x_{SI}$$, where $x_{SI}$ is the proportion of $S$-$I$ edge in the network.
 
-
-dge in the network.
 Within MSV's framework, we can write $$x_{SI}=G'_p(\theta) \phi_I=(\theta G'_p(\theta)) \times \frac{\phi_I}{\theta}$$
 The first term $\theta G'_p(\theta)=\sigma_{\phi}=\sum_{d}p_d d \theta^{d}$ is expected number of edges of susceptible vertices.
 The second term $\phi_I/\theta$ is the probability that an edge is connected to an $I$ vertex given it has not yet transmitted the infection.
