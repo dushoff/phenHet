@@ -386,15 +386,22 @@ beta
 gamma
 lambda
 
+test <- c()
+for (i in c(1:1000)){
+  test[i]<--(CM_S[i+1]-CM_S[i])/CM_I[i]*(lambda/(gamma+beta))
+}
+test[1001] <- 0
+
+
 def_reff<- -lambda*CM_S*(-(beta+gamma)*(1+log(CM_S)/lambda)+beta*CM_S+gamma)/(CM_I*(gamma))
 cal_reff<- beta/(beta+gamma)*lambda*CM_S
-dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,Mod_S,theta)
+dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,Mod_S,theta,test)
 ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=def_reff,color="Def"))+
   geom_line(aes(x=time, y=cal_reff,color="cal_eff"))+
   #geom_line(aes(x=time, y=disc_reff,color="disc_eff"))+
   geom_line(aes(x=time, y=theta, color="Theta"))+
-  geom_line(aes(x=time, y=CM_I*5, color="I"))+
+  geom_line(aes(x=time, y=test, color="test"))+
   geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+
   geom_hline(yintercept=1,color="green")+
   xlim(0,10)+

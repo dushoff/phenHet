@@ -4,6 +4,9 @@
 Network model formalized by [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf).
 Result agreed with a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708)  and [Novozhilov(2008)](./refs/Novozhilov2008.pdf)
 
+Quick Summary: [approaches.md](./approaches.md)
+
+
 #### (To Do) Assumptions
 1. Neighbors are independent
 2. Infinite size random network: a.s. no loop network
@@ -158,15 +161,23 @@ Take this into $\rho$ gives us:$$\begin{align}
 - Geometry: as $\kappa=1$ we have $$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometry distribution.
 	- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
 
-==JD and RZ doubt this results should only work in a directed network.==
+For further illustration, we define $$\sigma(S)=\frac{\rho}{S}$$ and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+![](docs/pix/Sigma-S_Curve_delta01.png)
+![](docs/pix/Sigma-S_Curve_delta1.png)
+![](docs/pix/Sigma-S_Curve_delta10.png)
+![](docs/pix/Sigma-S_Curve_delta1000.png)
+
+==Howevewr, JD and RZ doubt this results should only work in a directed network.==
 ==RZ: A conjecture now is this apply for a network where in-degree is negative-binomial distributed while the directed edges towards each nodes is uniformly randomly connected to all other nodes==
+
+
 
 
 #### Question
 (??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
 - ==This does not work for network model!!==
 ![](docs/pix/R_eff.png)
-- Def corresponding to $\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$
+- Def corresponding to $-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$
 - Cal corresponding to JR's result for Poisson distribution.
 
 Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.$$
@@ -187,10 +198,10 @@ Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $
 
 For MSV network frame with configuration network, I don't think the relationship of reproductive number/ratio and $\dot{S}$ from homogeneous model, like:
 $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
-can be directly applied. $\mathcal{R}_\text{eff}$ defined as (expected) number of infection a randomly ==**newly** (??)== infected individual can cause, which affect the incidence of the system.
+can be directly applied. $\mathcal{R}_\text{eff}$ defined as (expected) number of infection a randomly chosen infected individual can cause, which affect the incidence of the system.
 
 For homogeneous model, any individual in $I(t)$ have same infectivity to infect susceptible nodes, because of the fully-mixed mass-action assumption for contact. 
-In such case, a newly infected individual has the same infectivity like any individual in $I(t)$, so the $\mathcal{R}_\text{eff}$ is proportion to new incident $\dot{S}(t)$ averaged on $I(t)$, i.e. the incident is governed by $\mathcal{R}_\text{eff} \times I(t)$
+In such case, every infected individual has the same infectivity like any individual in $I(t)$, so the $\mathcal{R}_\text{eff}$ is proportion to new incident $\dot{S}(t)$ averaged on $I(t)$, i.e. the incident is governed by $\mathcal{R}_\text{eff} \times I(t)$
 
 (??) However, this assumption might be less justifiable on MSV network frame with heterogeneity in contact. 
 
@@ -205,8 +216,15 @@ A more intuitive understanding for incidence of configuration network would be $
 
 Within MSV's framework, we can write $$x_{SI}=G'_p(\theta) \phi_I=(\theta G'_p(\theta)) \times \frac{\phi_I}{\theta}$$
 The first term $\theta G'_p(\theta)=\sigma_{\phi}=\sum_{d}p_d d \theta^{d}$ is expected number of edges of susceptible vertices.
-The second term $\phi_I/\theta$ is the probability that an edge is connected to an $I$ vertex given it has not yet transmitted the infection.
+The second term $\phi_I/\theta$ is the probability that an edge is connected to an $I$ vertex given it has not yet transmitted the infection(connected to $S$).
+
 This is the probability to forming an $S$-$I$ pair as we consider the random network of being randomly forming edges(pairs) as infection transmitting.
+
+An equivalent illustration would based on the $\phi_S=\frac{G_p'(\theta)}{\delta}$, so $$\dot{S}=-\beta x_{SI}=-\beta\delta\times\frac{G_p'(\theta)}{\delta}\times\phi_I=-\beta\delta\phi_S\phi_I$$
+and $\phi_I$ is governed by:$$\dot{\phi_I}=-\dot{\phi}_S-(\beta+\gamma)\phi_I=[-(\beta+\gamma)+\beta\frac{G''_p(\theta)}{\delta}] \phi_I$$
+As $\phi_S$ is governed by:$$\dot{\phi}_S=-\beta\frac{G''_p(\theta)}{\delta} \phi_I$$
+
+
 
 (??) For large network limit which MSV relies on, loops are extremely rare (with probability a.s. 0), so a.s. $I$-$I$ and $I$-$R$ edges has transmitted the infection and has probability $(1-\theta)$
 
