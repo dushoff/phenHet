@@ -187,12 +187,12 @@ Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $
 
 For MSV network frame with configuration network, I don't think the relationship of reproductive number/ratio and $\dot{S}$ from homogeneous model, like:
 $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
-can be directly applied. $\mathcal{R}_\text{eff}$ defined as (expected) number of infection a **newly** (??) infected individual can cause, which affect the incidence of the system.
+can be directly applied. $\mathcal{R}_\text{eff}$ defined as (expected) number of infection a randomly ==**newly** (??)== infected individual can cause, which affect the incidence of the system.
 
 For homogeneous model, any individual in $I(t)$ have same infectivity to infect susceptible nodes, because of the fully-mixed mass-action assumption for contact. 
-In this case, a newly infected individual has the same infectivity like any individual in $I(t)$, so the $\mathcal{R}_\text{eff}$ is proportion to new incident $\dot{S}(t)$ averaged on $I(t)$, i.e. the incident is governed by $\mathcal{R}_\text{eff} \times I(t)$
+In such case, a newly infected individual has the same infectivity like any individual in $I(t)$, so the $\mathcal{R}_\text{eff}$ is proportion to new incident $\dot{S}(t)$ averaged on $I(t)$, i.e. the incident is governed by $\mathcal{R}_\text{eff} \times I(t)$
 
-(??) However, this assumption might no longer justifiable on MSV network frame with heterogeneity in contact. 
+(??) However, this assumption might be less justifiable on MSV network frame with heterogeneity in contact. 
 
 Consider transmission on configuration network, it is possible to have an vertex in the $I(t)$ compartment while no longer being able to transmit infection to any of its neighbor at the moment $t$, i.e. all of its neighbor are not susceptible at and after time $t$.
 An obvious example would be infected vertex with degree one, whose only neighbor will be its infector and thus not being able to transmit the infection to any other vertices.
@@ -225,12 +225,13 @@ However, equivalent result of the two approaches only happens on the negative-bi
 
 (To Do??) For the Jonathan-Richard approach, we are considering another directed network framework where we assume in-degree and out-degree of each vertex are independent. But it might not be that interesting.
 
-Follow [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708): $\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for one infected individual $X_t$ at time $t$. They seems follows MSV's idea of $\mathcal{R}_0$.
+#### Follow [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708): 
+$\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for one infected individual $X_t$ at time $t$. 
 	- Proportion of susceptible vertices with degree $k$ at time $t$ in the entire population $p^S_k(t)=p_k \theta^k$
 	- Total proportion of susceptible nodes at time $t$ is $S(t)=G_p(\theta(t))$
-	- Corresponding PGF is $\frac{G_p(x \theta)}{G_p(\theta)}=\frac{G_p(x \theta)}{S}$
+	- Corresponding PGF of $p^S_k(t)$ is $\frac{G_p(x \theta)}{G_p(\theta)}=\frac{G_p(x \theta)}{S}$
 - Observe the process by which a susceptible individual becomes infected. 
-	- Consider a random edge that has the potential to transmit infection at time $t$. The uninfected individual at the end of this edge is chosen from the susceptible set, but not at random: an individual's chance of being selected is proportional to their degree, in the absence of higher-order features. Thus, the relative frequency of an individual of degree _k_ becoming infected at the next time step is proportional to $k p^S_k(t)$.
+	- Consider a random edge that has the potential to transmit infection at time $t$, which is an $S-I$ pair: The uninfected individual at the end of this edge is chosen from the susceptible set, but not at random: an individual's chance of being selected is proportional to their degree, in the absence of higher-order features. Thus, the relative frequency of an individual of degree _k_ becoming infected at the next time step is proportional to $k p^S_k(t)$.
 - Since neighbors are assumed to be independent, they claim 
 
 
