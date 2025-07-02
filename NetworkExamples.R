@@ -317,8 +317,8 @@ MASIR_Proc <- function(b,g,lambda,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,Track
   }
 }
 
-beta <- 0.45
-gamma <- 0.2
+beta <- 0.1
+gamma <- 0.4
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 100, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
 MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
 Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
@@ -360,7 +360,7 @@ ggplot(data = dat)+theme_bw()+
   geom_point(aes(x=time, y=MA_I,color="MASIR"),alpha=0.1)+
   geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
-  xlim(0,10)+
+  xlim(0,100)+
   labs(y = "I(t)") 
 
 ggplot(data=dat_S)+theme_bw()+
@@ -368,7 +368,7 @@ ggplot(data=dat_S)+theme_bw()+
   geom_line(aes(x=time, y=MA_S,color="MASIR"))+
   geom_point(aes(x=time, y=Mod_S,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
-  xlim(0,10)+
+  xlim(0,100)+
   labs(y = "S(t)") 
 
 ggplot(data = dat_R)+theme_bw()+
@@ -376,7 +376,7 @@ ggplot(data = dat_R)+theme_bw()+
   geom_line(aes(x=time, y=MA_R,color="MASIR"))+
   geom_point(aes(x=time, y=Mod_R,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
-  xlim(0,10)+
+  xlim(0,100)+
   labs(y = "R(t)") 
 
 
@@ -392,8 +392,7 @@ for (i in c(1:1000)){
 }
 test[1001] <- 0
 
-
-def_reff<- -lambda*CM_S*(-(beta+gamma)*(1+log(CM_S)/lambda)+beta*CM_S+gamma)/(CM_I*(gamma))
+def_reff<- -lambda*CM_S*(-(beta+gamma)*(1+log(CM_S)/lambda)+beta*CM_S+gamma)/(CM_I*gamma)
 cal_reff<- beta/(beta+gamma)*lambda*CM_S
 dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,Mod_S,theta,test)
 ggplot(data=dat_reff)+theme_bw()+
@@ -404,7 +403,7 @@ ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=test, color="test"))+
   geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+
   geom_hline(yintercept=1,color="green")+
-  xlim(0,10)+
+  xlim(0,100)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 

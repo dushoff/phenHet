@@ -244,15 +244,31 @@ However, equivalent result of the two approaches only happens on the negative-bi
 (To Do??) For the Jonathan-Richard approach, we are considering another directed network framework where we assume in-degree and out-degree of each vertex are independent. But it might not be that interesting.
 
 #### Follow [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708): 
-$\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for one infected individual $X_t$ at time $t$. 
+$\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for one ==(Newly?)== infected individual $X_t$ at time $t$. 
+- $K_S(t)$ is the random variable of degree of a random susceptible vertex at time $t$
 	- Proportion of susceptible vertices with degree $k$ at time $t$ in the entire population $p^S_k(t)=p_k \theta^k$
 	- Total proportion of susceptible nodes at time $t$ is $S(t)=G_p(\theta(t))$
-	- Corresponding PGF of $p^S_k(t)$ is $\frac{G_p(x \theta)}{G_p(\theta)}=\frac{G_p(x \theta)}{S}$
+	- Corresponding PGF of $K_S(t)$ is $G_{S}(x)=\frac{G_p(x \theta)}{G_p(\theta)}=\frac{G_p(x \theta)}{S}$
 - Observe the process by which a susceptible individual becomes infected. 
-	- Consider a random edge that has the potential to transmit infection at time $t$, which is an $S-I$ pair: The uninfected individual at the end of this edge is chosen from the susceptible set, but not at random: an individual's chance of being selected is proportional to their degree, in the absence of higher-order features. Thus, the relative frequency of an individual of degree _k_ becoming infected at the next time step is proportional to $k p^S_k(t)$.
-- Since neighbors are assumed to be independent, they claim 
+	- Consider a random edge that has the potential to transmit infection at time $t$, which is an $S-I$ pair: The uninfected individual at the end of this edge is chosen from the susceptible set, but not at random: an individual's chance of being selected is proportional to their degree, in the absence of higher-order features. 
+	- Thus, the relative frequency of an individual of degree $k$ becoming infected at the next time step is proportional to $k p^S_k(t)=k p_k \theta^k$.
+- $K_I(t)$ is the random variable of degree of a random infective vertex at time $t$
+	- Corresponding PGF of $K_I(t)$ is $$\frac{\sum_k k p_k\theta^kx^k}{\sum_k k p_k\theta^k}=\frac{xG'_S(x)}{G
+	'_S(1)}=G_I(x)$$
+- Since neighbors are assumed to be independent, given the a ==newly infective== vertex have degree $K_I(t)$, the number $X_t$ of new infective vertices infected by this vertex is distributed as a Binomial($n=K_I(t)-1,\mu$).
+	- $n=K_I(t)-1$ is because we know for any infective vertex, it can no longer infect its infector.
+	- [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) claim that $\mu= \frac{\beta}{\beta+\gamma} S(t)$ where $\frac{\beta}{\beta+\gamma}$ is the per-edge infection probability/transmissibility and on average, only a fraction $S(t)$ of its contacts will still be susceptible.
+	- ==I believe here they might make a mistake here, since this $\mu$ probability should correspond to edge-forming process, where the probability should related to the proportion of edges connected to $S$ vertices, not the proportion of $S$ vertices.==
+	- ==They did not explicitly state that this derivation also assume that every edge connect to this $I$ vertex are still being able to transmit the infection other than the known one connect to its infector. This is the same to assume the vertex is newly infected and not yet infect any others.
+	- An correction would be $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\theta}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
+- Now consider the Moment Generating Function 
 
 
+
+$$\mathcal{R}^*_{\text{eff}}=\mu \theta\frac{G''_p(\theta)}{G'_p(\theta)}$$
+with $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\theta)}{\theta G'_p(1)}$, we have $$\mathcal{R}^*_{\text{eff}}=\frac{\beta}{\beta+\gamma}\frac{G''_p(\theta)}{\delta}$$converge to $$\mathcal{R}^*_0=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
+as $\theta \rightarrow 1$.
+Similar as how MSV verifying their $\mathcal{R}^*_0$ with dynamic, $\mathcal{R}^*_{\text{eff}}=1$ is where $\dot{\phi}_I=0$ 
 
 
 
