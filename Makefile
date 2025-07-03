@@ -28,6 +28,11 @@ notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
 
 ######################################################################
 
+JR_NegBinom_Result.html: JR_NegBinom_Result.md
+	$(rmdh_r)
+
+######################################################################
+
 ## Pubmed stuff for scoping review
 
 Sources += $(wildcard *.R)
