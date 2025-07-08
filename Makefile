@@ -26,12 +26,16 @@ approaches.html: approaches.md
 notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
 	$(rmdh_r)
 
+NetworkExamples.Rout: NetworkExamples.R
+
 ######################################################################
 
 JR_NegBinom_Result.html: JR_NegBinom_Result.md
 	$(rmdh_r)
 
 ######################################################################
+
+autopipeR = defined 
 
 ## Pubmed stuff for scoping review
 
@@ -42,10 +46,8 @@ Sources += pubmed_notes.md
 Ignore += secrets.mk
 -include secrets.mk
 Rentrez.Rout: Rentrez.R
-	$(pipeR)
 
 my_fetch.Rout: my_fetch.R
-	$(pipeR)
 
 ######################################################################
 

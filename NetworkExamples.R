@@ -1,14 +1,12 @@
-rm(list=ls())
+## rm(list=ls())
+## wd <- getwd()
 
-wd <- getwd()
 ### Package Part
 library(pracma)
 library(gsl)
 library(deSolve)
 library(igraph)
 library(ggplot2)
-library(rriskDistributions)
-library(tidyr)
 library(cbinom)
 ################################### Network Part
 {
@@ -226,7 +224,7 @@ library(cbinom)
 #################### Network Part END ###########################################
 
 ################################ Distribution part####################################################
-lambda <- 10
+lambda <- 6
 kvalue <- seq(0,500)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
