@@ -33,6 +33,9 @@ NetworkExamples.Rout: NetworkExamples.R
 JR_NegBinom_Result.html: JR_NegBinom_Result.md
 	$(rmdh_r)
 
+
+JD_RZ_curves.Rout: JD_RZ_curves.R
+
 ######################################################################
 
 autopipeR = defined 
