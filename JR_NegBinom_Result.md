@@ -1,6 +1,4 @@
-## New findings
-
-### MSV type network model
+## 1. MSV type network model
 Network model formalized by [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.pdf).
 Result agreed with a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708)  and [Novozhilov(2008)](./refs/Novozhilov2008.pdf)
 
@@ -121,7 +119,7 @@ For the outbreak, $\mathcal{R}_0= \frac{\beta}{\beta+\gamma} \frac{G''_p(1)}{\de
 More precisely, since $\dot{\theta}=-\beta\phi_I$, we can further have:
 $$\dot{\phi_I}=[-(\beta+\gamma)+\beta\frac{G''_p(\theta)}{\delta}] \phi_I$$
 
-#### Jonathan-Richard result
+## 2. Jonathan-Richard result (Zhao1)
 Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$ 
 Follow JD's idea: $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\sigma_{\phi}}{\sigma_0}$$
 - $\sigma_{\phi}$: Expected number of edges of susceptible vertices$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times(1-\phi)^{d}=\sum_{d=0}^{\infty}p_d \times d \times \theta^{d}=\theta\sum_{d=0}^{\infty}p_d \times d \times\theta^{d-1}=\theta G_p'(\theta)$$
@@ -162,25 +160,28 @@ Take this into $\rho$ gives us for Negative Binomial:$$\begin{align}
 	- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
 
 For further illustration, we define $$\sigma(S)=\frac{\rho}{S}$$ and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
-![](docs/pix/Sigma-S_Curve_delta01.png)
-![](docs/pix/Sigma-S_Curve_delta1.png)
-![](docs/pix/Sigma-S_Curve_delta10.png)
-![](docs/pix/Sigma-S_Curve_delta1000.png)
+![](docs/pix/Zhao1_curve.png)
 
-==Howevewr, JD and RZ doubt this results should only work in a directed network.==
+==However, JD and RZ doubt this results should only work in a directed network.==
 ==RZ: A conjecture now is this apply for a network where in-degree is negative-binomial distributed while the directed edges towards each nodes is uniformly randomly connected to all other nodes==
 
-
+==TODO: Replace the curves here==
 
 
 #### Question
 (??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
 - ==This does not work for network model!!==
+- ==(TODO: WHY???????????)==
 ![](docs/pix/R_eff.png)
 - Def corresponding to $-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$
 - Cal corresponding to JR's result for Poisson distribution.
 
-Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.$$
+==(TODO: How to estimate the Def/Black curve here)==
+Observation: for Poisson degree distribution, the peak value seems to be $(\delta-1)\frac{\beta}{\gamma}$
+
+
+Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.
+$$
 \begin{align}
 	\dot{S}& = -\beta\delta SX_D
 	\\
@@ -194,7 +195,7 @@ $$
 This indicate that incidence term $\dot{S}$ in network model is not directly determined by $I$.
 Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $\mathcal{R}_0$.
 
-## $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$ for network model
+## 3. $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$ for network model
 
 For MSV network frame with configuration network, I don't think the relationship of reproductive number/ratio and $\dot{S}$ from homogeneous model, like:
 $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
@@ -223,18 +224,10 @@ This is the probability to forming an $S$-$I$ pair as we consider the random net
 An equivalent illustration would based on the $\phi_S=\frac{G_p'(\theta)}{\delta}$, so $$\dot{S}=-\beta x_{SI}=-\beta\delta\times\frac{G_p'(\theta)}{\delta}\times\phi_I=-\beta\delta\phi_S\phi_I$$
 and $\phi_I$ is governed by:$$\dot{\phi_I}=-\dot{\phi}_S-(\beta+\gamma)\phi_I=[-(\beta+\gamma)+\beta\frac{G''_p(\theta)}{\delta}] \phi_I$$
 As $\phi_S$ is governed by:$$\dot{\phi}_S=-\beta\frac{G''_p(\theta)}{\delta} \phi_I$$
-
-
-
-(??) For large network limit which MSV relies on, loops are extremely rare (with probability a.s. 0), so a.s. $I$-$I$ and $I$-$R$ edges has transmitted the infection and has probability $(1-\theta)$
-
 This agree with the idea of $\mathcal{R}_0$ from the MSV framework, where $\mathcal{R}_0>1$ makes $\dot{\phi}_I>0$ at $\theta(0) \rightarrow 1$.
 
 
-
-
-
-#### Romanescu Approach
+## 4. Romanescu Approach (Zhao2 Result)
 A problem for Jonathan-Richard formula is the derivation of $\rho$ might not fit with the MSV network framework properly as it lacks of locality.
 
 [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) and [RomanescueDeardon(2017)]([https://doi.org/10.1111/sjos.12270](https://doi.org/10.1111/sjos.12270)) provides an alternative derivation, which derive the same $\rho$ results based on MSV network for the same family of degree distribution with consideration of network locality. (These papers are not really well-written, especially the 2017 one which contains more derivation.)
@@ -244,7 +237,9 @@ However, equivalent result of the two approaches only happens on the negative-bi
 (To Do??) For the Jonathan-Richard approach, we are considering another directed network framework where we assume in-degree and out-degree of each vertex are independent. But it might not be that interesting.
 
 #### Follow [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708): 
-$\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for one ==(Newly?)== infected individual $X_t$ at time $t$. 
+Define $\mathcal{R}^*_{\text{eff}}(t)$ to be the expected number of secondary infections for a ==newly?== infected individual $X_t$ at time $t$, s.t. $\mathcal{R}^*_{\text{eff}}(t)=\mathbb{E}[X_t]$. 
+
+To derive $X_t$
 - $K_S(t)$ is the random variable of degree of a random susceptible vertex at time $t$
 	- Proportion of susceptible vertices with degree $k$ at time $t$ in the entire population $p^S_k(t)=p_k \theta^k$
 	- Total proportion of susceptible nodes at time $t$ is $S(t)=G_p(\theta(t))$
@@ -255,25 +250,57 @@ $\mathcal{R}_{\text{eff}}(t)$ is the expected number of secondary infections for
 - $K_I(t)$ is the random variable of degree of a random infective vertex at time $t$
 	- Corresponding PGF of $K_I(t)$ is $$\frac{\sum_k k p_k\theta^kx^k}{\sum_k k p_k\theta^k}=\frac{xG'_S(x)}{G
 	'_S(1)}=G_I(x)$$
-- Since neighbors are assumed to be independent, given the a ==newly infective== vertex have degree $K_I(t)$, the number $X_t$ of new infective vertices infected by this vertex is distributed as a Binomial($n=K_I(t)-1,\mu$).
+	- Expectation of $K_I(t)$ is:$$\mathbb{E}(K_I(t))=G_I'(1)=\frac{\theta G_p''(\theta)}{G'_p(\theta)}$$
+- Since neighbors are assumed to be independent, given the a ==newly infected== vertex have degree $K_I(t)$, the number $X_t$ of new infective vertices infected by this vertex is distributed as a Binomial($n=K_I(t)-1,\mu$).
 	- $n=K_I(t)-1$ is because we know for any infective vertex, it can no longer infect its infector.
 	- [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) claim that $\mu= \frac{\beta}{\beta+\gamma} S(t)$ where $\frac{\beta}{\beta+\gamma}$ is the per-edge infection probability/transmissibility and on average, only a fraction $S(t)$ of its contacts will still be susceptible.
 	- ==I believe here they might make a mistake here, since this $\mu$ probability should correspond to edge-forming process, where the probability should related to the proportion of edges connected to $S$ vertices, not the proportion of $S$ vertices.==
 	- ==They did not explicitly state that this derivation also assume that every edge connect to this $I$ vertex are still being able to transmit the infection other than the known one connect to its infector. This is the same to assume the vertex is newly infected and not yet infect any others.
 	- An correction would be $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\theta}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
-- Now consider the Moment Generating Function 
+- Therefore, with law of total expectation, for a randomly newly infected node we know the expectation number $X_t$ of infected vertices it can generate would be:
+$$\begin{align}
+\mathcal{R}^*_{\text{eff}}=\mathbb{E}[X_t]&=\mathbb{E}_{K_I}[\mathbb{E}[X_t|K_I]]
+\\
+& =\mathbb{E}_{K_I}[\mu(K_I-1)]
+\\
+& =\mu \mathbb{E}[K_I-1]
+\\
+& = \mu (\mathbb{E}[K_I]-1)
+\\
+& = \mu \theta\frac{G''_p(\theta)}{G'_p(\theta)}
+\end{align}$$
+Take into the fact that $$\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\theta)}{\theta G'_p(1)}$$, we have:$$\mathcal{R}^*_{\text{eff}}=\frac{\beta}{\beta+\gamma}\frac{G''_p(\theta)}{\delta}$$
+As $t\rightarrow 0 \Leftrightarrow \theta \rightarrow 1$, $\mathcal{R}^*_{\text{eff}}$ converge to $$\mathcal{R}^*_0=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
+Similar as how MSV verifying their $\mathcal{R}^*_0$ with dynamic, $\mathcal{R}^*_{\text{eff}}=1$ is where $\dot{\phi}_I=0$. which verify the definition.
 
 
+? Explaining how it affect the incidence $-\dot{S}(t)$
+$$\begin{align}
+\frac{d}{dt}(-\dot{S}(t))& =-\ddot{S}(t)
+\\
+& =\beta\delta[\phi_S\dot{\phi}_I+\dot{\phi}_S\phi_I]
+\\
+& =\beta\delta[\phi_S\phi_I(\beta+\gamma)(\mathcal{R}^*_\text{eff}-1)-\beta\frac{G''_p(\theta)}{\delta}\phi_I^2]
+\\
+& =\beta\delta\phi_I[\phi_S(\beta+\gamma)(\mathcal{R}^*_\text{eff}-1)-\beta\frac{G''_p(\theta)}{\delta}\phi_I]
+\end{align}$$
+The $(\mathcal{R}^*_\text{eff}-1)$ >0 is the only positive term/increasing force of the incidence.
 
-$$\mathcal{R}^*_{\text{eff}}=\mu \theta\frac{G''_p(\theta)}{G'_p(\theta)}$$
-with $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\theta)}{\theta G'_p(1)}$, we have $$\mathcal{R}^*_{\text{eff}}=\frac{\beta}{\beta+\gamma}\frac{G''_p(\theta)}{\delta}$$converge to $$\mathcal{R}^*_0=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
-as $\theta \rightarrow 1$.
-Similar as how MSV verifying their $\mathcal{R}^*_0$ with dynamic, $\mathcal{R}^*_{\text{eff}}=1$ is where $\dot{\phi}_I=0$ 
 
+(TO DO: Applying this for all NegBinom distribution family)
 
+Similarly with previous derivation, for Negative binomial degree distribution with PGF:$$G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}$$we have:
+$$\sigma=\frac{\mathcal{R}^*_\text{eff}}{\mathcal{R}^*_0S}=\frac{\frac{\beta}{\beta+\gamma}\frac{G''_p(\theta)}{\delta}}{\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}\times G_p(\theta)}=\frac{G''_p(\theta)}{G''_p(1) G_p(\theta)}=\frac{\delta^2(\kappa+1)G_p(\theta)^{2\kappa+1}}{\delta^2(\kappa+1)G_p(\theta)}=S^{2\kappa}$$
+(TODO) more detailed derivation?
 
+==(TODO) verify the gamma case==
 
-$\theta=G^{-1}_p(S)$
-
-Consider Poisson distribution with $p_k=k!$ 
-
+##### Ideas:
+Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
+$$\begin{align}
+\mathbb{P}(u\in\theta \Leftrightarrow u \in\phi_I|u \text{ connect to vertex }\in I) & = \frac{\mathbb{P}(u\in\phi_I|u\in\theta)\mathbb{P}(u\in\theta)}{\mathbb{P}(u \text{ connect to vertex }\in I)}
+\\
+& =\frac{\frac{\phi_I}{\theta}\times \theta}{\frac{NI\times \mathbb{E}(K_I)}{N\delta}}
+\\
+& =\frac{\phi_I \delta}{I(t) \mathbb{E}[K_I]}
+\end{align}$$
