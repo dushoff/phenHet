@@ -1,14 +1,12 @@
-rm(list=ls())
+## rm(list=ls())
+## wd <- getwd()
 
-wd <- getwd()
 ### Package Part
 library(pracma)
 library(gsl)
 library(deSolve)
 library(igraph)
 library(ggplot2)
-library(rriskDistributions)
-library(tidyr)
 library(cbinom)
 ################################### Network Part
 {
@@ -226,16 +224,16 @@ library(cbinom)
 #################### Network Part END ###########################################
 
 ################################ Distribution part####################################################
-lambda <- 10
-kvalue <- seq(0,300)
+lambda <- 6
+kvalue <- seq(0,500)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
-DDist
+# DDist
 ################################ Distribution part END ##############
 
 
 ################################ Initial Condition
-N <- 50000
+N <- 500000
 
 # Initial Condition Solver based on I0=1-S0-(R0=0)
 Init_theta_func <- function(I0_val){
@@ -286,25 +284,24 @@ MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEst
   }
 }
 
-MASIR_Proc <- function(beta, gamma,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+MASIR_Proc <- function(b,g,lambda,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
   if (TrackDyn==T){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
-        dS <- (-b)*I*S
-        dI <- b*I*S-g*I
+        dS <- (-b*lambda)*X*S
+        dX <- (b*lambda)*X*S-(g+b)*X
+        dI <- (b*lambda)*X*S-(g)*I
         dR <- g*I
-        return(list(c(dS,dI,dR)))
+        return(list(c(dS,dI,dR,dX)))
       })
     }
-    parms <- c(b=beta,g=gamma)
+    parms <- c(b=b,g=g,lambda=lambda)
     times <- seq(0,ODEmaxTime,by=ODEstep)
-    y <- c(S=init_S,I=1-init_S,R=0)
+    y <- c(S=init_S,I=1-init_S,R=0,X=(1-init_S))
     
     Sys_out <- ode(y,times,Sys,parms)
   }
   
-  g <- gamma
-  b <- beta
   S_0 <- init_S
   R_0 <- 0
   
@@ -318,11 +315,11 @@ MASIR_Proc <- function(beta, gamma,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,Trac
   }
 }
 
-beta <- 0.45
-gamma <- 0.2
-CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 500, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
-MA_Opt<- MASIR_Proc(beta, gamma, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
-Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=500, ODEstep=1e-1,TrackDyn = T)
+beta <- 0.1
+gamma <- 0.4
+CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 100, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
+MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
+Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
 
 CM_Opt$R0
 beta/(beta+gamma)*lambda
@@ -340,6 +337,9 @@ CM_I <- CM_out[,5]
 MA_I <- MA_out[,3]
 Mod_I <- Mod_out[,3]
 
+CM_R <- CM_out[,3]
+MA_R <- MA_out[,4]
+Mod_R <- Mod_out[,4]
 
 theta <- CM_out[,2]
 
@@ -350,13 +350,13 @@ MA_S <- MA_out[,2]
 Mod_S <- Mod_out[,2]
 
 dat_S <- cbind(time,CM_S, MA_S, Mod_S)
+dat_R <- cbind(time,CM_R, MA_R, Mod_R)
 dat <- cbind(time,CM_I, MA_I, Mod_I)
 
-
-ggplot()+theme_bw()+
-  geom_line(data = dat,aes(x=time, y=CM_I,color="Network"))+
-  geom_line(data = dat,aes(x=time, y=MA_I,color="MASIR"))+
-  geom_point(data = dat,aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
+ggplot(data = dat)+theme_bw()+
+  geom_line(aes(x=time, y=CM_I,color="Network"))+
+  geom_point(aes(x=time, y=MA_I,color="MASIR"),alpha=0.1)+
+  geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
   scale_color_manual(values=c("black", "red","blue"))+
   xlim(0,100)+
   labs(y = "I(t)") 
@@ -369,22 +369,45 @@ ggplot(data=dat_S)+theme_bw()+
   xlim(0,100)+
   labs(y = "S(t)") 
 
-  
+ggplot(data = dat_R)+theme_bw()+
+  geom_line(aes(x=time, y=CM_R,color="Network"))+
+  geom_line(aes(x=time, y=MA_R,color="MASIR"))+
+  geom_point(aes(x=time, y=Mod_R,color="Modified"),alpha=0.1)+
+  scale_color_manual(values=c("black", "red","blue"))+
+  xlim(0,100)+
+  labs(y = "R(t)") 
+
+
 Mod_S
 Mod_I
 beta
 gamma
 lambda
 
-def_reff<- -lambda*Mod_S*(-(beta+gamma)*(1+log(Mod_S)/lambda)+beta*Mod_S+gamma)/Mod_I*(1/gamma)
-cal_reff<- beta/(beta+gamma)*lambda*Mod_S*(1+log(Mod_S)/lambda)
-dat_reff <- cbind(time,def_reff,cal_reff)
+test <- c()
+for (i in c(1:1000)){
+  test[i]<--(CM_S[i+1]-CM_S[i])/CM_I[i]*(lambda/(gamma+beta))
+}
+test[1001] <- 0
+
+def_reff<- -lambda*CM_S*(-(beta+gamma)*(1+log(CM_S)/lambda)+beta*CM_S+gamma)/(CM_I*gamma)
+cal_reff<- beta/(beta+gamma)*lambda*CM_S
+dat_reff <- cbind(time,def_reff,cal_reff,Mod_I,Mod_S,theta,test)
 ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=def_reff,color="Def"))+
-  geom_line(aes(x=time, y=cal_reff,color="Cal"))+
-  geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+ 
-  xlim(0,5)+
-  scale_color_manual(values=c("red", "black"))
+  geom_line(aes(x=time, y=cal_reff,color="cal_eff"))+
+  #geom_line(aes(x=time, y=disc_reff,color="disc_eff"))+
+  geom_line(aes(x=time, y=theta, color="Theta"))+
+  geom_line(aes(x=time, y=test, color="test"))+
+  geom_hline(yintercept=beta/(beta+gamma)*lambda,color="blue")+
+  geom_hline(yintercept=1,color="green")+
+  xlim(0,100)+
+  #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
 
+which.max(def_reff)
+which.max(Mod_I)
+max(which(cal_reff>1))
+cal_reff[329]
+cal_reff[330]

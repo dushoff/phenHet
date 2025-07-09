@@ -1,4 +1,5 @@
 ## This is phenomenological heterogeneity
+## https://dushoff.github.io/phenHet/
 
 current: target
 -include target.mk
@@ -17,9 +18,24 @@ Sources += $(wildcard *.md)
 
 ## Why I still can't visualize???
 
-## approaches.html: approaches.md
+Ignore += *.html
+## https://dushoff.github.io/phenHet/approaches.html
+approaches.html: approaches.md
+	$(rmdh_r)
+
+notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
+	$(rmdh_r)
+
+NetworkExamples.Rout: NetworkExamples.R
 
 ######################################################################
+
+JR_NegBinom_Result.html: JR_NegBinom_Result.md
+	$(rmdh_r)
+
+######################################################################
+
+autopipeR = defined 
 
 ## Pubmed stuff for scoping review
 
@@ -30,10 +46,8 @@ Sources += pubmed_notes.md
 Ignore += secrets.mk
 -include secrets.mk
 Rentrez.Rout: Rentrez.R
-	$(pipeR)
 
 my_fetch.Rout: my_fetch.R
-	$(pipeR)
 
 ######################################################################
 
@@ -44,7 +58,7 @@ Sources += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 
-Makefile: makestuff/00.stamp
+Makefile: makestuff/01.stamp
 makestuff/%.stamp: | makestuff
 	- $(RM) makestuff/*.stamp
 	cd makestuff && $(MAKE) pull
@@ -56,6 +70,8 @@ makestuff:
 
 -include makestuff/pipeR.mk
 -include makestuff/mirror.mk
+## -include makestuff/rmdweb.mk
+-include makestuff/rmd.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
