@@ -160,25 +160,27 @@ Take this into $\rho$ gives us for Negative Binomial:$$\begin{align}
 	- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
 
 For further illustration, we define $$\sigma(S)=\frac{\rho}{S}$$ and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+
 ![](docs/pix/Zhao1_curve.png)
 
-==However, JD and RZ doubt this results should only work in a directed network.==
-==RZ: A conjecture now is this apply for a network where in-degree is negative-binomial distributed while the directed edges towards each nodes is uniformly randomly connected to all other nodes==
+However, JD and RZ doubt this results should only work in a directed network.
+==TODO: what kind of network/assumptions do we need for this result to work, as it is related to call known results==
 
-==TODO: Replace the curves here==
+A conjecture now is this apply for a network where in-degree is negative-binomial distributed while the directed edges towards each nodes is uniformly randomly connected to all other nodes. 
+But it might not be that interesting.
 
+==Idea: Derive this from Novozhilov Framework, even if discrete distribution does not fit well with their assumption: parametric heterogeneity of susceptibility==
 
 #### Question
 (??) How to connect $\mathcal{R}_\text{eff}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
-- ==This does not work for network model!!==
-- ==(TODO: WHY???????????)==
+- ==This does not work for Miller's network model==
+- ==(TODO: We need further understanding this and give explanation)==
 ![](docs/pix/R_eff.png)
 - Def corresponding to $-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$
 - Cal corresponding to JR's result for Poisson distribution.
 
-==(TODO: How to estimate the Def/Black curve here)==
+==(TODO: How to estimate the Def/Black curve here?)==
 Observation: for Poisson degree distribution, the peak value seems to be $(\delta-1)\frac{\beta}{\gamma}$
-
 
 Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.
 $$
@@ -194,6 +196,9 @@ $$
 $$
 This indicate that incidence term $\dot{S}$ in network model is not directly determined by $I$.
 Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $\mathcal{R}_0$.
+
+
+
 
 ## 3. $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$ for network model
 
@@ -224,7 +229,6 @@ This is the probability to forming an $S$-$I$ pair as we consider the random net
 An equivalent illustration would based on the $\phi_S=\frac{G_p'(\theta)}{\delta}$, so $$\dot{S}=-\beta x_{SI}=-\beta\delta\times\frac{G_p'(\theta)}{\delta}\times\phi_I=-\beta\delta\phi_S\phi_I$$
 and $\phi_I$ is governed by:$$\dot{\phi_I}=-\dot{\phi}_S-(\beta+\gamma)\phi_I=[-(\beta+\gamma)+\beta\frac{G''_p(\theta)}{\delta}] \phi_I$$
 As $\phi_S$ is governed by:$$\dot{\phi}_S=-\beta\frac{G''_p(\theta)}{\delta} \phi_I$$
-This agree with the idea of $\mathcal{R}_0$ from the MSV framework, where $\mathcal{R}_0>1$ makes $\dot{\phi}_I>0$ at $\theta(0) \rightarrow 1$.
 
 
 ## 4. Romanescu Approach (Zhao2 Result)
@@ -233,8 +237,6 @@ A problem for Jonathan-Richard formula is the derivation of $\rho$ might not fit
 [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) and [RomanescueDeardon(2017)]([https://doi.org/10.1111/sjos.12270](https://doi.org/10.1111/sjos.12270)) provides an alternative derivation, which derive the same $\rho$ results based on MSV network for the same family of degree distribution with consideration of network locality. (These papers are not really well-written, especially the 2017 one which contains more derivation.)
 
 However, equivalent result of the two approaches only happens on the negative-binomial family, as $\frac{G_p(x)}{G'_p(x)}$ is linear on $x$, which is the property of this distribution family.
-
-(To Do??) For the Jonathan-Richard approach, we are considering another directed network framework where we assume in-degree and out-degree of each vertex are independent. But it might not be that interesting.
 
 #### Follow [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708): 
 Define $\mathcal{R}^*_{\text{eff}}(t)$ to be the expected number of secondary infections for a ==newly?== infected individual $X_t$ at time $t$, s.t. $\mathcal{R}^*_{\text{eff}}(t)=\mathbb{E}[X_t]$. 
@@ -274,7 +276,8 @@ As $t\rightarrow 0 \Leftrightarrow \theta \rightarrow 1$, $\mathcal{R}^*_{\text{
 Similar as how MSV verifying their $\mathcal{R}^*_0$ with dynamic, $\mathcal{R}^*_{\text{eff}}=1$ is where $\dot{\phi}_I=0$. which verify the definition.
 
 
-? Explaining how it affect the incidence $-\dot{S}(t)$
+#### How $\mathcal{R}^*_{\text{eff}}$ affect the incidence $-\dot{S}(t)$?
+Consider rate of change for the incidence term
 $$\begin{align}
 \frac{d}{dt}(-\dot{S}(t))& =-\ddot{S}(t)
 \\
@@ -284,21 +287,23 @@ $$\begin{align}
 \\
 & =\beta\delta\phi_I[\phi_S(\beta+\gamma)(\mathcal{R}^*_\text{eff}-1)-\beta\frac{G''_p(\theta)}{\delta}\phi_I]
 \end{align}$$
-The $(\mathcal{R}^*_\text{eff}-1)$ >0 is the only positive term/increasing force of the incidence.
+If and only if $(\mathcal{R}^*_\text{eff}-1)$ >0, the rate of change $-\ddot{S}(t)$ have positive term (increasing force).
 
 
+
+#### Negative Binomial Family of Degree Distribution
 (TO DO: Applying this for all NegBinom distribution family)
 
-Similarly with previous derivation, for Negative binomial degree distribution with PGF:$$G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}$$we have:
+Similarly with previous Jonathan-Richard result, for Negative binomial degree distribution with PGF:$$G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}$$we have:
 $$\sigma=\frac{\mathcal{R}^*_\text{eff}}{\mathcal{R}^*_0S}=\frac{\frac{\beta}{\beta+\gamma}\frac{G''_p(\theta)}{\delta}}{\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}\times G_p(\theta)}=\frac{G''_p(\theta)}{G''_p(1) G_p(\theta)}=\frac{\delta^2(\kappa+1)G_p(\theta)^{2\kappa+1}}{\delta^2(\kappa+1)G_p(\theta)}=S^{2\kappa}$$
 (TODO) more detailed derivation?
 
 ==(TODO) verify the gamma case==
 
-##### Ideas:
+### Idea that might help:
 Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
 $$\begin{align}
-\mathbb{P}(u\in\theta \Leftrightarrow u \in\phi_I|u \text{ connect to vertex }\in I) & = \frac{\mathbb{P}(u\in\phi_I|u\in\theta)\mathbb{P}(u\in\theta)}{\mathbb{P}(u \text{ connect to vertex }\in I)}
+\mathbb{P}(u\in\theta \Leftrightarrow u \in\phi_I|u \text{ connect to a vertex }\in I) & = \frac{\mathbb{P}(u\in\phi_I|u\in\theta)\mathbb{P}(u\in\theta)}{\mathbb{P}(u \text{ connect to a vertex }\in I)}
 \\
 & =\frac{\frac{\phi_I}{\theta}\times \theta}{\frac{NI\times \mathbb{E}(K_I)}{N\delta}}
 \\
