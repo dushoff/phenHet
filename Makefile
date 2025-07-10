@@ -36,6 +36,8 @@ JR_NegBinom_Result.html: JR_NegBinom_Result.md
 
 JD_RZ_curves.Rout: JD_RZ_curves.R
 
+zhaoFuns.Rout: zhaoFuns.R
+
 ######################################################################
 
 autopipeR = defined 

@@ -2,7 +2,6 @@ library(ggplot2);theme_set(theme_bw())
 library(tidyr)
 library(dplyr)
 
-## These two functions should be combinable
 sigma_negbinom <- function(S, delta, kappa){
   out <- S^kappa+(S^kappa-1)/(kappa*delta)
   return(out)
@@ -41,7 +40,7 @@ dat[1,]
 # brkvec <- c(10^(-3:-1), 0.5)
 
 # dat_d01  <- filter(dat_long,delta==0.1)
-dat_d1   <- filter(dat_long,delta==1)
+# dat_d1   <- filter(dat_long,delta==1)
 # dat_d10  <- filter(dat_long,delta==10)
 # dat_d1000 <- filter(dat_long,delta==1000)
 
