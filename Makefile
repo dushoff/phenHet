@@ -8,7 +8,7 @@ Ignore = target.mk
 # -include makestuff/perl.def
 
 vim_session:
-	bash -cl "vmt todo.md"
+	bash -cl "vmt todo.md resources.md"
 
 ######################################################################
 
@@ -32,6 +32,9 @@ NetworkExamples.Rout: NetworkExamples.R
 
 JR_NegBinom_Result.html: JR_NegBinom_Result.md
 	$(rmdh_r)
+
+
+JD_RZ_curves.Rout: JD_RZ_curves.R
 
 ######################################################################
 

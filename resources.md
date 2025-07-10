@@ -10,3 +10,6 @@ refs/Novozhilov2008.pdf
 
 resources/millerNote.pdf
 resources/volzDynamics.pdf
+
+## Synthesis with citations to presumably-good other ways of looking at this.
+resources/rempala.pdf
