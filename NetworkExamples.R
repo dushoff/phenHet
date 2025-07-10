@@ -162,8 +162,8 @@ library(cbinom)
   
   #Miller Slim and Voltz
   #Configuration model
-  ModProc_CM <- function(Pk, beta, gamma, init_theta=1e-3, ODEmaxTime=50, ODEstep=1e-2,ThetaTol=1e-9, TrackDyn=T,init_R=0, s_theta=1e-2){
-    if (TrackDyn==T){
+  ModProc_CM <- function(Pk, beta, gamma, init_theta=1e-3, ODEmaxTime=50, ODEstep=1e-2,ThetaTol=1e-9, TrackDyn=TRUE,init_R=0, s_theta=1e-2){
+    if (TrackDyn==TRUE){
       Sys <- function(t, y, parms){
         with(as.list(c(parms,y)),{
           dtheta <- (-b)*theta+b*PGFd1G0(theta,Pk)/PGFd1G0(1,Pk)+g*(1-theta)
@@ -213,7 +213,7 @@ library(cbinom)
     R0 <- b/(b+g)*PGFd2G0(1,Pk)/PGFd1G0(1,Pk)
     RInf <- 1-PGFG0(thetaInf,Pk)
     
-    if (TrackDyn==T){
+    if (TrackDyn==TRUE){
       return(list(R0=R0,RInfinity=RInf, ThetaInfinity=thetaInf, Dynamic=Sys_out))
     } else {
       return(list(R0=R0,RInfinity=RInf, ThetaInfinity=thetaInf))
@@ -224,7 +224,12 @@ library(cbinom)
 #################### Network Part END ###########################################
 
 ################################ Distribution part####################################################
-lambda <- 6
+lambda <- 10
+beta <- 0.1
+gamma <- 1
+
+
+
 kvalue <- seq(0,500)
 Pk <- dpois(kvalue,lambda)
 DDist <- data.frame(kvalue,Pk)
@@ -251,9 +256,9 @@ S0Count <- PGFG0(1-it_theta,DDist)*N
 
 
 #### Fully mixed/Mass Action SIR Model
-MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
+MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEstep=1e-2,TrackDyn=TRUE){
   R_net <- beta*gamma*lambda/(beta+gamma)
-  if (TrackDyn==T){
+  if (TrackDyn==TRUE){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
         dS <- lambda*S*(-(b+g)*(1+log(S)/lambda)+b*S+g)
@@ -277,15 +282,15 @@ MAmod_Proc <- function(beta, gamma,lambda, init_S=1-(1e-3), ODEmaxTime=50, ODEst
   R0 <- b/g
   RInf <- Sys_out[length(Sys_out[,4]),4]
   
-  if (TrackDyn==T){
+  if (TrackDyn==TRUE){
     return(list(R0=R0,RInfinity=RInf,Rnet=R_net, Dynamic=Sys_out))
   } else {
     return(list(R0=R0,RInfinity=RInf))
   }
 }
 
-MASIR_Proc <- function(b,g,lambda,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=T){
-  if (TrackDyn==T){
+MASIR_Proc <- function(b,g,lambda,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=TRUE){
+  if (TrackDyn==TRUE){
     Sys <- function(t, y, parms){
       with(as.list(c(parms,y)),{
         dS <- (-b*lambda)*X*S
@@ -308,18 +313,16 @@ MASIR_Proc <- function(b,g,lambda,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,Track
   R0 <- b/g
   RInf <- Sys_out[length(Sys_out[,4]),4]
   
-  if (TrackDyn==T){
+  if (TrackDyn==TRUE){
     return(list(R0=R0,RInfinity=RInf, Dynamic=Sys_out))
   } else {
     return(list(R0=R0,RInfinity=RInf))
   }
 }
 
-beta <- 0.1
-gamma <- 0.4
-CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 100, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = T)
-MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
-Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = T)
+CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 100, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = TRUE)
+MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
+Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
 
 CM_Opt$R0
 beta/(beta+gamma)*lambda

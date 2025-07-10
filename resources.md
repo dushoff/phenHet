@@ -3,7 +3,10 @@ Romanescu epidemics effective reproductive
 * resources/RomanescuEpidemics.pdf
 
 MSV (deep theta derivation)
-* refs/MillerSlimVolz2011.pdf
+refs/MillerSlimVolz2011.pdf
+refs/Bere+23_JMB_HeterogeneitySocialDiffusion_s00285-022-01861-w.pdf
+refs/Novo08_MathBioSci_PhenHet.pdf
+refs/Novozhilov2008.pdf
 
 resources/millerNote.pdf
 resources/volzDynamics.pdf
