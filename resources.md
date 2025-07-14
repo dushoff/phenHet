@@ -13,3 +13,5 @@ resources/volzDynamics.pdf
 
 ## Synthesis with citations to presumably-good other ways of looking at this.
 resources/rempala.pdf
+
+The paper itself seems not that interesting since it focuses only on the Poisson case, which we already kind of think is not that interesting.

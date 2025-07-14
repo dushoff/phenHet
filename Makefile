@@ -30,13 +30,17 @@ NetworkExamples.Rout: NetworkExamples.R
 
 ######################################################################
 
+## Does this not work? Or only not work off line??
 JR_NegBinom_Result.html: JR_NegBinom_Result.md
 	$(rmdh_r)
 
+JR_NegBinom_Result.pdf: JR_NegBinom_Result.md
+	$(rmdp_r)
 
 JD_RZ_curves.Rout: JD_RZ_curves.R
 
 zhaoFuns.Rout: zhaoFuns.R
+zhaoPlot.Rout: zhaoPlot.R zhaoFuns.rda
 
 ######################################################################
 
