@@ -34,6 +34,7 @@ NetworkExamples.Rout: NetworkExamples.R
 JR_NegBinom_Result.html: JR_NegBinom_Result.md
 	$(rmdh_r)
 
+Ignore += JR_NegBinom_Result.pdf
 JR_NegBinom_Result.pdf: JR_NegBinom_Result.md
 	$(rmdp_r)
 
