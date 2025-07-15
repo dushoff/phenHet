@@ -15,8 +15,8 @@ d <- (d
 	|> mutate (sig=zhao1(x, delta, kappa))
 )
 
-print(ggplot(d |> mutate(nbd = as.factor(delta)))
-	+ aes(x, sig, color=nbd)
+print(ggplot(d |> mutate(delta = as.factor(delta)))
+	+ aes(x, sig, color=delta)
 	+ geom_line()
 	+ facet_wrap(~kappa, labeller = label_both)
 
