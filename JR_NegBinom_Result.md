@@ -115,7 +115,8 @@ $$\dot{\phi_I}=[-(\beta+\gamma)+\beta\frac{G''_p(\theta)}{\delta}] \phi_I$$
 
 ## 2. Jonathan-Richard result (Zhao1)
 
-This result is not really situated inside this framework, although it was inspired by it. If we imagine that both the number of susceptibles and their mean susceptibility are shaped by a uniform probability of transmission on each edge, then we can solve for each of them in terms of this probability, and consider the relationship between number of susceptibles and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
+This result is not really situated inside this framework, although it was inspired by it. 
+If we imagine that both the number of susceptible and their mean susceptibility are shaped by a uniform probability of transmission on each edge, then we can solve for each of them in terms of this probability, and consider the relationship between number of susceptible and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
 
 Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$ 
 Follow JD's idea: $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\sigma_{\phi}}{\sigma_0}$$
@@ -156,9 +157,11 @@ Take this into $\rho$ gives us for Negative Binomial:\begin{align}
 - Geometric: as $\kappa=1$ we have $$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometric distribution.
 	- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
 
-For further illustration, we define $$\sigma(S)=\frac{\rho}{S}$$ and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+	For further illustration, we define $$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
 
 ![](docs/pix/Zhao1_curve.png)
+![](docs/pix/Zhao1plot.png)****
+
 
 However, JD and RZ doubt this results should only work in a directed network.
 ==TODO: what kind of network/assumptions do we need for this result to work, as it is related to call known results==
@@ -255,6 +258,7 @@ To derive $X_t$
 	- ==They did not explicitly state that this derivation also assume that every edge connect to this $I$ vertex are still being able to transmit the infection other than the known one connect to its infector. This is the same to assume the vertex is newly infected and not yet infect any others.
 	- An correction would be $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\theta}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
 - Therefore, with law of total expectation, for a randomly newly infected node we know the expectation number $X_t$ of infected vertices it can generate would be:
+
 \begin{align}
 \mathcal{R}^*_{\text{eff}}=\mathbb{E}[X_t]&=\mathbb{E}_{K_I}[\mathbb{E}[X_t|K_I]]
 \\
@@ -266,6 +270,8 @@ To derive $X_t$
 \\
 & = \mu \theta\frac{G''_p(\theta)}{G'_p(\theta)}
 \end{align}
+
+
 Take into the fact that $$\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\theta)}{\theta G'_p(1)}$$, we have:$$\mathcal{R}^*_{\text{eff}}=\frac{\beta}{\beta+\gamma}\frac{G''_p(\theta)}{\delta}$$
 As $t\rightarrow 0 \Leftrightarrow \theta \rightarrow 1$, $\mathcal{R}^*_{\text{eff}}$ converge to $$\mathcal{R}^*_0=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
 Similar as how MSV verifying their $\mathcal{R}^*_0$ with dynamic, $\mathcal{R}^*_{\text{eff}}=1$ is where $\dot{\phi}_I=0$. which verify the definition.
@@ -297,6 +303,7 @@ $$\sigma=\frac{\mathcal{R}^*_\text{eff}}{\mathcal{R}^*_0S}=\frac{\frac{\beta}{\b
 
 ### Idea that might help:
 Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
+
 \begin{align}
 \mathbb{P}(u\in\theta \Leftrightarrow u \in\phi_I|u \text{ connect to a vertex }\in I) & = \frac{\mathbb{P}(u\in\phi_I|u\in\theta)\mathbb{P}(u\in\theta)}{\mathbb{P}(u \text{ connect to a vertex }\in I)}
 \\
@@ -304,3 +311,83 @@ Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
 \\
 & =\frac{\phi_I \delta}{I(t) \mathbb{E}[K_I]}
 \end{align}
+
+
+Following previous idea for **newly** infected vertex, we could slightly modify this probability argument by replacing $K_I$ with $K_I-1$ as we are sure for each infected (other than the initial patient 0) vertex, there is one and only one edge comes from its infector, thus can no longer transmit the infection.
+
+We name this new probability $\eta=\frac{\phi_I \delta}{I(t) \mathbb{E}[K_I-1]}$ which is the probability that a randomly chosen edge $u$ is not yet transmit the infection, given it is connected to an infected focal vertex and not the edge infected the focal node.
+Following the previous binomial distribution process, we might be able to construct the expected number of new infection caused by a **random** infected vertex instead of a **NEWLY** infected vertex.
+
+For a random edge $u$ connected infected focal vertex at time $t$ while not connected to its infector, the probability $u$ can transmit the infection is $$\eta \times \phi_S \times \alpha$$
+- $\eta$ as defined earlier is probability $u$ still not yet transmit disease. 
+- $\eta\times\phi_S$ is the probability that such $u$ is connected to a susceptible node. Note we no longer need to conditional on $\theta$ like in $\mu$ as it is already considered in $\eta$.
+- $\alpha$ is the probability such edge could transmit the infection before the infected focal vertex recovering.
+
+Then the expected number of new cases that a randomly infected vertex will causes at time $t$ is given by:
+$$\mathcal{R}_\text{random}=\alpha \phi_S\eta (\mathbb{E}[K_I]-1)=\alpha \phi_S \frac{\phi_I \delta}{I(t) \mathbb{E}[K_I-1]} (\mathbb{E}[K_I]-1)=\alpha \times \frac{\delta \phi_S \phi_I}{I(t)}$$
+Now we observe the traditional expression for $\mathcal{R}_\text{eff}$:
+$$\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}=-\frac{-\beta \delta\phi_S\phi_I}{I(t)}\times\frac{1}{\gamma}=\frac{\beta}{\gamma}\times \frac{\delta \phi_S \phi_I}{I(t)}$$
+
+So they merge if $\alpha=\frac{\beta}{\gamma}$! 
+
+But my problem is for a newly chosen $S-I$ edge in the whole network, the probability it transmit the infection before $I$ recovered or $S$ is infected by others is $\frac{\beta}{\beta+\gamma}$.
+There is some inconsistency here and we need to better understand $\alpha$.
+
+(My guess now:  a randomly chosen edge connected to $I$ for some time have different probability to transmit, compare to the probability of the whole infection duration? but the exponential distribution for recovery and transmission is memoryless...)
+
+Also, for $\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$, we observe it is peaked at/near $(\delta-1)\frac{\beta}{\gamma}$ for Poisson degree distributed network at some time near but not equal to $t=0$.
+I come up with an estimation to this peak value with some problem:
+
+At the peak point, we must have $\dot{\mathcal{R}}_\text{eff}=0$, which leads to
+$$0=\dot{\mathcal{R}}_\text{eff}=\frac{1}{\gamma}\times\frac{\ddot{S}I-\dot{S}\dot{I}}{I^2}$$
+For non-zero $I(t)$, this just requires the numerator:$$0=\ddot{S}I-\dot{S}\dot{I}=\ddot{S}I-\dot{S}(-\dot{S}-\gamma I) \Leftrightarrow I_\text{max}=-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}$$
+As we could represent $S$ and its derivatives with $\theta$ and PGFs but have no explicit expression for $I$, we could take this relationship at peak back into $\mathcal{R}_\text{eff}$:
+$$\max(\mathcal{R}_\text{eff})=-\frac{\dot{S}}{I_\text{max}}\times\frac{1}{\gamma}=-\frac{\dot{S}}{-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}}\times\frac{1}{\gamma}=\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}$$
+Take into the previous relationships for $\dot{S}$ and $\ddot{S}$ we have:
+
+\begin{align}
+\max(\mathcal{R}_\text{eff}) & =\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}
+\\
+&=\frac{\beta}{\gamma}(\frac{G''_p(\theta)}{\delta}\times\frac{\phi_S-\phi_I}{\phi_S}-1)
+\\
+&=\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]
+\\
+&=\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(1-\frac{\theta-\frac{\gamma}{\beta}(1-\theta)-\frac{G'_p(\theta)}{\delta}}{\frac{G'_p(\theta)}{\delta}})-1]
+\\
+&=\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(2-\delta\times\frac{\beta\theta-\gamma(1-\theta)}{\beta G'_p(\theta)})-1]
+\end{align}
+
+#### Poisson
+For Poisson distribution with:
+$$G_p(\theta)=e^{-\delta(1-\theta)}$$
+$$G'_p(\theta)=\delta e^{-\delta(1-\theta)}$$
+$$G''_p(\theta)=\delta^2 e^{-\delta(1-\theta)}$$we have
+
+\begin{align}
+\max(\mathcal{R}_\text{eff}) & =\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(2-\delta\times\frac{\beta\theta-\gamma(1-\theta)}{\beta G'_p(\theta)})-1]
+\\
+& =\frac{\beta}{\gamma}[\delta e^{-\delta(1-\theta)}(2-\frac{\beta\theta-\gamma(1-\theta)}{\beta e^{-\delta(1-\theta)}})-1]
+\\
+& = \frac{\beta}{\gamma}[2\delta e^{-\delta(1-\theta)}-\delta\theta+\frac{\gamma}{\beta}(1-\theta)\delta-1] 
+\end{align}
+
+If we consider $\theta \rightarrow 1$ we have $max(\mathcal{R}_\text{eff})$ converge to our observation:
+$$\lim_{\theta\rightarrow1}{\max(\mathcal{R}_\text{eff})}=\frac{\beta}{\gamma}(2\delta -\delta-1)=\frac{\beta}{\gamma}(\delta-1)$$
+But I have not figure out why it converge to the observation at some $t>0+\epsilon$. A guess would be the initial condition need some time to reach eigenvalue?
+
+#### Negative Binomial
+For NB distribution with:
+$$S=G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}$$
+$$G'_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\theta\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\theta\times\kappa\delta}=\delta S^{\kappa+1}$$
+$$G''_p(\theta)=\delta^2(\kappa+1)S^{2\kappa+1}$$we have
+
+\begin{align}
+\max(\mathcal{R}_\text{eff}) & =\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(2-\delta\times\frac{\beta\theta-\gamma(1-\theta)}{\beta G'_p(\theta)})-1]
+\\
+& =\frac{\beta}{\gamma}[\delta (\kappa+1)S^{2\kappa+1}(2-\frac{\beta\theta-\gamma(1-\theta)}{\beta S^{\kappa+1}})-1]
+\\
+& =\frac{\beta}{\gamma}[\delta (\kappa+1)(2S^{2\kappa+1}-S^{\kappa}(\theta-\frac{\gamma}{\beta}(1-\theta)))-1]
+\end{align}
+
+If we consider $\theta \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_\text{eff})$ converge to:
+$$\lim_{\theta\rightarrow1}{\max(\mathcal{R}_\text{eff})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
