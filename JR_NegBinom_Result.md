@@ -52,7 +52,6 @@ Given its degree $d$, vertex $a$ is susceptible at time $t$ with probability $s(
 Therefore, the proportion of susceptible vertex $S(t)$ at time $t$ is given by:$$S(t)=G_p(\theta(t))=\sum_{d}p_d \theta(t)^d$$
 Now for the vertices compartment, one can write a system such that:
 $$
-\begin{equation}
     \begin{cases}
       S(t)=G_p(\theta(t))
       \\
@@ -60,7 +59,6 @@ $$
       \\
       \dot{R}(t)=\gamma I(t)
     \end{cases}
-\end{equation}
 $$
 ![](docs/pix/EdgeFlow.png)
 
