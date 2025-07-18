@@ -18,7 +18,7 @@ Sources += $(wildcard *.md)
 
 ## Why I still can't visualize???
 
-Ignore += *.html
+Ignore += *.html *.pdf
 ## https://dushoff.github.io/phenHet/approaches.html
 approaches.html: approaches.md
 	$(rmdh_r)
