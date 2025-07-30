@@ -346,8 +346,7 @@ So they merge if $\alpha=\frac{\beta}{\gamma}$!
 But my problem is for a newly chosen $S-I$ edge in the whole network, the probability it transmit the infection before $I$ recovered or $S$ is infected by others is $\frac{\beta}{\beta+\gamma}$.
 There is some inconsistency here and we need to better understand $\alpha$.
 
-(My guess now:  a randomly chosen edge connected to $I$ for some time have different probability to transmit, compare to the probability of the whole infection duration? but the exponential distribution for recovery and transmission is memoryless...)
-
+By def, $\alpha$ should be a probability while $\frac{\beta}{\gamma}$ could be larger than 1 while still feasible.
 
 
 Also, for $\mathcal{R}_\text{eff}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$, we observe it is peaked at/near $(\delta-1)\frac{\beta}{\gamma}$ for Poisson degree distributed network at some time near but not equal to $t=0$.
@@ -376,6 +375,12 @@ If $\theta=1$, this function equals to:
 $$\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}|_{\theta=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}(2-\delta\times\frac{\beta-\gamma(1-1)}{\beta G'_p(1)})-1]=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]$$
 This amount equals to 1 iff $\mathcal{R}^*_0=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}=1$.
 
+### Problem: 
+Unlike the $\mathcal{R}^*_0$ or $\mathcal{R}^*_\text{eff}$ , $\max(\mathcal{R}_\text{eff})|_{\theta=1}$ this amount could easily be larger than the maximum degree as there is no bond for the ratio $\frac{\beta}{\gamma}$. 
+- E.g. consider a network with every nodes has degree $k=5$, then $\delta=5$ and $G''_p(1)=k^2-k=20$, assume $\beta=0.2$ and $\gamma=0.1$, then
+$$\max(\mathcal{R}_\text{eff})|_{\theta=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]==\frac{0.2}{0.1}[\frac{20}{5}-1]=6>k=5$$
+- We need a better definition for this!
+- Volz 2008 paper: The number of new infections in a small time interval is proportional to $\phi_I$ . This is in contrast to compartment models in which the number of new infections is proportional the current number of infectious. 
 ##### Poisson
 For Poisson distribution with:
 $$G_p(\theta)=e^{-\delta(1-\theta)}$$
