@@ -167,7 +167,7 @@ Take this into $\rho$ gives us for Negative Binomial:
 
 For further illustration, we define $$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
 
-![](docs/pix/Zhao1plot.png)****
+![](docs/pix/zhao1Plot.png)****
 
 
 However, JD and RZ doubt this results should only work in a directed network.
