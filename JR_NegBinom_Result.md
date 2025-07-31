@@ -12,6 +12,7 @@ Quick Summary: [approaches.md](./approaches.md)
 
 #### MSV Network Framework
 Consider a random network model that model a population 
+
 - Vertices represent individual in the population
 	- **Network size**: Number of vertices in the network $N$, also the population size
 	- **Degree**: Number of edges connected to each vertex
