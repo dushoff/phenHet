@@ -1,5 +1,5 @@
 ## This is phenomenological heterogeneity
-## https://dushoff.github.io/phenHet/
+## https://dushoff.github.io/phenHet/JR_NegBinom_Result.html
 
 current: target
 -include target.mk
@@ -8,7 +8,7 @@ Ignore = target.mk
 # -include makestuff/perl.def
 
 vim_session:
-	bash -cl "vmt todo.md resources.md"
+	bash -cl "vmt todo.md resources.md README.md"
 
 ######################################################################
 
