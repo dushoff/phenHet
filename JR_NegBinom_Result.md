@@ -91,7 +91,7 @@ However, its idea and definition is differ from intuitive understanding of $\mat
 They define of $\mathcal{R}_0$ from network approach first: $\mathcal{R}_0$ is the expected number of infections a ==newly== infected vertex causes.
 This gives the expression: 
 
-$$
+```math
 \begin{align}
 \mathcal{R}_0&=\sum_{d=1} q_{d-1} \times(d-1)\times \frac{\beta}{\beta+\gamma}
 \\
@@ -101,7 +101,7 @@ $$
 \\
 &=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{G'_p(1)}
 \end{align}
-$$
+```
 
 - $q_{d-1}$ and $d-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
 - $T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a vertex infects one of its neighbor prior to recovering.
