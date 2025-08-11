@@ -25,7 +25,7 @@ Consider a random network model that model a population
 - A **configuration model**:
 	- A algorithm to form static random network that 
 		- First assigning **stabs**(aka half edges) to each vertices based on degree distribution.
-		- Then ==uniformly randomly== paring all existing stabs into edges until no stabs are remained.
+		- Then **uniformly randomly** paring all existing stabs into edges until no stabs are remained.
 		- Reject all graph/network that have multiple edges among any given pair of vertices.
 	- The successful graph are kept as a **realization**
 		- Not all degree sequence (as a random sample of degree distribution) are **realizable**. 
@@ -37,8 +37,10 @@ Consider a random network model that model a population
 		- Several algorithm exist but each with some drawbacks.
 
 For random distribution given a degree distribution with PDF: $\mathbb{P}(K=d)=p_d$.
-The probability generating function(PGF) of degree distribution is denoted by:$$G_p(x)=\sum_{d=0}^{\infty}p_d x^{d}$$
-- A useful expression would be the mean degree $\delta$ is given by:$$\delta=\sum_{d=0}^{\infty}p_d d=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)$$
+The probability generating function(PGF) of degree distribution is denoted by:
+$$G_p(x)=\sum_{d=0}^{\infty}p_d x^{d}$$
+- A useful expression would be the mean degree $\delta$ is given by:
+$$\delta=\sum_{d=0}^{\infty}p_d d=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)$$
 
 Also for network model, **Excess degree** could also be important, as during the outbreak, any newly infected vertex with degree $k$ could only infect at most $k-1$ of its susceptible neighbors, as its infection must come from one neighbor that already being infected.
 Based on given degree distribution with PDF $p_d$, we could define the distribution of excess degree with PDF denoted by $q$, such that:$$\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_d d}{\delta}$$
