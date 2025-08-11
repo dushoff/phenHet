@@ -70,14 +70,20 @@ $$
 
 Now to find the ODE that governs $\theta(t)$, we consider the 4 compartment of all edges/neighbor of a randomly chosen vertex $a$:
 - $\psi(t)=1-\theta(t)$: the proportion/probability that a neighbor $b$ is infected and the infection has transmitted to $a$.
-- $\phi_S$: the proportion/probability that a neighbor $b$ is susceptible. Given degree $d$, $b$ is susceptible with probability $\theta(t)^{d-1}$ (not consider transmission from $a$ so $d-1$ nodes can infect $b$). A weighted average based on excess degree gives$$\phi_S=\sum_dq_{d-1} \theta(t)^{d-1}{}=\frac{G'(\theta)}{G'(1)}=\frac{G'(\theta)}{\delta}$$
+- $\phi_S$: the proportion/probability that a neighbor $b$ is susceptible. Given degree $d$, $b$ is susceptible with probability $\theta(t)^{d-1}$ (not consider transmission from $a$ so $d-1$ nodes can infect $b$). A weighted average based on excess degree gives
+$$\phi_S=\sum_dq_{d-1} \theta(t)^{d-1}{}=\frac{G'(\theta)}{G'(1)}=\frac{G'(\theta)}{\delta}$$
 - $\phi_I$: the proportion/probability that a neighbor $b$ is infected but the infection has not yet transmitted to $a$.
 - $\phi_R$: the proportion/probability that a neighbor $b$ is recovered but the infection has not transmitted to $a$.
-- As we have a closed system, we have $$1=(1-\theta)+\phi_S+\phi_I+\phi_R \Leftrightarrow\theta=\phi_S+\phi_I+\phi_R$$
-- Consider the infection rate $\beta$, the flux from $\phi_I$ to $1-\theta$ will be $\beta \phi_I$, this gives: $$\frac{d\theta(t)}{dt}=\dot{\theta}=-\beta\phi_I=-\beta(\theta-\phi_S-\phi_R)$$
-- Consider the recovery rate $\gamma$, the flux from $\phi_I$ to $\phi_R$ will be $\gamma \phi_I$, this gives:$$\dot{\phi}_R=\gamma\phi_I$$
-- As $\phi_R(0)$ and  $1-\theta(0)$ both close to $0$, with the large network size, we have the integration:$$\phi_R=\frac{\gamma}{\beta}(1-\theta)$$
-- Therefore we combine these results got to:$$\dot{\theta}=-\beta\phi_I=-\beta(\theta-\phi_S-\phi_R)=-\beta\theta+\beta\frac{G_p'(\theta)}{\delta}+\gamma(1-\theta)$$
+- As we have a closed system, we have 
+$$1=(1-\theta)+\phi_S+\phi_I+\phi_R \Leftrightarrow\theta=\phi_S+\phi_I+\phi_R$$
+- Consider the infection rate $\beta$, the flux from $\phi_I$ to $1-\theta$ will be $\beta \phi_I$, this gives: 
+$$\frac{d\theta(t)}{dt}=\dot{\theta}=-\beta\phi_I=-\beta(\theta-\phi_S-\phi_R)$$
+- Consider the recovery rate $\gamma$, the flux from $\phi_I$ to $\phi_R$ will be $\gamma \phi_I$, this gives:
+$$\dot{\phi}_R=\gamma\phi_I$$
+- As $\phi_R(0)$ and  $1-\theta(0)$ both close to $0$, with the large network size, we have the integration:
+$$\phi_R=\frac{\gamma}{\beta}(1-\theta)$$
+- Therefore we combine these results got to:
+$$\dot{\theta}=-\beta\phi_I=-\beta(\theta-\phi_S-\phi_R)=-\beta\theta+\beta\frac{G_p'(\theta)}{\delta}+\gamma(1-\theta)$$
 
 MSV named $\mathcal{R}_0$ as **basic reproductive number** and use the same notation as in homogeneous model.
 However, its idea and definition is differ from intuitive understanding of $\mathcal{R}_0$ for homogeneous model.
@@ -85,6 +91,7 @@ However, its idea and definition is differ from intuitive understanding of $\mat
 They define of $\mathcal{R}_0$ from network approach first: $\mathcal{R}_0$ is the expected number of infections a ==newly== infected vertex causes.
 This gives the expression: 
 
+$$
 \begin{align}
 \mathcal{R}_0&=\sum_{d=1} q_{d-1} \times(d-1)\times \frac{\beta}{\beta+\gamma}
 \\
@@ -94,15 +101,18 @@ This gives the expression:
 \\
 &=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{G'_p(1)}
 \end{align}
+$$
 
 - $q_{d-1}$ and $d-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
 - $T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a vertex infects one of its neighbor prior to recovering.
 - As they assume neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $d$ will follow a binomial distribution $\text{Binom}(d-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(d-1)\times \frac{\beta}{\beta+\gamma}$ 
 
 They then provide an equivalent derivations based on the ODE of $\theta$:
-Consider $\theta(0)=1+\epsilon$ ($\epsilon<0$)which is very close to $1$:$$\dot{\theta}=\dot{\epsilon}=-\beta(1+\epsilon)+\beta\frac{G_p'(1+\epsilon)}{\delta}+\gamma (1-(1+\epsilon))$$
+Consider $\theta(0)=1+\epsilon$ ($\epsilon<0$)which is very close to $1$:
+$$\dot{\theta}=\dot{\epsilon}=-\beta(1+\epsilon)+\beta\frac{G_p'(1+\epsilon)}{\delta}+\gamma (1-(1+\epsilon))$$
 Consider the first order: 
 
+$$
 \begin{align}
 G_p'(1+\epsilon)&=\sum_d p_d d(1+\epsilon)^{d-1}
 \\
@@ -114,6 +124,7 @@ G_p'(1+\epsilon)&=\sum_d p_d d(1+\epsilon)^{d-1}
 \\
 & = \delta+\epsilon G_p''(1)
 \end{align}
+$$
 
 Then for the first order we have:
 $$\dot{\theta}=\dot{\epsilon}\approx-\beta(1+\epsilon)+\beta\frac{\delta+\epsilon G_p''(1)}{\delta}-\gamma\epsilon=[-(\beta+\gamma)+\beta\frac{G_p''(1)}{\delta}] \times \epsilon$$
@@ -127,36 +138,54 @@ $$\dot{\phi_I}=[-(\beta+\gamma)+\beta\frac{G''_p(\theta)}{\delta}] \phi_I$$
 This result is not really situated inside this framework, although it was inspired by it. 
 If we imagine that both the number of susceptible and their mean susceptibility are shaped by a uniform probability of transmission on each edge, then we can solve for each of them in terms of this probability, and consider the relationship between number of susceptible and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
 
-Consider the effective "incidence" term using $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$ 
-Follow JD's idea: $$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\sigma_{\phi}}{\sigma_0}$$
-- $\sigma_{\phi}$: Expected number of edges of susceptible vertices$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times(1-\phi)^{d}=\sum_{d=0}^{\infty}p_d \times d \times \theta^{d}=\theta\sum_{d=0}^{\infty}p_d \times d \times\theta^{d-1}=\theta G_p'(\theta)$$
-- At $t=0$, we have $\sigma_\phi(0)=\sigma_0$: $$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\theta\rightarrow1} \theta G_p'(\theta)=\delta$$
-- Therefore, $$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
+Consider the effective "incidence" term using 
+$$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}$$ 
+Follow JD's idea: 
+$$\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\sigma_{\phi}}{\sigma_0}$$
+- $\sigma_{\phi}$: Expected number of edges of susceptible vertices
+$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times(1-\phi)^{d}=\sum_{d=0}^{\infty}p_d \times d \times \theta^{d}=\theta\sum_{d=0}^{\infty}p_d \times d \times\theta^{d-1}=\theta G_p'(\theta)$$
+- At $t=0$, we have $\sigma_\phi(0)=\sigma_0$: 
+$$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\theta\rightarrow1} \theta G_p'(\theta)=\delta$$
+- Therefore, 
+$$\rho=\frac{\theta G_p'(\theta)}{\delta}$$
 
 Consider the Negative binomial distribution as degree distribution, which could also be seen as a continuous mixture of Poisson distribution and Gamma distribution.
 For this family of distributions (Negative Binomial, Poisson, Geometric), the PGF $G_p$ could be written easily in closed form and the distributions are connected such that other distributions could be deduced from the Negative Binomial distribution.
 
-Typical PMF of negative binomial distribution is given by:$$p_d=\binom{d+r-1}{d}(1-p)^dp^r$$ with mean $$\delta=\frac{r(1-p)}{p}$$ and variance $$\text{Var}=\frac{r(1-p)}{p^2}$$
+Typical PMF of negative binomial distribution is given by:
+$$p_d=\binom{d+r-1}{d}(1-p)^dp^r$$ with mean 
+$$\delta=\frac{r(1-p)}{p}$$ and variance 
+$$\text{Var}=\frac{r(1-p)}{p^2}$$
 For better understanding, we parameterize the distribution using mean $\delta$ and Dushoff-style squared CV $\kappa$, such that 
 
+$$
 \begin{align} 
 	r & =\frac{1}{\kappa}
 	\\
 	p & =\frac{1}{1+\kappa\delta}
 \end{align}
+$$
 
 This gives us the variance $\text{Var}=\delta(1+\kappa\delta)>\delta$, as these family of distributions are always over-dispersed, and further never converge to homogeneous case.
 
 Now consider the PGFs of this family:
-- Negative Binomial distribution:$$G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}$$
-- Poisson: As $\kappa \rightarrow 0$, NegBinom converge to Poisson distribution with $$G_p(\theta)=e^{\delta(\theta-1)}$$
-	- Verification: As $$\lim_{a\rightarrow \infty}(1+\frac{x}{a})^a=e^x =\lim_{b\rightarrow0}(1-x \times b)^{-\frac{1}{b}}$$we have$$\lim_{\kappa\rightarrow 0} (\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}=\lim_{\kappa\rightarrow 0} (1-\kappa \times\delta(\theta-1))^{-\frac{1}{\kappa}}=e^{\delta(\theta-1)}$$
-- Geometric: As $\kappa=1$, NegBinom is Geometric distribution by definition, with PGF: $$G_p(\theta)=\frac{1}{1+\delta-\theta\times\delta}$$
+- Negative Binomial distribution:
+$$G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}$$
+- Poisson: As $\kappa \rightarrow 0$, NegBinom converge to Poisson distribution with 
+$$G_p(\theta)=e^{\delta(\theta-1)}$$
+	- Verification: As 
+	$$\lim_{a\rightarrow \infty}(1+\frac{x}{a})^a=e^x =\lim_{b\rightarrow0}(1-x \times b)^{-\frac{1}{b}}$$we have
+	$$\lim_{\kappa\rightarrow 0} (\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}=\lim_{\kappa\rightarrow 0} (1-\kappa \times\delta(\theta-1))^{-\frac{1}{\kappa}}=e^{\delta(\theta-1)}$$
+- Geometric: As $\kappa=1$, NegBinom is Geometric distribution by definition, with PGF: 
+$$G_p(\theta)=\frac{1}{1+\delta-\theta\times\delta}$$
 
-Just consider the general Negative Binomial case, as from the MSV framework, we got $$S=G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}\Rightarrow\theta=G^{-1}_p(S)=1+\frac{1-S^{-\kappa}}{\kappa\delta}$$
-and $$G'_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\theta\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\theta\times\kappa\delta}$$
+Just consider the general Negative Binomial case, as from the MSV framework, we got
+$$S=G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}\Rightarrow\theta=G^{-1}_p(S)=1+\frac{1-S^{-\kappa}}{\kappa\delta}$$
+and 
+$$G'_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\theta\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\theta\times\kappa\delta}$$
 Take this into $\rho$ gives us for Negative Binomial:
 
+$$
 \begin{align}
 \rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\theta G'_p(\theta)}{\delta}=\frac{S\theta}{1+\kappa\delta-\theta\times\kappa\delta}
 \\
@@ -164,14 +193,20 @@ Take this into $\rho$ gives us for Negative Binomial:
 \\
 &=S\times(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})
 \end{align}
+$$
 
-- Gamma: as $\delta \rightarrow \infty$ we have $$\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}$$ which agree with the Dwyer-Parsons result with Gamma distribution
-- Poisson: as $\kappa\rightarrow0$ we have$$\lim_{\kappa\rightarrow0}\rho=S\lim_{\kappa\rightarrow0}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times (1+\frac{\log(S)}{\delta})$$which agree with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Poisson distribution.
-	- Derivation: $$\lim_{\kappa\rightarrow0}\frac{S^{\kappa}-1}{\kappa}=\log(S)$$as $S \in [0,1]$
-- Geometric: as $\kappa=1$ we have $$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometric distribution.
+- Gamma: as $\delta \rightarrow \infty$ we have 
+$$\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}$$ which agree with the Dwyer-Parsons result with Gamma distribution
+- Poisson: as $\kappa\rightarrow0$ we have
+$$\lim_{\kappa\rightarrow0}\rho=S\lim_{\kappa\rightarrow0}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times (1+\frac{\log(S)}{\delta})$$which agree with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Poisson distribution.
+	- Derivation: 
+	$$\lim_{\kappa\rightarrow0}\frac{S^{\kappa}-1}{\kappa}=\log(S)$$as $S \in [0,1]$
+- Geometric: as $\kappa=1$ we have 
+$$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometric distribution.
 	- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
 
-For further illustration, we define $$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+For further illustration, we define 
+$$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
 
 ![](docs/pix/zhao1Plot.png)****
 
