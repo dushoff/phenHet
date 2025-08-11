@@ -52,8 +52,10 @@ Following [J.C. Miller, A.C. Slim & E.M. Volz(2011)](./refs/MillerSlimVolz2011.p
 
 ==MSV claim for a random network with large enough size, neighbors of a randomly chosen vertex $a$ are independent, which could be a key assumption for the framework to work in large size network.== 
 Given its degree $d$, vertex $a$ is susceptible at time $t$ with probability $s(d; \theta(t)) = \theta(t)^d$.
-Therefore, the proportion of susceptible vertex $S(t)$ at time $t$ is given by:$$S(t)=G_p(\theta(t))=\sum_{d}p_d \theta(t)^d$$
+Therefore, the proportion of susceptible vertex $S(t)$ at time $t$ is given by:
+$$S(t)=G_p(\theta(t))=\sum_{d}p_d \theta(t)^d$$
 Now for the vertices compartment, one can write a system such that:
+
 $$
     \begin{cases}
       S(t)=G_p(\theta(t))
@@ -63,6 +65,7 @@ $$
       \dot{R}(t)=\gamma I(t)
     \end{cases}
 $$
+
 ![](docs/pix/EdgeFlow.png)
 
 Now to find the ODE that governs $\theta(t)$, we consider the 4 compartment of all edges/neighbor of a randomly chosen vertex $a$:
