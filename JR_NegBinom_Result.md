@@ -90,8 +90,7 @@ However, its idea and definition is differ from intuitive understanding of $\mat
 
 They define of $\mathcal{R}_0$ from network approach first: $\mathcal{R}_0$ is the expected number of infections a ==newly== infected vertex causes.
 This gives the expression: 
-
-```math
+$$
 \begin{align}
 \mathcal{R}_0&=\sum_{d=1} q_{d-1} \times(d-1)\times \frac{\beta}{\beta+\gamma}
 \\
@@ -101,8 +100,7 @@ This gives the expression:
 \\
 &=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{G'_p(1)}
 \end{align}
-```
-
+$$
 - $q_{d-1}$ and $d-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
 - $T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a vertex infects one of its neighbor prior to recovering.
 - As they assume neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $d$ will follow a binomial distribution $\text{Binom}(d-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(d-1)\times \frac{\beta}{\beta+\gamma}$ 
@@ -234,7 +232,7 @@ Observation: for Poisson degree distribution, the peak value seems to be $(\delt
 See sdeas at the last part of this document.
 
 Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.
-
+$$
 \begin{align}
 	\dot{S}& = -\beta\delta SX_D
 	\\
@@ -244,7 +242,7 @@ Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed
 	\\
 	\dot{R} & = \gamma I
 \end{align}
-
+$$
 This indicate that incidence term $\dot{S}$ in network model is not directly determined by $I$.
 Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $\mathcal{R}_0$.
 
@@ -311,7 +309,7 @@ To derive $X_t$
 	- ==They did not explicitly state that this derivation also assume that every edge connect to this $I$ vertex are still being able to transmit the infection other than the known one connect to its infector. This is the same to assume the vertex is newly infected and not yet infect any others.
 	- An correction would be $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\theta}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
 - Therefore, with law of total expectation, for a randomly newly infected node we know the expectation number $X_t$ of infected vertices it can generate would be:
-
+$$
 \begin{align}
 \mathcal{R}^*_{\text{eff}}=\mathbb{E}[X_t]&=\mathbb{E}_{K_I}[\mathbb{E}[X_t|K_I]]
 \\
@@ -323,7 +321,7 @@ To derive $X_t$
 \\
 & = \mu \theta\frac{G''_p(\theta)}{G'_p(\theta)}
 \end{align}
-
+$$
 
 Take into the idea that $$\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\theta)}{\theta G'_p(1)}$$, we have:$$\mathcal{R}^*_{\text{eff}}=\frac{\beta}{\beta+\gamma}\frac{G''_p(\theta)}{\delta}$$
 As $t\rightarrow 0 \Leftrightarrow \theta \rightarrow 1$, $\mathcal{R}^*_{\text{eff}}$ converge to $$\mathcal{R}^*_0=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
@@ -332,7 +330,7 @@ Similar as how MSV verifying their $\mathcal{R}^*_0$ with dynamic, $\mathcal{R}^
 
 #### How $\mathcal{R}^*_{\text{eff}}$ affect the incidence $-\dot{S}(t)$?
 Consider rate of change for the incidence term
-
+$$
 \begin{align}
 \frac{d}{dt}(-\dot{S}(t))& =-\ddot{S}(t)
 \\
@@ -342,7 +340,7 @@ Consider rate of change for the incidence term
 \\
 & =\beta\delta\phi_I[\phi_S(\beta+\gamma)(\mathcal{R}^*_\text{eff}-1)-\beta\frac{G''_p(\theta)}{\delta}\phi_I]
 \end{align}
-
+$$
 If and only if $(\mathcal{R}^*_\text{eff}-1)$ >0, the rate of change $-\ddot{S}(t)$ have positive term (increasing force).
 
 
@@ -358,7 +356,7 @@ $$\sigma=\frac{\mathcal{R}^*_\text{eff}}{\mathcal{R}^*_0S}=\frac{\frac{\beta}{\b
 
 ### Ideas that might help:
 Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
-
+$$
 \begin{align}
 \mathbb{P}(u\in\theta \Leftrightarrow u \in\phi_I|u \text{ connect to a vertex }\in I) & = \frac{\mathbb{P}(u\in\phi_I|u\in\theta)\mathbb{P}(u\in\theta)}{\mathbb{P}(u \text{ connect to a vertex }\in I)}
 \\
@@ -366,7 +364,7 @@ Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
 \\
 & =\frac{\phi_I \delta}{I(t) \mathbb{E}[K_I]}
 \end{align}
-
+$$
 
 Following previous idea for **newly** infected vertex, we could slightly modify this probability argument by replacing $K_I$ with $K_I-1$ as we are sure for each infected (other than the initial patient-zero) vertex, there is one and only one edge comes from its infector, thus can no longer transmit the infection.
 
@@ -401,7 +399,7 @@ For non-zero $I(t)$, this just requires the numerator:$$0=\ddot{S}I-\dot{S}\dot{
 As we could represent $S$ and its derivatives with $\theta$ and PGFs but have no explicit expression for $I$, we could take this relationship at peak back into $\mathcal{R}_\text{eff}$:
 $$\max(\mathcal{R}_\text{eff})=-\frac{\dot{S}}{I_\text{max}}\times\frac{1}{\gamma}=-\frac{\dot{S}}{-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}}\times\frac{1}{\gamma}=\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}$$
 Take into the previous relationships for $\dot{S}$ and $\ddot{S}$ we have:
-
+$$
 \begin{align}
 \max(\mathcal{R}_\text{eff}) & =\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}
 \\
@@ -413,7 +411,7 @@ Take into the previous relationships for $\dot{S}$ and $\ddot{S}$ we have:
 \\
 &=\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(2-\delta\times\frac{\beta\theta-\gamma(1-\theta)}{\beta G'_p(\theta)})-1]
 \end{align}
-
+$$
 If $\theta=1$, this function equals to: 
 $$\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}|_{\theta=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}(2-\delta\times\frac{\beta-\gamma(1-1)}{\beta G'_p(1)})-1]=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]$$
 This amount equals to 1 iff $\mathcal{R}^*_0=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}=1$.
@@ -429,7 +427,7 @@ For Poisson distribution with:
 $$G_p(\theta)=e^{-\delta(1-\theta)}$$
 $$G'_p(\theta)=\delta e^{-\delta(1-\theta)}$$
 $$G''_p(\theta)=\delta^2 e^{-\delta(1-\theta)}$$we have
-
+$$
 \begin{align}
 \max(\mathcal{R}_\text{eff}) & =\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(2-\delta\times\frac{\beta\theta-\gamma(1-\theta)}{\beta G'_p(\theta)})-1]
 \\
@@ -437,7 +435,7 @@ $$G''_p(\theta)=\delta^2 e^{-\delta(1-\theta)}$$we have
 \\
 & = \frac{\beta}{\gamma}[2\delta e^{-\delta(1-\theta)}-\delta\theta+\frac{\gamma}{\beta}(1-\theta)\delta-1] 
 \end{align}
-
+$$
 
 If we consider $\theta \rightarrow 1$ we have $max(\mathcal{R}_\text{eff})$ converge to our observation:
 $$\lim_{\theta\rightarrow1}{\max(\mathcal{R}_\text{eff})}=\frac{\beta}{\gamma}(2\delta -\delta-1)=\frac{\beta}{\gamma}(\delta-1)$$
@@ -448,7 +446,7 @@ For general NB distribution with:
 $$S=G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}$$
 $$G'_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\theta\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\theta\times\kappa\delta}=\delta S^{\kappa+1}$$
 $$G''_p(\theta)=\delta^2(\kappa+1)S^{2\kappa+1}$$we have
-
+$$
 \begin{align}
 \max(\mathcal{R}_\text{eff}) & =\frac{\beta}{\gamma}[\frac{G''_p(\theta)}{\delta}(2-\delta\times\frac{\beta\theta-\gamma(1-\theta)}{\beta G'_p(\theta)})-1]
 \\
@@ -456,7 +454,7 @@ $$G''_p(\theta)=\delta^2(\kappa+1)S^{2\kappa+1}$$we have
 \\
 & =\frac{\beta}{\gamma}[\delta (\kappa+1)(2S^{2\kappa+1}-S^{\kappa}(\theta-\frac{\gamma}{\beta}(1-\theta)))-1]
 \end{align}
-
+$$
 If we consider $\theta \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_\text{eff})$ converge to:
 $$\lim_{\theta\rightarrow1}{\max(\mathcal{R}_\text{eff})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
 ??? Does not work well for Gamma distribution...
