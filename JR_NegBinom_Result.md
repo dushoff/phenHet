@@ -229,7 +229,6 @@ But it might not be that interesting.
 
 ==(TODO: How to estimate the Def/Black curve here?)==
 Observation: for Poisson degree distribution, the peak value seems to be $(\delta-1)\frac{\beta}{\gamma}$. 
-See sdeas at the last part of this document.
 
 Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.
 $$
