@@ -184,7 +184,6 @@ $$S=G_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\k
 and 
 $$G'_p(\theta)=(\frac{1}{1+\kappa\delta-\theta\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\theta\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\theta\times\kappa\delta}$$
 Take this into $\rho$ gives us for Negative Binomial:
-
 $$
 \begin{align}
 \rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_0}=\frac{\theta G'_p(\theta)}{\delta}=\frac{S\theta}{1+\kappa\delta-\theta\times\kappa\delta}
@@ -327,6 +326,18 @@ As $t\rightarrow 0 \Leftrightarrow \theta \rightarrow 1$, $\mathcal{R}^*_{\text{
 Similar as how MSV verifying their $\mathcal{R}^*_0$ with dynamic, $\mathcal{R}^*_{\text{eff}}=1$ is where $\dot{\phi}_I=0$. which verify the definition.
 
 
+### Todd's Question about Zhao2
+TP think we need to be more careful for the probability $\mu$ here, by setting
+$$\mu = \frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\theta}$$
+, we assume 
+- All neighbors of the focal, newly infected nodes are independent
+- The connected susceptible node is susceptible during the whole infection period, i.e. not infected by its any other neighbors: $$\frac{\beta}{\beta+\gamma}$$but this is not necessarily true in real world.
+- ==$\mu$ here is overcounting: assuming every susceptible neighbor of the focal newly infected node will be infected by the focal. There should be a certain portion of susceptible nodes infected by their other neighbors.==
+	- Idea: the negative adjustment term in $-\ddot{S}$?
+	- ?? This over counting is small when the network is large and $\phi_I$ is not too large
+- It requires more consideration how the independency works.
+- We need more details for why we have the $\theta$ denominator as conditional probability
+
 #### How $\mathcal{R}^*_{\text{eff}}$ affect the incidence $-\dot{S}(t)$?
 Consider rate of change for the incidence term
 $$
@@ -364,6 +375,9 @@ $$
 & =\frac{\phi_I \delta}{I(t) \mathbb{E}[K_I]}
 \end{align}
 $$
+
+**Problem:** Does $\mathbb{E}[K_I]$ apply to all infected vertices at the moment or just newly infected vetices???
+- Does this really matter? As later it will cancel with the degree outside of $\mu$?
 
 Following previous idea for **newly** infected vertex, we could slightly modify this probability argument by replacing $K_I$ with $K_I-1$ as we are sure for each infected (other than the initial patient-zero) vertex, there is one and only one edge comes from its infector, thus can no longer transmit the infection.
 
@@ -457,3 +471,6 @@ $$
 If we consider $\theta \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_\text{eff})$ converge to:
 $$\lim_{\theta\rightarrow1}{\max(\mathcal{R}_\text{eff})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
 ??? Does not work well for Gamma distribution...
+
+### Test Idea
+Test: the Zhao2 result $\sigma^* S \times max(\mathcal{R}_\text{eff})$ does not match $\mathcal{R}_\text{eff}$
