@@ -8,7 +8,7 @@ library(deSolve)
 library(igraph)
 library(ggplot2)
 library(cbinom)
-################################### Network Part
+################################### Network Functions
 {
   #Degree Distribution data frame
   DDistPK <- function(df){
@@ -221,13 +221,15 @@ library(cbinom)
   }
   
 }
-#################### Network Part END ###########################################
+#################### Network Fuctions Part END ###########################################
 
 ################################ Distribution part####################################################
+#### Distribution Parameter
 lambda <- 10
 kappa <- 2
 r <- 1/kappa
 
+#### Disease 
 beta <- 0.25
 gamma <- 0.2
 
@@ -416,18 +418,17 @@ S_dot <- theta_dot*(lambda*CM_S)/(1+kappa*lambda-theta*kappa*lambda)
 # new_reff<- beta/(beta+gamma)*lambda*CM_S
 #new_reff<- beta/(gamma)*(lambda-1)*CM_S
 
-def_reff <- -S_dot/(CM_I*gamma)
-new_reff <- beta/gamma*(lambda*(kappa+1)-1)*CM_S^(1+2*kappa)
-new_reff
-dat_reff <- cbind(time,def_reff
+R_i <- -S_dot/(CM_I*gamma)
+R_c <- beta/gamma*(lambda*(kappa+1)-1)*CM_S^(1+2*kappa)
+dat_reff <- cbind(time,R_i
                   #,cal_reff
-                  ,new_reff
+                  ,R_c
                   ,theta)
-def_reff
+
 ggplot(data=dat_reff)+theme_bw()+
-  geom_line(aes(x=time, y=def_reff,color="Instantaneous"))+
+  geom_line(aes(x=time, y=R_i,color="Instantaneous"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
-  geom_line(aes(x=time, y=new_reff,color="est"))+
+  geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
   #geom_line(aes(x=time, y=theta, color="Theta"))+
   #geom_line(aes(x=time, y=test, color="test"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
