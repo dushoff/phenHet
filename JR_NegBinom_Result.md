@@ -270,14 +270,13 @@ Similar as how MSV verifying their $\mathcal{R}_{0,c}$ with dynamic, $\mathcal{R
 #### Negative Binomial Family of Degree Distribution
 (TO DO: Applying this for all NegBinom distribution family)
 
-Similarly with previous Jonathan-Richard result, for Negative binomial degree distribution with PGF:$$G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}$$we have:
+Similarly with previous Jonathan-Richard result, for Negative binomial degree distribution with PGF:$$G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}=S$$we have:
 $$\sigma=\frac{\mathcal{R}^*_c}{\mathcal{R}_{0,c}\times S}=\frac{\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}}{\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}\times G_p(\phi)}=\frac{G''_p(\phi)}{G''_p(1) G_p(\phi)}=\frac{\delta^2(\kappa+1)G_p(\phi)^{2\kappa+1}}{\delta^2(\kappa+1)G_p(\phi)}=S^{2\kappa}$$
 as we have
 $$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}$$
-
+and
+$$G''_p(\phi)=\delta^2(\kappa+1)(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}+2}=\delta^2(\kappa+1)S^{2\kappa+1}$$
 ==(TODO) verify the gamma case==
-
-
 
 ### Todd's Question about Zhao2 and $\mathcal{R}^*_c$
 TP think we need to be more careful for the probability $\mu$ here, by setting
@@ -313,11 +312,9 @@ $$
 If and only if $(\mathcal{R}^*_c-1)$ >0, the rate of change $-\ddot{S}(t)$ have positive term (increasing force).
 
 
-
-
-
-#### Question
-(??) How to connect $\mathcal{R}_{i}$ with incidence term $\frac{dS}{dt}$? $$\mathcal{R}_{i}=-\frac{-\dot{S}(t)}{I(t)}\times\frac{1}{\gamma}$$
+## 4. $\mathcal{R}_{c}$ and $\mathcal{R}_{i}$ for network model
+### Question
+(??) How to connect $\mathcal{R}_{i}$ with incidence term $-\dot{S}(t)$? $$\mathcal{R}_{i}=-\frac{-\dot{S}(t)}{I(t)}\times\frac{1}{\gamma}$$
 - ==This does not work for Miller's network model==
 - ==(TODO: We need further understanding this and give explanation)==
 ![](docs/pix/Reff_compare.png)
@@ -340,12 +337,9 @@ $$
 This indicate that incidence term $\dot{S}$ in network model is not directly determined by $I$.
 Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $\mathcal{R}_{0,c}$.
 
-
-
-## 3. $\mathcal{R}_{c}$ and $\mathcal{R}_{i}$ for network model
-
+### Some thoughts
 For MSV network frame with configuration network, I don't think the relationship of reproductive number/ratio and $\dot{S}$ from homogeneous model, like:
-$$\mathcal{R}_{i}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$$
+$$\mathcal{R}_{i}=-\frac{-\dot{S}(t)}{I(t)}\times\frac{1}{\gamma}$$
 can be directly applied. $\mathcal{R}_{i}$ defined as (expected) number of infection a randomly chosen infected individual can cause, which affect the incidence of the system.
 
 For homogeneous model, any individual in $I(t)$ have same infectivity to infect susceptible nodes, because of the fully-mixed mass-action assumption for contact. 
@@ -372,9 +366,7 @@ An equivalent illustration would based on the $\phi_S=\frac{G_p'(\phi)}{\delta}$
 and $\phi_I$ is governed by:$$\dot{\phi_I}=-\dot{\phi}_S-(\beta+\gamma)\phi_I=[-(\beta+\gamma)+\beta\frac{G''_p(\phi)}{\delta}] \phi_I$$
 As $\phi_S$ is governed by:$$\dot{\phi}_S=-\beta\frac{G''_p(\phi)}{\delta} \phi_I$$
 
-
-
-### Ideas that might help:
+### Try to find $\mathcal{R}_i$ like Zhao2 
 Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
 $$
 \begin{align}
@@ -413,9 +405,8 @@ There is some inconsistency here and we need to better understand $\alpha$.
 
 By def, $\alpha$ should be a probability while $\frac{\beta}{\gamma}$ could be larger than 1 while still feasible.
 
-
-#### "Peak" value of $\mathcal{R}_i$
-Also, for $\mathcal{R}_{i}=-\frac{\frac{dS(t)}{dt}}{I(t)}\times\frac{1}{\gamma}$, we observe it is peaked at/near $(\delta-1)\frac{\beta}{\gamma}$ for Poisson degree distributed network at some time near but not equal to $t=0$.
+### "Peak" value of $\mathcal{R}_i$
+Also, for $\mathcal{R}_{i}=-\frac{-\dot{S}(t)}{I(t)}\times\frac{1}{\gamma}$, we observe it is peaked at/near $(\delta-1)\frac{\beta}{\gamma}$ for Poisson degree distributed network at some time near but not equal to $t=0$.
 I come up with an estimation to this peak value with some problem:
 
 At the peak point, we must have $\dot{\mathcal{R}}_\text{eff}=0$, which leads to
@@ -441,13 +432,13 @@ If $\phi=1$, this function equals to:
 $$\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}(2-\delta\times\frac{\beta-\gamma(1-1)}{\beta G'_p(1)})-1]=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]$$
 This amount equals to 1 iff $\mathcal{R}_{0,c}=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}=1$.
 
-### Problem: 
+#### Problem: 
 Unlike the $\mathcal{R}_{0,c}$ or $\mathcal{R}^*_c$ , $\max(\mathcal{R}_{i})|_{\phi=1}$ this amount could easily be larger than the maximum degree as there is no bond for the ratio $\frac{\beta}{\gamma}$. 
 - E.g. consider a network with every nodes has degree $k=5$, then $\delta=5$ and $G''_p(1)=k^2-k=20$, assume $\beta=0.2$ and $\gamma=0.1$, then
 $$\max(\mathcal{R}_{i})|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]==\frac{0.2}{0.1}[\frac{20}{5}-1]=6>k=5$$
 - We need a better definition for this!
 - Volz 2008 paper: The number of new infections in a small time interval is proportional to $\phi_I$ . This is in contrast to compartment models in which the number of new infections is proportional the current number of infectious. 
-##### Poisson
+#### Poisson
 For Poisson distribution with:
 $$G_p(\phi)=e^{-\delta(1-\phi)}$$
 $$G'_p(\phi)=\delta e^{-\delta(1-\phi)}$$
@@ -466,7 +457,7 @@ If we consider $\phi \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to o
 $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(2\delta -\delta-1)=\frac{\beta}{\gamma}(\delta-1)$$
 But I have not figure out why it converge to our observation at some $t>0+\epsilon$. A guess would be the initial condition need some time to reach eigenvector direction?
 
-##### Negative Binomial
+#### Negative Binomial
 For general NB distribution with:
 $$S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}$$
 $$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\delta S^{\kappa+1}$$
@@ -486,3 +477,5 @@ $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\ka
 
 ### Test Idea
 Test: the Zhao2 result $\sigma^* S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$
+See [NetworkExamples.R](NetworkExamples.R)
+![](docs/pix/InsEstimation.png)
