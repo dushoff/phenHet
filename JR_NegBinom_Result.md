@@ -24,8 +24,8 @@ Consider a random network model that model a population
 	- Edges is invariant w.r.t. time once formed
 - A **configuration model**:
 	- A algorithm to form static random network that 
-		- First assigning **stabs**(aka half edges) to each vertices based on degree distribution.
-		- Then **uniformly randomly** paring all existing stabs into edges until no stabs are remained.
+		- First assigning **stubs**(aka half edges) to each vertices based on degree distribution.
+		- Then **uniformly randomly** paring all existing stubs into edges until no stubs are remained.
 		- Reject all graph/network that have multiple edges among any given pair of vertices.
 	- The successful graph are kept as a **realization**
 		- Not all degree sequence (as a random sample of degree distribution) are **realizable**. 
@@ -409,8 +409,8 @@ By def, $\alpha$ should be a probability while $\frac{\beta}{\gamma}$ could be l
 Also, for $\mathcal{R}_{i}=-\frac{-\dot{S}(t)}{I(t)}\times\frac{1}{\gamma}$, we observe it is peaked at/near $(\delta-1)\frac{\beta}{\gamma}$ for Poisson degree distributed network at some time near but not equal to $t=0$.
 I come up with an estimation to this peak value with some problem:
 
-At the peak point, we must have $\dot{\mathcal{R}}_\text{eff}=0$, which leads to
-$$0=\dot{\mathcal{R}}_\text{eff}=\frac{1}{\gamma}\times\frac{\ddot{S}I-\dot{S}\dot{I}}{I^2}$$
+At the peak point, we must have $\dot{\mathcal{R}}_i=0$, which leads to
+$$0=\dot{\mathcal{R}}_i=\frac{1}{\gamma}\times\frac{\ddot{S}I-\dot{S}\dot{I}}{I^2}$$
 For non-zero $I(t)$, this just requires the numerator:$$0=\ddot{S}I-\dot{S}\dot{I}=\ddot{S}I-\dot{S}(-\dot{S}-\gamma I) \Leftrightarrow I_\text{max}=-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}$$
 As we could represent $S$ and its derivatives with $\phi$ and PGFs but have no explicit expression for $I$, we could take this relationship at peak back into $\mathcal{R}_{i}$:
 $$\max(\mathcal{R}_{i})=-\frac{\dot{S}}{I_\text{max}}\times\frac{1}{\gamma}=-\frac{\dot{S}}{-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}}\times\frac{1}{\gamma}=\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}$$
@@ -473,7 +473,6 @@ $$
 $$
 If we consider $\phi \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to:
 $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
-??? Does not work well for Gamma distribution...
 
 ### Test Idea
 Test: the Zhao2 result $\sigma^* S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$
