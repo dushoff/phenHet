@@ -381,11 +381,13 @@ peak <- beta/gamma*(lambda*(kappa+1)-1)
 R_i <- -S_dot/(CM_I*gamma)
 R_c <- R_c0*CM_S^(1+2*kappa)
 est <- peak*CM_S^(1+2*kappa)
+#new <- beta/gamma*(lambda*(kappa+1)*(2*CM_S^(2*kappa+1)-CM_S^(kappa)*(theta-gamma/beta*(1-theta)))-1)
 
 dat_reff <- cbind(time,R_i
                   #,cal_reff
                   ,R_c
                   ,est
+                  #,new
                   ,theta)
 
 ggplot(data=dat_reff)+theme_bw()+
