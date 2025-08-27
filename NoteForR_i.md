@@ -1,4 +1,4 @@
-k,## 1. Instantaneous $\mathcal{R}_{i}$ in homogeneous model
+## 1. Instantaneous $\mathcal{R}_{i}$ in homogeneous model
 For homogeneous SIR model:
 $$
 \begin{cases}
