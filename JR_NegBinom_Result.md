@@ -478,3 +478,8 @@ $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\ka
 Test: the Zhao2 result $\sigma^* S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$
 See [NetworkExamples.R](NetworkExamples.R)
 ![](docs/pix/InsEstimation.png)
+
+
+# 5. Simulation
+Ben suggest to run an simulation of large random network to see how $\mathcal{R}_c$ and $\mathcal{R}^*_c$ compare to the simulation.
+Working on this now.
