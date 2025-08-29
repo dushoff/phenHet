@@ -30,10 +30,8 @@ Consider the definition of $\phi_S$, which is defined as:
 $$\phi_S(t)=\sum_k (\frac{k\times p_k}{\delta}\times\phi(t)^{k-1})=\frac{G'_p(\phi(t))}{\delta}$$
 - The $\frac{k\times p_k}{\delta}$ term is the probability of the neighbor of focal vertex have degree $k$.
 - $\phi(t)^{k-1}$ is the probability that the neighbor is not infected through other edges at time $t$, except by the one connected to the focal vertex.
-Similarly, the newly infected focal vertex with recovery time $T$ at time $t$, the probability of its susceptible neighbor (at time $t$) with degree $k$ remains uninfected by any other vertices at the time $t+T$ is:
-$$\frac{k\times p_k}{\delta}\times\phi(t+T)^{k-1}$$
-So with the same idea as $\phi_S$, the expectation would be
-$$\sum_k [\frac{k\times p_k}{\delta}\times\phi(t+T)^{k-1}]=G'_p(\phi(t+T))\times\frac{1}{\delta}$$
+Similarly, the newly infected focal vertex with recovery time $T$ at time $t$, the probability of its neighbor is not infected by any other vertices at time $t+T$ is:
+$$\phi_S(t+T)=\sum_k (\frac{k\times p_k}{\delta}\times\phi(t+T)^{k-1})=\frac{G'_p(\phi(t+T))}{\delta}$$
 Then we need to consider the exponential distributed recovery time $T$, then the expectation among all possible $T$ value would be:
 $$\int_0^{+\infty}\sum_k [\frac{k\times p_k}{\delta}\times\phi(t+T)^{k-1}]\gamma e^{-\gamma T}dT=\frac{1}{\delta}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT$$
 
