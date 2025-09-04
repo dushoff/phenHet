@@ -42,6 +42,9 @@ JD_RZ_curves.Rout: JD_RZ_curves.R
 zhaoFuns.Rout: zhaoFuns.R
 zhaoPlot.Rout: zhaoPlot.R zhaoFuns.rda
 
+NoteForR_c.pdf: NoteForR_c.md
+	$(rmdp_r)
+
 ######################################################################
 
 autopipeR = defined 
@@ -67,7 +70,7 @@ Sources += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 
-Makefile: makestuff/01.stamp
+Makefile: makestuff/02.stamp
 makestuff/%.stamp: | makestuff
 	- $(RM) makestuff/*.stamp
 	cd makestuff && $(MAKE) pull
