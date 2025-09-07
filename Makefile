@@ -45,6 +45,9 @@ zhaoPlot.Rout: zhaoPlot.R zhaoFuns.rda
 NoteForR_c.pdf: NoteForR_c.md
 	$(rmdp_r)
 
+Rnotes.pdf: Rnotes.md
+	$(rmdp_r)
+
 ######################################################################
 
 autopipeR = defined 

@@ -1,5 +1,4 @@
 As mentioned in [JR_Negbinom_Result](JR_Negbinom_Result.md), the Zhao 2 result leads to 
-$$
 \begin{align}
 \mathcal{R}_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
@@ -11,7 +10,6 @@ $$
 \\
 & = \mu \phi\frac{G''_p(\phi)}{G'_p(\phi)}
 \end{align}
-$$
 
 $\mu$ should be the probability that a random neighbor of the newly infected focal vertex is eventually infected by the focal vertex.
 - For each stub(half-edge) connected to the newly infected focal vertex, except the one connected to its infector (thus the edge belongs to $K_I^*-1$).
