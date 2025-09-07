@@ -1,0 +1,30 @@
+\documentclass[12pt]{article}
+\begin{document}
+
+\newcommand{\Rx}[1]{\ensuremath{\mathcal{R}_{#1}}}
+\newcommand{\emd}{\ensuremath{\varepsilon}}
+
+Define the rate ratio $\rho = \beta/\gamma$, and the “effective” mean degree (node degree averaged over edge) $\varepsilon = <d^2>/<d> = \delta(1+
+\kappa)$.
+
+We then have the initial case reproductive number (expected number of cases caused by a given case):
+
+$$ \Rx{0,c} = \frac{\rho-1}{\rho}(\emd-1). $$
+
+This should make sense. As the disease spreads initially, $\emd - 1$ is the average number of available neighbors (since one neighbor infected the focal node), and $\frac{\rho-1}{\rho}$ is the probability each neighbor will be infected. 
+
+Note that \Rx{0,c} is always positive (zero-edge nodes have weight 0, all other integers are $\geq1$), but can never exceed the threshold of one unless $\emd>2$ (since $\emd-1$ is being multiplied by a probability. This makes sense: if the effective mean number of neighors is two, than the number the average can infect after being infected is capped at one.
+
+Define the instantaneous reproductive number as the counterfactual number of individuals who would be infected by an observed force-of-infection/duration-of-infectiousness combination, assuming no other changes. This suddenly seems complicated in general, but is still going to be simple for constant-duration Markovian infections -- and it gives the value we would like to use for \Rx{\mathit{eff}}\ in our phenHet approaches. We believe that:
+
+$$ \Rx{0,i} = \rho(\emd-2).$$
+
+This is cool, and at least a little bit weird. We already had the idea that we need $\emd>2$ for disease spread. But it seems a little weird that $\emd-2$ comes in so simply. It would be nice to have a good intuition for it. It's also noticeable that when \emd\ is between 1 and 2, which is perfectly plausible, our formula gives a negative value for \Rx{0,i}.
+
+The likely answer to the second weirdness is that -- since the disease cannot spread if $\emd\leq2$ -- the eigenstate under which our formula applies asymptotically evaporates as $\emd\to2$ so that our equation is not expected to apply after that. This currently seems plausible to JD, but could be questioned.
+
+The likely answer to the first weirdness is that, in the spreading eigenstate we're envisioning, each currently infected node has one infector and, on average, one neighbor that \emph{it} has already infected.
+
+So: what's the intuitive reason why this number is 1 (and independent of $\rho$)? Can we get some intuition for how it might change as the disease spreads beyond the eigenstate? If so, we could get a link between \Rx{t,i}\ and \Rx{t,0}.
+
+\end{document}

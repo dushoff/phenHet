@@ -15,6 +15,7 @@ vim_session:
 mirrors += resources
 
 Sources += $(wildcard *.md)
+Sources += $(wildcard *.tex)
 
 ## Why I still can't visualize???
 
@@ -45,8 +46,7 @@ zhaoPlot.Rout: zhaoPlot.R zhaoFuns.rda
 NoteForR_c.pdf: NoteForR_c.md
 	$(rmdp_r)
 
-Rnotes.pdf: Rnotes.md
-	$(rmdp_r)
+Rnotes.pdf: Rnotes.tex
 
 ######################################################################
 
@@ -73,7 +73,7 @@ Sources += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 
-Makefile: makestuff/02.stamp
+Makefile: makestuff/03.stamp
 makestuff/%.stamp: | makestuff
 	- $(RM) makestuff/*.stamp
 	cd makestuff && $(MAKE) pull
@@ -86,6 +86,7 @@ makestuff:
 -include makestuff/pipeR.mk
 -include makestuff/mirror.mk
 ## -include makestuff/rmdweb.mk
+-include makestuff/texj.mk
 -include makestuff/rmd.mk
 
 -include makestuff/git.mk
