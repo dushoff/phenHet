@@ -46,7 +46,7 @@ However, here is the simulation result for an outbreak with $\beta=0.25$, $\gamm
 - The top red curve is the instantaneous $\mathcal{R}_{i}$ as defined in section 1.
 - The bottom green curve is $\mathcal{R}^*_{\text{eff}}$ corresponding to Zhao1 result 
 - The bottom blue curve is $\mathcal{R}^*_{c}$ corresponding to Zhao2 result.
-- The top black horizontal line is estimated $\max(\mathcal{R}_{i})$ as described in Section 3.
+- The top black horizontal line is estimated $max(\mathcal{R}_{i})$ as described in Section 3.
 - The middle purple horizontal line is the $\mathcal{R}_{0,c}$ value given by MSV and other literatures for network.
 - The bottom orange horizontal line is just reference of 1.
 
@@ -121,7 +121,7 @@ $$0=\dot{\mathcal{R}}_{i}=\frac{1}{\gamma}\times\frac{\ddot{S}I-\dot{S}\dot{I}}{
 For non-zero $I(t)$, this just requires the numerator:
 $$0=\ddot{S}I-\dot{S}\dot{I}=\ddot{S}I-\dot{S}(-\dot{S}-\gamma I) \Leftrightarrow I_\text{max}=-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}$$
 As we could represent $S$ and its derivatives with $\phi$ and PGFs but have no explicit expression for $I(t)$, we could take this relationship at peak back into $\mathcal{R}_\text{eff}$:
-$$\max(\mathcal{R}_{i})=-\frac{\dot{S}}{I_\text{max}}\times\frac{1}{\gamma}=-\frac{\dot{S}}{-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}}\times\frac{1}{\gamma}=\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}$$
+$$max(\mathcal{R}_{i})=-\frac{\dot{S}}{I_\text{max}}\times\frac{1}{\gamma}=-\frac{\dot{S}}{-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}}\times\frac{1}{\gamma}=\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}$$
 Consider the expressions we discussed in [JR_NegBinom_Result](JR_NegBinom_Result) with the following relationship for $\phi$, $\phi_S$ and $\phi_I$:
 $$\dot{\phi}=\frac{d}{dt}\phi(t)=-\beta\phi_I$$
 $$\phi_S=\frac{G'_p(\phi)}{\delta} \Rightarrow\dot{\phi}_S=\frac{G''_p(\phi)}{\delta}\times\dot{\phi}=-\beta\phi_I \times \frac{G''_p(\phi)}{\delta}$$
@@ -185,7 +185,7 @@ $$G'_p(\phi)=\delta e^{-\delta(1-\phi)}$$
 $$G''_p(\phi)=\delta^2 e^{-\delta(1-\phi)}$$we have
 $$
 \begin{align}
-\max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
+max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta e^{-\delta(1-\phi)}(2-\frac{\beta\phi-\gamma(1-\phi)}{\beta e^{-\delta(1-\phi)}})-1]
 \\
@@ -194,7 +194,7 @@ $$
 $$
 
 If we consider $\phi \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to our observation:
-$$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(2\delta -\delta-1)=\frac{\beta}{\gamma}(\delta-1)$$
+$$\lim_{\phi\rightarrow1}{max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(2\delta -\delta-1)=\frac{\beta}{\gamma}(\delta-1)$$
 But I have not figure out why it converge to our observation at some $t>0+\epsilon$. A guess would be the initial condition need some time to reach eigenvector direction?
 
 ### 3.2 Negative Binomial
@@ -204,7 +204,7 @@ $$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}
 $$G''_p(\phi)=\delta^2(\kappa+1)S^{2\kappa+1}$$we have
 $$
 \begin{align}
-\max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
+max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta (\kappa+1)S^{2\kappa+1}(2-\frac{\beta\phi-\gamma(1-\phi)}{\beta S^{\kappa+1}})-1]
 \\
@@ -212,12 +212,12 @@ $$
 \end{align}
 $$
 If we consider $\phi \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to:
-$$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
+$$\lim_{\phi\rightarrow1}{max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
 
 ### 3.3 Test Ideas between $\mathcal{R}_i$ and $\mathcal{R}_c$
 For the $\mathcal{R}^*_c$, we derive the "phenomenological heterogeneity" term $\sigma^*_c$.
 We wonder how this connect to the true phenomenological heterogeneity term
-$$\sigma_i=\frac{\mathcal{R}_{i}}{\mathcal{R}_{0,i}\times S}=\frac{\mathcal{R}_{i}}{\max(\mathcal{R}_{i})\times S}$$
+$$\sigma_i=\frac{\mathcal{R}_{i}}{\mathcal{R}_{0,i}\times S}=\frac{\mathcal{R}_{i}}{max(\mathcal{R}_{i})\times S}$$
 
 However it seems $\sigma^*_c S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$: See [NetworkExamples.R](NetworkExamples.R)
 ![](docs/pix/InsEstimation.png)
@@ -225,9 +225,9 @@ Current idea is to figure out the true $R_c$ first without the problematic assum
 A separate note is created: [NoteForR_c.md](NoteForR_c.md)
 
 ### Problem: 
-Unlike the $\mathcal{R}_{0,c}$ or $\mathcal{R}^*_{c}$ , $\max(\mathcal{R}_{i})|_{\phi=1}$ this amount could easily be larger than the maximum degree as there is no bond for the ratio $\frac{\beta}{\gamma}$. 
+Unlike the $\mathcal{R}_{0,c}$ or $\mathcal{R}^*_{c}$ , $max(\mathcal{R}_{i})|_{\phi=1}$ this amount could easily be larger than the maximum degree as there is no bond for the ratio $\frac{\beta}{\gamma}$. 
 - E.g. consider a network with every nodes has degree $k=5$, then $\delta=5$ and $G''_p(1)=k^2-k=20$, assume $\beta=0.2$ and $\gamma=0.1$, then
-$$\max(\mathcal{R}_\text{eff})|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]==\frac{0.2}{0.1}[\frac{20}{5}-1]=6>k=5$$
+$$max(\mathcal{R}_\text{eff})|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]==\frac{0.2}{0.1}[\frac{20}{5}-1]=6>k=5$$
 - We need a better definition for this!
 
 
