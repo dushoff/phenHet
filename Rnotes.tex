@@ -3,15 +3,16 @@
 
 \newcommand{\Rx}[1]{\ensuremath{\mathcal{R}_{#1}}}
 \newcommand{\emd}{\ensuremath{\omega}}
+\newcommand{\iprob}{\ensuremath{\frac{\rho}{\rho+1}}}
 
 Define the rate ratio $\rho = \beta/\gamma$, and the “weighted mean degree” (node degree averaged over edge) $\emd = <d^2>/<d> = \delta(1+
 \kappa)$. Note that this is one greater than the Miller-Volz effective mean degree, which subtracts the infecting neighbor in advance.
 
 We then have the initial case reproductive number (expected number of cases caused by a given case):
 
-$$ \Rx{0,c} = \frac{\rho}{\rho+1}(\emd-1). $$
+$$ \Rx{0,c} = \iprob(\emd-1). $$
 
-This should make sense. As the disease spreads initially, $\emd - 1$ is the average number of available neighbors (since one neighbor infected the focal node), and $\frac{\rho-1}{\rho}$ is the probability each neighbor will be infected. 
+This should make sense. As the disease spreads initially, $\emd - 1$ is the average number of available neighbors (since one neighbor infected the focal node), and \iprob\ is the probability each neighbor will be infected. 
 
 Note that \Rx{0,c} is always positive (zero-edge nodes have weight 0, all other integers are $\geq1$), but can never exceed the threshold of one unless $\emd>2$ (since $\emd-1$ is being multiplied by a probability. This makes sense: if the effective mean number of neighors is two, than the number the average can infect after being infected is capped at one.
 
