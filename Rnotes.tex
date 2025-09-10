@@ -20,12 +20,16 @@ Define the instantaneous reproductive number as the counterfactual number of ind
 
 $$ \Rx{0,i} = \rho(\emd-2).$$
 
-This is cool, and at least a little bit weird. We already had the idea that we need $\emd>2$ for disease spread. But it seems a little weird that $\emd-2$ comes in so simply. It would be nice to have a good intuition for it. It's also noticeable that when \emd\ is between 1 and 2, which is perfectly plausible, our formula gives a negative value for \Rx{0,i}.
+We again need $\emd>2$ for disease spread. It's a bit weird that \Rx{0,1} is negative when $\emd<2$. It presumably means the eigenstate under which our formula applies asymptotically evaporates as $\emd\to2$ so and the equation simply doesn't to apply after that. 
 
-The likely answer to the second weirdness is that -- since the disease cannot spread if $\emd\leq2$ -- the eigenstate under which our formula applies asymptotically evaporates as $\emd\to2$ so that our equation is not expected to apply after that. This currently seems plausible to JD, but could be questioned.
+It's also interesting that $\emd-2$ comes in so simply. The straightforward interpretation would be that, in the spreading eigenstate we're envisioning, each currently infected node has, on average, two neighbors that have ever been infected; one being the infector, and one being a neighbors infected by the focal node. 
 
-The likely answer to the first weirdness is that, in the spreading eigenstate we're envisioning, each currently infected node has one infector and, on average, one neighbor that \emph{it} has already infected.
+There is a simple, and possibly useful, argument for this number is 2. Imagine modeling the number of active infections $I$, and the number of links from active infections to non-susceptibles, $\theta$, in the eigenstate. Only two events can happen. If an individual recovers, on average the ratio $\theta/I$ does not change, because under the Markov assumption the recovering node is typical of recovering nodes (and it remains non-susceptible when seen as a non-focal node). If an infection occurs, it increases $I$ by 1 and $\theta$ by 2 (the infector has one new link to non-susceptible, and the newly counted infectee has 1 such link). So the process can only move $\theta/I$ closer to 1.
 
-So: what's the intuitive reason why this number is 1 (and independent of $\rho$)? Can we get some intuition for how it might change as the disease spreads beyond the eigenstate? If so, we could get a link between \Rx{t,i}\ and \Rx{t,0}.
+It may be useful to think about how this process extends past the eigenstate limit. Recoveries are still not changing the ratio, but infections may reach new infectees that already have non-susceptible neighbors.
+
+\paragraph*{Postscript} It was suggested that I should change $\beta$ to $\alpha$ to reflect the fact that it doesn't really match the mean-field concept of $\beta$. I haven't done that yet because it matches the MV $\beta$, but I'm eager to talk about the terminology more broadly.
+
+In any case it seems worth writing down the mean-field link, which can be seen easily by letting $\omega$ increase while $B=\beta\omega$ remains constant. In this case, both initial reproductive numbers go to $B/\gamma$.
 
 \end{document}
