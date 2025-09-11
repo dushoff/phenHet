@@ -51,6 +51,9 @@ NoteForR_i.pdf:  NoteForR_i.md
 
 Rnotes.pdf: Rnotes.tex
 
+Paper.html: Paper.md
+	$(rmdh_r)
+
 ######################################################################
 
 autopipeR = defined 
