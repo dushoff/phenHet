@@ -1,6 +1,6 @@
 # 1. Reproductive number by case $\mathcal{R}^*_c$ with no competing infection
 As mentioned in [JR_Negbinom_Result](JR_Negbinom_Result.md), the Zhao 2 result leads to 
-\begin{align}
+$$\begin{align}
 \mathcal{R}_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
 & =\mathbb{E}_{K_I^*}[\mu(K_I^*-1)]
@@ -10,7 +10,7 @@ As mentioned in [JR_Negbinom_Result](JR_Negbinom_Result.md), the Zhao 2 result l
 & = \mu (\mathbb{E}[K_I^*]-1)
 \\
 & = \mu \phi\frac{G''_p(\phi)}{G'_p(\phi)}
-\end{align}
+\end{align}$$
 
 $\mu$ should be the probability that a random neighbor of the newly infected focal vertex is eventually infected by the focal vertex.
 - For each stub(half-edge) connected to the newly infected focal vertex, except the one connected to its infector (thus the edge belongs to $K_I^*-1$).
@@ -43,7 +43,7 @@ $$
 The problem now comes to how to find $\hat{\phi}_S$ with such integration.
 
 Some thoughts for simplifying the integration:
-\begin{align}
+$$\begin{align}
 & \int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT 
 \\
 = &[\phi(t+T)(-e^{-\gamma T})]
@@ -56,21 +56,21 @@ Some thoughts for simplifying the integration:
 =&\phi(t)-\frac{\beta+\gamma}{\gamma}\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT+\int_0^{+\infty}\gamma e^{-\gamma T} dT+\frac{1}{\gamma}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT
 \\
 =&\phi(t)+\frac{1}{\gamma}-\frac{\beta+\gamma}{\gamma}\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT+\frac{1}{\gamma}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT
-\end{align}
+\end{align}$$
 Rearrange the term give us:
 $$
 \int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT=-\gamma\phi(t)-1+(\beta+2 \gamma)\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT
 $$
 
 If ITB with $G'p(\phi)$ directly, we have:
-\begin{align}
+$$\begin{align}
 & \int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT
 \\
 =& [G'_p(\phi(t+T))(-e^{-\gamma T})]
 \bigg| ^{+\infty}_{0}- \int_0^{+\infty}G''_p(\phi(t+T))\dot{\phi}(t+T) (-e^{-\gamma T}) dT
 \\
 =& G'_p(\phi(t))-\int_0^{+\infty}G''_p(\phi(t+T))\dot{\phi}(t+T) (-e^{-\gamma T}) dT
-\end{align}
+\end{align}$$
 Might get something if we take in the NegBinom distribution????
 
 ## 2.1 Counterargument
