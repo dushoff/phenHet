@@ -13,9 +13,12 @@
 		- Connection with Known Result
 	- MFSH (need further investigation): no locality, heterogeneity of general degree(equal in and out degree)
 		- Assumptions
+
 	- MSV configuration model: Heterogeneity of general degree with locality
 		- Assumptions
 		- $\mathcal{R}^*_c$ Result
+			- Comparison to simulation
 		- Discussion of $\mathcal{R}_c$ vs $\mathcal{R}^*_c$: competing infection
 		- $\mathcal{R}_i$ Result
+		- $\mathcal{R}_{i,0}>max(d)$
 3. Summary
