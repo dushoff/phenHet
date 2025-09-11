@@ -49,6 +49,8 @@ NoteForR_c.pdf: NoteForR_c.md
 NoteForR_i.pdf:  NoteForR_i.md
 	$(rmdp_r)
 
+## NoteForR_i.md.tex:  NoteForR_i.md
+
 Rnotes.pdf: Rnotes.tex
 
 Paper.html: Paper.md
@@ -94,6 +96,7 @@ makestuff:
 ## -include makestuff/rmdweb.mk
 -include makestuff/texj.mk
 -include makestuff/rmd.mk
+-include makestuff/pandoc.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
