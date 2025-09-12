@@ -1,5 +1,6 @@
+# 1. Reproductive number by case $\mathcal{R}^*_c$ with no competing infection
 As mentioned in [JR_Negbinom_Result](JR_Negbinom_Result.md), the Zhao 2 result leads to 
-\begin{align}
+$$\begin{align}
 \mathcal{R}_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
 & =\mathbb{E}_{K_I^*}[\mu(K_I^*-1)]
@@ -9,7 +10,7 @@ As mentioned in [JR_Negbinom_Result](JR_Negbinom_Result.md), the Zhao 2 result l
 & = \mu (\mathbb{E}[K_I^*]-1)
 \\
 & = \mu \phi\frac{G''_p(\phi)}{G'_p(\phi)}
-\end{align}
+\end{align}$$
 
 $\mu$ should be the probability that a random neighbor of the newly infected focal vertex is eventually infected by the focal vertex.
 - For each stub(half-edge) connected to the newly infected focal vertex, except the one connected to its infector (thus the edge belongs to $K_I^*-1$).
@@ -20,6 +21,9 @@ $\mu$ should be the probability that a random neighbor of the newly infected foc
 	- **If we assume that every susceptible neighbor is only infected by the focal vertex**, then the probability a susceptible susceptible is infected by the focal vertex before its recovery is $$1-e^{-\beta T}$$
 	- The expectation of such probability is the transmissibility $\tau$ $$\tau=\mathbb{E}_{T}[1-e^{\beta T}]=\int_{0}^{\infty}(1-e^{-\beta T})\times \gamma e^{-\gamma T}dT=\frac{\beta}{\beta+\gamma}$$
 	- With such assumption, we have the probability $\mu^*$, such that $$\mu^*=\tau \times \frac{\phi_S}{\phi}=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\phi)}{\phi G'_p(1)}$$, we have:$$\mathcal{R}^*_c= \mu (\mathbb{E}[K_I^*]-1)=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi} \times (\mathbb{E}[K_I^*]-1)=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}$$
+
+
+# 2. Reproductive number by case $\mathcal{R}_c$ with competing infection
 However, as Todd mentioned, the assumption is only true at the beginning when there is no other infected vertex to compete with the focal vertex. 
 
 For the true value of $\mathcal{R}_c$ and $\mu$ it should be a proportion of the $\mathcal{R}^*_c$ and $\mu^*$ based on time $t$, corresponding to the proportion of susceptible neighbors of the newly infected focal vertex, but only infected by it during its period of infection $T$.
@@ -31,6 +35,49 @@ $$\phi_S(t)=\sum_k (\frac{k\times p_k}{\delta}\times\phi(t)^{k-1})=\frac{G'_p(\p
 Similarly, the newly infected focal vertex with recovery time $T$ at time $t$, the probability of its neighbor is not infected by any other vertices at time $t+T$ is:
 $$\phi_S(t+T)=\sum_k (\frac{k\times p_k}{\delta}\times\phi(t+T)^{k-1})=\frac{G'_p(\phi(t+T))}{\delta}$$
 Then we need to consider the exponential distributed recovery time $T$, then the expectation among all possible $T$ value would be:
-$$\int_0^{+\infty}\sum_k [\frac{k\times p_k}{\delta}\times\phi(t+T)^{k-1}]\gamma e^{-\gamma T}dT=\frac{1}{\delta}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT$$
+$$\hat{\phi}_S=\int_0^{+\infty}\sum_k [\frac{k\times p_k}{\delta}\times\phi(t+T)^{k-1}]\gamma e^{-\gamma T}dT=\frac{1}{\delta}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT$$
+Accordingly, we have the "corrected" reproductive number by case:
+$$
+\mathcal{R}_c= \mathcal{R}^*_c\times\frac{\hat{\phi}_S}{\phi_S}=\frac{\beta}{\beta+\gamma}\times \frac{\hat{\phi}_S}{\phi} \times (\mathbb{E}[K_I^*]-1)
+$$
+The problem now comes to how to find $\hat{\phi}_S$ with such integration.
 
-???? Conditional Probability at time $t$ ?????
+Some thoughts for simplifying the integration:
+$$\begin{align}
+& \int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT 
+\\
+= &[\phi(t+T)(-e^{-\gamma T})]
+\bigg| ^{+\infty}_{0}- \int_0^{+\infty}\dot{\phi}(t+T) (-e^{-\gamma T}) dT
+\\
+=&\phi(t)-\int_0^{+\infty}\dot{\phi}(t+T) (-e^{-\gamma T}) dT
+\\
+=&\phi(t)+\int_0^{+\infty}[-\beta\phi(t+T)+\beta\frac{G'_p(\phi(t+T))}{\delta}+\gamma(1-\phi(t+T))] (e^{-\gamma T}) dT
+\\
+=&\phi(t)-\frac{\beta+\gamma}{\gamma}\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT+\int_0^{+\infty}\gamma e^{-\gamma T} dT+\frac{1}{\gamma}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT
+\\
+=&\phi(t)+\frac{1}{\gamma}-\frac{\beta+\gamma}{\gamma}\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT+\frac{1}{\gamma}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT
+\end{align}$$
+Rearrange the term give us:
+$$
+\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT=-\gamma\phi(t)-1+(\beta+2 \gamma)\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT
+$$
+
+If ITB with $G'p(\phi)$ directly, we have:
+$$\begin{align}
+& \int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT
+\\
+=& [G'_p(\phi(t+T))(-e^{-\gamma T})]
+\bigg| ^{+\infty}_{0}- \int_0^{+\infty}G''_p(\phi(t+T))\dot{\phi}(t+T) (-e^{-\gamma T}) dT
+\\
+=& G'_p(\phi(t))-\int_0^{+\infty}G''_p(\phi(t+T))\dot{\phi}(t+T) (-e^{-\gamma T}) dT
+\end{align}$$
+Might get something if we take in the NegBinom distribution????
+
+## 2.1 Counterargument
+A counterargument that RZ and BB have for this:
+- For large enough random network in MSV's configuration framework, it has been proved loops in network exist, but will be really rare (a.s. no loop as $N$ increase). 
+- Like in the percolation theory, considering the transmissibility of edges is a probability smaller than 1, loops linked by "occupied" edges are even more rare.
+As a result, competing infection can only happens if we have such "occupied" loops, so the impact of competing infection should be very limited, even if the infection proportion is large.
+This counter argument only valid for configuration network. If we consider small world network, then this impact would be much significant.
+Ideas and comments are welcome!
+

@@ -56,15 +56,13 @@ Therefore, the proportion of susceptible vertex $S(t)$ at time $t$ is given by:
 $$S(t)=G_p(\phi(t))=\sum_{d}p_d \phi(t)^d$$
 Now for the vertices compartment, one can write a system such that:
 
-$$
-    \begin{cases}
-      S(t)=G_p(\phi(t))
-      \\
-      I(t)=1-S(t)-R(t)
-      \\
-      \dot{R}(t)=\gamma I(t)
-    \end{cases}
-$$
+$$\begin{cases}
+    S(t)=G_p(\phi(t))
+    \\
+    I(t)=1-S(t)-R(t)
+    \\
+    \dot{R}(t)=\gamma I(t)
+\end{cases}$$
 
 ![](docs/pix/EdgeFlow.png)
 Note: Here $\theta=\phi$ as I am using MSV's figure directly
@@ -91,8 +89,7 @@ However, its idea and definition is differ from intuitive understanding of $\mat
 
 They define of $\mathcal{R}_{0,c}$ from network approach first: $\mathcal{R}_{0,c}$ is the expected number of infections a ==newly== infected vertex causes.
 This gives the expression: 
-$$
-\begin{align}
+$$\begin{align}
 \mathcal{R}_{0,c}&=\sum_{d=1} q_{d-1} \times(d-1)\times \frac{\beta}{\beta+\gamma}
 \\
 &= \frac{\beta}{\beta+\gamma} \sum_{d=1} \frac{p_d \times d}{\delta} \times(d-1)
@@ -100,8 +97,7 @@ $$
 &=\frac{\beta}{\beta+\gamma} \frac{\sum_{d=1} p_d \times d \times(d-1)}{\delta}
 \\
 &=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{G'_p(1)}
-\end{align}
-$$
+\end{align}$$
 - $q_{d-1}$ and $d-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
 - $T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a vertex infects one of its neighbor prior to recovering.
 - As they assume neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $d$ will follow a binomial distribution $\text{Binom}(d-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(d-1)\times \frac{\beta}{\beta+\gamma}$ 
@@ -111,8 +107,7 @@ Consider $\phi(0)=1+\epsilon$ ($\epsilon<0$)which is very close to $1$:
 $$\dot{\phi}=\dot{\epsilon}=-\beta(1+\epsilon)+\beta\frac{G_p'(1+\epsilon)}{\delta}+\gamma (1-(1+\epsilon))$$
 Consider the first order: 
 
-$$
-\begin{align}
+$$\begin{align}
 G_p'(1+\epsilon)&=\sum_d p_d d(1+\epsilon)^{d-1}
 \\
 &= \sum_d p_d d (1+(d-1)\epsilon+o(\epsilon))
@@ -122,8 +117,7 @@ G_p'(1+\epsilon)&=\sum_d p_d d(1+\epsilon)^{d-1}
 &= \delta+\epsilon\sum_d p_d d (d-1)
 \\
 & = \delta+\epsilon G_p''(1)
-\end{align}
-$$
+\end{align}$$
 
 Then for the first order we have:
 $$\dot{\phi}=\dot{\epsilon}\approx-\beta(1+\epsilon)+\beta\frac{\delta+\epsilon G_p''(1)}{\delta}-\gamma\epsilon=[-(\beta+\gamma)+\beta\frac{G_p''(1)}{\delta}] \times \epsilon$$
@@ -159,13 +153,11 @@ $$\delta=\frac{r(1-p)}{p}$$ and variance
 $$\text{Var}=\frac{r(1-p)}{p^2}$$
 For better understanding, we parameterize the distribution using mean $\delta$ and Dushoff-style squared CV $\kappa$, such that 
 
-$$
-\begin{align} 
+$$\begin{align} 
 	r & =\frac{1}{\kappa}
 	\\
 	p & =\frac{1}{1+\kappa\delta}
-\end{align}
-$$
+\end{align}$$
 
 This gives us the variance $\text{Var}=\delta(1+\kappa\delta)>\delta$, as these family of distributions are always over-dispersed, and further never converge to homogeneous case.
 
@@ -185,15 +177,13 @@ $$S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa
 and 
 $$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}$$
 Take this into $\rho$ gives us for Negative Binomial:
-$$
-\begin{align}
+$$\begin{align}
 \rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0,c}}=\frac{\phi G'_p(\phi)}{\delta}=\frac{S\phi}{1+\kappa\delta-\phi\times\kappa\delta}
 \\
 &=S\times \frac{1+\frac{1-S^{-\kappa}}{\kappa\delta}}{1+\kappa\delta-(1+\frac{1-S^{-\kappa}}{\kappa\delta})\kappa\delta}
 \\
 &=S\times(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})
-\end{align}
-$$
+\end{align}$$
 
 - Gamma: as $\delta \rightarrow \infty$ we have 
 $$\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}$$ which agree with the Dwyer-Parsons result with Gamma distribution
@@ -249,8 +239,7 @@ To derive $X_t$
 	- ==They did not explicitly state that this derivation also assume that every edge connect to this $I$ vertex are still being able to transmit the infection other than the known one connect to its infector. This is the same to assume the vertex is newly infected and not yet infect any others.
 	- An correction would be $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\phi}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
 - Therefore, with law of total expectation, for a randomly newly infected node we know the expectation number $X_t$ of infected vertices it can generate would be:
-$$
-\begin{align}
+$$\begin{align}
 \mathcal{R}^*_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
 & =\mathbb{E}_{K_I^*}[\mu(K_I^*-1)]
@@ -260,8 +249,7 @@ $$
 & = \mu (\mathbb{E}[K_I^*]-1)
 \\
 & = \mu \phi\frac{G''_p(\phi)}{G'_p(\phi)}
-\end{align}
-$$
+\end{align}$$
 
 Take into the idea that $$\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\phi)}{\phi G'_p(1)}$$, we have:$$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}$$
 As $t\rightarrow 0 \Leftrightarrow \phi \rightarrow 1$, $\mathcal{R}^*_c$ converge to $$\mathcal{R}_{0,c}=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
@@ -298,8 +286,7 @@ with the competing factor $\omega(t)$ measures the probability that susceptible 
 
 ### How $\mathcal{R}^*_c$ affect the incidence $-\dot{S}(t)$?
 Consider rate of change for the incidence term
-$$
-\begin{align}
+$$\begin{align}
 \frac{d}{dt}(-\dot{S}(t))& =-\ddot{S}(t)
 \\
 & =\beta\delta[\phi_S\dot{\phi}_I+\dot{\phi}_S\phi_I]
@@ -307,8 +294,7 @@ $$
 & =\beta\delta[\phi_S\phi_I(\beta+\gamma)(\mathcal{R}^*_c-1)-\beta\frac{G''_p(\phi)}{\delta}\phi_I^2]
 \\
 & =\beta\delta\phi_I[\phi_S(\beta+\gamma)(\mathcal{R}^*_c-1)-\beta\frac{G''_p(\phi)}{\delta}\phi_I]
-\end{align}
-$$
+\end{align}$$
 If and only if $(\mathcal{R}^*_c-1)$ >0, the rate of change $-\ddot{S}(t)$ have positive term (increasing force).
 
 
@@ -323,8 +309,7 @@ If and only if $(\mathcal{R}^*_c-1)$ >0, the rate of change $-\ddot{S}(t)$ have 
 Observation: for Poisson degree distribution, the peak value seems to be $(\delta-1)\frac{\beta}{\gamma}$. 
 
 Recent paper by [G.A. Rampala(2023)](https://arxiv.org/abs/2310.13866) discussed about that for Poisson network, the MSV dynamic is equivalent to dynamic from a homogeneous SIR-like ODE system , but with modification. I have verified his result.
-$$
-\begin{align}
+$$\begin{align}
 	\dot{S}& = -\beta\delta SX_D
 	\\
 	\dot{X}_D & = -\dot{S}-(\beta+\gamma)X_D
@@ -332,8 +317,7 @@ $$
 	\dot{I} & = -\dot{S}-\gamma I
 	\\
 	\dot{R} & = \gamma I
-\end{align}
-$$
+\end{align}$$
 This indicate that incidence term $\dot{S}$ in network model is not directly determined by $I$.
 Note, $X_d$ curve converge to $I$ as $\delta \rightarrow \infty$ with the same $\mathcal{R}_{0,c}$.
 
@@ -368,15 +352,13 @@ As $\phi_S$ is governed by:$$\dot{\phi}_S=-\beta\frac{G''_p(\phi)}{\delta} \phi_
 
 ### Try to find $\mathcal{R}_i$ like Zhao2 
 Also, consider the Bayesian Formula and a randomly chose edge/stub $u$:
-$$
-\begin{align}
+$$\begin{align}
 \mathbb{P}(u\in\phi \Leftrightarrow u \in\phi_I|u \text{ connect to a vertex }\in I) & = \frac{\mathbb{P}(u\in\phi_I|u\in\phi)\mathbb{P}(u\in\phi)}{\mathbb{P}(u \text{ connect to a vertex }\in I)}
 \\
 & =\frac{\frac{\phi_I}{\phi}\times \phi}{\frac{NI\times \mathbb{E}(K_I)}{N\delta}}
 \\
 & =\frac{\phi_I \delta}{I(t) \mathbb{E}[K_I]}
-\end{align}
-$$
+\end{align}$$
 
 **Problem:**$\mathbb{E}[K_I^*]$ does not apply to all infected vertices at the moment or just newly infected vertices
 - A different name $K_I$ is given here for random infected node.
@@ -415,8 +397,7 @@ For non-zero $I(t)$, this just requires the numerator:$$0=\ddot{S}I-\dot{S}\dot{
 As we could represent $S$ and its derivatives with $\phi$ and PGFs but have no explicit expression for $I$, we could take this relationship at peak back into $\mathcal{R}_{i}$:
 $$\max(\mathcal{R}_{i})=-\frac{\dot{S}}{I_\text{max}}\times\frac{1}{\gamma}=-\frac{\dot{S}}{-\frac{\dot{S}^2}{\ddot{S}+\gamma\dot{S}}}\times\frac{1}{\gamma}=\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}$$
 Take into the previous relationships for $\dot{S}$ and $\ddot{S}$ we have:
-$$
-\begin{align}
+$$\begin{align}
 \max(\mathcal{R}_{i}) & =\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}
 \\
 &=\frac{\beta}{\gamma}(\frac{G''_p(\phi)}{\delta}\times\frac{\phi_S-\phi_I}{\phi_S}-1)
@@ -426,8 +407,7 @@ $$
 &=\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi-\frac{\gamma}{\beta}(1-\phi)-\frac{G'_p(\phi)}{\delta}}{\frac{G'_p(\phi)}{\delta}})-1]
 \\
 &=\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
-\end{align}
-$$
+\end{align}$$
 If $\phi=1$, this function equals to: 
 $$\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}(2-\delta\times\frac{\beta-\gamma(1-1)}{\beta G'_p(1)})-1]=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]$$
 This amount equals to 1 iff $\mathcal{R}_{0,c}=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}=1$.
@@ -443,15 +423,13 @@ For Poisson distribution with:
 $$G_p(\phi)=e^{-\delta(1-\phi)}$$
 $$G'_p(\phi)=\delta e^{-\delta(1-\phi)}$$
 $$G''_p(\phi)=\delta^2 e^{-\delta(1-\phi)}$$we have
-$$
-\begin{align}
+$$\begin{align}
 \max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta e^{-\delta(1-\phi)}(2-\frac{\beta\phi-\gamma(1-\phi)}{\beta e^{-\delta(1-\phi)}})-1]
 \\
 & = \frac{\beta}{\gamma}[2\delta e^{-\delta(1-\phi)}-\delta\phi+\frac{\gamma}{\beta}(1-\phi)\delta-1] 
-\end{align}
-$$
+\end{align}$$
 
 If we consider $\phi \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to our observation:
 $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(2\delta -\delta-1)=\frac{\beta}{\gamma}(\delta-1)$$
@@ -462,15 +440,13 @@ For general NB distribution with:
 $$S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}$$
 $$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\delta S^{\kappa+1}$$
 $$G''_p(\phi)=\delta^2(\kappa+1)S^{2\kappa+1}$$we have
-$$
-\begin{align}
+$$\begin{align}
 \max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta (\kappa+1)S^{2\kappa+1}(2-\frac{\beta\phi-\gamma(1-\phi)}{\beta S^{\kappa+1}})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta (\kappa+1)(2S^{2\kappa+1}-S^{\kappa}(\phi-\frac{\gamma}{\beta}(1-\phi)))-1]
-\end{align}
-$$
+\end{align}$$
 If we consider $\phi \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to:
 $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
 
