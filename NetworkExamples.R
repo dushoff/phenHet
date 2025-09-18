@@ -434,40 +434,34 @@ ggplot(data = dat)+theme_bw()+
 
 
 ### Reff
-
+result$Reff[1,]
 # peak values
-max(result$Reff[,3])
+max(result$Reff[,4])
 #peak
 
 ### verify calculation: Sum Reff=R_end-1
-sum(result$Reff[,3])
+sum(result$Reff[,4])
 result$FinalStat[4]*N
 ### verified
 
 # visualization
-dat_sim_out<-result$Reff
-dat_Rsim<- dat_sim_out[!is.na(dat_sim_out[,2]),]
+dat_sim_out<-as.data.frame(result$Reff)
+dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
+),]
 #dat_Rsim[1,]
-dat_Rsim<-dat_Rsim[order(dat_Rsim[,2]),]
+dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
+
+# Adj_list <- as_adj_list(  G
+#                         , mode = "all"
+#                         , loops = "once"
+#                         , multiple = TRUE
+# )
 
 
-
-Adj_list <- as_adj_list(  G
-                        , mode = "all"
-                        , loops = "once"
-                        , multiple = TRUE
-)
-
-
-# dat_Rsim[1:5,]
-# 11045 %in% as.vector(Adj_list[[44632]])
-# degree(G)[11045]
-
-
-rn <- 5
+rn <- 3
 edge <- (rn-1)/2
-roll_mean <- rep(NA,length(dat_Rsim[,3]))
-roll_mean[c((edge+1):(length(dat_Rsim[,3])-edge))]<-rollmean(dat_Rsim[,3],rn)
+roll_mean <- rep(NA,length(dat_Rsim$Infect_num))
+roll_mean[c((edge+1):(length(dat_Rsim$Infect_num)-edge))]<-rollmean(dat_Rsim$Infect_num,rn)
 dat_Rsim <- cbind(dat_Rsim,roll_mean)
 
 ggplot(data=dat_reff)+theme_bw()+
@@ -486,4 +480,6 @@ ggplot(data=dat_reff)+theme_bw()+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
-
+# beta/(beta+gamma)
+# dat_Rsim[1:20,]
+# which(dat_Rsim$Infector_ind==307)

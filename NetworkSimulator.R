@@ -114,18 +114,21 @@ GilAlgo <- function(  Network
   t <- 0
   Status <- rep(0,N)
   Status[InitIndex] <- 1
-  Istep <- length(which(Status==1))
+  Istep <- sum(Status==1)
   
   if (TrackDyn==T){
     NumStep <- 1
     t_vec <- c(t)
-    S_vec <- c(length(which(Status==0))/N)
-    I_vec <- c(length(which(Status==1))/N)
+    S_vec <- c(sum(Status==0)/N)
+    I_vec <- c(sum(Status==1)/N)
     R_vec <- c(0)
     
     Infect_time <- rep(NA,N)
     Infect_time[InitIndex] <- 0
     Infect_num <- rep(0,N)
+    
+    Recovery_time <- rep(NA,N)
+    Infector_ind <- rep(NA,N)
   }
   
   Rate <- rep(0,N)
@@ -165,8 +168,8 @@ GilAlgo <- function(  Network
     Contact <- Neighbor[!Status[Neighbor]]
     
     # cat("contact: ", Contact,"\n")
-    # Infected neighbor: Potential infectors
-    Infector <- Neighbor[which(Status[Neighbor]==1)]
+    # Infected neighbor: all potential infectors
+    Infector <- Neighbor[Status[Neighbor]==1]
     
     ## Time spent for event happen
     Tstep <- -log(r[2])/Sum  
@@ -178,10 +181,15 @@ GilAlgo <- function(  Network
     #   return(Rate)
     #   break
     # }
+    
     ## Update status
     if (Status[Event]==2){               ## Recovery
       Rate[Event] <- 0
       Rate[Contact] <- Rate[Contact]-b
+      
+      if (TrackDyn==T){
+        Recovery_time[Event] <- t
+      }
     } else if (Status[Event]==1){        ## Infection
       Rate[Event] <- g
       Rate[Contact] <- Rate[Contact]+b   ## Independence: linear
@@ -205,35 +213,40 @@ GilAlgo <- function(  Network
         
         # As suggested by Ben, we now randomly chose one infector (if more than 
         # one) instead of do the average
-        samp_inf <- sample(Infector,1)
+        if (length(Infector)==1){
+          samp_inf <- Infector
+        } else {
+          samp_inf <- sample(c(Infector),1)
+        }
         Infect_num[samp_inf] <- Infect_num[samp_inf]+1
+        Infector_ind[Event] <- samp_inf
       }
     } else {
     }
     
     ## Active number of infections of the whole network
-    Istep <- length(which(Status==1))
+    Istep <- sum(Status==1)
     
     ## Update proportion
     if (TrackDyn==T){
       NumStep <- NumStep+1
       t_vec[NumStep] <- t
-      S_vec[NumStep] <- length(which(Status==0))/N
-      I_vec[NumStep] <- length(which(Status==1))/N
-      R_vec[NumStep] <- length(which(Status==2))/N
+      S_vec[NumStep] <- sum(Status==0)/N
+      I_vec[NumStep] <- sum(Status==1)/N
+      R_vec[NumStep] <- sum(Status==2)/N
     }
   }
   
   ## Final sizes
   FinishTime <- t
-  Ssize <- length(which(Status==0))/N
-  Isize <- length(which(Status==1))/N
-  Rsize <- length(which(Status==2))/N
+  Ssize <- sum(Status==0)/N
+  Isize <- sum(Status==1)/N
+  Rsize <- sum(Status==2)/N
   FinalStat <- data.frame(FinishTime,Ssize,Isize,Rsize)
   
   if (TrackDyn==T){
     Track <- cbind(t_vec,S_vec,I_vec,R_vec)
-    Infect <- cbind(ind,Infect_time,Infect_num)
+    Infect <- cbind(ind,Deg_vec,Infect_time,Infect_num,Recovery_time,Infector_ind)
     return(list(FinalStat=FinalStat,Details=Track,Reff=Infect))
   } else {
     return(FinalStat) 
