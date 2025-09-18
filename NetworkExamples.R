@@ -1,13 +1,18 @@
 ## rm(list=ls())
 ## wd <- getwd()
+# install.packages("zoo")
 
 ### Package Part
 library(pracma)
+library(zoo)
 library(gsl)
 library(deSolve)
 library(igraph)
 library(ggplot2)
 library(cbinom)
+
+source("igraph_test.R")
+
 ################################### Network Functions
 {
   #Degree Distribution data frame
@@ -235,7 +240,7 @@ gamma <- 0.2
 
 N <- 50000
 
-dnbinom(10,r,mu=lambda)
+# dnbinom(10,r,mu=lambda)
 
 kvalue <- seq(0,400)
 #Pk <- dpois(kvalue,lambda)
@@ -335,31 +340,7 @@ dat <- cbind(time,CM_I
              #, Mod_I
              )
 
-# ggplot(data = dat)+theme_bw()+
-#   geom_line(aes(x=time, y=CM_I,color="Network"))+
-#   #geom_point(aes(x=time, y=MA_I,color="MASIR"),alpha=0.1)+
-#   #geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
-#   scale_color_manual(values=c("black", "red","blue"))+
-#   xlim(0,100)+
-#   labs(y = "I(t)") 
-# 
-# 
-# 
-# ggplot(data=dat_S)+theme_bw()+
-#   geom_line(aes(x=time, y=CM_S,color="Network"))+
-#   #geom_line(aes(x=time, y=MA_S,color="MASIR"))+
-#   #geom_point(aes(x=time, y=Mod_S,color="Modified"),alpha=0.1)+
-#   scale_color_manual(values=c("black", "red","blue"))+
-#   xlim(0,100)+
-#   labs(y = "S(t)") 
-# 
-# ggplot(data = dat_R)+theme_bw()+
-#   geom_line(aes(x=time, y=CM_R,color="Network"))+
-#   #geom_line(aes(x=time, y=MA_R,color="MASIR"))+
-#   #geom_point(aes(x=time, y=Mod_R,color="Modified"),alpha=0.1)+
-#   scale_color_manual(values=c("black", "red","blue"))+
-#   xlim(0,100)+
-#   labs(y = "R(t)") 
+ 
 
 
 #Mod_S
@@ -402,4 +383,95 @@ ggplot(data=dat_reff)+theme_bw()+
   xlim(0,5)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
+
+
+############# Simulation
+
+# Seed
+set.seed(15812)
+
+seq <- rnbinom(N,r,mu=lambda)
+
+### Realization check 
+# should be 0
+sum(seq)%%2
+
+# should be 1
+EG_check(seq)
+
+# generating graph
+G <- sample_degseq(  seq
+                   , method = "fast.heur.simple"
+                   )
+# check realization is successful
+# should be False
+any(sort(degree(G))-sort(seq)!=0)
+
+# Translate igraph network object into adjacency matrix
+Adj_list <- as_adj_list(  G
+                        , mode = "all"
+                        , loops = "once"
+                        , multiple = TRUE
+)
+
+result <- GilAlgo(Adj_list, N, beta, gamma, MaxTime = 200)
+
+## simulation final size
+result$FinalStat
+## MSV final size
+CM_Opt$RInfinity
+
+## simulation dynamic
+dat_sim <- result$Details
+## MSV dynamic
+# CM_out
+
+## comparing I dynamic
+ggplot(data = dat)+theme_bw()+
+  geom_point(data=dat_sim,aes(x=t_vec, y=I_vec,color="Simulation"),alpha=0.1)+
+  geom_line(aes(x=time, y=CM_I,color="MSV"))+
+  #geom_point(aes(x=time, y=Mod_I,color="Modified"),alpha=0.1)+
+  scale_color_manual(values=c("black", "red","blue"))+
+  xlim(0,60)+
+  labs(y = "I(t)")
+
+
+### Reff
+
+# peak values
+max(result$Reff[,3])
+#peak
+
+### verify calculation: Sum Reff=R_end-1
+sum(result$Reff[,3])
+result$FinalStat[4]*N
+### verified
+
+# visualization
+dat_sim_out<-result$Reff
+dat_Rsim<- dat_sim_out[!is.na(dat_sim_out[,2]),]
+#dat_Rsim[1,]
+dat_Rsim<-dat_Rsim[order(dat_Rsim[,2]),]
+
+rn <- 3
+edge <- (rn-1)/2
+roll_mean <- rep(0,length(dat_Rsim[,3]))
+roll_mean[c((edge+1):(length(dat_Rsim[,3])-edge))]<-rollmean(dat_Rsim[,3],rn)
+dat_Rsim <- cbind(dat_Rsim,roll_mean)
+
+ggplot(data=dat_reff)+theme_bw()+
+  geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Simulation"),size=0.2)+
+  geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
+  geom_line(aes(x=time, y=R_i,color="R_i"))+
+  #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
+  geom_line(aes(x=time, y=R_c,color="R_c star"))+
+  #geom_line(aes(x=time, y=est, color="Estimation"))+
+  #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
+  geom_hline(yintercept=peak,color="black")+
+  geom_hline(yintercept=R_c0,color="orange")+
+  ylim(0,40)+
+  xlim(0,10)+
+  #scale_color_manual(values=c("red", "black","brown"))
+  labs(y = "R_eff") 
+
 
