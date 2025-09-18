@@ -1,13 +1,16 @@
 #install.packages("igraph")
 library(igraph)
 
-# N <- 10000
-# delta <- 10
-# # Poisson network
-# set.seed(15812)
-# seq <- rpois(N,delta)
+N <- 10000
+delta <- 10
+# Poisson network
+set.seed(15812)
+seq <- rpois(N,delta)
+
+### Check the Even total degree
 # sum(seq)%%2
 
+### Checking Realization by Erdos-Gallai Thm
 EG_check <- function(DegreeDist){
   check_vec <- c(0)
   DegreeDist <- sort(DegreeDist,decreasing = T)
@@ -27,14 +30,28 @@ EG_check <- function(DegreeDist){
       check_vec[k] <- 0
     }
   }
-  return(min(check_vec))
+  # m<-min(check_vec)
+  # return(m)
+  return(!any(check_vec==0))
 }
 
 # EG_check(seq)
 
-# G <- sample_degseq(  seq
-#                    , method = "fast.heur.simple"
-#                    )
+### A bundle check of both even (fast) and EG(formal)
+CheckSeq <- function(Seq){
+  if((sum(Seq)%%2==0) & (EG_check(Seq))){
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+CheckSeq(seq)
+
+G <- sample_degseq(  seq
+                   , method = "fast.heur.simple"
+                   )
+
 ### Perhaps similar to Blitzstein Diaconiz or BKM algorithm???
 # The “fast.heur.simple” method generates simple graphs. 
 # It is similar to “configuration” but tries to avoid multiple and loop edges 
@@ -58,9 +75,8 @@ EG_check <- function(DegreeDist){
 # )
 
 # as.vector(Adj_list[[1]])
-
-
-
+# degree(G)
+# sample(c(1:N),5,prob=degree(G))
 ######### SSA Algorithm for transmission
 GilAlgo <- function(  Network
                     , size
@@ -70,7 +86,13 @@ GilAlgo <- function(  Network
                     , InitInfSize=1
                     , TrackDyn=T
                     ){
-  G <- Network
+  Net <- Network
+  G <- as_adj_list(  Net
+                   , mode = "all"
+                   , loops = "once"
+                   , multiple = TRUE
+  )
+  Deg_vec <- degree(Net)
   N <- size
   g <- gamma
   b <- beta
@@ -79,8 +101,11 @@ GilAlgo <- function(  Network
   
   # random initial infection with size i_0
   i_0 <- InitInfSize
-  # Radomly chose s vertices to be infected
-  InitIndex <- c(sample.int(N,i_0))
+  ###Radomly chose s vertices to be infected
+  # InitIndex <- c(sample.int(N,i_0))
+  
+  # Chose infected node with weight of degree
+  InitIndex <- sample(c(1:N),i_0,prob=Deg_vec)
   
   #Status: S=0, I=1, R=2
   
@@ -110,7 +135,8 @@ GilAlgo <- function(  Network
     # Network neighbor
     Neighbor <- as.vector(G[[x]])
     # Susceptible neighbor: update their rate
-    Contact <- Neighbor[which(Status[Neighbor]==0)]
+    # Contact <- Neighbor[which(Status[Neighbor]==0)] 
+    Contact <- Neighbor[!Status[Neighbor]]
     Rate[Contact] <- b
   }
   cat("Init Sum", sum(Rate),"\n")
@@ -210,8 +236,8 @@ GilAlgo <- function(  Network
 
 # beta <- 0.25
 # gamma <- 0.2
-# 
-# result <- GilAlgo(Adj_list, N, beta, gamma, MaxTime = 150)
+
+# result <- GilAlgo(G, N, beta, gamma, MaxTime = 150)
 # 
 # result$FinalStat
 # result$Details

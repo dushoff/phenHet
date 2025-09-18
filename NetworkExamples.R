@@ -388,7 +388,7 @@ ggplot(data=dat_reff)+theme_bw()+
 ############# Simulation
 
 # Seed
-set.seed(15812)
+set.seed(15813)
 
 seq <- rnbinom(N,r,mu=lambda)
 
@@ -453,7 +453,7 @@ dat_Rsim<- dat_sim_out[!is.na(dat_sim_out[,2]),]
 #dat_Rsim[1,]
 dat_Rsim<-dat_Rsim[order(dat_Rsim[,2]),]
 
-rn <- 3
+rn <- 5
 edge <- (rn-1)/2
 roll_mean <- rep(0,length(dat_Rsim[,3]))
 roll_mean[c((edge+1):(length(dat_Rsim[,3])-edge))]<-rollmean(dat_Rsim[,3],rn)
@@ -461,15 +461,16 @@ dat_Rsim <- cbind(dat_Rsim,roll_mean)
 
 ggplot(data=dat_reff)+theme_bw()+
   geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Simulation"),size=0.2)+
+  #geom_smooth(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Smooth"))+
   geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
-  geom_line(aes(x=time, y=R_i,color="R_i"))+
+  #geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="R_c star"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
-  geom_hline(yintercept=peak,color="black")+
+  #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,40)+
+  ylim(0,30)+
   xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
