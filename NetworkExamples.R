@@ -11,7 +11,7 @@ library(igraph)
 library(ggplot2)
 library(cbinom)
 
-source("igraph_test.R")
+source("NetworkSimulator.R")
 
 ################################### Network Functions
 {
