@@ -1,11 +1,11 @@
 #install.packages("igraph")
 library(igraph)
 
-N <- 10000
-delta <- 10
-# Poisson network
-set.seed(15812)
-seq <- rpois(N,delta)
+# N <- 10000
+# delta <- 10
+# # Poisson network
+# set.seed(15812)
+# seq <- rpois(N,delta)
 
 ### Check the Even total degree
 # sum(seq)%%2
@@ -46,11 +46,11 @@ CheckSeq <- function(Seq){
   }
 }
 
-CheckSeq(seq)
+# CheckSeq(seq)
 
-G <- sample_degseq(  seq
-                   , method = "fast.heur.simple"
-                   )
+# G <- sample_degseq(  seq
+#                    , method = "fast.heur.simple"
+#                    )
 
 ### Perhaps similar to Blitzstein Diaconiz or BKM algorithm???
 # The “fast.heur.simple” method generates simple graphs. 
@@ -77,6 +77,7 @@ G <- sample_degseq(  seq
 # as.vector(Adj_list[[1]])
 # degree(G)
 # sample(c(1:N),5,prob=degree(G))
+
 ######### SSA Algorithm for transmission
 GilAlgo <- function(  Network
                     , size
@@ -161,7 +162,7 @@ GilAlgo <- function(  Network
     Neighbor <- as.vector(G[[Event]])
     
     # Susceptible neighbor: update their rate
-    Contact <- Neighbor[which(Status[Neighbor]==0)]
+    Contact <- Neighbor[!Status[Neighbor]]
     
     # cat("contact: ", Contact,"\n")
     # Infected neighbor: Potential infectors
@@ -200,7 +201,12 @@ GilAlgo <- function(  Network
         # neighbor are iid and considering an expectation, we can average
         # out the new infection event to all active infected neighbor
         # at the moment of event.
-        Infect_num[Infector] <- Infect_num[Infector]+1/(length(Infector))
+        # Infect_num[Infector] <- Infect_num[Infector]+1/(length(Infector))
+        
+        # As suggested by Ben, we now randomly chose one infector (if more than 
+        # one) instead of do the average
+        samp_inf <- sample(Infector,1)
+        Infect_num[samp_inf] <- Infect_num[samp_inf]+1
       }
     } else {
     }

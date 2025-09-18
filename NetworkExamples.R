@@ -391,30 +391,27 @@ ggplot(data=dat_reff)+theme_bw()+
 set.seed(15813)
 
 seq <- rnbinom(N,r,mu=lambda)
+while(!CheckSeq(seq)){
+  seq <- rnbinom(N,r,mu=lambda)
+}
 
-### Realization check 
-# should be 0
-sum(seq)%%2
-
-# should be 1
-EG_check(seq)
-
+CheckSeq(seq)
 # generating graph
 G <- sample_degseq(  seq
                    , method = "fast.heur.simple"
                    )
 # check realization is successful
-# should be False
-any(sort(degree(G))-sort(seq)!=0)
+# should be True
+!any(sort(degree(G))-sort(seq)!=0)
 
 # Translate igraph network object into adjacency matrix
-Adj_list <- as_adj_list(  G
-                        , mode = "all"
-                        , loops = "once"
-                        , multiple = TRUE
-)
+# Adj_list <- as_adj_list(  G
+#                         , mode = "all"
+#                         , loops = "once"
+#                         , multiple = TRUE
+# )
 
-result <- GilAlgo(Adj_list, N, beta, gamma, MaxTime = 200)
+result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
 
 ## simulation final size
 result$FinalStat
@@ -453,9 +450,23 @@ dat_Rsim<- dat_sim_out[!is.na(dat_sim_out[,2]),]
 #dat_Rsim[1,]
 dat_Rsim<-dat_Rsim[order(dat_Rsim[,2]),]
 
+
+
+Adj_list <- as_adj_list(  G
+                        , mode = "all"
+                        , loops = "once"
+                        , multiple = TRUE
+)
+
+
+# dat_Rsim[1:5,]
+# 11045 %in% as.vector(Adj_list[[44632]])
+# degree(G)[11045]
+
+
 rn <- 5
 edge <- (rn-1)/2
-roll_mean <- rep(0,length(dat_Rsim[,3]))
+roll_mean <- rep(NA,length(dat_Rsim[,3]))
 roll_mean[c((edge+1):(length(dat_Rsim[,3])-edge))]<-rollmean(dat_Rsim[,3],rn)
 dat_Rsim <- cbind(dat_Rsim,roll_mean)
 
@@ -471,7 +482,7 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
   ylim(0,30)+
-  xlim(0,10)+
+  xlim(0,5)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
