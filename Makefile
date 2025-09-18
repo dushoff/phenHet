@@ -1,5 +1,6 @@
 ## This is phenomenological heterogeneity
 ## https://dushoff.github.io/phenHet/JR_NegBinom_Result.html
+## https://github.com/dushoff/phenHet/blob/master/outputs/Rnotes.pdf
 
 current: target
 -include target.mk
