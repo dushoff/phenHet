@@ -62,7 +62,7 @@ $$
 \int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT=-\gamma\phi(t)-1+(\beta+2 \gamma)\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT
 $$
 
-If ITB with $G'p(\phi)$ directly, we have:
+If ITB with $G'_p(\phi)$ directly, we have:
 $$\begin{align}
 & \int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT
 \\
