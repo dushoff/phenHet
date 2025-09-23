@@ -230,7 +230,7 @@ source("NetworkSimulator.R")
 
 ################################ Distribution part####################################################
 #### Distribution Parameter
-lambda <- 10
+lambda <- 5
 kappa <- 2
 r <- 1/kappa
 
@@ -238,7 +238,7 @@ r <- 1/kappa
 beta <- 0.25
 gamma <- 0.2
 
-N <- 100000
+N <- 50000
 
 # dnbinom(10,r,mu=lambda)
 
@@ -435,12 +435,21 @@ ggplot(data = dat)+theme_bw()+
 
 ### Reff
 result$Reff[1,]
-# peak values
-max(result$Reff[,4])
+## peak values
+# random
+max(result$Reff[,5])
+# avg
+max(result$Reff[,7])
+# counter factural
+max(result$Reff[,8])
 #peak
 
 ### verify calculation: Sum Reff=R_end-1
-sum(result$Reff[,4])
+# random
+sum(result$Reff[,5])
+# avg
+sum(result$Reff[,7])
+
 result$FinalStat[4]*N
 CM_Opt$RInfinity*N
 ### verified
@@ -451,31 +460,27 @@ dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
 ),]
 #dat_Rsim[1,]
 dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
-# Adj_list <- as_adj_list(  G
-#                         , mode = "all"
-#                         , loops = "once"
-#                         , multiple = TRUE
-# )
 
-
-rn <- 3
+rn <- 15
 edge <- (rn-1)/2
-roll_mean <- rep(NA,length(dat_Rsim$Infect_num))
-roll_mean[c((edge+1):(length(dat_Rsim$Infect_num)-edge))]<-rollmean(dat_Rsim$Infect_num,rn)
+roll_mean <- rep(NA,length(dat_Rsim$Infect_num_cf))
+roll_mean[c((edge+1):(length(dat_Rsim$Infect_num_cf)-edge))]<-rollmean(dat_Rsim$Infect_num_cf,rn)
 dat_Rsim <- cbind(dat_Rsim,roll_mean)
 
 ggplot(data=dat_reff)+theme_bw()+
-  geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Simulation"),size=0.2)+
+  geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_rnd,color="Sim RND"),size=0.2)+
+  geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_avg,color="Sim AVG"),size=0.2)+
+  #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_cf,color="Sim CF"),size=0.2)+
   #geom_smooth(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Smooth"))+
   geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
-  #geom_line(aes(x=time, y=R_i,color="R_i"))+
+  geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="R_c star"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,35)+
+  ylim(0,40)+
   xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
@@ -485,14 +490,14 @@ dat_Rsim[1:10,]
 # which(dat_Rsim$Infector_ind==307)
 
 
-#DDist
-degree(G)[40765]
-Net <- as_adj_list(  G
-                   , mode = "all"
-                   , loops = "once"
-                   , multiple = TRUE
-)
-Net[[23847]]
+# #DDist
+# degree(G)[40765]
+# Net <- as_adj_list(  G
+#                    , mode = "all"
+#                    , loops = "once"
+#                    , multiple = TRUE
+# )
+# Net[[23847]]
 
 
 mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
