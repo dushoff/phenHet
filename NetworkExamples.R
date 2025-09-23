@@ -238,7 +238,7 @@ r <- 1/kappa
 beta <- 0.25
 gamma <- 0.2
 
-N <- 50000
+N <- 100000
 
 # dnbinom(10,r,mu=lambda)
 
@@ -249,7 +249,6 @@ Pk<- dnbinom(kvalue,r,mu=lambda)
 DDist <- data.frame(kvalue,Pk)
 # DDist
 ################################ Distribution part END ##############
-
 
 ################################ Initial Condition
 # Initial Condition Solver based on I0=1-S0-(R0=0)
@@ -388,7 +387,7 @@ ggplot(data=dat_reff)+theme_bw()+
 ############# Simulation
 
 # Seed
-set.seed(15813)
+set.seed(2325)
 
 seq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(seq)){
@@ -399,6 +398,7 @@ CheckSeq(seq)
 # generating graph
 G <- sample_degseq(  seq
                    , method = "fast.heur.simple"
+                   #, method = "configuration.simple"
                    )
 # check realization is successful
 # should be True
@@ -442,6 +442,7 @@ max(result$Reff[,4])
 ### verify calculation: Sum Reff=R_end-1
 sum(result$Reff[,4])
 result$FinalStat[4]*N
+CM_Opt$RInfinity*N
 ### verified
 
 # visualization
@@ -450,7 +451,6 @@ dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
 ),]
 #dat_Rsim[1,]
 dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
-
 # Adj_list <- as_adj_list(  G
 #                         , mode = "all"
 #                         , loops = "once"
@@ -475,11 +475,26 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,30)+
-  xlim(0,5)+
+  ylim(0,35)+
+  xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
 # beta/(beta+gamma)
-# dat_Rsim[1:20,]
+dat_Rsim[1:10,]
 # which(dat_Rsim$Infector_ind==307)
+
+
+#DDist
+degree(G)[40765]
+Net <- as_adj_list(  G
+                   , mode = "all"
+                   , loops = "once"
+                   , multiple = TRUE
+)
+Net[[23847]]
+
+
+mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
+#(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
+mean((dat_Rsim$Infect_num/dat_Rsim$Deg_vec)[1:50])

@@ -141,7 +141,7 @@ GilAlgo <- function(  Network
     # Susceptible neighbor: update their rate
     # Contact <- Neighbor[which(Status[Neighbor]==0)] 
     Contact <- Neighbor[!Status[Neighbor]]
-    Rate[Contact] <- b
+    Rate[Contact] <- Rate[Contact]+b
   }
   cat("Init Sum", sum(Rate),"\n")
   cat("Init index", InitIndex,"\n")
@@ -209,17 +209,17 @@ GilAlgo <- function(  Network
         # neighbor are iid and considering an expectation, we can average
         # out the new infection event to all active infected neighbor
         # at the moment of event.
-        # Infect_num[Infector] <- Infect_num[Infector]+1/(length(Infector))
+        Infect_num[Infector] <- Infect_num[Infector]+1/(length(Infector))
         
         # As suggested by Ben, we now randomly chose one infector (if more than 
         # one) instead of do the average
-        if (length(Infector)==1){
-          samp_inf <- Infector
-        } else {
-          samp_inf <- sample(c(Infector),1)
-        }
-        Infect_num[samp_inf] <- Infect_num[samp_inf]+1
-        Infector_ind[Event] <- samp_inf
+        # if (length(Infector)==1){
+        #   samp_inf <- Infector
+        # } else {
+        #   samp_inf <- sample(c(Infector),1)
+        # }
+        # Infect_num[samp_inf] <- Infect_num[samp_inf]+1
+        # Infector_ind[Event] <- samp_inf
       }
     } else {
     }
