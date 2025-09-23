@@ -125,10 +125,12 @@ GilAlgo <- function(  Network
     
     Infect_time <- rep(NA,N)
     Infect_time[InitIndex] <- 0
-    Infect_num <- rep(0,N)
+    Infect_num_rnd <- rep(0,N)
+    Infect_num_avg <- rep(0,N)
+    Infect_num_cf <- rep(0,N)
     
     Recovery_time <- rep(NA,N)
-    Infector_ind <- rep(NA,N)
+    Infector_rnd <- rep(NA,N)
   }
   
   Rate <- rep(0,N)
@@ -209,17 +211,18 @@ GilAlgo <- function(  Network
         # neighbor are iid and considering an expectation, we can average
         # out the new infection event to all active infected neighbor
         # at the moment of event.
-        Infect_num[Infector] <- Infect_num[Infector]+1/(length(Infector))
+        Infect_num_avg[Infector] <- Infect_num_avg[Infector]+1/(length(Infector))
+        Infect_num_cf[Infector] <- Infect_num_cf[Infector]+1
         
         # As suggested by Ben, we now randomly chose one infector (if more than 
         # one) instead of do the average
-        # if (length(Infector)==1){
-        #   samp_inf <- Infector
-        # } else {
-        #   samp_inf <- sample(c(Infector),1)
-        # }
-        # Infect_num[samp_inf] <- Infect_num[samp_inf]+1
-        # Infector_ind[Event] <- samp_inf
+        if (length(Infector)==1){
+          samp_inf <- Infector
+        } else {
+          samp_inf <- sample(c(Infector),1)
+        }
+        Infect_num_rnd[samp_inf] <- Infect_num_rnd[samp_inf]+1
+        Infector_rnd[Event] <- samp_inf
       }
     } else {
     }
@@ -246,7 +249,7 @@ GilAlgo <- function(  Network
   
   if (TrackDyn==T){
     Track <- cbind(t_vec,S_vec,I_vec,R_vec)
-    Infect <- cbind(ind,Deg_vec,Infect_time,Infect_num,Recovery_time,Infector_ind)
+    Infect <- cbind(ind,Deg_vec,Infect_time,Recovery_time,Infect_num_rnd,Infector_rnd,Infect_num_avg,Infect_num_cf)
     return(list(FinalStat=FinalStat,Details=Track,Reff=Infect))
   } else {
     return(FinalStat) 
