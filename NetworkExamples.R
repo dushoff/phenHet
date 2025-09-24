@@ -476,7 +476,7 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_cf,color="Sim CF"),size=0.2)+
   #geom_smooth(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Smooth"))+
   geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
-  #geom_line(aes(x=time, y=R_i,color="R_i"))+
+  geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="R_c star"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
