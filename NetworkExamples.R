@@ -173,16 +173,18 @@ source("NetworkSimulator.R")
         with(as.list(c(parms,y)),{
           dtheta <- (-b)*theta+b*PGFd1G0(theta,Pk)/PGFd1G0(1,Pk)+g*(1-theta)
           dR <- g*(1-PGFG0(theta,Pk)-R)
-          return(list(c(dtheta,dR))) 
+          dP <- (b+g)*(-P+PGFd1G0(theta,Pk)/PGFd1G0(1,Pk))
+          return(list(c(dtheta,dR,dP))) 
         }) 
       }
       parms <- c(b=beta,g=gamma)
       times <- seq(0,ODEmaxTime,by=ODEstep)
-      y <- c(theta=1-init_theta,R=init_R)
+      y <- c(theta=1-init_theta,R=init_R,P=1)
       
       Sys_out <- ode(y,times,Sys,parms)
       S_out <- PGFG0(Sys_out[,2],Pk)
       I_out <- 1-S_out-Sys_out[,3]
+      P_out <- Sys_out[,4]
       Sys_out <- as.matrix(cbind(Sys_out,S_out,I_out))
     }
     
@@ -308,11 +310,12 @@ CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 200, ODEstep = 1e-1,init_theta
 #1+log((N-1)/N)/lambda
 
 CM_out <- CM_Opt$Dynamic
+# CM_out[10,]
 #MA_out <- MA_Opt$Dynamic
 #Mod_out <- Mod_Opt$Dynamic
 
 time <- CM_out[,1]
-CM_I <- CM_out[,5]
+CM_I <- CM_out[,6]
 #MA_I <- MA_out[,3]
 #Mod_I <- Mod_out[,3]
 
@@ -320,9 +323,10 @@ CM_R <- CM_out[,3]
 #MA_R <- MA_out[,4]
 #Mod_R <- Mod_out[,4]
 
+CM_P <- CM_out[,4]
 theta <- CM_out[,2]
 
-CM_S <- CM_out[,4]
+CM_S <- CM_out[,5]
 #MA_S <- MA_out[,2]
 #Mod_S <- Mod_out[,2]
 
@@ -361,6 +365,7 @@ peak <- beta/gamma*(lambda*(kappa+1)-1)
 R_i <- -S_dot/(CM_I*gamma)
 R_c <- R_c0*CM_S^(1+2*kappa)
 est <- peak*CM_S^(1+2*kappa)
+R_cc <- R_c*CM_P
 #new <- beta/gamma*(lambda*(kappa+1)*(2*CM_S^(2*kappa+1)-CM_S^(kappa)*(theta-gamma/beta*(1-theta)))-1)
 
 dat_reff <- cbind(time,R_i
@@ -368,13 +373,14 @@ dat_reff <- cbind(time,R_i
                   ,R_c
                   ,est
                   #,new
-                  ,theta)
+                  ,theta
+                  ,R_cc)
 
 ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=R_i,color="Instantaneous"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
-  geom_line(aes(x=time, y=est, color="Estimation"))+
+  geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
@@ -462,7 +468,7 @@ dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
 dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
 
 ## rolling mean
-rn <- 3
+rn <- 5
 edge <- (rn-1)/2
 roll_mean <- rep(NA,length(dat_Rsim$Infect_num_cf))
 roll_mean[c((edge+1):(length(dat_Rsim$Infect_num_cf)-edge))]<-rollmean(dat_Rsim$Infect_num_rnd,rn)
@@ -472,7 +478,7 @@ dat_Rsim <- cbind(dat_Rsim,roll_mean)
 #### Visualize
 ggplot(data=dat_reff)+theme_bw()+
   geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_rnd,color="Sim RND"),size=0.2)+
-  geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_avg,color="Sim AVG"),size=0.2)+
+  #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_avg,color="Sim AVG"),size=0.2)+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_cf,color="Sim CF"),size=0.2)+
   #geom_smooth(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Smooth"))+
   geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
@@ -607,7 +613,9 @@ df20$X <- 20
 df_all<-rbind( df1,df2,df3,df4,df5
               ,df6,df7,df8,df9,df10
               ,df11,df12,df13,df14,df15
-              ,df16,df17,df18,df19,df20
+              ,df16,df17,df18
+              ,df19
+              ,df20
               )
 dat_all<-df_all[order(df_all$Infect_time),]
 
@@ -618,11 +626,13 @@ dat_all[1:20,c(1:6,9)]
 
 ### rolling mean
 l <- length(dat_all$Infect_num_cf)
-rn <- 15
+rn <- 5
 edge <- (rn-1)/2
+rd<-20
+
 roll_mean <- rep(NA,l)
-roll_mean[c((edge+21):(l-edge))]<-rollmean(dat_all$Infect_num_rnd[21:l],rn)
-roll_mean[1:20]<-mean(dat_all$Infect_num_rnd[1:20])
+roll_mean[c((edge+rd+1):(l-edge))]<-rollmean(dat_all$Infect_num_rnd[(rd+1):l],rn)
+roll_mean[1:rd]<-mean(dat_all$Infect_num_rnd[1:rd])
 dat_all <- cbind(dat_all,roll_mean)
 
 ### alternative "roll mean"
@@ -650,6 +660,7 @@ ggplot(data=dat_all)+theme_bw()+
   #geom_line(data=dat_reff,aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(data=dat_reff,aes(x=time, y=R_c,color="R_c star"))+
+  #geom_line(data=dat_reff,aes(x=time, y=R_cc,color="R_c corre"))+
   geom_line(data=dat_exp,aes(x=time, y=inf_exp,color="exp"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
@@ -663,3 +674,5 @@ ggplot(data=dat_all)+theme_bw()+
 
 
 dat_all[1:50,c(1:5,6,10)]
+df20[1:5,c(1:5,6)]
+
