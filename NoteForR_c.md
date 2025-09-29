@@ -73,7 +73,38 @@ $$\begin{align}
 \end{align}$$
 Might get something if we take in the NegBinom distribution????
 
-## 2.1 Counterargument
+## 2.1 ODE Correction Term
+
+This is a translated version based on [Todd's notes](outputs/Rc.pdf).
+
+This seems to (and should) be equivalent to previous integration results for $\hat{\phi}_S$ (To Do: verify). The improvement is unlike the troublesome integration, we are now able to describe the result with a short ODE and being able to solve it numerically together with ODE system of MSV framework.
+
+Here is the derivation:
+
+We would like to compute:
+$$p(t)=\mathbb{P}\{\text{the focal infected node infected at time } t\text{ infect random one of its neighbour}\}$$
+- As in MSV framework, we assume infection of neighbors are independent, thus the number of infected neighbors follows binomial distribution. Follow the idea of Zhao2 result/derivation:
+	- Correspond to $\mu^*$ we have: $$\mu(t)=p(t)\times\frac{\phi_S(t)}{\phi(t)}$$
+	- Furthermore, Correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=\frac{p(t)}{\tau}\times\tau\frac{\phi_S}{\phi}\times(\mathbb{E}[K_I^*]-1)=\frac{p(t)}{\tau}\times\mathcal{R}^*_{c}(t)$$
+	- This further indicate $$p(t)=\tau\times\frac{\hat{\phi}_S}{\phi_S}$$if the two results are equivalent (to be verified).
+- Initially at $t=0$, there should be no competing infection among neighbors, all neighbors of focal infected node can only be infected by the focal node.
+	- This leads to $$p(0)=\tau=\frac{\beta}{\beta+\gamma}$$ as initial value of $p(t)$
+	- Furthermore, this agree with the initial value for $\mathcal{R}_c$, s.t.$$\mathcal{R}_{c}(0)=1\times\mathcal{R}^*_{c}(0)=\mathcal{R}_{c,0}=\frac{\beta}{\beta+\gamma}\times\frac{G''_p(1)}{\delta}$$
+
+To find $p(t)$ in the stochastic process, we observe that the focal infected node will infect its neighbor:
+- if the focal node makes an infectious contact with the neighbor under rate $\beta$ before the focal node's recovery under rate $\gamma$
+- $\textbf{AND}$ the neighbor is not infected (by the neighbor's neighbor other than the focal) at the time of contact by focal.
+With the MSV framework, the probability that a randomly chosen neighbor of the focal node is not infected at time $t$ is $$\phi_S(t)=G_q(\phi(t))=\frac{G'_p(\phi(t))}{\delta}$$
+In the random events, lets set the following random variables for time:
+- $T_r$: the time after infection $t$ that the focal infected node recovers. Based on the recovery rate $\gamma$ and exponential distribution, we have$$\mathbb{P}(T_r>s)=e^{-\gamma s}$$
+- $T_c$: the time after infection $t$ that the focal node makes it infectious contact with the neighbor through the edge connecting them. Based on the infection rate $\beta$ and exponential distribution, we have $$\mathbb{P}(T_c>s)=e^{-\beta s}$$
+- $T_n$: the first time that the neighbor has an infectious contact from one of its other neighbors than the focal node. We further have $$\mathbb{P}(T_n>t+s)=\phi_S(t+s)$$
+
+
+
+
+
+## 2.2 Counterargument
 A counterargument that RZ and BB have for this:
 - For large enough random network in MSV's configuration framework, it has been proved loops in network exist, but will be really rare (a.s. no loop as $N$ increase). 
 - Like in the percolation theory, considering the transmissibility of edges is a probability smaller than 1, loops linked by "occupied" edges are even more rare.

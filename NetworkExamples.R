@@ -13,6 +13,7 @@ library(cbinom)
 
 source("NetworkSimulator.R")
 
+
 ################################### Network Functions
 {
   #Degree Distribution data frame
@@ -232,9 +233,12 @@ source("NetworkSimulator.R")
 
 ################################ Distribution part####################################################
 #### Distribution Parameter
-lambda <- 5
+lambda <- 10
 kappa <- 2
 r <- 1/kappa
+
+(p<-1/(1+kappa*lambda))
+(v<-lambda/p)
 
 #### Disease Parameter
 beta <- 0.25
@@ -377,12 +381,12 @@ dat_reff <- cbind(time,R_i
                   ,R_cc)
 
 ggplot(data=dat_reff)+theme_bw()+
-  geom_line(aes(x=time, y=R_i,color="Instantaneous"))+
+  #geom_line(aes(x=time, y=R_i,color="Instantaneous"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
   geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
-  geom_hline(yintercept=peak,color="black")+
+  #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
   ylim(0,20)+
   xlim(0,5)+
@@ -406,9 +410,14 @@ G <- sample_degseq(  seq
                    , method = "fast.heur.simple"
                    #, method = "configuration.simple"
                    )
+
+
 # check realization is successful
 # should be True
 !any(sort(degree(G))-sort(seq)!=0)
+
+#igraph::simple_cycles(G)
+
 
 # Translate igraph network object into adjacency matrix
 # Adj_list <- as_adj_list(  G
@@ -485,11 +494,12 @@ ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="R_c star"))+
+  #geom_line(aes(x=time, y=R_cc,color="R_c"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,20)+
+  ylim(0,40)+
   xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
@@ -501,6 +511,7 @@ mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
 #(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
 mean((dat_Rsim$Infect_num/dat_Rsim$Deg_vec)[1:50])
 
+all_simple_paths(G)
 
 ### 20 runs
 # set.seed(32025)
@@ -639,7 +650,7 @@ dat_all <- cbind(dat_all,roll_mean)
 time<-seq(0,10,0.01)
 inf_exp<-time
 inf_time<-dat_all$Infect_time
-inf_num <-dat_all$Infect_num_rnd
+inf_num <-dat_all$Infect_num_cf
 
 len<-0.01
 
@@ -656,7 +667,7 @@ ggplot(data=dat_all)+theme_bw()+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_cf,color="Sim CF"),size=0.2)+
   #geom_smooth(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Smooth"))+
   #geom_line(aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"),size=0.2,alpha=0.6)+
-  geom_point(aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"),size=0.2,alpha=0.2)+
+  #geom_point(aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"),size=0.2,alpha=0.2)+
   #geom_line(data=dat_reff,aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(data=dat_reff,aes(x=time, y=R_c,color="R_c star"))+
