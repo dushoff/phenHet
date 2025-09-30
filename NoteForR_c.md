@@ -80,7 +80,8 @@ This is a translated version based on [Todd's notes](outputs/Rc.pdf).
 This seems to (and should) be equivalent to previous integration results for $\hat{\phi}_S$ (To Do: verify). The improvement is unlike the troublesome integration, we are now able to describe the result with a short ODE and being able to solve it numerically together with ODE system of MSV framework.
 
 We would like to compute:
-$$p(t)=\mathbb{P}\{\text{the focal infected node infected at time } t\text{ infect random one of its neighbour}\}$$
+$$p(t)=\mathbb{P}\{\text{a node infected at time } t \text{ infects a given (?) neighbour}\}$$
+Notes: condition on neighbors infection?
 - As in MSV framework, we assume infection of neighbors are independent, thus the number of infected neighbors follows binomial distribution. Follow the idea of Zhao2 result/derivation:
 	- We count the condition that the neighbor must be susceptible $\phi_S(t)$ in $p(t)$ s.t. $$\mu(t)=p(t)$$
 	- Furthermore, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=p(t)\times\phi(t)\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
@@ -95,7 +96,7 @@ With the MSV framework, the probability that a randomly chosen neighbor of the f
 In the random events, lets set the following random variables for time:
 - $T_r$: the time after infection $t$ that the focal infected node recovers. Based on the recovery rate $\gamma$ and exponential distribution, we have$$\mathbb{P}(T_r>s)=e^{-\gamma s}$$
 - $T_c$: the time after infection $t$ that the focal node makes it infectious contact with the neighbor through the edge connecting them. Based on the infection rate $\beta$ and exponential distribution, we have $$\mathbb{P}(T_c>s)=e^{-\beta s}$$
-- $T_n$: the first time that the neighbor has an infectious contact from one of its other neighbors than the focal node. We further have $$\mathbb{P}(T_n>t+s)=\phi_S(t+s)$$
+- $T_n$: the first time that the neighbor has an infectious contact from one of its neighbors other than the focal node. We further have $$\mathbb{P}(T_n>t+s)=\phi_S(t+s)$$
 With these RVs, we can interpret $p(t)$ in the following probability: $$p(t)=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}$$ where $t+T_c < (t+T_r) \wedge T_n \ \Leftrightarrow \min((t+T_r),T_n)$.
 
 Since $T_r$ and $T_n$ are independent, we can further derive: 
