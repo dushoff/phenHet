@@ -170,11 +170,13 @@ source("NetworkSimulator.R")
   #Configuration model
   ModProc_CM <- function(Pk, beta, gamma, init_theta=1e-3, ODEmaxTime=50, ODEstep=1e-2,ThetaTol=1e-9, TrackDyn=TRUE,init_R=0, s_theta=1e-2){
     if (TrackDyn==TRUE){
+      #p0 <- beta/(beta+gamma)
       Sys <- function(t, y, parms){
         with(as.list(c(parms,y)),{
           dtheta <- (-b)*theta+b*PGFd1G0(theta,Pk)/PGFd1G0(1,Pk)+g*(1-theta)
           dR <- g*(1-PGFG0(theta,Pk)-R)
           dP <- (b+g)*(-P+PGFd1G0(theta,Pk)/PGFd1G0(1,Pk))
+          #dP <- (-b)*(PGFd1G0(theta,Pk)/PGFd1G0(1,Pk))+(b+g)*P
           return(list(c(dtheta,dR,dP))) 
         }) 
       }
@@ -318,6 +320,7 @@ CM_out <- CM_Opt$Dynamic
 #MA_out <- MA_Opt$Dynamic
 #Mod_out <- Mod_Opt$Dynamic
 
+
 time <- CM_out[,1]
 CM_I <- CM_out[,6]
 #MA_I <- MA_out[,3]
@@ -348,7 +351,7 @@ dat <- cbind(time,CM_I
              )
 
  
-
+#CM_P
 
 #Mod_S
 #Mod_I
@@ -370,6 +373,9 @@ R_i <- -S_dot/(CM_I*gamma)
 R_c <- R_c0*CM_S^(1+2*kappa)
 est <- peak*CM_S^(1+2*kappa)
 R_cc <- R_c*CM_P
+R_c1 <- beta/(beta+gamma)*CM_P*theta*PGFd2G0(theta,DDist)/PGFd1G0(theta,DDist)
+
+
 #new <- beta/gamma*(lambda*(kappa+1)*(2*CM_S^(2*kappa+1)-CM_S^(kappa)*(theta-gamma/beta*(1-theta)))-1)
 
 dat_reff <- cbind(time,R_i
@@ -378,13 +384,14 @@ dat_reff <- cbind(time,R_i
                   ,est
                   #,new
                   ,theta
-                  ,R_cc)
+                  ,R_cc
+                  ,R_c1)
 
 ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=R_i,color="Instantaneous"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
-  geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
+  geom_line(aes(x=time, y=R_c1, color="Corrected Rc"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
@@ -392,7 +399,6 @@ ggplot(data=dat_reff)+theme_bw()+
   xlim(0,5)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
-
 
 ############# Simulation
 
