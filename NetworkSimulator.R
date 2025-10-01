@@ -126,8 +126,9 @@ GilAlgo <- function(  Network
     Infect_time <- rep(NA,N)
     Infect_time[InitIndex] <- 0
     Infect_num_rnd <- rep(0,N)
-    Infect_num_avg <- rep(0,N)
-    Infect_num_cf <- rep(0,N)
+    #Infect_num_avg <- rep(0,N)
+    #Infect_num_cf <- rep(0,N)
+    S_NbrDeg <- rep(0,N)
     
     Recovery_time <- rep(NA,N)
     Infector_rnd <- rep(NA,N)
@@ -141,11 +142,13 @@ GilAlgo <- function(  Network
     # Network neighbor
     Neighbor <- as.vector(G[[x]])
     # Susceptible neighbor: update their rate
-    # Contact <- Neighbor[which(Status[Neighbor]==0)] 
+    # Contact <- Neighbor[which(Status[Neighbor]==0)]
     Contact <- Neighbor[!Status[Neighbor]]
+    S_NbrDeg[x] <- length(Contact)
     Rate[Contact] <- Rate[Contact]+b
   }
   cat("Init Sum", sum(Rate),"\n")
+  cat("init Deg", S_NbrDeg[InitIndex],"\n")
   cat("Init index", InitIndex,"\n")
   # while loop: keep looping if t<tmax & Istep != 0 
   # i.e. there is still active infection
@@ -201,6 +204,7 @@ GilAlgo <- function(  Network
         # NA if not being infected eventually
         Infect_time[Event] <- t
         
+        S_NbrDeg[Event] <- length(Contact)
         # For each infection event in SSA, we might not be able
         # to figure out the exactly one infector as the event is
         # determined by the rate of infectee i.e. number of its
@@ -211,8 +215,8 @@ GilAlgo <- function(  Network
         # neighbor are iid and considering an expectation, we can average
         # out the new infection event to all active infected neighbor
         # at the moment of event.
-        Infect_num_avg[Infector] <- Infect_num_avg[Infector]+1/(length(Infector))
-        Infect_num_cf[Infector] <- Infect_num_cf[Infector]+1
+        # Infect_num_avg[Infector] <- Infect_num_avg[Infector]+1/(length(Infector))
+        # Infect_num_cf[Infector] <- Infect_num_cf[Infector]+1
         
         # As suggested by Ben, we now randomly chose one infector (if more than 
         # one) instead of do the average
@@ -249,7 +253,15 @@ GilAlgo <- function(  Network
   
   if (TrackDyn==T){
     Track <- cbind(t_vec,S_vec,I_vec,R_vec)
-    Infect <- cbind(ind,Deg_vec,Infect_time,Recovery_time,Infect_num_rnd,Infector_rnd,Infect_num_avg,Infect_num_cf)
+    Infect <- cbind(  ind
+                    , Deg_vec
+                    , Infect_time
+                    , Recovery_time
+                    , S_NbrDeg
+                    , Infect_num_rnd
+                    , Infector_rnd
+                    #, Infect_num_avg,Infect_num_cf
+                    )
     return(list(FinalStat=FinalStat,Details=Track,Reff=Infect))
   } else {
     return(FinalStat) 

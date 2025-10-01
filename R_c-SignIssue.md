@@ -2,7 +2,7 @@ This is a translated version based on [Todd's notes](outputs/Rc.pdf).
 We are able to describe the result with a short ODE and being able to solve it numerically together with ODE system of MSV framework.
 
 We would like to compute:
-$$p(t)=\mathbb{P}\{\text{the focal infected node infected at time } t\text{ infect random one of its neighbour}\}$$
+$$p(t)=\mathbb{P}\{\text{a node infected at time } t \text{ infects a given (? susceptible) neighbour}\}$$
 - As in MSV framework, we assume infection of neighbors are independent, thus the number of infected neighbors follows binomial distribution. Follow the idea of Zhao2 result/derivation:
 	- We count the condition that the neighbor must be susceptible $\phi_S(t)$ in $p(t)$ s.t. $$\mu(t)=p(t)$$
 	- Furthermore, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=p(t)\times\phi(t)\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$

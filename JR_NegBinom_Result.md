@@ -231,7 +231,7 @@ To derive $X_t$
 - $K_I^*(t)$ is the random variable of degree of a newly infective vertex at time $t$
 	- Corresponding PGF of $K_I^*(t)$ is $$\frac{\sum_k k p_k\phi^kx^k}{\sum_k k p_k\phi^k}=\frac{xG'_S(x)}{G
 	'_S(1)}=G_I(x)$$
-	- Expectation of $K_I^*(t)$ is:$$\mathbb{E}(K_I^*(t))=G_I'(1)=\frac{\phi G_p''(\phi)}{G'_p(\phi)}$$
+	- Expectation of $K_I^*(t)$ is:$$\mathbb{E}(K_I^*(t))=G_I'(1)=\frac{\phi G_p''(\phi)}{G'_p(\phi)}+1$$
 - Since neighbors are assumed to be independent, given the a ==newly infected== vertex have degree $K_I^*(t)$, the number $X_t$ of new infective vertices infected by this vertex is distributed as a Binomial($n=K_I^*(t)-1,\mu$).
 	- $n=K_I^*(t)-1$ is because we know for any infective vertex, it can no longer infect its infector.
 	- [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) claim that $\mu= \frac{\beta}{\beta+\gamma} S(t)$ where $\frac{\beta}{\beta+\gamma}$ is the per-edge infection probability/transmissibility and on average, only a fraction $S(t)$ of its contacts will still be susceptible.

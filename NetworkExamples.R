@@ -235,7 +235,7 @@ source("NetworkSimulator.R")
 
 ################################ Distribution part####################################################
 #### Distribution Parameter
-lambda <- 10
+lambda <- 5
 kappa <- 2
 r <- 1/kappa
 
@@ -244,7 +244,8 @@ r <- 1/kappa
 
 #### Disease Parameter
 beta <- 0.25
-gamma <- 0.2
+gamma <- 0.75
+# gamma <- 0.2
 
 N <- 50000
 
@@ -255,6 +256,8 @@ kvalue <- seq(0,400)
 Pk<- dnbinom(kvalue,r,mu=lambda)
 
 DDist <- data.frame(kvalue,Pk)
+
+PGFd2G0(1,DDist)/lambda*beta/(beta+gamma)
 # DDist
 ################################ Distribution part END ##############
 
@@ -310,7 +313,7 @@ S0Count <- PGFG0(1-it_theta,DDist)*N
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 200, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = TRUE)
 #MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
 #Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
-
+CM_Opt$R0
 
 
 #1+log((N-1)/N)/lambda
@@ -373,7 +376,7 @@ R_i <- -S_dot/(CM_I*gamma)
 R_c <- R_c0*CM_S^(1+2*kappa)
 est <- peak*CM_S^(1+2*kappa)
 R_cc <- R_c*CM_P
-R_c1 <- beta/(beta+gamma)*CM_P*theta*PGFd2G0(theta,DDist)/PGFd1G0(theta,DDist)
+#R_c1 <- beta/(beta+gamma)*CM_P*PGFd2G0(theta,DDist)/PGFd1G0(theta,DDist)
 
 
 #new <- beta/gamma*(lambda*(kappa+1)*(2*CM_S^(2*kappa+1)-CM_S^(kappa)*(theta-gamma/beta*(1-theta)))-1)
@@ -385,25 +388,29 @@ dat_reff <- cbind(time,R_i
                   #,new
                   ,theta
                   ,R_cc
-                  ,R_c1)
+                  ,R_c1
+                  )
 
 ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=R_i,color="Instantaneous"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
-  geom_line(aes(x=time, y=R_c1, color="Corrected Rc"))+
+  geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
+  geom_line(aes(x=time, y=theta, color="theta x10"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,20)+
-  xlim(0,5)+
+  ylim(0,5)+
+  xlim(0,20)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
+CM_P[1:20]
+time[1:20]
 ############# Simulation
 
 # Seed
-set.seed(2325)
+set.seed(3528)
 
 seq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(seq)){
@@ -457,19 +464,23 @@ ggplot(data = dat)+theme_bw()+
 ### Reff
 result$Reff[1,]
 ## peak values
-# random
+# random Real infection
+max(result$Reff[,6])
+# susceptible neighbor at time of infection
 max(result$Reff[,5])
-# avg
-max(result$Reff[,7])
-# counter factural
-max(result$Reff[,8])
+
+
+## avg
+# max(result$Reff[,7])
+## counter factural
+# max(result$Reff[,8])
 #peak
 
 ### verify calculation: Sum Reff=R_end-1
 # random
-sum(result$Reff[,5])
+sum(result$Reff[,6])
 # avg
-sum(result$Reff[,7])
+#sum(result$Reff[,7])
 
 result$FinalStat[4]*N
 CM_Opt$RInfinity*N
@@ -482,22 +493,28 @@ dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
 #dat_Rsim[1,]
 dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
 
-## rolling mean
-rn <- 5
-edge <- (rn-1)/2
-roll_mean <- rep(NA,length(dat_Rsim$Infect_num_cf))
-roll_mean[c((edge+1):(length(dat_Rsim$Infect_num_cf)-edge))]<-rollmean(dat_Rsim$Infect_num_rnd,rn)
-dat_Rsim <- cbind(dat_Rsim,roll_mean)
+## Simulated R_c star: # of Sus Nbr * beta/(beta+gamma)
+Sim_RcS <- round(dat_Rsim$S_NbrDeg*(beta/(beta+gamma)),2)
 
+## rolling mean
+rn <- 9
+edge <- (rn-1)/2
+roll_mean <- rep(NA,length(dat_Rsim$Infect_num_rnd))
+(roll_mean[c((edge+1):(length(dat_Rsim$Infect_num_rnd)-edge))]
+  <-rollmean(dat_Rsim$Infect_num_rnd,rn)
+  #<- rollmean(Sim_RcS,rn)
+)
+dat_Rsim <- cbind(dat_Rsim,Sim_RcS,roll_mean)
 
 #### Visualize
 ggplot(data=dat_reff)+theme_bw()+
   geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_rnd,color="Sim RND"),size=0.2)+
+  #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Sim_RcS,color="Sim R_c star"),size=0.2)+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_avg,color="Sim AVG"),size=0.2)+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_cf,color="Sim CF"),size=0.2)+
   #geom_smooth(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Smooth"))+
   geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
-  geom_line(aes(x=time, y=R_i,color="R_i"))+
+  #geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="R_c star"))+
   #geom_line(aes(x=time, y=R_cc,color="R_c"))+
@@ -505,42 +522,41 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,40)+
+  ylim(0,10)+
   xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
-
+# Sim_RcS[1:30]
+# dat_Rsim$Active_NbrDeg[1:10]
 # beta/(beta+gamma)
-dat_Rsim[1:10,]
+dat_Rsim[11:20,c(2:6,8)]
 mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
-#(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
-mean((dat_Rsim$Infect_num/dat_Rsim$Deg_vec)[1:50])
+#mean((dat_Rsim$Infect_num/dat_Rsim$Deg_vec)[1:50])
 
-all_simple_paths(G)
+# all_simple_paths(G,from = 1)
 
 ### 20 runs
-# set.seed(32025)
+#set.seed(32025)
 
-# {
-#   seq <- rnbinom(N,r,mu=lambda)
-#   while(!CheckSeq(seq)){
-#     seq <- rnbinom(N,r,mu=lambda)
-#   }
-#   CheckSeq(seq)
-#   G <- sample_degseq(  seq
-#                      , method = "fast.heur.simple"
-#                      )
-#   result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
-#   dat_sim_out<-as.data.frame(result$Reff)
-#   dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time),]
-#   dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
-# }
-# result$FinalStat
-# 
-# 
-# write.csv2(  dat_Rsim
-#              , file="./SimData/sim_50k_md5_round11.csv")
+{
+  seq <- rnbinom(N,r,mu=lambda)
+  while(!CheckSeq(seq)){
+    seq <- rnbinom(N,r,mu=lambda)
+  }
+  CheckSeq(seq)
+  G <- sample_degseq(  seq
+                     , method = "fast.heur.simple"
+                     )
+  result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
+  dat_sim_out<-as.data.frame(result$Reff)
+  dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time),]
+  dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
+}
+result$FinalStat
+
+write.csv2(  dat_Rsim
+             , file="./SimData/sim_50k_md5_round20.csv")
 
 #### readback
 {
@@ -639,32 +655,39 @@ dat_all<-df_all[order(df_all$Infect_time),]
 ### Compare the initial condition
 mean(dat_all$Infect_num_rnd[1:20])
 R_c0
-dat_all[1:20,c(1:6,9)]
+dat_all[1:20,c(1:6,8)]
 
 ### rolling mean
-l <- length(dat_all$Infect_num_cf)
-rn <- 5
+Sim_RcS <- round(dat_all$S_NbrDeg*(beta/(beta+gamma)),2)
+
+l <- length(dat_all$Infect_num_rnd)
+rn <- 9
 edge <- (rn-1)/2
 rd<-20
 
 roll_mean <- rep(NA,l)
-roll_mean[c((edge+rd+1):(l-edge))]<-rollmean(dat_all$Infect_num_rnd[(rd+1):l],rn)
+(roll_mean[c((edge+rd+1):(l-edge))]
+  #<- rollmean(dat_all$Infect_num_rnd[(rd+1):l],rn)
+  <- rollmean(Sim_RcS[(rd+1):l],rn)
+  )
 roll_mean[1:rd]<-mean(dat_all$Infect_num_rnd[1:rd])
-dat_all <- cbind(dat_all,roll_mean)
+dat_all <- cbind(dat_all, Sim_RcS, roll_mean)
 
 ### alternative "roll mean"
 time<-seq(0,10,0.01)
 inf_exp<-time
 inf_time<-dat_all$Infect_time
-inf_num <-dat_all$Infect_num_cf
+#inf_num <-dat_all$Infect_num_rnd
+inf_num <- dat_all$Sim_RcS
 
-len<-0.01
+len<-0.005
 
 for (i in c(1:length(time))) {
   t <- time[i]
   inf_exp[i]<-mean(inf_num[inf_time>(t-len) & inf_time<(t+len)])
 }
 dat_exp <- as.data.frame(cbind(time,inf_exp))
+
 
 
 ggplot(data=dat_all)+theme_bw()+
@@ -690,6 +713,6 @@ ggplot(data=dat_all)+theme_bw()+
 
 
 
-dat_all[1:50,c(1:5,6,10)]
-df20[1:5,c(1:5,6)]
+# dat_all[1:50,c(1:5,6,10)]
+# df20[1:5,c(1:5,6)]
 
