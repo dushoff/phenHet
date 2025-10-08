@@ -62,7 +62,8 @@ List GilAlgoCpp(  List adjList
   for (int i = 0; i < InitInfSize; ++i) {
     int x = InitIndex[i];
     IntegerVector neighbors = adjList[x];
-    for (int nbr : neighbors) {
+    for (int j : neighbors) {
+      int nbr = j - 1;
       if (Status[nbr] == 0) {
         Rate[nbr] += beta;
         ++S_NbrDeg[x];
@@ -85,7 +86,9 @@ List GilAlgoCpp(  List adjList
     IntegerVector neighbors = adjList[Event];
     std::vector<int> Contact; 
     IntegerVector Infector;
-    for (int nbr : neighbors) {
+    
+    for (int j : neighbors) {
+      int nbr = j - 1;
       if (Status[nbr] == 0) Contact.push_back(nbr);
       else if (Status[nbr] == 1) Infector.push_back(nbr);
     }
@@ -95,22 +98,25 @@ List GilAlgoCpp(  List adjList
     
     if (Status[Event] == 2) { // Recovery
       Rate[Event] = 0.0;
-      for (int nbr : Contact) Rate[nbr] -= beta;
+      for (int nbr : Contact) {
+        Rate[nbr] -= beta;
+      }
       if (TrackDyn) Recovery_time[Event] = t;
     } else if (Status[Event] == 1) { // Infection
       Rate[Event] = gamma;
-      for (int nbr : Contact) Rate[nbr] += beta;
+      for (int nbr : Contact) {
+        Rate[nbr] += beta; 
+      }
       if (TrackDyn) {
         Infect_time[Event] = t;
         S_NbrDeg[Event] = Contact.size();
         
-        int samp_inf;
         if (Infector.size()>0) {
           IntegerVector samp_vec = Rcpp::sample(Infector, 1, false);
-          samp_inf = samp_vec[0];
+          int samp_inf = samp_vec[0];
+          Infect_num_rnd[samp_inf] += 1;
+          Infector_rnd[Event] = samp_inf + 1;
         }
-        Infect_num_rnd[samp_inf] += 1;
-        Infector_rnd[Event] = samp_inf;
       }
     }
     

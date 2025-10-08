@@ -244,10 +244,10 @@ r <- 1/kappa
 
 #### Disease Parameter
 beta <- 0.25
-gamma <- 0.75
-# gamma <- 0.2
+# gamma <- 0.75
+gamma <- 0.2
 
-N <- 50000
+N <- 250000
 
 # dnbinom(10,r,mu=lambda)
 
@@ -403,17 +403,17 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,5)+
-  xlim(0,20)+
+  ylim(0,10)+
+  xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
-CM_P[1:20]
-time[1:20]
+#CM_P[1:20]
+#time[1:20]
 ############# Simulation
 
 # Seed
-set.seed(3528)
+set.seed(2853)
 
 seq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(seq)){
@@ -444,20 +444,12 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('Full_Copilot.cpp')
-Cpp_result <- GilAlgoCpp(Adj_list,N,beta,gamma, MaxTime = 100)
+Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100)
 Cpp_result$FinalStat
-Cpp_result$Details[1:5,]
-Cpp_result$Init
+
+result <- Cpp_result
 # Cpp_result$Reff[]
 
-dat_sim_out<-as.data.frame(Cpp_result$Reff)
-dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
-),]
-#dat_Rsim[1,]
-dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
-dat_Rsim[1:4,]
-G[[12916]]
-G[[25844]]
 ### R Version
 #result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
 
@@ -517,7 +509,7 @@ dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
 Sim_RcS <- round(dat_Rsim$S_NbrDeg*(beta/(beta+gamma)),2)
 
 ## rolling mean
-rn <- 9
+rn <- 5
 edge <- (rn-1)/2
 roll_mean <- rep(NA,length(dat_Rsim$Infect_num_rnd))
 (roll_mean[c((edge+1):(length(dat_Rsim$Infect_num_rnd)-edge))]
@@ -542,7 +534,7 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,10)+
+  ylim(0,20)+
   xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
@@ -550,7 +542,7 @@ ggplot(data=dat_reff)+theme_bw()+
 # Sim_RcS[1:30]
 # dat_Rsim$Active_NbrDeg[1:10]
 # beta/(beta+gamma)
-dat_Rsim[11:20,c(2:6,8)]
+dat_Rsim[1:20,c(2:6,8)]
 mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
 #mean((dat_Rsim$Infect_num/dat_Rsim$Deg_vec)[1:50])
 
