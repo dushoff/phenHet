@@ -10,9 +10,9 @@ library(deSolve)
 library(igraph)
 library(ggplot2)
 library(cbinom)
+library(Rcpp)
 
 source("NetworkSimulator.R")
-
 
 ################################### Network Functions
 {
@@ -314,11 +314,14 @@ CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 200, ODEstep = 1e-1,init_theta
 #MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
 #Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
 CM_Opt$R0
+theta_inf <- CM_Opt$ThetaInfinity
 
+# beta*PGFd1G0(theta_inf,DDist)/(lambda*(beta+gamma))
 
 #1+log((N-1)/N)/lambda
 
 CM_out <- CM_Opt$Dynamic
+# CM_out[100,4]
 # CM_out[10,]
 #MA_out <- MA_Opt$Dynamic
 #Mod_out <- Mod_Opt$Dynamic
@@ -388,7 +391,7 @@ dat_reff <- cbind(time,R_i
                   #,new
                   ,theta
                   ,R_cc
-                  ,R_c1
+                  #,R_c1
                   )
 
 ggplot(data=dat_reff)+theme_bw()+
@@ -396,7 +399,7 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
   geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
-  geom_line(aes(x=time, y=theta, color="theta x10"))+
+  #geom_line(aes(x=time, y=theta, color="theta x10"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
@@ -433,13 +436,30 @@ G <- sample_degseq(  seq
 
 
 # Translate igraph network object into adjacency matrix
-# Adj_list <- as_adj_list(  G
-#                         , mode = "all"
-#                         , loops = "once"
-#                         , multiple = TRUE
-# )
+Adj_list <- as_adj_list(  G
+                        , mode = "all"
+                        , loops = "once"
+                        , multiple = TRUE
+)
 
-result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
+### Rcpp Version
+sourceCpp('Full_Copilot.cpp')
+Cpp_result <- GilAlgoCpp(Adj_list,N,beta,gamma, MaxTime = 100)
+Cpp_result$FinalStat
+Cpp_result$Details[1:5,]
+Cpp_result$Init
+# Cpp_result$Reff[]
+
+dat_sim_out<-as.data.frame(Cpp_result$Reff)
+dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
+),]
+#dat_Rsim[1,]
+dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
+dat_Rsim[1:4,]
+G[[12916]]
+G[[25844]]
+### R Version
+#result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
 
 ## simulation final size
 result$FinalStat
