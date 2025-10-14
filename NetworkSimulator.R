@@ -85,8 +85,14 @@ GilAlgo <- function(  Network
                     , gamma
                     , MaxTime
                     , InitInfSize=1
-                    , TrackDyn=T
+                    , TrackDyn=TRUE
+                    , debug = FALSE
+                    , debug_freq = 1
                     ){
+
+  debug_ctr <- 0
+  event_ctr <- 0
+  
   Net <- Network
   G <- as_adj_list(  Net
                    , mode = "all"
@@ -116,12 +122,12 @@ GilAlgo <- function(  Network
   Status[InitIndex] <- 1
   Istep <- sum(Status==1)
   
-  if (TrackDyn==T){
+  if (TrackDyn) {
     NumStep <- 1
-    t_vec <- c(t)
-    S_vec <- c(sum(Status==0)/N)
-    I_vec <- c(sum(Status==1)/N)
-    R_vec <- c(0)
+    t_vec <- t
+    S_vec <- sum(Status==0)/N
+    I_vec <- sum(Status==1)/N
+    R_vec <- 0
     
     Infect_time <- rep(NA,N)
     Infect_time[InitIndex] <- 0
@@ -144,11 +150,11 @@ GilAlgo <- function(  Network
     # Susceptible neighbor: update their rate
     # Contact <- Neighbor[which(Status[Neighbor]==0)]
     Contact <- Neighbor[!Status[Neighbor]]
-    S_NbrDeg[x] <- length(Contact)
+    if (TrackDyn) S_NbrDeg[x] <- length(Contact)
     Rate[Contact] <- Rate[Contact]+b
   }
   cat("Init Sum", sum(Rate),"\n")
-  cat("init Deg", S_NbrDeg[InitIndex],"\n")
+  if (TrackDyn) cat("init Deg", S_NbrDeg[InitIndex],"\n")
   cat("Init index", InitIndex,"\n")
   # while loop: keep looping if t<tmax & Istep != 0 
   # i.e. there is still active infection
@@ -162,6 +168,13 @@ GilAlgo <- function(  Network
     
     r <- runif(2, min = 0, max = 1)
     Event <- min(which(Cum>r[1]*Sum))
+
+    event_ctr <- event_ctr + 1
+    if (debug && (debug_ctr %% debug_freq == 0)) {
+      cat(sprintf("%d %f %f %f %d\n", event_ctr, t, r[1], r[2], Event))
+    }
+    debug_ctr <- debug_ctr + 1
+    
     # Infection: status 0 to 1
     # Recovery: status 1 to 2
     Status[Event] <- Status[Event]+1
@@ -188,18 +201,18 @@ GilAlgo <- function(  Network
     # }
     
     ## Update status
-    if (Status[Event]==2){               ## Recovery
+    if (Status[Event]==2) {               ## Recovery
       Rate[Event] <- 0
       Rate[Contact] <- Rate[Contact]-b
       
-      if (TrackDyn==T){
+      if (TrackDyn){
         Recovery_time[Event] <- t
       }
     } else if (Status[Event]==1){        ## Infection
       Rate[Event] <- g
       Rate[Contact] <- Rate[Contact]+b   ## Independence: linear
       
-      if (TrackDyn==T){
+      if (TrackDyn){
         # vector of infection time of vertices
         # NA if not being infected eventually
         Infect_time[Event] <- t
@@ -220,8 +233,9 @@ GilAlgo <- function(  Network
         
         # As suggested by Ben, we now randomly chose one infector (if more than 
         # one) instead of do the average
+
         if (length(Infector)==1){
-          samp_inf <- Infector
+         samp_inf <- Infector
         } else {
           samp_inf <- sample(c(Infector),1)
         }
@@ -229,13 +243,14 @@ GilAlgo <- function(  Network
         Infector_rnd[Event] <- samp_inf
       }
     } else {
+      stop("unknown status")
     }
     
     ## Active number of infections of the whole network
     Istep <- sum(Status==1)
     
     ## Update proportion
-    if (TrackDyn==T){
+    if (TrackDyn){
       NumStep <- NumStep+1
       t_vec[NumStep] <- t
       S_vec[NumStep] <- sum(Status==0)/N
@@ -249,9 +264,9 @@ GilAlgo <- function(  Network
   Ssize <- sum(Status==0)/N
   Isize <- sum(Status==1)/N
   Rsize <- sum(Status==2)/N
-  FinalStat <- data.frame(FinishTime,Ssize,Isize,Rsize)
+  FinalStat <- data.frame(FinishTime, Ssize, Isize, Rsize)
   
-  if (TrackDyn==T){
+  if (TrackDyn){
     Track <- cbind(t_vec,S_vec,I_vec,R_vec)
     Infect <- cbind(  ind
                     , Deg_vec

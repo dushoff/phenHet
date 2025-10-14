@@ -8,7 +8,12 @@ List GilAlgoCpp(  List adjList
                 , double gamma
                 , double MaxTime
                 , int InitInfSize = 1
-                , bool TrackDyn = true) {
+		, bool TrackDyn = true
+		, bool debug = false
+		, int debug_freq = 1) {
+
+  long int debug_ctr = 0;
+  long int event_ctr = 0;
   int N = size;
   double t = 0.0;
   IntegerVector Status(N, 0); 
@@ -75,13 +80,19 @@ List GilAlgoCpp(  List adjList
   while (t < MaxTime && Istep > 0) {
     double SumRate = sum(Rate);
     if (SumRate <= 0.0) break;
-    
+
     NumericVector CumRate = cumsum(Rate);
-    double r1 = R::runif(0, 1) * SumRate;
+    double r1 = R::runif(0, 1);
     double r2 = R::runif(0, 1);
-    int Event = std::lower_bound(CumRate.begin(), CumRate.end(), r1) - CumRate.begin();
+    int Event = std::lower_bound(CumRate.begin(), CumRate.end(), r1*SumRate) - CumRate.begin();
     
     Status[Event] += 1;
+
+    event_ctr++;
+    if (debug & (debug_ctr % debug_freq == 0)) {
+      Rprintf("%ld %f %f %f %d\n", event_ctr, t, r1, r2, Event);
+    }
+    debug_ctr++;
     
     IntegerVector neighbors = adjList[Event];
     std::vector<int> Contact; 
@@ -110,15 +121,15 @@ List GilAlgoCpp(  List adjList
       if (TrackDyn) {
         Infect_time[Event] = t;
         S_NbrDeg[Event] = Contact.size();
-        
-        if (Infector.size()>0) {
-          IntegerVector samp_vec = Rcpp::sample(Infector, 1, false);
-          int samp_inf = samp_vec[0];
-          Infect_num_rnd[samp_inf] += 1;
-          Infector_rnd[Event] = samp_inf + 1;
-        }
-      }
-    }
+
+	int samp_inf = Infector[0];
+        if (Infector.size()>1) {
+          samp_inf = Rcpp::sample(Infector, 1, false)[0];
+	}
+	Infect_num_rnd[samp_inf] += 1;
+	Infector_rnd[Event] = samp_inf + 1;
+      } // TrackDyn
+    } // infection event
     
     Istep = std::count(Status.begin(), Status.end(), 1);
     if (TrackDyn) {
@@ -127,8 +138,8 @@ List GilAlgoCpp(  List adjList
       I_vec.push_back(Istep / (double)N);
       R_vec.push_back(std::count(Status.begin(), Status.end(), 2) / (double)N);
     }
-  }
-  
+  }  // time loop
+
   DataFrame FinalStat = DataFrame::create(
     Named("FinishTime") = t,
     Named("Ssize") = std::count(Status.begin(), Status.end(), 0) / (double)N,

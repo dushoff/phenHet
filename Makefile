@@ -20,6 +20,8 @@ Sources += $(wildcard *.tex)
 
 ## Why I still can't visualize???
 
+gillespie_tests.Rout: gillespie_tests.R
+
 Ignore += *.html *.pdf
 ## https://dushoff.github.io/phenHet/approaches.html
 approaches.html: approaches.md
