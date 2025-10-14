@@ -231,9 +231,9 @@ source("NetworkSimulator.R")
   }
   
 }
-#################### Network Fuctions Part END ###########################################
+######## Network Functions Part END ###########################################
 
-################################ Distribution part####################################################
+########## Distribution part####################################################
 #### Distribution Parameter
 lambda <- 5
 kappa <- 2
