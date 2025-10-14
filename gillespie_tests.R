@@ -3,6 +3,7 @@ library(Rcpp)
 
 source("NetworkSimulator.R")
 
+TrackDyn <- TRUE
 lambda <- 5
 kappa <- 2
 r <- 1/kappa
@@ -40,8 +41,8 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('Full_Copilot.cpp')
-args1 <- list(N, beta, gamma, MaxTime = 2.7, TrackDyn = FALSE, debug = TRUE,
-              debug_freq=100)
+args1 <- list(N, beta, gamma, MaxTime = 2.7, TrackDyn = TrackDyn, debug = TRUE,
+              debug_freq=10)
 
 set.seed(101)
 Cpp_result <- do.call("GilAlgoCpp", c(list(Adj_list), args1))
