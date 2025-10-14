@@ -413,7 +413,7 @@ ggplot(data=dat_reff)+theme_bw()+
 ############# Simulation
 
 # Seed
-set.seed(2853)
+set.seed(2639)
 
 seq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(seq)){
@@ -444,7 +444,8 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('Full_Copilot.cpp')
-Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100)
+system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100)
+)
 Cpp_result$FinalStat
 
 result <- Cpp_result
@@ -509,7 +510,7 @@ dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
 Sim_RcS <- round(dat_Rsim$S_NbrDeg*(beta/(beta+gamma)),2)
 
 ## rolling mean
-rn <- 5
+rn <- 9
 edge <- (rn-1)/2
 roll_mean <- rep(NA,length(dat_Rsim$Infect_num_rnd))
 (roll_mean[c((edge+1):(length(dat_Rsim$Infect_num_rnd)-edge))]
@@ -528,7 +529,7 @@ ggplot(data=dat_reff)+theme_bw()+
   geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
   #geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
-  geom_line(aes(x=time, y=R_c,color="R_c star"))+
+  geom_line(aes(x=time+0.95, y=R_c,color="R_c star"))+
   #geom_line(aes(x=time, y=R_cc,color="R_c"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
