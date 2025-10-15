@@ -88,6 +88,8 @@ GilAlgo <- function(  Network
                     , TrackDyn=TRUE
                     , debug = FALSE
                     , debug_freq = 1
+                    , debug_low = 500
+                    , debug_up = 600
                     ){
 
   debug_ctr <- 0
@@ -171,10 +173,12 @@ GilAlgo <- function(  Network
     Event <- min(which(Cum>r[1]*Sum))
 
     event_ctr <- event_ctr + 1
-    if (debug && (debug_ctr %% debug_freq == 0)) {
+    if (debug 
+        && (debug_ctr %% debug_freq == 0)
+        && (debug_ctr > debug_low)
+        && (debug_ctr < debug_up)) {
       cat(sprintf("%d %f %f %f %d", event_ctr, t, r[1], r[2], Event))
     }
-    debug_ctr <- debug_ctr + 1
     
     # Infection: status 0 to 1
     # Recovery: status 1 to 2
@@ -208,7 +212,10 @@ GilAlgo <- function(  Network
       
       if (TrackDyn){
         Recovery_time[Event] <- t
-        if (debug && (debug_ctr %% debug_freq == 0)) {
+        if (debug 
+            && (debug_ctr %% debug_freq == 0)
+            && (debug_ctr > debug_low)
+            && (debug_ctr < debug_up)) {
           infsize <- 0
           cat(sprintf(", %d, \n", infsize))
         }
@@ -238,15 +245,30 @@ GilAlgo <- function(  Network
         
         # As suggested by Ben, we now randomly chose one infector (if more than 
         # one) instead of do the average
+        infsize <- length(Infector)
         samp_inf <- Infector[1]
         
-        if (debug && (debug_ctr %% debug_freq == 0)) {
-          infsize <- length(Infector)
+        if (debug 
+            && (debug_ctr %% debug_freq == 0)
+            && (debug_ctr > debug_low)
+            && (debug_ctr < debug_up)) {
           cat(sprintf(", %d, \n", infsize))
         }
         
-        if (length(Infector)>1){
+        if (infsize>1){
           samp_inf <- sample(Infector, 1)[1]
+          
+          ## Try by-pass the 527 weird issue
+          #samp_idx <- sample(infsize, 1)
+          #samp_inf <- Infector[samp_idx]
+          
+          if (debug 
+              && (debug_ctr %% debug_freq == 0)
+              && (debug_ctr > debug_low)
+              && (debug_ctr < debug_up)){
+          cat(sprintf("call samp, %d \n", samp_inf))
+          #cat(Infector,"\n")
+          }
         }
         Infect_num_rnd[samp_inf] <- Infect_num_rnd[samp_inf]+1
         Infector_rnd[Event] <- samp_inf
@@ -254,6 +276,8 @@ GilAlgo <- function(  Network
     } else {
       stop("unknown status")
     }
+    
+    debug_ctr <- debug_ctr + 1
     
     ## Active number of infections of the whole network
     Istep <- sum(Status==1)

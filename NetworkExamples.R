@@ -247,7 +247,7 @@ beta <- 0.25
 # gamma <- 0.75
 gamma <- 0.2
 
-N <- 250000
+N <- 50000
 
 # dnbinom(10,r,mu=lambda)
 
@@ -277,38 +277,6 @@ it_theta <- Init_theta_func(1)
 S0Count <- PGFG0(1-it_theta,DDist)*N
 
 
-#### Fully mixed/Mass Action SIR Model
-# MASIR_Proc <- function(b,g,lambda,init_S=1e-3, ODEmaxTime=50, ODEstep=1e-2,TrackDyn=TRUE){
-#   if (TrackDyn==TRUE){
-#     Sys <- function(t, y, parms){
-#       with(as.list(c(parms,y)),{
-#         dS <- (-b*lambda)*X*S
-#         dX <- (b*lambda)*X*S-(g+b)*X
-#         dI <- (b*lambda)*X*S-(g)*I
-#         dR <- g*I
-#         return(list(c(dS,dI,dR,dX)))
-#       })
-#     }
-#     parms <- c(b=b,g=g,lambda=lambda)
-#     times <- seq(0,ODEmaxTime,by=ODEstep)
-#     y <- c(S=init_S,I=1-init_S,R=0,X=(1-init_S))
-#     
-#     Sys_out <- ode(y,times,Sys,parms)
-#   }
-#   
-#   S_0 <- init_S
-#   R_0 <- 0
-#   
-#   R0 <- b/g
-#   RInf <- Sys_out[length(Sys_out[,4]),4]
-#   
-#   if (TrackDyn==TRUE){
-#     return(list(R0=R0,RInfinity=RInf, Dynamic=Sys_out))
-#   } else {
-#     return(list(R0=R0,RInfinity=RInf))
-#   }
-# }
-
 #### Network Model
 CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 200, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = TRUE)
 #MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
@@ -316,32 +284,98 @@ CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 200, ODEstep = 1e-1,init_theta
 CM_Opt$R0
 theta_inf <- CM_Opt$ThetaInfinity
 
-# beta*PGFd1G0(theta_inf,DDist)/(lambda*(beta+gamma))
-
-#1+log((N-1)/N)/lambda
 
 CM_out <- CM_Opt$Dynamic
-# CM_out[100,4]
-# CM_out[10,]
-#MA_out <- MA_Opt$Dynamic
-#Mod_out <- Mod_Opt$Dynamic
 
 
 time <- CM_out[,1]
 CM_I <- CM_out[,6]
-#MA_I <- MA_out[,3]
-#Mod_I <- Mod_out[,3]
 
 CM_R <- CM_out[,3]
-#MA_R <- MA_out[,4]
-#Mod_R <- Mod_out[,4]
 
 CM_P <- CM_out[,4]
+
 theta <- CM_out[,2]
 
 CM_S <- CM_out[,5]
-#MA_S <- MA_out[,2]
-#Mod_S <- Mod_out[,2]
+
+
+#### Reverse ODE for P
+# phi(inf)
+theta_inf
+(R_inf <- CM_Opt$RInfinity)
+# Verify G(phi(inf))=S(inf)=1-R(inf)
+PGFG0(theta_inf,DDist)+R_inf
+
+# we want P_inf satisfy the ODE=0 with theta_inf
+sigma_inf <- PGFd1G0(theta_inf,DDist)/lambda
+P_inf <- beta/(beta+gamma)*sigma_inf
+
+(gamma*(1-PGFG0(theta_inf,DDist)-R_inf))
+
+(t_init<-as.numeric(CM_out[421,1]))
+(theta_init <- as.numeric(CM_out[421,2]))
+(R_init <- as.numeric(CM_out[421,3]))
+(P_init <- beta/(beta+gamma)*PGFd1G0(theta_init,DDist)/lambda)
+
+#(gamma*(1-PGFG0(theta_init,DDist)-R_init))
+
+### Reverse ODE
+Rvs_ODE <- function(  Pk, beta, gamma
+                    , theta_inf
+                    , R_inf
+                    , ODEmaxTime = 100
+                    , ODEstep = 1e-1
+                    , disturb = 1e-6){
+
+  P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,Pk)/lambda
+  lambda <- PGFd1G0(1,Pk)
+  
+  Sys <- function(t, y, parms){
+    with(as.list(c(parms,y)),{
+      dtheta <- -((-b)*theta+b*PGFd1G0(theta,Pk)/l+g*(1-theta))
+      dR <- -(g*(1-PGFG0(theta,Pk)-R))
+      dP <- +b*PGFd1G0(theta,Pk)/l-(b+g)*P
+      return(list(c(dtheta,dR,dP))) 
+    }) 
+  }
+  parms <- c(b=beta,g=gamma,l=lambda)
+  times <- seq(0,ODEmaxTime,by=ODEstep)
+  y <- c(theta=theta_inf,R=R_inf,P=P_inf)
+  
+  Sys_out <- ode(y,times,Sys,parms)
+  S_out <- PGFG0(Sys_out[,2],Pk)
+  I_out <- 1-S_out-Sys_out[,3]
+  P_out <- Sys_out[,4]
+  Sys_out <- as.matrix(cbind(Sys_out,S_out,I_out))
+  return(Sys_out)
+}
+
+Rvs_out<-Rvs_ODE(DDist,beta,gamma
+        ,theta_init
+        ,R_init,ODEmaxTime = t_init)
+
+Rvs_out[,1]<- max(Rvs_out[,1])-Rvs_out[,1]
+Rvs_out <- Rvs_out[order(Rvs_out[,1]),]
+
+Rvs_df<-as.data.frame(Rvs_out)
+#Rvs_df[1,]
+
+
+# verify Rvs
+CM_df <- as.data.frame(CM_out)
+
+ggplot()+theme_bw()+
+  geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S"), alpha=0.2)+
+  geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
+  geom_point(data=Rvs_df, aes(x=time, y=I_out, color="I"), alpha=0.2)+
+  geom_line(data=CM_df, aes(x=time, y=I_out,color="I"))+
+  xlim(0,40)+
+  #scale_color_manual(values=c("red", "black","brown"))
+  labs(y = "R_eff") 
+
+
+
 
 dat_S <- cbind(time,CM_S
                #, MA_S
@@ -399,6 +433,7 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
   geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
+  geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
   #geom_hline(yintercept=peak,color="black")+
@@ -527,9 +562,10 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_cf,color="Sim CF"),size=0.2)+
   #geom_smooth(data=dat_Rsim, aes(x=Infect_time, y=Infect_num,color="Smooth"))+
   geom_line(data=dat_Rsim, aes(x=Infect_time, y=roll_mean,color="Roll mean n=5"))+
+  #geom_line(data=Rvs_df,aes(x=time,y=P*R_c0,color="Rev p(t)"))+
   #geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
-  geom_line(aes(x=time+0.95, y=R_c,color="R_c star"))+
+  geom_line(aes(x=time+0.62, y=R_c,color="R_c star"))+
   #geom_line(aes(x=time, y=R_cc,color="R_c"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+

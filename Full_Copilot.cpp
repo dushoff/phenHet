@@ -10,7 +10,10 @@ List GilAlgoCpp(  List adjList
                 , int InitInfSize = 1
 		, bool TrackDyn = true
 		, bool debug = false
-		, int debug_freq = 1) {
+		, int debug_freq = 1
+    , int debug_low = 500
+    , int debug_up = 600
+                    ) {
 
   long int debug_ctr = 0;
   long int event_ctr = 0;
@@ -93,10 +96,13 @@ List GilAlgoCpp(  List adjList
     Status[Event] += 1;
 
     event_ctr++;
-    if (debug & (debug_ctr % debug_freq == 0)) {
+    if (debug 
+          & (debug_ctr % debug_freq == 0) 
+          & (debug_ctr > debug_low)
+          & (debug_ctr < debug_up)) {
       Rprintf("%ld %f %f %f %d", event_ctr, t, r1, r2, Event);
     }
-    debug_ctr++;
+    
     
     IntegerVector neighbors = adjList[Event];
     std::vector<int> Contact; 
@@ -118,7 +124,10 @@ List GilAlgoCpp(  List adjList
       }
       if (TrackDyn) {
         Recovery_time[Event] = t;
-        if (debug & (debug_ctr % debug_freq == 0)) {
+        if (debug 
+              & (debug_ctr % debug_freq == 0) 
+              & (debug_ctr > debug_low)
+              & (debug_ctr < debug_up)) {
           int infsize = 0;
           Rprintf(", %d, \n", infsize);
         }
@@ -135,15 +144,25 @@ List GilAlgoCpp(  List adjList
         Infect_time[Event] = t;
         S_NbrDeg[Event] = Contact.size();
         
-        if (debug & (debug_ctr % debug_freq == 0)) {
-          int infsize = Infector.size();
+        int infsize = Infector.size();
+	      int samp_inf = Infector[0];
+        
+        if (debug 
+              & (debug_ctr % debug_freq == 0) 
+              & (debug_ctr > debug_low)
+              & (debug_ctr < debug_up)) {
           Rprintf(", %d, \n", infsize);
         }
-	      int samp_inf = Infector[0];
-        if (Infector.size()>1) {
+        
+        if (infsize>1) {
           samp_inf = Rcpp::sample(Infector, 1, false)[0];
+          if (debug 
+                & (debug_ctr % debug_freq == 0) 
+                & (debug_ctr > debug_low)
+                & (debug_ctr < debug_up)){
+            Rprintf("call samp, %d \n", samp_inf);
+            }
           }
-	      
 	      Infect_num_rnd[samp_inf] += 1;
 	      Infector_rnd[Event] = samp_inf + 1;
 	      } // TrackDyn
@@ -156,6 +175,7 @@ List GilAlgoCpp(  List adjList
       I_vec.push_back(Istep / (double)N);
       R_vec.push_back(std::count(Status.begin(), Status.end(), 2) / (double)N);
     }
+    debug_ctr++;
   }  // time loop
 
   DataFrame FinalStat = DataFrame::create(
