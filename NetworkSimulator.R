@@ -167,11 +167,12 @@ GilAlgo <- function(  Network
     # cat("Sum is", Sum, ",")
     
     r <- runif(2, min = 0, max = 1)
+    # cat(sprintf("%d, %f %f \n", event_ctr, r[1], r[2]))
     Event <- min(which(Cum>r[1]*Sum))
 
     event_ctr <- event_ctr + 1
     if (debug && (debug_ctr %% debug_freq == 0)) {
-      cat(sprintf("%d %f %f %f %d\n", event_ctr, t, r[1], r[2], Event))
+      cat(sprintf("%d %f %f %f %d", event_ctr, t, r[1], r[2], Event))
     }
     debug_ctr <- debug_ctr + 1
     
@@ -207,6 +208,10 @@ GilAlgo <- function(  Network
       
       if (TrackDyn){
         Recovery_time[Event] <- t
+        if (debug && (debug_ctr %% debug_freq == 0)) {
+          infsize <- 0
+          cat(sprintf(", %d, \n", infsize))
+        }
       }
     } else if (Status[Event]==1){        ## Infection
       Rate[Event] <- g
@@ -233,11 +238,15 @@ GilAlgo <- function(  Network
         
         # As suggested by Ben, we now randomly chose one infector (if more than 
         # one) instead of do the average
-
-        if (length(Infector)==1){
-         samp_inf <- Infector
-        } else {
-          samp_inf <- sample(c(Infector),1)
+        samp_inf <- Infector[1]
+        
+        if (debug && (debug_ctr %% debug_freq == 0)) {
+          infsize <- length(Infector)
+          cat(sprintf(", %d, \n", infsize))
+        }
+        
+        if (length(Infector)>1){
+          samp_inf <- sample(Infector, 1)[1]
         }
         Infect_num_rnd[samp_inf] <- Infect_num_rnd[samp_inf]+1
         Infector_rnd[Event] <- samp_inf

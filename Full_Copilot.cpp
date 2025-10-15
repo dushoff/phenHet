@@ -82,15 +82,19 @@ List GilAlgoCpp(  List adjList
     if (SumRate <= 0.0) break;
 
     NumericVector CumRate = cumsum(Rate);
-    double r1 = R::runif(0, 1);
-    double r2 = R::runif(0, 1);
+    //double r1 = R::runif(0, 1);
+    //double r2 = R::runif(0, 1);
+    NumericVector r = Rcpp::runif(2,0,1);
+    double r1 = r[0];
+    double r2 = r[1];
+    //Rprintf("%ld, %f %f \n", event_ctr, r1, r2);
     int Event = std::lower_bound(CumRate.begin(), CumRate.end(), r1*SumRate) - CumRate.begin();
     
     Status[Event] += 1;
 
     event_ctr++;
     if (debug & (debug_ctr % debug_freq == 0)) {
-      Rprintf("%ld %f %f %f %d\n", event_ctr, t, r1, r2, Event);
+      Rprintf("%ld %f %f %f %d", event_ctr, t, r1, r2, Event);
     }
     debug_ctr++;
     
@@ -112,24 +116,38 @@ List GilAlgoCpp(  List adjList
       for (int nbr : Contact) {
         Rate[nbr] -= beta;
       }
-      if (TrackDyn) Recovery_time[Event] = t;
+      if (TrackDyn) {
+        Recovery_time[Event] = t;
+        if (debug & (debug_ctr % debug_freq == 0)) {
+          int infsize = 0;
+          Rprintf(", %d, \n", infsize);
+        }
+      }
     } else if (Status[Event] == 1) { // Infection
+      
       Rate[Event] = gamma;
+      
       for (int nbr : Contact) {
         Rate[nbr] += beta; 
       }
+      
       if (TrackDyn) {
         Infect_time[Event] = t;
         S_NbrDeg[Event] = Contact.size();
-
-	int samp_inf = Infector[0];
+        
+        if (debug & (debug_ctr % debug_freq == 0)) {
+          int infsize = Infector.size();
+          Rprintf(", %d, \n", infsize);
+        }
+	      int samp_inf = Infector[0];
         if (Infector.size()>1) {
           samp_inf = Rcpp::sample(Infector, 1, false)[0];
-	}
-	Infect_num_rnd[samp_inf] += 1;
-	Infector_rnd[Event] = samp_inf + 1;
-      } // TrackDyn
-    } // infection event
+          }
+	      
+	      Infect_num_rnd[samp_inf] += 1;
+	      Infector_rnd[Event] = samp_inf + 1;
+	      } // TrackDyn
+      } // infection event
     
     Istep = std::count(Status.begin(), Status.end(), 1);
     if (TrackDyn) {
@@ -173,4 +191,3 @@ List GilAlgoCpp(  List adjList
     return List::create(Named("FinalStat") = FinalStat);
   }
 }
-
