@@ -32,6 +32,12 @@ notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
 
 NetworkExamples.Rout: NetworkExamples.R
 
+## Current rcpp implementation
+NetworkSimulator.Rout: NetworkSimulator.R
+
+## MRE of sample inconsistency
+## mini-EG.Rout: mini-EG.R
+
 ######################################################################
 
 ## Does this not work? Or only not work off line??
