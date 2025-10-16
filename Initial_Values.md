@@ -68,7 +68,8 @@ $$
 
 The eigenvalues are just $\eta$ and $-\gamma$.
 
-For the dominant eigenvalue$\eta$, the eigenvector satisfy:$$
+For the dominant eigenvalue$\eta$, the eigenvector satisfy:
+$$
 \begin{bmatrix}
 0
 \\
