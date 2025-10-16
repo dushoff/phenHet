@@ -168,7 +168,14 @@ source("NetworkSimulator.R")
   
   #Miller Slim and Voltz
   #Configuration model
-  ModProc_CM <- function(Pk, beta, gamma, init_theta=1e-3, ODEmaxTime=50, ODEstep=1e-2,ThetaTol=1e-9, TrackDyn=TRUE,init_R=0, s_theta=1e-2){
+  ModProc_CM <- function(Pk, beta, gamma
+                         , init_omega=1e-3
+                         , ODEmaxTime=50
+                         , ODEstep=1e-2
+                         , ThetaTol=1e-9
+                         , TrackDyn=TRUE
+                         , init_R=0
+                         , s_theta=1e-2){
     if (TrackDyn==TRUE){
       #p0 <- beta/(beta+gamma)
       Sys <- function(t, y, parms){
@@ -182,7 +189,7 @@ source("NetworkSimulator.R")
       }
       parms <- c(b=beta,g=gamma)
       times <- seq(0,ODEmaxTime,by=ODEstep)
-      y <- c(theta=1-init_theta,R=init_R,P=1)
+      y <- c(theta=1-init_omega,R=init_R,P=1)
       
       Sys_out <- ode(y,times,Sys,parms)
       S_out <- PGFG0(Sys_out[,2],Pk)
@@ -263,7 +270,7 @@ PGFd2G0(1,DDist)/lambda*beta/(beta+gamma)
 
 ################################ Initial Condition
 # Initial Condition Solver based on I0=1-S0-(R0=0)
-Init_theta_func <- function(I0_val){
+Init_omega_func <- function(I0_val){
   S0_val <- N-I0_val
   Init_eqn <- function(theta){
     PGFG0(theta,DDist)*N-S0_val
@@ -273,18 +280,19 @@ Init_theta_func <- function(I0_val){
   init_theta_val <- 1-Init_sol$root
   return(init_theta_val)
 }
-it_theta <- Init_theta_func(1)
-S0Count <- PGFG0(1-it_theta,DDist)*N
+(it_omega <- Init_omega_func(1))
+(S0Count <- PGFG0(1-it_omega,DDist)*N)
 
+##### Eigen Direction R(0)
+(R_c0 <- beta/(beta+gamma)*PGFd2G0(1,DDist)/lambda)
+(Eigen_R <- lambda*gamma/(gamma+(beta+gamma)*(R_c0-1))*it_omega)
 
 #### Network Model
-CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 200, ODEstep = 1e-1,init_theta = it_theta,TrackDyn = TRUE)
+CM_Opt<- ModProc_CM(DDist,beta,gamma,ODEmaxTime = 200, ODEstep = 1e-1,init_omega = it_omega,TrackDyn = TRUE,init_R = Eigen_R)
 #MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
 #Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
 CM_Opt$R0
 theta_inf <- CM_Opt$ThetaInfinity
-
-
 CM_out <- CM_Opt$Dynamic
 
 
@@ -313,6 +321,9 @@ P_inf <- beta/(beta+gamma)*sigma_inf
 
 (gamma*(1-PGFG0(theta_inf,DDist)-R_inf))
 
+### manually picking point
+theta_inf
+CM_out[421,]
 (t_init<-as.numeric(CM_out[421,1]))
 (theta_init <- as.numeric(CM_out[421,2]))
 (R_init <- as.numeric(CM_out[421,3]))
@@ -359,11 +370,9 @@ Rvs_out[,1]<- max(Rvs_out[,1])-Rvs_out[,1]
 Rvs_out <- Rvs_out[order(Rvs_out[,1]),]
 
 Rvs_df<-as.data.frame(Rvs_out)
-#Rvs_df[1,]
-
-
 # verify Rvs
 CM_df <- as.data.frame(CM_out)
+
 
 ggplot()+theme_bw()+
   geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S"), alpha=0.2)+
@@ -375,8 +384,7 @@ ggplot()+theme_bw()+
   labs(y = "R_eff") 
 
 
-
-
+##########################
 dat_S <- cbind(time,CM_S
                #, MA_S
                #, Mod_S
@@ -429,16 +437,16 @@ dat_reff <- cbind(time,R_i
                   )
 
 ggplot(data=dat_reff)+theme_bw()+
-  #geom_line(aes(x=time, y=R_i,color="Instantaneous"))+
+  geom_line(aes(x=time, y=R_i,color="Eigen R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_c,color="Case with no correction"))+
-  geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
-  geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
+  #geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
+  #geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
-  #geom_hline(yintercept=peak,color="black")+
+  geom_hline(yintercept=peak,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,10)+
+  ylim(0,20)+
   xlim(0,10)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
