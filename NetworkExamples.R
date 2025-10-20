@@ -492,7 +492,7 @@ Adj_list <- as_adj_list(  G
 )
 
 ### Rcpp Version
-sourceCpp('Full_Copilot.cpp')
+sourceCpp('NetSimulator.cpp')
 system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100)
 )
 Cpp_result$FinalStat

@@ -40,7 +40,7 @@ Adj_list <- as_adj_list(  G
 )
 
 ### Rcpp Version
-sourceCpp('Full_Copilot.cpp')
+sourceCpp('NetSimulator.cpp')
 args1 <- list(N, beta, gamma, MaxTime = 3.0, TrackDyn = TrackDyn, debug = TRUE,
               debug_freq=1
               , debug_low=520, debug_up=530
