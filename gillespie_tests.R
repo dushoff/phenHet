@@ -1,6 +1,10 @@
 ## short/self-contained tests for Gillespie algorithm code development
 library(Rcpp)
 
+## Profiling
+#install.packages("RcppClock")
+library(RcppClock)
+
 source("NetworkSimulator.R")
 
 TrackDyn <- TRUE
@@ -16,7 +20,7 @@ beta <- 0.25
 # gamma <- 0.75
 gamma <- 0.2
 
-N <- 250000
+N <- 50000
 set.seed(2853)
 seq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(seq)){
@@ -41,17 +45,30 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('NetSimulator.cpp')
-args1 <- list(N, beta, gamma, MaxTime = 3.0, TrackDyn = TrackDyn, debug = TRUE,
-              debug_freq=1
-              , debug_low=520, debug_up=530
+args1 <- list(N, beta, gamma, MaxTime = 50.0
+              , TrackDyn = TrackDyn
+              #, debug = TRUE
+              #, debug_freq=1
+              #, debug_low=900, debug_up=5000
               #, debug_low=930, debug_up=940
               )
 
+# args2 <- list(50000, beta, gamma, MaxTime = 60.0
+#               , TrackDyn = TrackDyn
+#               #, debug = TRUE
+#               #, debug_freq=1
+#               #, debug_low=900, debug_up=5000
+#               #, debug_low=930, debug_up=940
+# )
+
+
 set.seed(101)
 #set.seed(201)
-Cpp_result <- do.call("GilAlgoCpp", c(list(Adj_list), args1))
+system.time(Cpp_result <- do.call("GilAlgoCpp", c(list(Adj_list), args1)))
 #Cpp_result$FinalStat
-
+print(profile_cpp)
+#plot(profile_cpp)
+#Cpp_result
 
 set.seed(101)
 #set.seed(201)

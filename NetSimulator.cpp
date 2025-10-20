@@ -1,5 +1,8 @@
 #include <Rcpp.h>
+#include <RcppClock.h>
+
 using namespace Rcpp;
+//[[Rcpp::depends(RcppClock)]]
 
 // [[Rcpp::export]]
 List GilAlgoCpp(  List adjList
@@ -15,6 +18,11 @@ List GilAlgoCpp(  List adjList
     , int debug_up = 600
                     ) {
 
+  //Profiling
+  Rcpp::Clock clock;
+  
+  clock.tick("Init");
+  
   long int debug_ctr = 0;
   long int event_ctr = 0;
   int N = size;
@@ -49,7 +57,7 @@ List GilAlgoCpp(  List adjList
   IntegerVector Infector_rnd(N, NA_INTEGER);
   
   NumericVector t_vec, S_vec, I_vec, R_vec;
-  
+
   for (int i = 0; i < InitInfSize; ++i) {
     int idx = InitIndex[i];
     Status[idx] = 1;
@@ -78,12 +86,15 @@ List GilAlgoCpp(  List adjList
       }
     }
   }
+  clock.tock("Init");
   
   int Istep = InitInfSize;
+  clock.tick("Loop");
   while (t < MaxTime && Istep > 0) {
     double SumRate = sum(Rate);
     if (SumRate <= 0.0) break;
-
+    
+    clock.tick("Draw_r");
     NumericVector CumRate = cumsum(Rate);
     //double r1 = R::runif(0, 1);
     //double r2 = R::runif(0, 1);
@@ -92,7 +103,9 @@ List GilAlgoCpp(  List adjList
     double r2 = r[1];
     //Rprintf("%ld, %f %f \n", event_ctr, r1, r2);
     int Event = std::lower_bound(CumRate.begin(), CumRate.end(), r1*SumRate) - CumRate.begin();
+    clock.tock("Draw_r");
     
+    clock.tick("Assign+Calc");
     Status[Event] += 1;
 
     event_ctr++;
@@ -102,9 +115,13 @@ List GilAlgoCpp(  List adjList
           & (debug_ctr < debug_up)) {
       Rprintf("%ld %f %f %f %d", event_ctr, t, r1, r2, Event);
     }
-    
-    
+    clock.tock("Assign+Calc");
+      
+    clock.tick("Call_Net");
     IntegerVector neighbors = adjList[Event];
+    clock.tock("Call_Net");
+    
+    clock.tick("Assign+Calc");
     std::vector<int> Contact; 
     IntegerVector Infector;
     
@@ -116,8 +133,10 @@ List GilAlgoCpp(  List adjList
     
     double Tstep = -std::log(r2) / SumRate;
     t += Tstep;
+    clock.tock("Assign+Calc");
     
     if (Status[Event] == 2) { // Recovery
+      clock.tick("Assign+Calc");
       Rate[Event] = 0.0;
       for (int nbr : Contact) {
         Rate[nbr] -= beta;
@@ -132,21 +151,26 @@ List GilAlgoCpp(  List adjList
           Rprintf(", %d, \n", infsize);
         }
       }
+      clock.tock("Assign+Calc");
     } else if (Status[Event] == 1) { // Infection
       
+      clock.tick("Assign+Calc");
       Rate[Event] = gamma;
       
       for (int nbr : Contact) {
         Rate[nbr] += beta; 
       }
+      clock.tock("Assign+Calc");
       
       if (TrackDyn) {
+        clock.tick("Assign+Calc");
         Infect_time[Event] = t;
         S_NbrDeg[Event] = Contact.size();
         
         int infsize = Infector.size();
 	      int samp_inf = Infector[0];
-        
+	      clock.tock("Assign+Calc");
+	      
         if (debug 
               & (debug_ctr % debug_freq == 0) 
               & (debug_ctr > debug_low)
@@ -155,7 +179,9 @@ List GilAlgoCpp(  List adjList
         }
         
         if (infsize>1) {
+          clock.tick("Draw_Infector");
           samp_inf = Rcpp::sample(Infector, 1, false)[0];
+          clock.tock("Draw_Infector");
           if (debug 
                 & (debug_ctr % debug_freq == 0) 
                 & (debug_ctr > debug_low)
@@ -163,11 +189,15 @@ List GilAlgoCpp(  List adjList
             Rprintf("call samp, %d \n", samp_inf);
             }
           }
+        
+        clock.tick("Assign+Calc");
 	      Infect_num_rnd[samp_inf] += 1;
 	      Infector_rnd[Event] = samp_inf + 1;
+	      clock.tock("Assign+Calc");
 	      } // TrackDyn
       } // infection event
     
+    clock.tick("Assign+Calc");
     Istep = std::count(Status.begin(), Status.end(), 1);
     if (TrackDyn) {
       t_vec.push_back(t);
@@ -176,8 +206,11 @@ List GilAlgoCpp(  List adjList
       R_vec.push_back(std::count(Status.begin(), Status.end(), 2) / (double)N);
     }
     debug_ctr++;
+    clock.tock("Assign+Calc");
   }  // time loop
-
+  clock.tock("Loop");
+  
+  clock.tick("Output");
   DataFrame FinalStat = DataFrame::create(
     Named("FinishTime") = t,
     Named("Ssize") = std::count(Status.begin(), Status.end(), 0) / (double)N,
@@ -202,12 +235,15 @@ List GilAlgoCpp(  List adjList
       Named("Infect_num_rnd") = Infect_num_rnd,
       Named("Infector_rnd") = Infector_rnd
     );
-    
+    clock.tock("Output");
+    clock.stop("profile_cpp");
     return List::create(Named("FinalStat") = FinalStat,
                         Named("Details") = Details,
                         Named("Reff") = Reff,
                         Named("Init") = InitIndex);
   } else {
+    clock.tock("Output");
+    clock.stop("profile_cpp");
     return List::create(Named("FinalStat") = FinalStat);
   }
 }
