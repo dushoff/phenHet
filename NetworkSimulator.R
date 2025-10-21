@@ -1,5 +1,7 @@
 #install.packages("igraph")
 library(igraph)
+library(Rcpp)
+sourceCpp("mini-EG.cpp")
 
 # N <- 10000
 # delta <- 10
@@ -115,8 +117,7 @@ GilAlgo <- function(  Network
   
   # Chose infected node with weight of degree
   InitIndex <- sample(c(1:N),i_0,prob=Deg_vec)
-  
-  #Status: S=0, I=1, R=2
+  # Status: S=0, I=1, R=2
   
   #Initialize status and rate
   t <- 0
@@ -256,11 +257,10 @@ GilAlgo <- function(  Network
         }
         
         if (infsize>1){
-          samp_inf <- sample(Infector, 1)[1]
-          
-          ## Try by-pass the 527 weird issue
-          #samp_idx <- sample(infsize, 1)
-          #samp_inf <- Infector[samp_idx]
+          # samp_inf <- sample(Infector, 1)[1]
+          #### R::sample issue for seed 101, see mini-EG
+          #### use a RCpp wrapper now: R and Cpp results are consistent for the seed 101 case
+          samp_inf <- CppSample(Infector,1)[1]
           
           if (debug 
               && (debug_ctr %% debug_freq == 0)

@@ -11,6 +11,7 @@ library(igraph)
 library(ggplot2)
 library(cbinom)
 library(Rcpp)
+library(RcppClock)
 
 source("NetworkSimulator.R")
 
@@ -293,7 +294,7 @@ CM_Opt<- ModProc_CM(  DDist,beta,gamma
                     , ODEstep = 1e-1
                     , init_omega = it_omega
                     , TrackDyn = TRUE
-                    #, init_R = Eigen_R
+                    , init_R = Eigen_R
                     )
 #MA_Opt<- MASIR_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
 #Mod_Opt<- MAmod_Proc(beta, gamma, lambda, init_S = (N-1)/N, ODEmaxTime=100, ODEstep=1e-1,TrackDyn = TRUE)
@@ -314,143 +315,173 @@ theta <- CM_out[,2]
 CM_S <- CM_out[,5]
 
 
-# #### Reverse ODE for P
-# # phi(inf)
-# theta_inf
-# (R_inf <- CM_Opt$RInfinity)
-# # Verify G(phi(inf))=S(inf)=1-R(inf)
-# PGFG0(theta_inf,DDist)+R_inf
-# 
-# # we want P_inf satisfy the ODE=0 with theta_inf
-# sigma_inf <- PGFd1G0(theta_inf,DDist)/lambda
-# P_inf <- beta/(beta+gamma)*sigma_inf
-# 
-# (gamma*(1-PGFG0(theta_inf,DDist)-R_inf))
-# 
-# ### manually picking point
-# theta_inf
-# CM_out[421,]
-# (t_init<-as.numeric(CM_out[421,1]))
-# (theta_init <- as.numeric(CM_out[421,2]))
-# (R_init <- as.numeric(CM_out[421,3]))
-# (P_init <- beta/(beta+gamma)*PGFd1G0(theta_init,DDist)/lambda)
-# 
-# #(gamma*(1-PGFG0(theta_init,DDist)-R_init))
-# 
-# ### Reverse ODE
-# Rvs_ODE <- function(  Pk, beta, gamma
-#                     , theta_inf
-#                     , R_inf
-#                     , ODEmaxTime = 100
-#                     , ODEstep = 1e-1
-#                     , disturb = 1e-6){
-# 
-#   P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,Pk)/lambda
-#   lambda <- PGFd1G0(1,Pk)
-#   
-#   Sys <- function(t, y, parms){
-#     with(as.list(c(parms,y)),{
-#       dtheta <- -((-b)*theta+b*PGFd1G0(theta,Pk)/l+g*(1-theta))
-#       dR <- -(g*(1-PGFG0(theta,Pk)-R))
-#       dP <- +b*PGFd1G0(theta,Pk)/l-(b+g)*P
-#       return(list(c(dtheta,dR,dP))) 
-#     }) 
-#   }
-#   parms <- c(b=beta,g=gamma,l=lambda)
-#   times <- seq(0,ODEmaxTime,by=ODEstep)
-#   y <- c(theta=theta_inf,R=R_inf,P=P_inf)
-#   
-#   Sys_out <- ode(y,times,Sys,parms)
-#   S_out <- PGFG0(Sys_out[,2],Pk)
-#   I_out <- 1-S_out-Sys_out[,3]
-#   P_out <- Sys_out[,4]
-#   Sys_out <- as.matrix(cbind(Sys_out,S_out,I_out))
-#   return(Sys_out)
-# }
-# 
-# Rvs_out<-Rvs_ODE(DDist,beta,gamma
-#         ,theta_init
-#         ,R_init,ODEmaxTime = t_init)
-# 
-# Rvs_out[,1]<- max(Rvs_out[,1])-Rvs_out[,1]
-# Rvs_out <- Rvs_out[order(Rvs_out[,1]),]
-# 
-# Rvs_df<-as.data.frame(Rvs_out)
-# # verify Rvs
-# CM_df <- as.data.frame(CM_out)
-# 
-# 
-# ggplot()+theme_bw()+
-#   geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S"), alpha=0.2)+
-#   geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
-#   geom_point(data=Rvs_df, aes(x=time, y=I_out, color="I"), alpha=0.2)+
-#   geom_line(data=CM_df, aes(x=time, y=I_out,color="I"))+
-#   xlim(0,40)+
-#   #scale_color_manual(values=c("red", "black","brown"))
-#   labs(y = "R_eff") 
+#### Reverse ODE for P
+# phi(inf)
+theta_inf
+(R_inf <- CM_Opt$RInfinity)
+# Verify G(phi(inf))=S(inf)=1-R(inf)
+PGFG0(theta_inf,DDist)+R_inf
+
+# we want P_inf satisfy the ODE=0 with theta_inf
+sigma_inf <- PGFd1G0(theta_inf,DDist)/lambda
+P_inf <- beta/(beta+gamma)*sigma_inf
+
+(gamma*(1-PGFG0(theta_inf,DDist)-R_inf))
+
+### Reverse ODE Function
+Rvs_ODE <- function(  Pk, beta, gamma
+                    , theta_inf
+                    , R_inf
+                    , ODEmaxTime = 100
+                    , ODEstep = 1e-1
+                    , disturb = 1e-6){
+
+  P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,Pk)/lambda
+  lambda <- PGFd1G0(1,Pk)
+
+  Sys <- function(t, y, parms){
+    with(as.list(c(parms,y)),{
+      dtheta <- -((-b)*theta+b*PGFd1G0(theta,Pk)/l+g*(1-theta))
+      dR <- -(g*(1-PGFG0(theta,Pk)-R))
+      dP <- +b*PGFd1G0(theta,Pk)/l-(b+g)*P
+      return(list(c(dtheta,dR,dP)))
+    })
+  }
+  parms <- c(b=beta,g=gamma,l=lambda)
+  times <- seq(0,ODEmaxTime,by=ODEstep)
+  y <- c(theta=theta_inf,R=R_inf,P=P_inf)
+
+  Sys_out <- ode(y,times,Sys,parms)
+  S_out <- PGFG0(Sys_out[,2],Pk)
+  I_out <- 1-S_out-Sys_out[,3]
+  P_out <- Sys_out[,4]
+  Sys_out <- as.matrix(cbind(Sys_out,S_out,I_out))
+  return(Sys_out)
+}
+
+### manually picking point
+theta_inf
+print(CM_out[421,])
+
+Rvs_vec1<-as.numeric(CM_out[421,])
+{ t_init<-Rvs_vec1[1]
+  theta_init <- Rvs_vec1[2]
+  R_init <- Rvs_vec1[3]
+  P_init <- beta/(beta+gamma)*PGFd1G0(theta_init,DDist)/lambda
+}
+
+P_inf
+P_init
+
+RVS_args1 <- list(  DDist
+                  , beta
+                  , gamma
+                  , theta_init
+                  , R_init
+                  , ODEmaxTime = t_init)
+
+(gamma*(1-PGFG0(theta_init,DDist)-R_init))
+(gamma*(1-PGFG0(theta_inf,DDist)-R_inf))
+
+Rvs_out <- do.call("Rvs_ODE", c(RVS_args1))
+
+Rvs_out[,1]<- max(Rvs_out[,1])-Rvs_out[,1]
+Rvs_out <- Rvs_out[order(Rvs_out[,1]),]
+
+Rvs_df<-as.data.frame(Rvs_out)
+
+### Veryfy the RVS system with different final point.
+theta_inf
+print(CM_out[201,])
+
+Rvs_vec2<-as.numeric(CM_out[201,])
+RVS_args2 <- list(  DDist
+                    , beta
+                    , gamma
+                    , theta_inf=Rvs_vec2[2]
+                    , R_inf=Rvs_vec2[3]
+                    , ODEmaxTime = Rvs_vec2[1])
+
+(beta/(beta+gamma)*PGFd1G0(Rvs_vec2[2],DDist)/lambda)
+
+Rvs_check <- do.call("Rvs_ODE", c(RVS_args2))
+Rvs_check[,1]<- max(Rvs_check[,1])-Rvs_check[,1]
+Rvs_check <- Rvs_check[order(Rvs_check[,1]),]
+Rvs_check <- as.data.frame(Rvs_check)
 
 
-##########################
-dat_S <- cbind(time,CM_S
-               #, MA_S
-               #, Mod_S
-               )
-dat_R <- cbind(time,CM_R
-               #, MA_R
-               #, Mod_R
-               )
-dat <- cbind(time,CM_I
-             #, MA_I
-             #, Mod_I
-             )
+#### Check 1: check with CM ODE for S and I
+CM_df <- as.data.frame(CM_out)
 
- 
-#CM_P
+ggplot()+theme_bw()+
+  geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S"), alpha=0.2)+
+  geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
+  geom_point(data=Rvs_df, aes(x=time, y=I_out, color="I"), alpha=0.2)+
+  geom_line(data=CM_df, aes(x=time, y=I_out,color="I"))+
+  xlim(0,40)+
+  #scale_color_manual(values=c("red", "black","brown"))
+  labs(y = "Proportion")
 
-#Mod_S
-#Mod_I
+Rvs_df[1,]
+ggplot()+theme_bw()+
+  geom_point(data=Rvs_df, aes(x=time, y=P, color="RVS"), alpha=0.2)+
+  geom_line(data=Rvs_check, aes(x=time, y=P, color="check"))+
+  xlim(0,40)+
+  #scale_color_manual(values=c("red", "black","brown"))
+  labs(y = "Pvalue")
+
+# Rvs_df$P[1:20]-Rvs_check$P[1:20]
+
+
+##################################
+dat_S <- cbind(time,CM_S)
+dat_R <- cbind(time,CM_R)
+dat <- cbind(time,CM_I)
 
 ### Derivatives based on Negative Binomial
-theta_dot <- -beta*theta+gamma*(1-theta)+beta/lambda*(lambda*CM_S)/(1+kappa*lambda-theta*kappa*lambda)
-S_dot <- theta_dot*(lambda*CM_S)/(1+kappa*lambda-theta*kappa*lambda)
+#theta_dot <- -beta*theta+gamma*(1-theta)+beta/lambda*(lambda*CM_S)/(1+kappa*lambda-theta*kappa*lambda)
+#S_dot <- theta_dot*(lambda*CM_S)/(1+kappa*lambda-theta*kappa*lambda)
+
+theta_dot <- -beta*theta+gamma*(1-theta)+beta/lambda*PGFd1G0(theta,DDist)
+S_dot <- theta_dot*PGFd1G0(theta,DDist)
 
 #def_reff<- -lambda*CM_S*(-(beta+gamma)*(1+log(CM_S)/lambda)+beta*CM_S+gamma)/(CM_I*gamma)
 #est_reff<- beta/(gamma)*(lambda-1)*CM_S
 #cal_reff<- beta/(beta+gamma)*lambda*CM_S*(1+log(CM_S)/lambda)
-# new_reff<- beta/(beta+gamma)*lambda*CM_S
-#new_reff<- beta/(gamma)*(lambda-1)*CM_S
 
-R_c0 <- beta/(beta+gamma)*(lambda^2*(kappa+1))/lambda
-peak <- beta/gamma*(lambda*(kappa+1)-1)
+R_c0 <- beta/(beta+gamma)*PGFd2G0(1,DDist)/lambda
+#R_c0 <- beta/(beta+gamma)*lambda*(kappa+1)
+
+R_imax <- beta/gamma*(PGFd2G0(1,DDist)/lambda-1)
+#R_imax <- beta/gamma*(lambda*(kappa+1)-1)
 
 R_i <- -S_dot/(CM_I*gamma)
-R_c <- R_c0*CM_S^(1+2*kappa)
-est <- peak*CM_S^(1+2*kappa)
-R_cc <- R_c*CM_P
-#R_c1 <- beta/(beta+gamma)*CM_P*PGFd2G0(theta,DDist)/PGFd1G0(theta,DDist)
 
+R_cstar <- beta/(beta+gamma)*PGFd2G0(theta,DDist)/lambda
+#R_cstar <- R_c0*CM_S^(1+2*kappa)
+  
+#R_c <- 
+##R_cc <- R_c*CM_P
 
-#new <- beta/gamma*(lambda*(kappa+1)*(2*CM_S^(2*kappa+1)-CM_S^(kappa)*(theta-gamma/beta*(1-theta)))-1)
-
-dat_reff <- cbind(time,R_i
+dat_reff <- cbind(time
+                  ,R_i
                   #,cal_reff
-                  ,R_c
-                  ,est
-                  #,new
-                  ,theta
-                  ,R_cc
+                  ,R_cstar
+                  #,est
+                  #,theta
+                  #,R_cc
                   #,R_c1
                   )
 
 ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=R_i,color="non-Eigen R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
-  geom_line(aes(x=time, y=R_c,color="R_c*"))+
+  geom_line(aes(x=time, y=R_cstar,color="R_c*"))+
   #geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
   #geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
-  geom_hline(yintercept=peak,color="black")+
+  geom_hline(yintercept=R_imax,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
   ylim(0,20)+
   xlim(0,10)+
@@ -493,8 +524,7 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('NetSimulator.cpp')
-system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100)
-)
+system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
 Cpp_result$FinalStat
 
 result <- Cpp_result

@@ -64,7 +64,7 @@ set.seed(101)
 sample(c(1:N),1,prob=prob)
 C_vec <- Rrunif_eg(1074)
 C_vec[1074]
-CppSample_eg(x,1)
+CppSample(x,1)
 Rrunif_eg(2)
 
 ### Some weird numerical issue just happen at this 

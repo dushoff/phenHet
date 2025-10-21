@@ -13,7 +13,7 @@ NumericVector Rrunif_eg(int n) {
 }
 
 // [[Rcpp::export]]
-IntegerVector CppSample_eg(IntegerVector x, int n) {
+IntegerVector CppSample(IntegerVector x, int n) {
   IntegerVector samp = Rcpp::sample(x, n, false);
   return samp;
 }
