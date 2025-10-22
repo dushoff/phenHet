@@ -78,3 +78,8 @@ Rrunif_eg(2)
 #sample(c(1:N),1,prob=prob)
 #Cpp_vec <- Rrunif_eg(1500)
 #Cpp_vec-R_vec
+
+### Predraw all r1 r2 to improve performance? 
+system.time(R_vec<-Rrunif_eg(4*N))
+length(R_vec)
+R_vec[1:100]
