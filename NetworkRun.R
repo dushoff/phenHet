@@ -25,7 +25,7 @@ r <- 1/kappa
 (p<-1/(1+kappa*lambda))
 (v<-lambda/p)
 
-N <- 250000
+N <- 50000
 
 kvalue <- seq(0,400)
 #Pk <- dpois(kvalue,lambda)
@@ -50,8 +50,8 @@ gamma <- 0.75
 
 ######################### MSV ODE part
 CM_Opt<- ModProc_CM(  DDist,beta,gamma
-                    , ODEmaxTime = 100
-                    , ODEstep = 1e-1
+                    , ODEmaxTime = 50
+                    , ODEstep = 5e-2
                     , init_omega = it_omega
                     , TrackDyn = TRUE
                     , init_R = Eigen_R
@@ -70,11 +70,13 @@ CM_I <- CM_out[,5]
 #### Reverse ODE for Todd's p(t)
 # manually picking point
 theta_inf
-(P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,DDist)/lambda)
-print(CM_out[241,2])
+tps <- 451
+print(CM_out[tps,2])
 
-CM_out[241,]
-Rvs_vec1<-as.numeric(CM_out[241,])
+(P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,DDist)/lambda)
+
+CM_out[tps,]
+Rvs_vec1<-as.numeric(CM_out[tps,])
 
 { t_Rvs<-Rvs_vec1[1]
   theta_Rvs <- Rvs_vec1[2]
@@ -95,7 +97,7 @@ Rvs_out[,1]<- max(Rvs_out[,1])-Rvs_out[,1]
 Rvs_out <- Rvs_out[order(Rvs_out[,1]),]
 
 Rvs_df<-as.data.frame(Rvs_out)
-
+Rvs_df$I_out[1:30]
 
 #### Check RVS: check with CM ODE for S and I
 CM_df <- as.data.frame(CM_out)
@@ -105,7 +107,7 @@ ggplot()+theme_bw()+
   geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
   geom_point(data=Rvs_df, aes(x=time, y=I_out, color="I_Rvs"), alpha=0.1)+
   geom_line(data=CM_df, aes(x=time, y=I_out,color="I"))+
-  xlim(0,5)+
+  xlim(0,10)+
   labs(y = "Proportion")
 
 ##################################
@@ -153,16 +155,16 @@ dat_reff <- cbind(time
 
 
 ggplot(data=dat_reff)+theme_bw()+
-  #geom_line(aes(x=time, y=R_i,color="non-Eigen R_i"))+
+  geom_line(aes(x=time, y=R_i,color="non-Eigen R_i"))+
   geom_line(aes(x=time, y=R_cstar,color="R_c*"))+
   geom_line(data=Rvs_df,aes(x=time, y=R_c,color="R_c"))+
   #geom_line(data=Rvs_df,aes(x=time, y=R_c1,color="R_c(K+1)"))+
   #geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+
-  #geom_hline(yintercept=R_imax,color="black")+
+  geom_hline(yintercept=R_imax,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,10)+
-  xlim(0,10)+
+  ylim(0,5)+
+  xlim(0,15)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
@@ -200,8 +202,9 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('NetSimulator.cpp')
-set.seed(2941)
+set.seed(2351)
 system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
+
 # print(profile_cpp)
 result <- Cpp_result
 
@@ -275,6 +278,7 @@ ggplot()+theme_bw()+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
+dat_Rsim[1:5,]
 # Sim_RcS[1:30]
 # dat_Rsim$Active_NbrDeg[1:10]
 # beta/(beta+gamma)
