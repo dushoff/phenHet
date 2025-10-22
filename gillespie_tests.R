@@ -20,7 +20,7 @@ beta <- 0.25
 # gamma <- 0.75
 gamma <- 0.2
 
-N <- 250000
+N <- 50000
 set.seed(2853)
 seq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(seq)){
@@ -66,7 +66,7 @@ set.seed(101)
 #set.seed(201)
 system.time(Cpp_result <- do.call("GilAlgoCpp", c(list(Adj_list), args1)))
 #Cpp_result$FinalStat
-print(profile_cpp)
+#print(profile_cpp)
 #plot(profile_cpp)
 #Cpp_result
 
@@ -74,7 +74,6 @@ set.seed(101)
 #set.seed(201)
 system.time(R_result <- do.call("GilAlgo", c(list(G), args1)))
 #R_result$FinalStat
-
 
 ### R and Cpp sample not consistent for some case: Seed 101
 ### Solved? Now use a Rcpp:sample wrapper in R version, seems fixed.

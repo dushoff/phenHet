@@ -380,8 +380,8 @@ RVS_args1 <- list(  DDist
                   , R_init
                   , ODEmaxTime = t_init)
 
-(gamma*(1-PGFG0(theta_init,DDist)-R_init))
-(gamma*(1-PGFG0(theta_inf,DDist)-R_inf))
+#(gamma*(1-PGFG0(theta_init,DDist)-R_init))
+#(gamma*(1-PGFG0(theta_inf,DDist)-R_inf))
 
 Rvs_out <- do.call("Rvs_ODE", c(RVS_args1))
 
@@ -422,7 +422,6 @@ ggplot()+theme_bw()+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "Proportion")
 
-Rvs_df[1,]
 ggplot()+theme_bw()+
   geom_point(data=Rvs_df, aes(x=time, y=P, color="RVS"), alpha=0.2)+
   geom_line(data=Rvs_check, aes(x=time, y=P, color="check"))+
@@ -459,9 +458,13 @@ R_i <- -S_dot/(CM_I*gamma)
 
 R_cstar <- beta/(beta+gamma)*PGFd2G0(theta,DDist)/lambda
 #R_cstar <- R_c0*CM_S^(1+2*kappa)
-  
-#R_c <- 
+
+PLen<-length(Rvs_df$P)
+theta[1:PLen]
+R_c <- Rvs_df$P*theta[1:PLen]*(PGFd2G0(theta[1:PLen],DDist)/PGFd1G0(theta[1:PLen],DDist))
 ##R_cc <- R_c*CM_P
+Rvs_df$R_c <- R_c
+#Rvs_df
 
 dat_reff <- cbind(time
                   ,R_i
@@ -469,14 +472,16 @@ dat_reff <- cbind(time
                   ,R_cstar
                   #,est
                   #,theta
-                  #,R_cc
+                  #,R_c
                   #,R_c1
                   )
+
 
 ggplot(data=dat_reff)+theme_bw()+
   geom_line(aes(x=time, y=R_i,color="non-Eigen R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
   geom_line(aes(x=time, y=R_cstar,color="R_c*"))+
+  geom_line(data=Rvs_df,aes(x=time, y=R_c,color="R_c"))+
   #geom_line(aes(x=time, y=R_cc, color="Corrected Rc"))+
   #geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+
@@ -524,7 +529,9 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('NetSimulator.cpp')
+set.seed(2941)
 system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
+# print(profile_cpp)
 Cpp_result$FinalStat
 
 result <- Cpp_result
@@ -532,6 +539,9 @@ result <- Cpp_result
 
 ### R Version
 #result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
+set.seed(2941)
+system.time(R_result <- GilAlgo(G, N, beta, gamma, MaxTime = 100))
+
 
 ## simulation final size
 result$FinalStat
@@ -597,9 +607,9 @@ roll_mean <- rep(NA,length(dat_Rsim$Infect_num_rnd))
   #<- rollmean(Sim_RcS,rn)
 )
 dat_Rsim <- cbind(dat_Rsim,Sim_RcS,roll_mean)
-
+dat_Rsim[1,]
 #### Visualize
-ggplot(data=dat_reff)+theme_bw()+
+ggplot()+theme_bw()+
   geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_rnd,color="Sim RND"),size=0.2)+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Sim_RcS,color="Sim R_c star"),size=0.2)+
   #geom_point(data=dat_Rsim, aes(x=Infect_time, y=Infect_num_avg,color="Sim AVG"),size=0.2)+
@@ -609,7 +619,8 @@ ggplot(data=dat_reff)+theme_bw()+
   #geom_line(data=Rvs_df,aes(x=time,y=P*R_c0,color="Rev p(t)"))+
   #geom_line(aes(x=time, y=R_i,color="R_i"))+
   #geom_line(aes(x=time, y=cal_reff,color="Zhao1"))+
-  geom_line(aes(x=time+0.62, y=R_c,color="R_c star"))+
+  geom_line(data=dat_reff, aes(x=time, y=R_cstar,color="R_c star"))+
+  geom_line(data=Rvs_df, aes(x=time, y=R_c,color="R_c"))+
   #geom_line(aes(x=time, y=R_cc,color="R_c"))+
   #geom_line(aes(x=time, y=est, color="Estimation"))+
   #geom_hline(yintercept=beta/(beta+gamma)*lambda,color="purple")+
@@ -623,15 +634,14 @@ ggplot(data=dat_reff)+theme_bw()+
 # Sim_RcS[1:30]
 # dat_Rsim$Active_NbrDeg[1:10]
 # beta/(beta+gamma)
-dat_Rsim[1:20,c(2:6,8)]
-mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
-#mean((dat_Rsim$Infect_num/dat_Rsim$Deg_vec)[1:50])
+# dat_Rsim[1:20,c(2:6,8)]
+# mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
+# mean((dat_Rsim$Infect_num/dat_Rsim$Deg_vec)[1:50])
 
 # all_simple_paths(G,from = 1)
 
 ### 20 runs
 #set.seed(32025)
-
 {
   seq <- rnbinom(N,r,mu=lambda)
   while(!CheckSeq(seq)){
@@ -641,15 +651,23 @@ mean(dat_Rsim$Recovery_time-dat_Rsim$Infect_time)
   G <- sample_degseq(  seq
                      , method = "fast.heur.simple"
                      )
-  result <- GilAlgo(G, N, beta, gamma, MaxTime = 100)
+  Adj_list <- as_adj_list(  G
+                            , mode = "all"
+                            , loops = "once"
+                            , multiple = TRUE
+  )
+  system.time(result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
+  }
+result$FinalStat
+# CM_Opt$RInfinity
+{
   dat_sim_out<-as.data.frame(result$Reff)
   dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time),]
   dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
 }
-result$FinalStat
 
 write.csv2(  dat_Rsim
-             , file="./SimData/sim_50k_md5_round20.csv")
+          , file="./SimData/sim_50k_g02_round06.csv")
 
 #### readback
 {
