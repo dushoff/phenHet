@@ -36,7 +36,7 @@ DDist <- data.frame(kvalue,Pk)
 
 #### Initial Condition
 # Initial Condition Solver based on I0=1-S0-(R0=0)
-(it_omega <- Init_omega_func(1))
+(it_omega <- Init_omega_func(1,N))
 (S0Count <- PGFG0(1-it_omega,DDist)*N)
 
 ##### Disease Parameter
@@ -167,8 +167,8 @@ ggplot(data=dat_reff)+theme_bw()+
   xlim(0,15)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
-
-
+Rvs_df[1,]$R_c
+R_c0
 ############# Simulation
 # Seed
 set.seed(2272)

@@ -244,7 +244,7 @@ ModProc_CM <- function(  Pk, beta, gamma
 
 ################################ Initial Condition
 # Initial Condition Solver based on I0=1-S0-(R0=0)
-Init_omega_func <- function(I0_val){
+Init_omega_func <- function(I0_val,N){
   S0_val <- N-I0_val
   Init_eqn <- function(theta){
     PGFG0(theta,DDist)*N-S0_val
