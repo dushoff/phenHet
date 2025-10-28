@@ -202,7 +202,7 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('NetSimulator.cpp')
-set.seed(2351)
+set.seed(3858)
 system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
 
 # print(profile_cpp)
@@ -278,7 +278,7 @@ ggplot()+theme_bw()+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
-dat_Rsim[1:5,]
+# dat_Rsim[1:5,]
 # Sim_RcS[1:30]
 # dat_Rsim$Active_NbrDeg[1:10]
 # beta/(beta+gamma)
@@ -289,146 +289,162 @@ dat_Rsim[1:5,]
 # all_simple_paths(G,from = 1)
 
 ### 20 runs
-#set.seed(32025)
-# {
-#   seq <- rnbinom(N,r,mu=lambda)
-#   while(!CheckSeq(seq)){
-#     seq <- rnbinom(N,r,mu=lambda)
-#   }
-#   CheckSeq(seq)
-#   G <- sample_degseq(  seq
-#                      , method = "fast.heur.simple"
-#                      )
-#   Adj_list <- as_adj_list(  G
-#                             , mode = "all"
-#                             , loops = "once"
-#                             , multiple = TRUE
-#   )
-#   system.time(result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
-#   }
-# result$FinalStat
-# # CM_Opt$RInfinity
-# {
-#   dat_sim_out<-as.data.frame(result$Reff)
-#   dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time),]
-#   dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
-# }
-# 
-# write.csv2(  dat_Rsim
-#           , file="./SimData/sim_50k_g02_round20.csv")
-
-#### readback
-{
-df1<-read.csv2("./SimData/sim_50k_g02_round01.csv")
-#df1$norm_time <- df1$Infect_time-df1$Infect_time[2]
-df1$X <- 1
-
-df2<-read.csv2("./SimData/sim_50k_g02_round02.csv")
-#df2$norm_time <- df2$Infect_time-df2$Infect_time[2]
-df2$X <- 2
-
-df3<-read.csv2("./SimData/sim_50k_g02_round03.csv")
-#df3$norm_time <- df3$Infect_time-df3$Infect_time[2]
-df3$X <- 3
-
-df4<-read.csv2("./SimData/sim_50k_g02_round04.csv")
-#df4$norm_time <- df4$Infect_time-df4$Infect_time[2]
-df4$X <- 4
-
-df5<-read.csv2("./SimData/sim_50k_g02_round05.csv")
-#df5$norm_time <- df5$Infect_time-df5$Infect_time[2]
-df5$X <- 5
-
-df6<-read.csv2("./SimData/sim_50k_g02_round06.csv")
-#df6$norm_time <- df6$Infect_time-df6$Infect_time[2]
-df6$X <- 6
-
-df7<-read.csv2("./SimData/sim_50k_g02_round07.csv")
-#df7$norm_time <- df7$Infect_time-df7$Infect_time[2]
-df7$X <- 7
-
-df8<-read.csv2("./SimData/sim_50k_g02_round08.csv")
-#df8$norm_time <- df8$Infect_time-df8$Infect_time[2]
-df8$X <- 8
-
-df9<-read.csv2("./SimData/sim_50k_g02_round09.csv")
-#df9$norm_time <- df9$Infect_time-df9$Infect_time[2]
-df9$X <- 9
-
-df10<-read.csv2("./SimData/sim_50k_g02_round10.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df10$X <- 10
-
-df11<-read.csv2("./SimData/sim_50k_g02_round11.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df11$X <- 11
-
-df12<-read.csv2("./SimData/sim_50k_g02_round12.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df12$X <- 12
-
-df13<-read.csv2("./SimData/sim_50k_g02_round13.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df13$X <- 13
-
-df14<-read.csv2("./SimData/sim_50k_g02_round14.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df14$X <- 14
-
-df15<-read.csv2("./SimData/sim_50k_g02_round15.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df15$X <- 15
-
-df16<-read.csv2("./SimData/sim_50k_g02_round16.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df16$X <- 16
-
-df17<-read.csv2("./SimData/sim_50k_g02_round17.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df17$X <- 17
-
-df18<-read.csv2("./SimData/sim_50k_g02_round18.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df18$X <- 18
-
-df19<-read.csv2("./SimData/sim_50k_g02_round19.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df19$X <- 19
-
-df20<-read.csv2("./SimData/sim_50k_g02_round20.csv")
-#df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
-df20$X <- 20
-
+set.seed(2678)
+Xrun <- list()
+for (i in c(1:40)){
+  seq <- rnbinom(N,r,mu=lambda)
+  while(!CheckSeq(seq)){
+    seq <- rnbinom(N,r,mu=lambda)
+  }
+  G <- sample_degseq(  seq
+                     , method = "fast.heur.simple"
+                     )
+  Adj_list <- as_adj_list(  G
+                          , mode = "all"
+                          , loops = "once"
+                          , multiple = TRUE
+                          )
+  ## Run simulation until outbreak happens
+  RunT <- 0
+  while (RunT<3) {
+    SysTime <- system.time(Xrun_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
+    RunT<-SysTime[3]
+    print(SysTime)
+  }
+  print(Xrun_result$FinalStat)
+  
+  ## re-org the output with infection time
+  Xrun_out<-as.data.frame(Xrun_result$Reff)
+  Xrun_Rsim<- Xrun_out[!is.na(Xrun_out$Infect_time),]
+  Xrun_Rsim<- Xrun_Rsim[order(Xrun_Rsim$Infect_time),]
+  
+  ## Output to CSV for record
+  write.csv2(  Xrun_Rsim
+             , file=paste("./SimData/sim_50k_g075_round",i,".csv",sep=""))
+  Xrun[[i]] <- Xrun_Rsim
+  i=i+1
 }
 
-### Combine
-df_all<-rbind( df1,df2,df3,df4,df5
-              ,df6,df7,df8,df9
-              #,df10
-              #,df11
-              ,df12,df13
-              #,df14
-              ,df15
-              ,df16,df17,df18
-              #,df19
-              ,df20
-              )
+CM_Opt$RInfinity
+
+df_all<-data.frame()
+for(i in c(1:40)){
+  df_temp <- Xrun[[i]]
+  df_temp$X <- i
+  df_all <- rbind(df_all,df_temp)
+}
+
+
+#### readback
+# {
+# df1<-read.csv2("./SimData/sim_50k_g75_round1.csv")
+# #df1$norm_time <- df1$Infect_time-df1$Infect_time[2]
+# df1$X <- 1
+# 
+# df2<-read.csv2("./SimData/sim_50k_g75_round2.csv")
+# #df2$norm_time <- df2$Infect_time-df2$Infect_time[2]
+# df2$X <- 2
+# 
+# df3<-read.csv2("./SimData/sim_50k_g75_round3.csv")
+# #df3$norm_time <- df3$Infect_time-df3$Infect_time[2]
+# df3$X <- 3
+# 
+# df4<-read.csv2("./SimData/sim_50k_g75_round4.csv")
+# #df4$norm_time <- df4$Infect_time-df4$Infect_time[2]
+# df4$X <- 4
+# 
+# df5<-read.csv2("./SimData/sim_50k_g75_round5.csv")
+# #df5$norm_time <- df5$Infect_time-df5$Infect_time[2]
+# df5$X <- 5
+# 
+# df6<-read.csv2("./SimData/sim_50k_g75_round6.csv")
+# #df6$norm_time <- df6$Infect_time-df6$Infect_time[2]
+# df6$X <- 6
+# 
+# df7<-read.csv2("./SimData/sim_50k_g75_round7.csv")
+# #df7$norm_time <- df7$Infect_time-df7$Infect_time[2]
+# df7$X <- 7
+# 
+# df8<-read.csv2("./SimData/sim_50k_g75_round8.csv")
+# #df8$norm_time <- df8$Infect_time-df8$Infect_time[2]
+# df8$X <- 8
+# 
+# df9<-read.csv2("./SimData/sim_50k_g75_round9.csv")
+# #df9$norm_time <- df9$Infect_time-df9$Infect_time[2]
+# df9$X <- 9
+# 
+# df10<-read.csv2("./SimData/sim_50k_g75_round10.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df10$X <- 10
+# 
+# df11<-read.csv2("./SimData/sim_50k_g75_round11.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df11$X <- 11
+# 
+# df12<-read.csv2("./SimData/sim_50k_g75_round12.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df12$X <- 12
+# 
+# df13<-read.csv2("./SimData/sim_50k_g75_round13.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df13$X <- 13
+# 
+# df14<-read.csv2("./SimData/sim_50k_g75_round14.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df14$X <- 14
+# 
+# df15<-read.csv2("./SimData/sim_50k_g75_round15.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df15$X <- 15
+# 
+# df16<-read.csv2("./SimData/sim_50k_g75_round16.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df16$X <- 16
+# 
+# df17<-read.csv2("./SimData/sim_50k_g75_round17.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df17$X <- 17
+# 
+# df18<-read.csv2("./SimData/sim_50k_g75_round18.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df18$X <- 18
+# 
+# df19<-read.csv2("./SimData/sim_50k_g75_round19.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df19$X <- 19
+# 
+# df20<-read.csv2("./SimData/sim_50k_g75_round20.csv")
+# #df10$norm_time <- df10$Infect_time-df10$Infect_time[2]
+# df20$X <- 20
+# 
+# }
+# 
+# ### Combine
+# df_all<-rbind( df1,df2,df3,df4,df5
+#               ,df6,df7,df8,df9
+#               ,df10
+#               ,df11
+#               ,df12,df13
+#               ,df14
+#               ,df15
+#               ,df16,df17,df18
+#               ,df19
+#               ,df20
+#               )
 # For seed 32025, some realization have a long
 # warm-up period
-df10[1:2,]
-df11[1:2,]
-df14[1:2,]
-df19[1:2,]
+df4[1:2,]
+
 # These cause a time phase issue for the sample size 20,
 # Creating a second peak for infect numbers due to the phase shifting
 # Currently they are withdrawn
 # An idea would be "normalize" the time from the second infection.
 
 dat_all<-df_all[order(df_all$Infect_time),]
-
+#dat_all[21:40,]
 ### Compare the initial condition
 mean(dat_all$Infect_num_rnd[1:20])
-#R_c0
+# R_c0
 #dat_all[21:40,c(1:6,8)]
 
 ## RcStar sim
@@ -439,9 +455,9 @@ Psim <- dat_all$Infect_num_rnd/dat_all$Degree
 ### rolling mean
 
 l <- length(dat_all$Infect_num_rnd)
-rn <- 21
+rn <- 31
 edge <- (rn-1)/2
-rd<-16
+rd<-40
 
 roll_mean <- rep(NA,l)
 (roll_mean[c((edge+rd+1):(l-edge))]
@@ -450,6 +466,7 @@ roll_mean <- rep(NA,l)
   )
 roll_mean[1:rd]<-mean(dat_all$Infect_num_rnd[1:rd])
 dat_all <- cbind(dat_all, Sim_RcS, roll_mean, Psim)
+dat_all$roll_mean <- roll_mean
 
 ### alternative "roll mean"
 time<-seq(0,10,0.01)
@@ -484,8 +501,8 @@ ggplot(data=dat_all)+theme_bw()+
   #geom_hline(yintercept=R_c0*lambda,color="purple")+
   #geom_hline(yintercept=R_imax,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,10)+
-  xlim(0,20)+
+  ylim(0,8)+
+  xlim(0,18)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 
