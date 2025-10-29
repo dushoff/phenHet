@@ -71,3 +71,48 @@ See [R_c-SignIssue.R](R_c-SignIssue.R) for numeric solutions `CM_P`, the ODE is 
 Just an observation: if alter the all signs in the ODE, the results of $p(t)$ seems to be much more reasonable. 
 So my conjecture now would be that we mess up the sign in the probability arguments somewhere, perhaps in the integration expression of $p(t)$.
 But I am having difficulty find the problem, and a second opinion would be really appreciated.
+
+## Reverse ODE
+It turns out that the $p(t)$ value should not be a initial value problem, but a final value problem.
+$$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
+when $t\rightarrow +\infty$, $\frac{d}{dt}p(\infty) \rightarrow 0$ as the system reaching its equilibrium state, which gives us:$$p(\infty)=\frac{\beta}{\beta+\gamma} \phi_S(\infty)=\frac{\beta}{\beta+\gamma} \frac{G'_p(\phi(\infty))}{\delta}$$
+and we have know from MSV frame work that 
+$$\phi(\infty)= \frac{\gamma}{\beta+\gamma}+ \frac{\beta}{\beta+\gamma}\frac{G_p'(\phi(\infty))}{\delta}$$
+So $p(\infty)=\phi(\infty)-\frac{\gamma}{\beta+\gamma}$.
+
+This is because future status will affect $p(t)$ by definition. So at the very beginning, $p(0)$ might still be less than $\frac{\beta}{\beta+\gamma}$, if:
+- $\gamma$ is small(i.e. recovery time $T_r$ is long) 
+- And/or $N$ is not large enough (i.e. loops are rare enough) 
+such that competition of infection is still affect $p(0)$ and $\mathcal{R}_c(0)$ value.
+More specifically, even if competing of infection has low probability at the $t=0$, it still affect $p(0)$ as a lot of infection events happens even before the first infected individual recovers.
+
+This difference is decreasing as $\gamma$ and $N$ increase:
+$\mathcal{R}_c(0)=6.43, \mathcal{R}^*_c(0)=8.33$ for $N=50,000, \gamma=0.20, \beta=0.25, I_0=1$
+![](SimData/50K_g020_sol.png)
+$\mathcal{R}_c(0)=6.80, \mathcal{R}^*_c(0)=8.33$ for $N=250,000, \gamma=0.2, \beta=0.25, I_0=1$
+![](SimData/250K_g020_sol.png)
+$\mathcal{R}_c(0)=6.93, \mathcal{R}^*_c(0)=8.33$ for $N=50,000, \gamma=0.2, \beta=0.25, I_0=1$
+![](SimData/250K_g020_sol.png)
+
+$\mathcal{R}_c(0)=3.65, \mathcal{R}^*_c(0)=3.75$ for $N=50,000, \gamma=0.75, \beta=0.25, I_0=1$
+![](SimData/50K_g075_sol.png)
+$\mathcal{R}_c(0)=3.69, \mathcal{R}^*_c(0)=3.75$ for $N=250,000, \gamma=0.75, \beta=0.25, I_0=1$
+![](SimData/250K_g075_sol.png)
+$\mathcal{R}_c(0)=3.70, \mathcal{R}^*_c(0)=3.75$ for $N=500,000, \gamma=0.75, \beta=0.25, I_0=1$
+![](SimData/500K_g075_sol.png)
+
+
+TODO: figure out the scale of $N$ s.t. $\mathcal{R}_c(0) \approx \mathcal{R}^*_c(0)$
+
+As a result, one can reversely simulate the $p(t)$ ODE from MSV ODE simulation near the end of outbreak.
+
+
+
+Thoughts: Comparing ODE for $p(t)$ and $\phi(t)$
+$$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
+$$\frac{d}{dt}\phi(t)=+\beta \phi_S(t)-(\beta+\gamma)\phi(t)+\gamma$$
+
+
+
+### From $P(t)$ to $\mathcal{R}_c$ 
+

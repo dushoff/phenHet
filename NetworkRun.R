@@ -25,7 +25,7 @@ r <- 1/kappa
 (p<-1/(1+kappa*lambda))
 (v<-lambda/p)
 
-N <- 50000
+N <- 250000
 
 kvalue <- seq(0,400)
 #Pk <- dpois(kvalue,lambda)
@@ -67,11 +67,11 @@ CM_R <- CM_out[,3]
 CM_S <- CM_out[,4]
 CM_I <- CM_out[,5]
 
-#### Reverse ODE for Todd's p(t)
+#### Reverse ODE for Todd's p(t) idea
 # manually picking point
 theta_inf
 tps <- 451
-print(CM_out[tps,2])
+print(CM_out[tps,])
 
 (P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,DDist)/lambda)
 

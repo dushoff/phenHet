@@ -137,19 +137,10 @@ as a ODE of $p(t)$.
 
 At $t=0$, we expect to have $\phi_S(0)=1$ and $p(0)=\frac{\beta}{\beta+\gamma}$, so take these initial value into the ODE gives us $$\frac{d}{dt}p(t)=-\beta+(\beta+\gamma)\times\frac{\beta}{\beta+\gamma}=0$$ which agree with our expectation.
 
-### Sign Problem
-This notes fixed some typo in [Todd's original notes](outputs/Rc.pdf) and the final ODE agree with the original one. I have verified the derivation twice and it seems correct.
-
-We expect $p(t)$ be a probability and monotonically decreasing from its initial value since the following two factor:
-- $\phi_S$ is decreasing as the infection spread out.
-- We have more competing infection happens, i.e. it is more likely to have $T_n<t+T_c$ 
-However, in simulation, this ODE for $p(t)$ leads to increasing $p(t)$ and getting larger than 1.
-
 ## 2.2 Counterargument
 A counterargument that RZ and BB have for this:
 - For large enough random network in MSV's configuration framework, it has been proved loops in network exist, but will be really rare (a.s. no loop as $N$ increase). 
 - Like in the percolation theory, considering the transmissibility of edges is a probability smaller than 1, loops linked by "occupied" edges are even more rare.
 As a result, competing infection can only happens if we have such "occupied" loops, so the impact of competing infection should be very limited, even if the infection proportion is large.
 This counter argument only valid for configuration network. If we consider small world network, then this impact would be much significant.
-Ideas and comments are welcome!
-
+Ideas and comments are welcome
