@@ -20,7 +20,7 @@ beta <- 0.25
 # gamma <- 0.75
 gamma <- 0.2
 
-N <- 50000
+N <- 250000
 set.seed(2853)
 seq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(seq)){
@@ -45,11 +45,12 @@ Adj_list <- as_adj_list(  G
 
 ### Rcpp Version
 sourceCpp('NetSimulator.cpp')
+#sourceCpp('NetSimulatorOPT.cpp')
 args1 <- list(N, beta, gamma, MaxTime = 3.0
               , TrackDyn = TrackDyn
               , debug = TRUE
               , debug_freq=1
-              , debug_low=500, debug_up=550
+              , debug_low=0, debug_up=50
               #, debug_low=930, debug_up=940
               )
 
@@ -65,10 +66,14 @@ args1 <- list(N, beta, gamma, MaxTime = 3.0
 set.seed(101)
 #set.seed(201)
 system.time(Cpp_result <- do.call("GilAlgoCpp", c(list(Adj_list), args1)))
-#Cpp_result$FinalStat
+Cpp_result$FinalStat
 #print(profile_cpp)
 #plot(profile_cpp)
 #Cpp_result
+
+# set.seed(101)
+# system.time(Opt_result <- do.call("GilAlgoCppOpt", c(list(Adj_list), args1)))
+# Opt_result$FinalStat
 
 set.seed(101)
 #set.seed(201)

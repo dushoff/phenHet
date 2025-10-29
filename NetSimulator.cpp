@@ -49,6 +49,7 @@ List GilAlgoCpp(  List adjList
   IntegerVector nodes = seq(1, N);
   IntegerVector InitIndex = Rcpp::sample(noseq, InitInfSize, false, prob);
   
+  Rprintf("Initial index %d \n", InitIndex[0]);
   // Initialize output vectors
   NumericVector Infect_time(N, NA_REAL);
   NumericVector Recovery_time(N, NA_REAL);
