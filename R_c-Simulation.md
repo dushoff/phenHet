@@ -2,11 +2,11 @@ This is a translated version based on [Todd's notes](outputs/Rc.pdf).
 We are able to describe the result with a short ODE and being able to solve it numerically together with ODE system of MSV framework.
 
 We would like to compute:
-$$p(t)=\mathbb{P}\{\text{a node infected at time } t \text{ infects a given (? susceptible) neighbour}\}$$
+$$p(t)=\mathbb{P}\{\text{a node infected at time } t \text{ infects a randomly given neighbour}\}$$
 - As in MSV framework, we assume infection of neighbors are independent, thus the number of infected neighbors follows binomial distribution. Follow the idea of Zhao2 result/derivation:
-	- We count the condition that the neighbor must be susceptible $\phi_S(t)$ in $p(t)$ s.t. $$\mu(t)=p(t)$$
-	- Furthermore, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=p(t)\times\phi(t)\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
-- Initially at $t=0$, there should be no competing infection among neighbors, all neighbors of focal infected node can only be infected by the focal node.
+	- For newly infected vertices, we condition on that the neighbor must not be the infector of the focal vertex, i.e. the edge has not transmitted the infection yet s.t. $$\mu(t)=\frac{p(t)}{\phi(t)}$$
+	- Then, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
+- (**Wrong here**)Initially at $t=0$, there should be no competing infection among neighbors, all neighbors of focal infected node can only be infected by the focal node.
 	- This leads to $$p(0)=\tau=\frac{\beta}{\beta+\gamma}$$ as initial value of $p(t)$.
 	- Furthermore, this agree with the initial value for $\mathcal{R}_c$, s.t.$$\mathcal{R}_{c}(0)=\mathcal{R}^*_{c}(0)=\mathcal{R}_{c,0}=\frac{\beta}{\beta+\gamma}\times\frac{G''_p(1)}{\delta}$$
 
@@ -69,29 +69,38 @@ However, in numeric solving, this ODE for $p(t)$ leads to increasing $p(t)$ and 
 See [R_c-SignIssue.R](R_c-SignIssue.R) for numeric solutions `CM_P`, the ODE is implemented at line `#107`.
 
 Just an observation: if alter the all signs in the ODE, the results of $p(t)$ seems to be much more reasonable. 
-So my conjecture now would be that we mess up the sign in the probability arguments somewhere, perhaps in the integration expression of $p(t)$.
-But I am having difficulty find the problem, and a second opinion would be really appreciated.
+Result: the sign is correct, but the problem is no an initial value problem, i.e. $p(0) \neq \frac{\beta}{\beta+\gamma}$. For details, see next chapter.
 
 ## Reverse ODE
 It turns out that the $p(t)$ value should not be a initial value problem, but a final value problem.
 $$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
-when $t\rightarrow +\infty$, $\frac{d}{dt}p(\infty) \rightarrow 0$ as the system reaching its equilibrium state, which gives us:$$p(\infty)=\frac{\beta}{\beta+\gamma} \phi_S(\infty)=\frac{\beta}{\beta+\gamma} \frac{G'_p(\phi(\infty))}{\delta}$$
+when $t\rightarrow +\infty$, $\frac{d}{dt}p(\infty) \rightarrow 0$ as the system reaching its equilibrium state. 
+For the current system, it means the end of outbreak where no active infection exist in the population, thus no competing infection for any newly introduced infection vertex.
+Therefore, at the end of equilibrium state we should have:
+$$\mathcal{R}_c(\infty)=\mathcal{R}^*_c(\infty)$$
+which gives us:$$p(\infty)=\frac{\beta}{\beta+\gamma} \phi_S(\infty)=\frac{\beta}{\beta+\gamma} \frac{G'_p(\phi(\infty))}{\delta}$$
 and we have know from MSV frame work that 
 $$\phi(\infty)= \frac{\gamma}{\beta+\gamma}+ \frac{\beta}{\beta+\gamma}\frac{G_p'(\phi(\infty))}{\delta}$$
 So $p(\infty)=\phi(\infty)-\frac{\gamma}{\beta+\gamma}$.
 
-This is because future status will affect $p(t)$ by definition. So at the very beginning, $p(0)$ might still be less than $\frac{\beta}{\beta+\gamma}$, if:
+For the initial status, even with very small initial infection proportion, we could not easily assume $$\mathcal{R}^*_c(0)=\mathcal{R}_c(0) \Leftrightarrow p(0)=\frac{\beta}{\beta+\gamma}$$unless the network size $N$ is large enough.
+This is because future status will affect $p(t)$ by definition. 
+So at the very beginning, $p(0)$ might still be less than $\frac{\beta}{\beta+\gamma}$, if:
 - $\gamma$ is small(i.e. recovery time $T_r$ is long) 
-- And/or $N$ is not large enough (i.e. loops are rare enough) 
+- And/or $N$ is not large enough (i.e. loops are rare enough for the whole outbreak) 
 such that competition of infection is still affect $p(0)$ and $\mathcal{R}_c(0)$ value.
 More specifically, even if competing of infection has low probability at the $t=0$, it still affect $p(0)$ as a lot of infection events happens even before the first infected individual recovers.
 
-This difference is decreasing as $\gamma$ and $N$ increase:
+As a result, with the numerical simulation of the MSV dynamic, one can reversely simulate the $p(t)$ and the ODE, starting from some $p(t_f)$ as final value at a known time $t_{f}$ close to $p(\infty)$, to get the $p(t)$ simulation and initial value $p(0)$. 
+Further we can calculate corresponding $\mathcal{R}_c$ and comparing with $\mathcal{R}^*_c$.
+
+This difference between these two case-wise effective reproduction number is decreasing as $\gamma$ and $N$ increase:
+
 $\mathcal{R}_c(0)=6.43, \mathcal{R}^*_c(0)=8.33$ for $N=50,000, \gamma=0.20, \beta=0.25, I_0=1$
 ![](SimData/50K_g020_sol.png)
-$\mathcal{R}_c(0)=6.80, \mathcal{R}^*_c(0)=8.33$ for $N=250,000, \gamma=0.2, \beta=0.25, I_0=1$
+$\mathcal{R}_c(0)=6.80, \mathcal{R}^*_c(0)=8.33$ for $N=250,000, \gamma=0.20, \beta=0.25, I_0=1$
 ![](SimData/250K_g020_sol.png)
-$\mathcal{R}_c(0)=6.93, \mathcal{R}^*_c(0)=8.33$ for $N=50,000, \gamma=0.2, \beta=0.25, I_0=1$
+$\mathcal{R}_c(0)=6.93, \mathcal{R}^*_c(0)=8.33$ for $N=500,000, \gamma=0.20, \beta=0.25, I_0=1$
 ![](SimData/250K_g020_sol.png)
 
 $\mathcal{R}_c(0)=3.65, \mathcal{R}^*_c(0)=3.75$ for $N=50,000, \gamma=0.75, \beta=0.25, I_0=1$
@@ -101,10 +110,32 @@ $\mathcal{R}_c(0)=3.69, \mathcal{R}^*_c(0)=3.75$ for $N=250,000, \gamma=0.75, \b
 $\mathcal{R}_c(0)=3.70, \mathcal{R}^*_c(0)=3.75$ for $N=500,000, \gamma=0.75, \beta=0.25, I_0=1$
 ![](SimData/500K_g075_sol.png)
 
+To further verify the $\mathcal{R}_c(t)$ and $p(t)$ result, I comparing the curves with the Gillespie simulation on network.
+
+### Simulation for $\gamma=0.2$ case
+For $N=50,000, \gamma=0.20, \beta=0.25, I_0=1$: 1 simulation
+![](SimData/50K_g020_1sim.png)
+Timely-overlapped results for 16 simulation: (4 case with large phase shifting removed for 20 random runs)
+![](SimData/50K_g020_16sim.png)
+For larger network size , 1 simulation due to time consumption:
+![](SimData/250K_g020_1sim.png)
+
+### Simulation for $\gamma=0.75$ case
+For $N=50,000, \gamma=0.75, \beta=0.25, I_0=1$: 1 simulation
+![](SimData/50K_g075_1sim.png)
+Timely-overlapped 20 simulation
+![](SimData/50K_g075_20sim.png)
+40 simulation:
+![](SimData/50K_g075_40sim.png)
+
+For larger network size $N=250,000$, 1 simulation due to time consumption:
+![](SimData/250K_g075_1sim.png)
+
+
 
 TODO: figure out the scale of $N$ s.t. $\mathcal{R}_c(0) \approx \mathcal{R}^*_c(0)$
 
-As a result, one can reversely simulate the $p(t)$ ODE from MSV ODE simulation near the end of outbreak.
+
 
 
 
@@ -112,7 +143,4 @@ Thoughts: Comparing ODE for $p(t)$ and $\phi(t)$
 $$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
 $$\frac{d}{dt}\phi(t)=+\beta \phi_S(t)-(\beta+\gamma)\phi(t)+\gamma$$
 
-
-
-### From $P(t)$ to $\mathcal{R}_c$ 
 
