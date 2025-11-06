@@ -1,5 +1,6 @@
 ## This is phenomenological heterogeneity
 ## https://dushoff.github.io/phenHet/JR_NegBinom_Result.html
+## https://github.com/dushoff/phenHet/blob/master/outputs/Rnotes.pdf
 
 current: target
 -include target.mk
@@ -15,8 +16,11 @@ vim_session:
 mirrors += resources
 
 Sources += $(wildcard *.md)
+Sources += $(wildcard *.tex)
 
 ## Why I still can't visualize???
+
+gillespie_tests.Rout: gillespie_tests.R
 
 Ignore += *.html *.pdf
 ## https://dushoff.github.io/phenHet/approaches.html
@@ -27,6 +31,12 @@ notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
 	$(rmdh_r)
 
 NetworkExamples.Rout: NetworkExamples.R
+
+## Current rcpp implementation
+NetworkSimulator.Rout: NetworkSimulator.R
+
+## MRE of sample inconsistency
+## mini-EG.Rout: mini-EG.R
 
 ######################################################################
 
@@ -41,6 +51,19 @@ JD_RZ_curves.Rout: JD_RZ_curves.R
 
 zhaoFuns.Rout: zhaoFuns.R
 zhaoPlot.Rout: zhaoPlot.R zhaoFuns.rda
+
+NoteForR_c.pdf: NoteForR_c.md
+	$(rmdp_r)
+
+NoteForR_i.pdf:  NoteForR_i.md
+	$(rmdp_r)
+
+## NoteForR_i.md.tex:  NoteForR_i.md
+
+Rnotes.pdf: Rnotes.tex
+
+Paper.html: Paper.md
+	$(rmdh_r)
 
 ######################################################################
 
@@ -67,7 +90,7 @@ Sources += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 
-Makefile: makestuff/01.stamp
+Makefile: makestuff/03.stamp
 makestuff/%.stamp: | makestuff
 	- $(RM) makestuff/*.stamp
 	cd makestuff && $(MAKE) pull
@@ -80,7 +103,9 @@ makestuff:
 -include makestuff/pipeR.mk
 -include makestuff/mirror.mk
 ## -include makestuff/rmdweb.mk
+-include makestuff/texj.mk
 -include makestuff/rmd.mk
+-include makestuff/pandoc.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk

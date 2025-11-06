@@ -1,0 +1,35 @@
+\documentclass[12pt]{article}
+\begin{document}
+
+\newcommand{\Rx}[1]{\ensuremath{\mathcal{R}_{#1}}}
+\newcommand{\emd}{\ensuremath{\omega}}
+\newcommand{\iprob}{\ensuremath{\frac{\rho}{\rho+1}}}
+
+Define the rate ratio $\rho = \beta/\gamma$, and the “weighted mean degree” (node degree averaged over edge) $\emd = <d^2>/<d> = \delta(1+
+\kappa)$. Note that this is one greater than the Miller-Volz effective mean degree, which subtracts the infecting neighbor in advance.
+
+We then have the initial case reproductive number (expected number of cases caused by a given case):
+
+$$ \Rx{0,c} = \iprob(\emd-1). $$
+
+This should make sense. As the disease spreads initially, $\emd - 1$ is the average number of available neighbors (since one neighbor infected the focal node), and \iprob\ is the probability each neighbor will be infected. 
+
+Note that \Rx{0,c} is always positive (zero-edge nodes have weight 0, all other integers are $\geq1$), but can never exceed the threshold of one unless $\emd>2$ (since $\emd-1$ is being multiplied by a probability. This makes sense: if the effective mean number of neighors is two, than the number the average can infect after being infected is capped at one.
+
+Define the instantaneous reproductive number as the counterfactual number of individuals who would be infected by an observed force-of-infection/duration-of-infectiousness combination, assuming no other changes. This suddenly seems complicated in general, but is still going to be simple for constant-duration Markovian infections -- and it gives the value we would like to use for \Rx{\mathit{eff}}\ in our phenHet approaches. We believe that:
+
+$$ \Rx{0,i} = \rho(\emd-2).$$
+
+We again need $\emd>2$ for disease spread. It's a bit weird that \Rx{0,1} is negative when $\emd<2$. It presumably means the eigenstate under which our formula applies asymptotically evaporates as $\emd\to2$ so and the equation simply doesn't to apply after that. 
+
+It's also interesting that $\emd-2$ comes in so simply. The straightforward interpretation would be that, in the spreading eigenstate we're envisioning, each currently infected node has, on average, two neighbors that have ever been infected; one being the infector, and one being a neighbors infected by the focal node. 
+
+\paragraph{Argument} There is a simple, and possibly useful, argument for why this number is 2. Imagine modeling the number of active infections $I$, and the number of links from active infections to non-susceptibles, $\theta$, in the eigenstate. Only two events can happen. If an individual recovers, on average the ratio $\theta/I$ does not change, because under the Markov assumption the recovering node is typical of recovering nodes (and it remains non-susceptible when seen as a non-focal node). If an infection occurs, it increases $I$ by 1 and $\theta$ by 2 (the infector has one new link to non-susceptible, and the newly counted infectee has 1 such link). So the process can only move $\theta/I$ closer to 1.
+
+It may be useful to think about how this process extends past the eigenstate limit. Recoveries are still not changing the ratio, but infections may reach new infectees that already have non-susceptible neighbors.
+
+\paragraph*{Postscript} It was suggested that I should change $\beta$ to $\alpha$ to reflect the fact that it doesn't really match the mean-field concept of $\beta$. I haven't done that yet because it matches the MV $\beta$, but I'm eager to talk about the terminology more broadly.
+
+In any case it seems worth writing down the mean-field link, which can be seen easily by letting $\omega\to\infty$ while $B=\beta\omega$ remains constant. In this case, both initial reproductive numbers go to $B/\gamma$.
+
+\end{document}
