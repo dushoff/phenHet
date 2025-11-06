@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,fullpage}
+
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\Rc}{\R_{\rm c}}
+\newcommand{\Rzeroc}{\R_{\rm 0,c}}
+\newcommand{\Prob}[1]{\mathbb{P}\left\{#1\right\}}
+\newcommand{\Tr}{T_{\rm r}}
+\newcommand{\Tc}{T_{\rm c}}
+\newcommand{\Tn}{T_{\rm n}}
+\newcommand{\dee}{{\rm d}}
+\newcommand{\dd}[2]{\frac{\dee #1}{\dee #2}}
+\newcommand{\ddt}[1]{\dd{#1}{t}}
+\newcommand{\Oh}{\mathcal{O}}
+
+\begin{document}
+
+\title{A Numerical Approach to Computing $\Rc(t)$}
+\author{Todd}
+\date{\today}
+\maketitle
+
+We need to compute 
+\begin{equation}
+	p(t) = \Prob{\text{an individual infected at time $t$ infects a neighbour}}.
+\end{equation}
+The primary will infect the secondary if it makes an infectious contact before recovering \emph{and} the secondary is not infected at the time of contact.  Using the MSV formalism, the probability that a randomly chosen neighbour is not infected at time $t$ is $\sigma(t) = G_{q}(\phi(t))$.
+
+One way to compute $p(t)$ is by comparing times of random events: let $\Tr$ be the time after infection that the primary recovers, $\Tc$ be the time after infection that the primary makes it's first contact with the secondary, and let $\Tn$ be the first time that the secondary neighbour has an infectious contact from one of its other neighbours:
+\begin{subequations}
+\begin{align}
+	\Prob{\Tr > u} &= e^{-\gamma u}\\
+	\Prob{\Tc > u} &= e^{-\beta u}\\
+	\Prob{\Tn > t+u} &= \sigma(t+u).
+\end{align}
+\end{subequations}
+Further, 
+ \begin{equation}
+ 	p(t) = \Prob{t+\Tc < (t+\Tr) \wedge \Tn},
+\end{equation}
+where $\wedge$ denotes the minimum (this notation is commonly used in probability and stochastic processes), while, exploiting the independence of $\Tr$ and $\Tn$,
+\begin{subequations}
+\begin{align}	
+	\Prob{(t+\Tr) \wedge \Tn > t+u} &= \Prob{\Tr > u; \Tn > t+u}\\
+	 &=  \Prob{\Tr > u}\Prob{\Tn > t+u}\\
+	&= e^{\gamma u} \sigma(t+u).
+\end{align}
+\end{subequations}
+Thus, 
+\begin{equation}\label{eq:p.t.integral}
+	p(t) = \int_{0}^{\infty} \beta e^{-(\beta+\gamma)u} \sigma(t+u)\, \dee u
+\end{equation}
+and
+\begin{subequations}
+\begin{align}
+	\ddt{p} &= \int_{0}^{\infty} \beta e^{-(\beta+\gamma)u} \ddt{}\sigma(t+u)\, \dee u\\
+	&= \int_{0}^{\infty} \beta e^{-(\beta+\gamma)u} \dd{}{u}\sigma(t+u)\, \dee u\\
+	&=  \beta e^{-(\beta+\gamma)u} \sigma(t+u)\bigg|_{0}^{\infty} + \int_{0}^{\infty} \beta (\beta+\gamma) e^{-(\beta+\gamma)u}\sigma(t+u)\, \dee u\\
+	&= (\beta+\gamma)p(t) -\beta \sigma (t).
+\end{align}
+\end{subequations}
+We can thus add one additional equation to the MSV equations to compute $p(t)$.
+
+What is missing here are boundary conditions.  Now, if we look at \eqref{eq:p.t.integral}, $\sigma(t+u)$ is bounded, while $e^{-(\beta+\gamma)u}$ is integrable, so we can use Lebesgue's dominated convergence theorem to interchange integration and limits to see that
+\begin{subequations}
+\begin{align}
+	\lim_{t \to \infty} p(t) &= \int_{0}^{\infty} \beta e^{-(\beta+\gamma)u} \lim_{t \to \infty} \sigma(t+u)\, \dee u\\
+	&= \int_{0}^{\infty} \beta e^{-(\beta+\gamma)u} G_{q}(\phi(\infty))\, \dee u\\
+	&= \frac{\beta}{\beta+\gamma} G_{q}(\phi(\infty)).
+\end{align}
+\end{subequations}
+This is the final condition that allows us to compute $p(t)$; one way to do so is via the \emph{shooting method}: we look for the value $p(0) = p_{0}$ so that the solution with this initial condition eventually goes to the correct final condition.  
+
+We can also approximate the initial condition by linearizing $\ell = -\ln \phi$ about the disease-free equilibrium, taking $\ell(0) = \ell_{0}$ where and $0 < \ell_{0} \ll 1$.  We then have \begin{subequations}
+\begin{align}
+	-\dot{\ell} &= -\beta + \beta G_{q}(e^{-\ell})e^{\ell} + \gamma (1-e^{\ell})\\
+	&= - \beta + \beta \frac{\sum_{d=1}^{\infty} d p_{d} e^{-(d-1)\ell}}{\sum_{d=1}^{\infty} d p_{d}} + \gamma (1-e^{\ell})\\
+	&= -\bigg(\beta \frac{\sum_{d=1}^{\infty} d(d-1) p_{d}}{\sum_{d=1}^{\infty} d p_{d}} + \gamma\bigg) \ell + \Oh(\ell^{2})\\
+	&= -(\beta G_{q}'(1)+\gamma)\ell + \Oh(\ell^{2})
+\end{align}
+\end{subequations}
+whence, keeping only the lowest order terms, 
+\begin{equation}\label{eq:eps}
+	\ell(t) = \ell_{0} e^{(\beta G_{q}'(1)+\gamma)t}.
+\end{equation}
+Substituting $\phi(t) = e^{-\ell(t)}$ into \eqref{eq:p.t.integral} using \eqref{eq:eps} yields
+\begin{subequations}\label{eq:p0.int}
+\begin{align}
+	p(0) &= \int_{0}^{\infty} \beta e^{-(\beta+\gamma)t} G_{q}\big(e^{-\ell_{0} e^{(\beta G_{q}'(1)+\gamma)t}}\big)\, \dee t\, .\\
+\intertext{making the change of variable $u =\ell_{0} e^{(\beta G_{q}'(1)+\gamma)t}$, we have}
+	&=\frac{\beta}{\beta G_{q}'(1)+\gamma} \ell_{0}^{\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}}
+		\int_{\ell_{0}}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u.\label{eq:p0.int.u}
+\end{align}
+\end{subequations}
+
+Now, let's make a few observations.  First, since $G_{q}(z)$ is a generating function, it is increasing, and has an increasing derivative.  Moreover, $G_{q}(0) = 0$, as by definition, it is the p.g.f. of the degree of a vertex with at least one neighbour.  Thus, using the mean value theorem, for any $z \in (0,1)$ there exists $\eta \in [0,z]$ such that 
+\begin{equation} 
+	\frac{G_{q}(z)}{z} = G_{q}'(\zeta), 
+\end{equation}
+so that $G_{q}'(0) z \leq G_{q}(z) \leq G_{q}'(1) z$.  Thus, 
+\begin{multline}\label{eq:gamma.ineq}
+	G_{q}'(0) \int_{\ell_{0}}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} e^{-u}, \dee u\\
+	\leq \int_{\ell_{0}}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u
+	\leq G_{q}'(1) \int_{\ell_{0}}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} e^{-u}\, \dee u,
+\end{multline}
+and the left and right hand side limits exist as $\ell_{0} \to 0$:
+\begin{equation}
+	\int_{0}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} e^{-u}, \dee u = \Gamma{\textstyle \left(-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}\right)},
+\end{equation}
+which is well posed because $0 < \frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma} < 1$ (recall that $\Rzeroc = \frac{\beta}{\beta+\gamma G_{q}'(1)} \geq 1$).  Moreover, all integrands in \eqref{eq:gamma.ineq} are positive, and are thus all the integrals are increasing functions of $\ell_{0}$, so the integral
+\begin{equation}	
+	\int_{0}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u
+\end{equation}
+exists, and is bounded and non-zero.
+
+Next, using l'H\^opital's rule, we see that 
+\begin{subequations}
+\begin{align}
+	\lim_{\ell_{0} \to 0} &\frac{\int_{0}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u
+		-\int_{\ell_{0}}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u}{\ell_{0}^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}}}\\
+	&= \lim_{\ell_{0} \to 0} \frac{\int_{0}^{\ell_{0}} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u}{\ell_{0}^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}}}\\
+	&= \lim_{\ell_{0} \to 0} \frac{\ell_{0}^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-\ell_{0}})\, \dee u}
+		{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}\ell_{0}^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1}}\\
+	&= -\frac{\beta G_{q}'(1)+\gamma}{\beta+\gamma}.
+\end{align}
+\end{subequations}
+
+Combining the above, we see that
+\begin{multline}
+	\int_{\ell_{0}}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u\\
+	= \int_{0}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u 
+		- \ell_{0}^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}}\left(\frac{\beta G_{q}'(1)+\gamma}{\beta+\gamma} + o(\ell_{0})\right).
+\end{multline}
+Substituting this into \eqref{eq:p0.int.u} gives us
+\begin{equation}
+	p(0) = \frac{\beta}{\beta+\gamma} + \frac{\beta}{\beta G_{q}'(1)+\gamma} \ell_{0}^{\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}}
+		\int_{0}^{\infty} u^{-\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma}-1} G_{q}(e^{-u})\, \dee u + o(\ell_{0}).
+\end{equation}
+
+Now, we've already observed that $\frac{\beta+\gamma}{\beta G_{q}'(1)+\gamma} = \frac{1}{\Rzeroc + \frac{\gamma}{\beta+\gamma}}$ lies strictly in $(0,1)$, so the initial condition $\ell_{0}$ is appearing in a form that is strictly larger than $\Oh(\ell_{0})$, with the effect becoming more pronounced as $\Rzeroc$ increases.
+
+The missing step here is to characterize $\ell_{0}$. Given that $S(t) = G_{p}(\phi(t))$ we might reasonably take $S(0) = 1-\frac{1}{n}$ and $\phi(0) =  G_{p}^{-1}\left(1-\frac{1}{n}\right)$, whence, using the inverse function theorem, 
+\begin{equation}
+	\ell_{0} = - \ln {\textstyle G_{p}^{-1}\left(1-\frac{1}{n}\right)}
+	\approx - \ln {\textstyle\left(1-\frac{(G_{p}^{-1})'(1)}{n}\right)}
+	= - \ln {\textstyle\left(1-\frac{1}{G_{p}'(1) n}\right)}\\
+	\approx  \frac{1}{G_{p}'(1) n},
+\end{equation}
+and $p(0) - \frac{\beta}{\beta+\gamma} = \Oh\left(n^{-\frac{1}{\Rzeroc + \frac{\gamma}{\beta+\gamma}}}\right)$.
+
+\end{document}
