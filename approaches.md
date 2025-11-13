@@ -1,4 +1,3 @@
-
 ## Resources 
 
 [This notes document](notes_NovoANDNetwork.md) has the netSusc result; try to pull it out and contextualize a bit more.

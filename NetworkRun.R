@@ -41,8 +41,8 @@ DDist <- data.frame(kvalue,Pk)
 
 ##### Disease Parameter
 beta <- 0.25
-gamma <- 0.75
-#gamma <- 0.2
+#gamma <- 0.75
+gamma <- 0.2
 
 #### Eigen Direction R(0)
 (Eigen_R <- EigenR(DDist, beta, gamma, lambda, init_omega = it_omega))
@@ -107,7 +107,7 @@ ggplot()+theme_bw()+
   geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
   geom_point(data=Rvs_df, aes(x=time, y=I_out, color="I_Rvs"), alpha=0.1)+
   geom_line(data=CM_df, aes(x=time, y=I_out,color="I"))+
-  xlim(0,10)+
+  xlim(0,20)+
   labs(y = "Proportion")
 
 ##################################
@@ -132,6 +132,7 @@ R_imax <- beta/gamma*(PGFd2G0(1,DDist)/lambda-1)
 R_i <- -S_dot/(CM_I*gamma)
 
 R_cstar <- beta/(beta+gamma)*PGFd2G0(theta,DDist)/lambda
+R_cNoPhi <- beta/(beta+gamma)*theta*PGFd2G0(theta,DDist)/lambda
 #R_cstar <- R_c0*CM_S^(1+2*kappa)
 
 PLen<-length(Rvs_df$P)
@@ -147,24 +148,28 @@ dat_reff <- cbind(time
                   ,R_i
                   #,cal_reff
                   ,R_cstar
+                  ,R_cNoPhi
                   #,est
                   #,theta
                   #,R_c
                   #,R_c1
                   )
-
+CM_df[200:210,c(1,2,4,5)]
+Rvs_df[200:210,c(1,2,4,5,6)]
+S_dot[200:210]
 
 ggplot(data=dat_reff)+theme_bw()+
-  geom_line(aes(x=time, y=R_i,color="non-Eigen R_i"))+
+  #geom_line(aes(x=time, y=R_i,color="Eigen R_i"))+
   geom_line(aes(x=time, y=R_cstar,color="R_c*"))+
-  geom_line(data=Rvs_df,aes(x=time, y=R_c,color="R_c"))+
+  geom_line(aes(x=time, y=R_cNoPhi,color="R_c* without /phi"))+
+  #geom_line(data=Rvs_df,aes(x=time, y=R_c,color="R_c"))+
   #geom_line(data=Rvs_df,aes(x=time, y=R_c1,color="R_c(K+1)"))+
   #geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+
-  geom_hline(yintercept=R_imax,color="black")+
+  #geom_hline(yintercept=R_imax,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,5)+
-  xlim(0,15)+
+  ylim(0,10)+
+  xlim(0,5)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 Rvs_df[1,]$R_c
