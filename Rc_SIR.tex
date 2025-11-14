@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,fullpage,graphicx}
+
+\newcommand{\Rn}{\mathcal{R}_{0}}
+\newcommand{\Rc}{\mathcal{R}_{\rm c}}
+\newcommand{\Ri}{\mathcal{R}_{\rm i}}
+\newcommand{\Prob}[1]{\mathbb{P}\left\{#1\right\}}
+\newcommand{\Tr}{T_{\rm r}}
+\newcommand{\Tc}{T_{\rm c}}
+\newcommand{\Tn}{T_{\rm n}}
+\newcommand{\dee}{{\rm d}}
+\newcommand{\dd}[2]{\frac{\dee #1}{\dee #2}}
+\newcommand{\ddt}[1]{\dd{#1}{t}}
+\newcommand{\xp}{x_{\infty}}
+\newcommand{\xinit}{x_{0}}
+\newcommand{\yinit}{y_{0}}
+\newcommand{\ie}{\textit{i.e.}\, }
+\newcommand{\etc}{\textit{etc.}}
+\newcommand{\Oh}{\mathcal{O}}
+
+\begin{document}
+
+\title{Computing $\Rc(t)$ numerically in the SIR model}
+\author{Todd}
+\date{\today}
+\maketitle
+
+\section{A numerical approach to $\Rc(t)$}
+
+First, let's set some notation.  I'll use $X(t)$ and $Y(t)$ for the fraction of susceptible and infected hosts, and normalize time so that the mean infectious time is 1 unit.  Then the contact rate is equal to $\Rn$ and we can write the SIR ordinary differential equation model as
+\begin{subequations}\label{eq:SIR.ODE}
+\begin{align}
+	\ddt{X} &= -\Rn X Y\\
+	\ddt{Y} &= (\Rn X - 1)Y.
+\end{align}
+\end{subequations}
+
+To make comparisons, observe that the instantaneous reproductive number for the SIR model is
+\begin{equation}\label{eq:R.i}
+	\Ri(t) = \Rn X(t). 
+\end{equation}
+On the other hand, in the compartmental SIR model, each infected individual has an infectious period that is exponentially distributed with rate 1 \ie if a given individual's infectious period has length $T$, then 
+\begin{equation}
+	\Prob{T > t} = e^{-t}.
+\end{equation}
+Moreover, that individual makes contact with other individuals at the times of a Poisson process with rate $\Rn$, which lead to transmission if a) the focal individual is still infected, and b) the target is susceptible.  Contacts are made uniformly at random, so the probability that the target is susceptible is equal to the fraction susceptible at the time of contact.  Thus, if the focal individual is infected at time $t$, $\Rc(t)$ is the expected number of individuals to which they will transmit, which is 
+\begin{equation}\label{eq:Rc.int}
+	\Rc(t) = \int_{0}^{\infty} \Rn X(t+u) e^{-u}\, \dee u.
+\end{equation}
+(to unpack this, $\Rn\, \dee u$ is the probability of contact in an infinitesimal interval $[u,u+du)$, $X(t+u)$ is the probability that the target is susceptible, and $e^{-u}$ is the probability that the focal individual is still infectious).  We don't know $\Rc(0)$, but, using Lebesgue's dominated convergence theorem (which we can apply since $|\Rn X(t+u)| < \Rn$ and $e^{-u}$ is integrable, we have
+\begin{equation}
+	\lim_{t \to \infty} \Rc(t) = \int_{0}^{\infty} \Rn \lim_{t \to \infty}  X(t+u) e^{-u}\, \dee u  =  \int_{0}^{\infty} \Rn \xp e^{-u}\, \dee u = \Rn \xp
+\end{equation}
+and 
+\begin{equation}
+	\xp = -\frac{W_{0}\big(-\Rn\xinit e^{-\Rn(\xinit+\yinit)}\big)}{\Rn}
+\end{equation}
+is the final fraction susceptible (so $1-\xp$ is Kermack and McKendrick's final size).  Here $W_{0}$ is Lambert's $W$ function, whereas  $(X(0),Y(0)) = (\xinit,\yinit)$ are initial conditions for the SIR equations, \eqref{eq:SIR.ODE}.
+
+Just as for the MSV equations, we can obtain an ODE for $\Rc(t)$ by differentiating under the integral sign and integrating by parts:
+\begin{subequations}
+\begin{align}
+	\ddt{\Rc} &= \int_{0}^{\infty} \Rn  \ddt{} X(t+u) e^{-u}\, \dee u\\
+	&= \int_{0}^{\infty} \Rn  \dd{}{u} X(t+u) e^{-u}\, \dee u\\
+	&= \Rn X(t+u)e^{-u}\big|_{u=0}^{\infty}  + \int_{0}^{\infty} \Rn X(t+u) e^{-u}\, \dee u\\
+	&= \Rc(t) - \Rn X(t).
+\end{align}
+\end{subequations}
+
+This gives me a dynamical system 
+\begin{subequations}\label{eq:SIR.Rc.ODE}
+\begin{align}
+	\ddt{X} &= -\Rn X Y\\
+	\ddt{Y} &= (\Rn X - 1)Y\\
+	\ddt{\Rc} &= \Rc - \Rn X,
+\end{align}
+\end{subequations}
+with saddle node $(X,Y,\Rc) = (\xp,0,\Rn\xp)$.  As for the MSV system, the solution we want is coming into this saddle node along the stable manifold.  If I start from $\Rc(0)$ above the stable manifold, my solution will shoot off to $+\infty$.  If I start below, my solution will shoot off to $-\infty$.
+
+As I mentioned in my email, one approach to solving this final value problem is via the shooting method.  Essentially, I start with a guess for $\Rc(0)$, which I progressively refine until I have a solution such that $\Rc(t)$ is approaching $\Rn\xp$.  I'll illustrate this numerically, taking $\Rn = 8$, $\xinit = 0.99$, and $\yinit = 0.01$.  For my initial guess, I'll take $\Rc(0) = 0.5\Rn\xinit$.  That gives me Figure \ref{fig:Rc8.1}.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Shooting_Figures/Rc8.1.eps}
+\end{center}
+\caption{$\Rc(0) = 0.5\Rn\xinit$.  The red line is $\Rn\xp$, the blue curve is $\Ri(t)$, and the green curve is my candidate solution for $\Rc(t)$}\label{fig:Rc8.1}
+\end{figure}
+This shoots to $+\infty$, so I've overestimated the initial value.
+
+In Figure \ref{fig:Rc8.2}, I take $\Rc(0) = 0.4\Rn\xinit$, which shoots to $-\infty$, so this underestimates the initial value.  I thus know that the $\Rc(0) = 0.4\ldots$.  
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Shooting_Figures/Rc8.2.eps}
+\end{center}
+\caption{$\Rc(0) = 0.4\Rn\xinit$.}\label{fig:Rc8.2}
+\end{figure}
+Continuing, I can take $\Rc(0) = 0.45\Rn\xinit$ to get Figure \ref{fig:Rc8.3} where I undershoot again.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Shooting_Figures/Rc8.3.eps}
+\end{center}
+\caption{$\Rc(0) = 0.45\Rn\xinit$.}\label{fig:Rc8.3}
+\end{figure}
+I might then continue by trying $\Rc(0) = 0.47\Rn\xinit$ (Figure \ref{fig:Rc8.4}, which overshoots, \etc 
+ \begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Shooting_Figures/Rc8.4.eps}
+\end{center}
+\caption{$\Rc(0) = 0.47\Rn\xinit$.}\label{fig:Rc8.4}
+\end{figure}
+Eventually I arrived at $\Rc(0) = 0.46875214655\Rn\xinit$:
+ \begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Shooting_Figures/Rc8.5.eps}
+\end{center}
+\caption{$\Rc(0) = 0.46875214655\Rn\xinit$.}\label{fig:Rc8.5}
+\end{figure}
+
+I'm not an expert in numerical methods, far from it, but I'll assume that there are packages available for R that automate the shooting method.  I did it by hand in Maple as an illustration.  The first thing to note here is that $\Ri(0)$ is more than double of $\Rc(0)$, so it's a very poor approximation (this is somewhat obscured by my using a log-linear plot). Moreover, if I had taken $\Rc(0) = \Ri(0)$, I would have ended up with a nonsense result.  Another thing to note is that shooting methods can be, unfortunately, quite sensitive to the initial conditions.
+
+\section{Approximating $\Rc(0)$}
+
+To pick my initial condition, I observed that, since $X(t)$ is decreasing, \eqref{eq:Rc.int} shows that $0 < \Rc(t) < \Ri(t)$, so I used $\Rc(0) = 0.5\Ri(0)$ to start a pseudo-binary search.  By a happy coincidence, this was a reasonable first guess, although it wouldn't have been for say $\Rn = 2$, where a similar approach led me to $\Rc(0) = 0.944254019\Rn\xinit$.  
+
+To do better, I used a linear approximation to $\log X(t)$ and $\log Y(t)$ near $\xinit$:
+\begin{subequations}\label{eq:SIR.linear}
+\begin{align}
+	\ddt{} \log{X} &= -\Rn Y\\
+	\ddt{} \log{Y} &= (\Rn X - 1) \approx (\Rn \xinit -1),
+\end{align}
+\end{subequations}
+which gives me 
+\begin{subequations}\label{eq:SIR.linear}
+\begin{align}
+	Y(t) &\approx \yinit e^{(\Rn \xinit -1)t}\\
+	X(t) &\approx \xinit e^{-\frac{\Rn\yinit}{\Rn \xinit -1}\big(e^{(\Rn \xinit -1)t}-1\big)},
+\end{align}
+\end{subequations}
+which I could then substitute into \eqref{eq:Rc.int} at $t = 0$ to get 
+\begin{equation}\label{eq:Rc.int.approx}
+	\Rc(0) \approx \Rn\xinit \int_{0}^{\infty} e^{-\frac{\Rn\yinit}{\Rn \xinit -1}\big(e^{(\Rn \xinit -1)u}-1\big)} e^{-u}\, \dee u.
+\end{equation}
+First, note that for $\Rn\xinit \sim 1$ and $\yinit \ll 1$,
+\begin{equation}\label{eq:Rc.int.approx.small.R}
+	\Rc(0) \approx \Rn\xinit \int_{0}^{\infty} e^{-(\Rn\yinit+1)u} \, \dee u = \frac{\Rn\xinit}{\Rn\yinit+1} \approx \Rn\xinit,
+\end{equation}
+which explains why for $\Rn = 2$, my estimate for $\Rc(0)$ above is close to $\Ri(0)$.  Moreover, rearranging and making the change of variables $v = \frac{\Rn\yinit}{\Rn \xinit -1}e^{(\Rn \xinit -1)u}$, I get
+\begin{subequations}
+\begin{align}\label{eq:Rc0.approx}
+	\Rc(0) &\approx \frac{\Rn\xinit}{\Rn\xinit-1}\left(\frac{\Rn\xinit-1}{\Rn\yinit}\right)^{-\frac{1}{\Rn\xinit-1}}e^{\frac{\Rn\yinit}{\Rn\xinit-1}} 
+		\int_{\frac{\Rn\yinit}{\Rn\xinit-1}}^{\infty} v^{-\frac{1}{\Rn\xinit-1}-1} e^{-v}\, \dee v\\
+		&= \frac{\Rn\xinit}{\Rn\xinit-1}\left(\frac{\Rn\yinit}{\Rn\xinit-1}\right)^{\frac{1}{\Rn\xinit-1}}e^{\frac{\Rn\yinit}{\Rn\xinit-1}}\,
+			\Gamma{\textstyle \left(-\frac{1}{\Rn\xinit-1},\frac{\Rn\yinit}{\Rn\xinit-1}\right)},
+\end{align}
+\end{subequations}
+where $\Gamma(s,z) = \int_{z}^{\infty} v^{s-1} e^{-v}\, \dee v$ is the upper incomplete Gamma function.  I've plotted this as Figure \ref{fig:Rc0} below, where you can see that as $\Rn$ increases, $\Ri(0)$ becomes a worse and worse approximation to $\Rc(0)$.  One caveat, however, is that by using a linear approximation to the SIR model, I am going to overestimate $Y(t)$ and underestimate $X(t)$, and I am thus underestimating $\Rc(0)$.  \eqref{eq:Rc0.approx} will give a good initial guess for $\Rc(0)$ for the shooting method, but it will still need refinement.
+ \begin{figure}[h]\label{fig:Rc0}
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Shooting_Figures/Rc0.eps}
+\end{center}
+\caption{The red curve is $\Ri(0)$, while the blue curve is $\Rc(0)$ as approximated by \eqref{eq:Rc0.approx}, both plotted against $\Rn$.}
+\end{figure}
+
+Note that as $\yinit \to 0$, we can use \cite[Equation 8.7.3]{NIST:DLMF} to expand \eqref{eq:Rc0.approx}:
+\begin{subequations}
+\begin{align}\label{eq:Rc0.approx}
+	\Rc(0) &\approx \frac{\Rn\xinit}{\Rn\xinit-1}\left(\frac{\Rn\yinit}{\Rn\xinit-1}\right)^{\frac{1}{\Rn\xinit-1}}e^{\frac{\Rn\yinit}{\Rn\xinit-1}}\\
+	& \nonumber \qquad \times \Gamma{\textstyle \left(-\frac{1}{\Rn\xinit-1}\right)} \left(1- \left(\frac{\Rn\yinit}{\Rn\xinit-1}\right)^{-\frac{1}{\Rn\xinit-1}} e^{-\frac{\Rn\yinit}{\Rn\xinit-1}}\frac{1}{\Gamma \left(1-\frac{1}{\Rn\xinit-1}\right)}+\Oh(\yinit)\right)\\
+	&= \Rn\xinit\left(1 - \left(\frac{\Rn\yinit}{\Rn\xinit-1}\right)^{\frac{1}{\Rn\xinit-1}}e^{\frac{\Rn\yinit}{\Rn\xinit-1}}\Gamma{\textstyle \left(1-\frac{1}{\Rn\xinit-1}\right)} 
+	+ \Oh\left(\yinit^{\frac{\Rn\xinit}{\Rn\xinit-1}}\right)\right)
+\end{align}
+\end{subequations}
+In particular, the departure from $\Rn\xinit$ scales like $\Oh\big(y^{\frac{1}{\Rn\xinit-1}}\big)$, making it very sensitive to $\yinit$ as $\Rn$ increases.
+
+
+One could similarly approximate $\Rc(0)$ for the MSV equations, using the linearization about the initial conditions.
+
+\end{document}
+
