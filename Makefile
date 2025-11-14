@@ -6,7 +6,7 @@ current: target
 -include target.mk
 Ignore = target.mk
 
-# -include makestuff/perl.def
+-include makestuff/perl.def
 
 vim_session:
 	bash -cl "vmt todo.md resources.md README.md"
@@ -17,6 +17,7 @@ mirrors += resources
 
 Sources += $(wildcard *.md)
 Sources += $(wildcard *.tex)
+Sources += $(wildcard *.pl)
 
 ## Why I still can't visualize???
 
@@ -51,6 +52,14 @@ JD_RZ_curves.Rout: JD_RZ_curves.R
 
 zhaoFuns.Rout: zhaoFuns.R
 zhaoPlot.Rout: zhaoPlot.R zhaoFuns.rda
+
+Ignore += *.MD
+## NoteForR_c.fix.MD: NoteForRc.md noobsid.pl
+%.fix.MD: %.md noobsid.pl
+	$(PUSH)
+
+NoteForMu.pdf: NoteForMu.md
+	$(rmdp_r)
 
 NoteForR_c.pdf: NoteForR_c.md
 	$(rmdp_r)
