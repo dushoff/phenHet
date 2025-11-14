@@ -72,7 +72,8 @@ NoteForR_i.pdf:  NoteForR_i.md
 
 ## NoteForR_i.md.tex:  NoteForR_i.md
 
-Rnotes.pdf: Rnotes.tex
+## Rnotes.pdf: Rnotes.tex
+## Rc.pdf: Rc.tex
 
 Paper.html: Paper.md
 	$(rmdh_r)
