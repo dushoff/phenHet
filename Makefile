@@ -54,9 +54,12 @@ zhaoFuns.Rout: zhaoFuns.R
 zhaoPlot.Rout: zhaoPlot.R zhaoFuns.rda
 
 Ignore += *.MD
-## NoteForR_c.fix.MD: NoteForRc.md noobsid.pl
+## NoteForMu.fix.pdf: NoteForMu.md noobsid.pl
 %.fix.MD: %.md noobsid.pl
 	$(PUSH)
+
+%.fix.pdf: %.fix.MD
+	$(rmdp_r)
 
 NoteForMu.pdf: NoteForMu.md
 	$(rmdp_r)
