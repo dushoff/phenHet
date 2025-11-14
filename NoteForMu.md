@@ -1,4 +1,4 @@
-# 1. Class and Probability of Edges\Stubs
+# 1. Class and Probability of Edges
 ### 1.1 Whole network
 Let us ignore the vertices and their status for a moment, and focus on edges and their binary status, which means whether the edge has t
 transmitted the infection or not. 
