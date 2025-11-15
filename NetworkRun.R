@@ -25,7 +25,7 @@ r <- 1/kappa
 (p<-1/(1+kappa*lambda))
 (v<-lambda/p)
 
-N <- 250000
+N <- 50000
 
 kvalue <- seq(0,400)
 #Pk <- dpois(kvalue,lambda)
@@ -158,11 +158,15 @@ CM_df[200:210,c(1,2,4,5)]
 Rvs_df[200:210,c(1,2,4,5,6)]
 S_dot[200:210]
 
+(Eigen_P <- EigenP(DDist, beta, gamma, lambda, init_omega = it_omega))
+beta*PGFd2G0(1,DDist)/lambda-2*(beta+gamma)
+
+
 ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=R_i,color="Eigen R_i"))+
   geom_line(aes(x=time, y=R_cstar,color="R_c*"))+
-  geom_line(aes(x=time, y=R_cNoPhi,color="R_c* without /phi"))+
-  #geom_line(data=Rvs_df,aes(x=time, y=R_c,color="R_c"))+
+  #geom_line(aes(x=time, y=R_cNoPhi,color="R_c* without /phi"))+
+  geom_line(data=Rvs_df,aes(x=time, y=R_c,color="R_c"))+
   #geom_line(data=Rvs_df,aes(x=time, y=R_c1,color="R_c(K+1)"))+
   #geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+

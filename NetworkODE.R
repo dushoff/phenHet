@@ -262,6 +262,12 @@ EigenR <- function(Pk, beta, gamma, lambda, init_omega){
   return(Eigen_R)
 }
 
+EigenP <- function(Pk, beta, gamma, lambda, init_omega){
+  X <- beta*PGFd2G0(1,DDist)/lambda
+  Eigen_P <- X/(X-2*(beta+gamma))*init_omega
+  return(Eigen_P)
+}
+
 #### Reverse ODE for P
 # we want P_inf satisfy the ODE=0 with theta_inf
 #sigma_inf <- PGFd1G0(theta_inf,DDist)/lambda
