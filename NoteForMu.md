@@ -37,7 +37,9 @@ NOTE: In probabilities, AND is denoted by $\wedge$ and condition is denoted by $
 MSV framework use $\phi_S(t), \phi_I(t), \phi_R(t)$ to denote the probability that a vertex connected to unoccupied edge $E$ **AND** being susceptible, infected or recovered.
 So based on the two perspective, we have two event with the same probability.
 $$\begin{align}
-\phi_S(t) = & \ \mathbb{P}(\text{A random vertex } b \text{ is susceptible  at time } t \wedge b \text{ attached to a unoccupied edge } E )
+\phi_S(t) = & \ \mathbb{P}(\text{A random vertex } b \text{ is susceptible  at time } t 
+\\
+& \wedge b \text{ attached to the unoccupied edge } E \text{ attached to } a)
 \\
 = & \ \mathbb{P}(\text{For random vertex } a \text{, one of its random edge } E \text{ is unoccupied } 
 \\ 

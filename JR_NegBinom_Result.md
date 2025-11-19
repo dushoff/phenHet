@@ -4,7 +4,6 @@ Result agreed with a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.10
 
 Quick Summary: [approaches.md](./approaches.md)
 
-
 #### (To Do) Assumptions
 1. Neighbors are independent
 2. Infinite size random network: a.s. no loop network
