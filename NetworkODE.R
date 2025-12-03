@@ -263,7 +263,7 @@ EigenR <- function(Pk, beta, gamma, lambda, init_omega){
 }
 
 EigenP <- function(Pk, beta, gamma, lambda, init_omega){
-  X <- beta*PGFd2G0(1,DDist)/lambda
+  X <- beta*PGFd2G0(1,Pk)/lambda
   Eigen_P <- X/(X-2*(beta+gamma))*init_omega
   return(Eigen_P)
 }

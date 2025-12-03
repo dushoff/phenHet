@@ -25,7 +25,7 @@ r <- 1/kappa
 (p<-1/(1+kappa*lambda))
 (v<-lambda/p)
 
-N <- 50000
+N <- 500000
 
 kvalue <- seq(0,400)
 #Pk <- dpois(kvalue,lambda)
@@ -70,7 +70,7 @@ CM_I <- CM_out[,5]
 #### Reverse ODE for Todd's p(t) idea
 # manually picking point
 theta_inf
-tps <- 451
+tps <- 601
 print(CM_out[tps,])
 
 (P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,DDist)/lambda)
@@ -88,26 +88,36 @@ RVS_args <- list(  DDist
                  , gamma
                  , theta_Rvs
                  , R_Rvs
-                 , ODEmaxTime = t_Rvs
+                 , ODEmaxTime = t_Rvs+10
                  , ODEstep = 5e-2)
 
 Rvs_out <- do.call("Rvs_ODE", c(RVS_args))
 
-Rvs_out[,1]<- max(Rvs_out[,1])-Rvs_out[,1]
+Rvs_out[,1]<- t_Rvs-Rvs_out[,1]
 Rvs_out <- Rvs_out[order(Rvs_out[,1]),]
 
 Rvs_df<-as.data.frame(Rvs_out)
-Rvs_df$I_out[1:30]
-
+#Rvs_df$I_out[1:30]
 #### Check RVS: check with CM ODE for S and I
 CM_df <- as.data.frame(CM_out)
 
+EP<-beta/(beta+gamma)
+1-Rvs_df$theta[1]
+
+PGFd1G0(1-it_omega,DDist)/lambda
+
+
+
 ggplot()+theme_bw()+
-  geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S_Rvs"), alpha=0.1)+
-  geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
+  geom_point(data=Rvs_df, aes(x=time, y=P, color="P"), alpha=0.1)+
+  geom_point(data=Rvs_df, aes(x=time, y=theta, color="phi"), alpha=0.1)+
+  #geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S_Rvs"), alpha=0.1)+
+  #geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
   geom_point(data=Rvs_df, aes(x=time, y=I_out, color="I_Rvs"), alpha=0.1)+
   geom_line(data=CM_df, aes(x=time, y=I_out,color="I"))+
-  xlim(0,20)+
+  ylim(-0.05,1)+
+  geom_hline(yintercept=EP,color="orange")+
+  geom_vline(xintercept=0,color="black")+
   labs(y = "Proportion")
 
 ##################################
@@ -154,13 +164,22 @@ dat_reff <- cbind(time
                   #,R_c
                   #,R_c1
                   )
-CM_df[200:210,c(1,2,4,5)]
-Rvs_df[200:210,c(1,2,4,5,6)]
-S_dot[200:210]
+# CM_df[200:210,c(1,2,4,5)]
+# Rvs_df[200:210,c(1,2,4,5,6)]
+# S_dot[200:210]
 
 (Eigen_P <- EigenP(DDist, beta, gamma, lambda, init_omega = it_omega))
-beta*PGFd2G0(1,DDist)/lambda-2*(beta+gamma)
+(beta*PGFd2G0(1,DDist)/lambda)/(beta*PGFd2G0(1,DDist)/lambda-2*(beta+gamma))*it_omega
+Eigen_P
+R_c0
 
+Rvs_df[1,]
+
+Rvs_df$P[1]/EP
+
+ggplot(data = Rvs_df)+theme_bw()+
+  geom_line(aes(x=time, y=P,color="P"))+
+  geom_hline(yintercept=EP,color="black")
 
 ggplot(data=dat_reff)+theme_bw()+
   #geom_line(aes(x=time, y=R_i,color="Eigen R_i"))+
