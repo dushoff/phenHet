@@ -70,7 +70,7 @@ CM_I <- CM_out[,5]
 #### Reverse ODE for Todd's p(t) idea
 # manually picking point
 theta_inf
-tps <- 601
+tps <- 501
 print(CM_out[tps,])
 
 (P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,DDist)/lambda)
@@ -89,7 +89,7 @@ RVS_args <- list(  DDist
                  , theta_Rvs
                  , R_Rvs
                  , ODEmaxTime = t_Rvs+10
-                 , ODEstep = 5e-2)
+                 , ODEstep = 2e-2)
 
 Rvs_out <- do.call("Rvs_ODE", c(RVS_args))
 
@@ -103,10 +103,7 @@ CM_df <- as.data.frame(CM_out)
 
 EP<-beta/(beta+gamma)
 1-Rvs_df$theta[1]
-
 PGFd1G0(1-it_omega,DDist)/lambda
-
-
 
 ggplot()+theme_bw()+
   geom_point(data=Rvs_df, aes(x=time, y=P, color="P"), alpha=0.1)+

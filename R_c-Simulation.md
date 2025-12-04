@@ -116,7 +116,7 @@ To further verify the $\mathcal{R}_c(t)$ and $p(t)$ result, I comparing the curv
 For $N=50,000, \gamma=0.20, \beta=0.25, I_0=1$: 1 simulation
 ![](SimData/50K_g020_1sim.png)
 Timely-overlapped results for 16 simulation: (4 case with large phase shifting removed for 20 random runs)
-![](SimData/50K_g020_16sim.png)
+	![](SimData/50K_g020_16sim.png)
 For larger network size , 1 simulation due to time consumption:
 ![](SimData/250K_g020_1sim.png)
 
