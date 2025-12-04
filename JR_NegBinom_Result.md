@@ -240,21 +240,21 @@ To derive $X_t$
 	- [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) claim that $\mu= \frac{\beta}{\beta+\gamma} S(t)$ where $\frac{\beta}{\beta+\gamma}$ is the per-edge infection probability/transmissibility and on average, only a fraction $S(t)$ of its contacts will still be susceptible.
 	- ==RZ believe here they might make a mistake here, since this $\mu$ probability should correspond to edge-forming process, where the probability should related to the proportion of edges connected to $S$ vertices, not the proportion of $S$ vertices.==
 	- ==They did not explicitly state that this derivation also assume that every edge connect to this $I$ vertex are still being able to transmit the infection other than the known one connect to its infector. This is the same to assume the vertex is newly infected and not yet infect any others.
-	- An correction would be $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\phi}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
+	- An correction would be $\mu^*=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\phi}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
 - Therefore, with law of total expectation, for a randomly newly infected node we know the expectation number $X_t$ of infected vertices it can generate would be:
 $$\begin{align}
 \mathcal{R}^*_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
-& =\mathbb{E}_{K_I^*}[\mu(K_I^*-1)]
+& =\mathbb{E}_{K_I^*}[\mu^*(K_I^*-1)]
 \\
-& =\mu \mathbb{E}[K_I^*-1]
+& =\mu^* \mathbb{E}[K_I^*-1]
 \\
-& = \mu (\mathbb{E}[K_I^*]-1)
+& = \mu^* (\mathbb{E}[K_I^*]-1)
 \\
-& = \mu \phi\frac{G''_p(\phi)}{G'_p(\phi)}
+& = \mu^* \phi\frac{G''_p(\phi)}{G'_p(\phi)}
 \end{align}$$
 
-Take into the idea that $$\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\phi)}{\phi G'_p(1)}$$, we have:$$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}$$
+Take into the idea that $$\mu^*=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\phi)}{\phi G'_p(1)}$$, we have:$$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}$$
 As $t\rightarrow 0 \Leftrightarrow \phi \rightarrow 1$, $\mathcal{R}^*_c$ converge to $$\mathcal{R}_{0,c}=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
 Similar as how MSV verifying their $\mathcal{R}_{0,c}$ with dynamic, $\mathcal{R}^*_c=1$ is where $\dot{\phi}_I=0$. which verify the definition.
 
