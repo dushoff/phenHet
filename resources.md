@@ -2,8 +2,8 @@
 ----------------------------------------------------------------------
 
 Romanescu epidemics effective reproductive
+- [refs/Roma+23_Epidemics_Reff_COVID.pdf](Roma+23_Epidemics_Reff_COVID.pdf)
 - https://www.sciencedirect.com/science/article/pii/S1755436523000440
-- resources/RomanescuEpidemics.pdf (_DE: not on repo_)
 
 ## MSV 
 ### (deep theta derivation)
