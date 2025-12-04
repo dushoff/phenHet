@@ -4,6 +4,10 @@ Result agreed with a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.10
 
 Quick Summary: [approaches.md](./approaches.md)
 
+#### Note about notation
+- MSV use $\theta$ where we use $\phi$ (since it is a sum of subscripted $\phi$'s)
+- MSV use $\Psi$ where we use $G$ for the generating function
+
 #### (To Do) Assumptions
 1. Neighbors are independent
 2. Infinite size random network: a.s. no loop network
