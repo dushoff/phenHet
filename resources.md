@@ -9,8 +9,8 @@ Romanescu epidemics effective reproductive
 ### (deep theta derivation)
 - [refs/MillerSlimVolz2011.pdf](refs/MillerSlimVolz2011.pdf)
 - [refs/Bere+23_JMB_HeterogeneitySocialDiffusion_s00285-022-01861-w.pdf](refs/Bere+23_JMB_HeterogeneitySocialDiffusion_s00285-022-01861-w.pdf)
-- [refs/Novo08_MathBioSci_PhenHet.pdf](refs/Novo08_MathBioSci_PhenHet.pdf)
-- [refs/Novozhilov2008.pdf](refs/Novozhilov2008.pdf)
+- [refs/Novo08_MathBioSci_PhenHet.pdf](refs/Novo08_MathBioSci_PhenHet.pdf) (published version)
+- [refs/Novozhilov2008.pdf](refs/Novozhilov2008.pdf) (arXiv preprint)
 
 ### more MSV resources
 
