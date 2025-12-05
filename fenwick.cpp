@@ -1,5 +1,3 @@
-
-
 #include <Rcpp.h>
 #include <vector>
 #include <limits>
@@ -7,7 +5,7 @@
 
 using namespace Rcpp;
 
-// ---------- Fenwick (Binary Indexed) Tree ----------
+// ---------- Fenwick (Binary Indexed) Tree over doubles ----------
 struct Fenwick {
     int n;
     std::vector<double> bit; // 1-based internal indexing
@@ -56,8 +54,6 @@ struct Fenwick {
                 acc += bit[next];
             }
         }
-        // idx is the largest 1-based index with sum < target.
-        // Answer in 1-based is idx+1; zero-based is (idx).
         if (idx >= n) idx = n - 1; // guard
         return idx;
     }
@@ -65,47 +61,28 @@ struct Fenwick {
 
 // [[Rcpp::export]]
 List GilAlgoCpp(    List adjList,
-                    int size,
-                    double beta,
-                    double gamma,
-                    double MaxTime,
-                    int InitInfSize = 1,
-                    bool TrackDyn = true,
-                    bool debug = false,
-                    int debug_freq = 1,
-                    int debug_low = 500,
-                    int debug_up = 600) {
+                        int size,
+                        double beta,
+                        double gamma,
+                        double MaxTime,
+                        int InitInfSize = 1,
+                        bool TrackDyn = true,
+                        bool debug = false,
+                        int debug_freq = 1,
+                        int debug_low = 500,
+                        int debug_up = 600) {
 
     long int debug_ctr = 0;
     long int event_ctr = 0;
     int N = size;
     double t = 0.0;
 
-    // States and per-node rates
-    IntegerVector Status(N, 0); // 0=S, 1=I, 2=R
-    NumericVector Rate(N, 0.0);
+    // State: 0=S, 1=I, 2=R
+    IntegerVector Status(N, 0);
     IntegerVector Deg_vec(N);
 
-    // Pre-compute degrees and probabilities for selecting initial infected
-    NumericVector prob(N);
-    double deg_sum = 0.0;
-    for (int i = 0; i < N; ++i) {
-        IntegerVector neighbors = adjList[i];
-        int deg = neighbors.size();
-        Deg_vec[i] = deg;
-        prob[i] = deg;
-        deg_sum += deg;
-    }
-    prob = prob / sum(prob);
-
-    // Initial situation
-    IntegerVector noseq = seq(0, N - 1);
-    IntegerVector nodes = seq(1, N);
-    IntegerVector InitIndex = Rcpp::sample(noseq, InitInfSize, false, prob);
-
-    Rprintf("Initial index %d \n", InitIndex[0]);
-
     // Outputs
+    IntegerVector nodes = seq(1, N);
     NumericVector Infect_time(N, NA_REAL);
     NumericVector Recovery_time(N, NA_REAL);
     IntegerVector Infect_num_rnd(N, 0);
@@ -114,187 +91,202 @@ List GilAlgoCpp(    List adjList,
 
     NumericVector t_vec, S_vec, I_vec, R_vec;
 
+    // Pre-compute degrees and probabilities for initial infected
+    NumericVector prob(N);
+    for (int i = 0; i < N; ++i) {
+        IntegerVector neighbors = adjList[i];
+        int deg = neighbors.size();
+        Deg_vec[i] = deg;
+        prob[i] = deg;
+    }
+    prob = prob / sum(prob);
+
+    // Pick initial infected nodes (0-based indices)
+    IntegerVector noseq = seq(0, N - 1);
+    IntegerVector InitIndex = Rcpp::sample(noseq, InitInfSize, false, prob);
+    Rprintf("Initial index %d \n", InitIndex[0]);
+
     // Initialize counts
     int S_cnt = N - InitInfSize;
     int I_cnt = InitInfSize;
     int R_cnt = 0;
 
-    // Initialize statuses and gamma recovery rates for initial infected
-    for (int i = 0; i < InitInfSize; ++i) {
-        int idx = InitIndex[i];
+    // Mark initial infected
+    for (int k = 0; k < InitInfSize; ++k) {
+        int idx = InitIndex[k];
         Status[idx] = 1;
-        Rate[idx] = gamma;
-        if (TrackDyn) Infect_time[idx] = 0.0;
+        Infect_time[idx] = 0.0;
     }
 
-    // Build Fenwick tree and SumRate after initial neighbor infection rates are applied
-    Fenwick fw(N);
-    double SumRate = 0.0;
+    // Infected set with O(1) remove via swap
+    std::vector<int> infected;
+    infected.reserve(N);
+    std::vector<int> pos_infected(N, -1);
+    for (int k = 0; k < InitInfSize; ++k) {
+        int idx = InitIndex[k];
+        pos_infected[idx] = (int)infected.size();
+        infected.push_back(idx);
+    }
 
-    // Apply neighbor infection rate contributions from initially infected
-    for (int i = 0; i < InitInfSize; ++i) {
-        int x = InitIndex[i];
-        IntegerVector neighbors = adjList[x];
-        for (int j : neighbors) {
-            int nbr = j - 1; // adjList is 1-based
-            if (Status[nbr] == 0) {
-                Rate[nbr] += beta;
-                ++S_NbrDeg[x];
-            }
+    // kS[i] = number of susceptible neighbors of i (defined only for infected nodes)
+    std::vector<int> kS(N, 0);
+    Fenwick fw_kS(N);
+    double SI_edges = 0.0;
+
+    // Compute initial kS for infected nodes and load Fenwick
+    for (int k = 0; k < (int)infected.size(); ++k) {
+        int i = infected[k];
+        int countS = 0;
+        IntegerVector neighbors = adjList[i];
+        for (int j1 : neighbors) {
+            int j = j1 - 1; // 1-based -> 0-based
+            if (Status[j] == 0) countS++;
+        }
+        kS[i] = countS;
+        S_NbrDeg[i] = countS; // optional: record baseline susceptible-degree for initial infected
+        if (countS > 0) {
+            fw_kS.add(i, (double)countS);
+            SI_edges += countS;
         }
     }
 
-    // Load Fenwick from Rate and compute SumRate
-    for (int i = 0; i < N; ++i) {
-        if (Rate[i] != 0.0) {
-            fw.add(i, Rate[i]);
-            SumRate += Rate[i];
-        }
-    }
-
+    // Dynamics tracking
     if (TrackDyn) {
         t_vec.push_back(t);
-        S_vec.push_back(static_cast<double>(S_cnt) / N);
-        I_vec.push_back(static_cast<double>(I_cnt) / N);
-        R_vec.push_back(static_cast<double>(R_cnt) / N);
+        S_vec.push_back((double)S_cnt / N);
+        I_vec.push_back((double)I_cnt / N);
+        R_vec.push_back((double)R_cnt / N);
     }
 
-    int Istep = I_cnt;
+    // Main loop
+    while (t < MaxTime && I_cnt > 0) {
+        // Total rate
+        double lambda = beta * SI_edges + gamma * I_cnt;
+        if (lambda <= 0.0) break;
 
-    while (t < MaxTime && Istep > 0) {
-        if (SumRate <= 0.0) break;
-
-        // Draw two uniforms (avoid temporary NumericVector)
+        // Draw waiting time and event type
         double r1 = R::runif(0.0, 1.0);
         double r2 = R::runif(0.0, 1.0);
-
-        // Guard against target==0 choosing a zero-rate index
-        double target = r1 * SumRate;
-        if (target <= 0.0) {
-            target = std::numeric_limits<double>::min();
-        }
-
-        // Sample event index via Fenwick inverse CDF
-        int Event = fw.findByCumulative(target);
-
-        // Update status (0->1 infection, 1->2 recovery)
-        Status[Event] += 1;
-        event_ctr++;
-
-        if (debug && (debug_ctr % debug_freq == 0) && (debug_ctr > debug_low) && (debug_ctr < debug_up)) {
-            Rprintf("%ld %f %f %f %d", event_ctr, t, r1, r2, Event);
-        }
-
-        // Neighbors of Event
-        IntegerVector neighbors = adjList[Event];
-
-        // Partition neighbors into susceptible contacts and infected infector candidates
-        std::vector<int> Contact;
-        std::vector<int> Infector; // std::vector to avoid Rcpp overhead
-        Contact.reserve(neighbors.size());
-        Infector.reserve(neighbors.size());
-
-        for (int j : neighbors) {
-            int nbr = j - 1;
-            if (Status[nbr] == 0) {
-                Contact.push_back(nbr);
-            } else if (Status[nbr] == 1) {
-                Infector.push_back(nbr);
-            }
-        }
-
-        // Advance time
-        double Tstep = -std::log(r2) / SumRate;
+        double Tstep = -std::log(r2) / lambda;
         t += Tstep;
 
-        if (Status[Event] == 2) {
-            // Recovery event: I -> R
+        bool infection_event = (r1 * lambda < beta * SI_edges);
 
-            // Remove gamma recovery rate for Event
-            if (Rate[Event] != 0.0) {
-                fw.add(Event, -Rate[Event]);
-                SumRate -= Rate[Event];
-                Rate[Event] = 0.0;
+        if (infection_event) {
+            // If no SI edges, fallback to recovery
+            if (SI_edges <= 0.0) {
+                // treat as recovery
+                infection_event = false;
             }
+        }
 
-            // For each susceptible neighbor, reduce infection pressure by beta
-            for (int nbr : Contact) {
-                // nbr is susceptible, so its infection hazard must drop by beta
-                fw.add(nbr, -beta);
-                SumRate -= beta;
-                Rate[nbr] -= beta;
-            }
+        if (!infection_event) {
+            // ---------- Recovery: pick infected uniformly ----------
+            int idx_infected = (int)std::floor(R::runif(0.0, 1.0) * I_cnt);
+            if (idx_infected >= I_cnt) idx_infected = I_cnt - 1;
+            int i = infected[idx_infected];
 
-            // Bookkeeping
-            if (TrackDyn) {
-                Recovery_time[Event] = t;
-                if (debug && (debug_ctr % debug_freq == 0) && (debug_ctr > debug_low) && (debug_ctr < debug_up)) {
-                    Rprintf(", %d, \n", 0);
-                }
-            }
-
-            // Counts
+            // Update outputs/counts
+            Status[i] = 2;
+            Recovery_time[i] = t;
             I_cnt--;
             R_cnt++;
 
-        } else if (Status[Event] == 1) {
-            // Infection event: S -> I
+            // Remove i from Fenwick and SI count
+            if (kS[i] > 0) {
+                fw_kS.add(i, -(double)kS[i]);
+                SI_edges -= kS[i];
+            }
+            kS[i] = 0;
 
-            // Event's rate changes from (sum of beta's from infected neighbors) to gamma
-            {
-                double oldRate = Rate[Event]; // could be zero or >= beta
-                double delta = gamma - oldRate;
-                fw.add(Event, delta);
-                SumRate += delta;
-                Rate[Event] = gamma;
+            // Remove i from infected vector (swap-delete)
+            int last = infected.back();
+            infected[idx_infected] = last;
+            pos_infected[last] = idx_infected;
+            infected.pop_back();
+            pos_infected[i] = -1;
+
+            if (debug && (debug_ctr % debug_freq == 0) && (debug_ctr > debug_low) && (debug_ctr < debug_up)) {
+                Rprintf("REC %ld t=%.6f node=%d I=%d SI=%.0f\n",
+                        ++event_ctr, t, i, I_cnt, SI_edges);
             }
 
-            // For each susceptible neighbor, add beta
-            for (int nbr : Contact) {
-                fw.add(nbr, beta);
-                SumRate += beta;
-                Rate[nbr] += beta;
+        } else {
+            // ---------- Infection: pick infected by kS weight, then a susceptible neighbor ----------
+            double target = R::runif(0.0, 1.0) * SI_edges;
+            if (target <= 0.0) target = std::numeric_limits<double>::min();
+            int i = fw_kS.findByCumulative(target);
+
+            // Build list of susceptible neighbors of i
+            IntegerVector neighbors_i = adjList[i];
+            std::vector<int> susNbrs;
+            susNbrs.reserve(neighbors_i.size());
+            for (int j1 : neighbors_i) {
+                int j = j1 - 1;
+                if (Status[j] == 0) susNbrs.push_back(j);
             }
 
-            // Bookkeeping
-            if (TrackDyn) {
-                Infect_time[Event] = t;
-                S_NbrDeg[Event] = static_cast<int>(Contact.size());
-
-                int infsize = static_cast<int>(Infector.size());
-                int samp_inf = (infsize > 0 ? Infector[0] : Event); // safe fallback
-
-                if (debug && (debug_ctr % debug_freq == 0) && (debug_ctr > debug_low) && (debug_ctr < debug_up)) {
-                    Rprintf(", %d, \n", infsize);
-                }
-
-                if (infsize > 1) {
-                    // Simple uniform draw without Rcpp::sample
-                    double r3 = R::runif(0.0, 1.0);
-                    int pos = static_cast<int>(std::floor(r3 * infsize));
-                    if (pos >= infsize) pos = infsize - 1;
-                    samp_inf = Infector[pos];
-                    if (debug && (debug_ctr % debug_freq == 0) && (debug_ctr > debug_low) && (debug_ctr < debug_up)) {
-                        Rprintf("call samp, %d \n", samp_inf);
-                    }
-                }
-
-                Infect_num_rnd[samp_inf] += 1;
-                Infector_rnd[Event] = samp_inf + 1; // store 1-based id
+            // Guard (shouldn't happen if kS[i] is maintained correctly)
+            if (susNbrs.empty()) {
+                continue; // skip silently; in well-maintained state this won't trigger
             }
 
-            // Counts
+            // Choose recipient j uniformly among susceptible neighbors of i
+            int pick = (int)std::floor(R::runif(0.0, 1.0) * (int)susNbrs.size());
+            if (pick >= (int)susNbrs.size()) pick = (int)susNbrs.size() - 1;
+            int j = susNbrs[pick];
+
+            // Infect j
+            Status[j] = 1;
+            Infect_time[j] = t;
+            Infector_rnd[j] = i + 1;      // store 1-based id
+            Infect_num_rnd[i] += 1;
             S_cnt--;
             I_cnt++;
-        }
 
-        Istep = I_cnt;
+            // Add j to infected set
+            pos_infected[j] = (int)infected.size();
+            infected.push_back(j);
+
+            // Compute j's susceptible-degree (kS[j]) at infection time
+            int kSj = 0;
+            IntegerVector neighbors_j = adjList[j];
+            for (int u1 : neighbors_j) {
+                int u = u1 - 1;
+                if (Status[u] == 0) kSj++;
+            }
+            kS[j] = kSj;
+            S_NbrDeg[j] = kSj;
+
+            // Update Fenwick & SI_edges: add j's kS
+            if (kSj > 0) {
+                fw_kS.add(j, (double)kSj);
+                SI_edges += kSj;
+            }
+
+            // For each infected neighbor v of j, its kS[v] decreases by 1 (edge v-j goes SI -> II)
+            for (int v1 : neighbors_j) {
+                int v = v1 - 1;
+                if (Status[v] == 1 && v != j) {
+                    if (kS[v] > 0) {
+                        kS[v] -= 1;
+                        fw_kS.add(v, -1.0);
+                        SI_edges -= 1.0;
+                    }
+                }
+            }
+
+            if (debug && (debug_ctr % debug_freq == 0) && (debug_ctr > debug_low) && (debug_ctr < debug_up)) {
+                Rprintf("INF %ld t=%.6f inf=%d sus=%d I=%d SI=%.0f\n",
+                        ++event_ctr, t, i, j, I_cnt, SI_edges);
+            }
+        }
 
         if (TrackDyn) {
             t_vec.push_back(t);
-            S_vec.push_back(static_cast<double>(S_cnt) / N);
-            I_vec.push_back(static_cast<double>(I_cnt) / N);
-            R_vec.push_back(static_cast<double>(R_cnt) / N);
+            S_vec.push_back((double)S_cnt / N);
+            I_vec.push_back((double)I_cnt / N);
+            R_vec.push_back((double)R_cnt / N);
         }
 
         debug_ctr++;
@@ -303,9 +295,9 @@ List GilAlgoCpp(    List adjList,
     // Final stats
     DataFrame FinalStat = DataFrame::create(
         Named("FinishTime") = t,
-        Named("Ssize") = static_cast<double>(S_cnt) / N,
-        Named("Isize") = static_cast<double>(I_cnt) / N,
-        Named("Rsize") = static_cast<double>(R_cnt) / N
+        Named("Ssize") = (double)S_cnt / N,
+        Named("Isize") = (double)I_cnt / N,
+        Named("Rsize") = (double)R_cnt / N
     );
 
     if (TrackDyn) {
@@ -323,17 +315,18 @@ List GilAlgoCpp(    List adjList,
             Named("Recovery_time") = Recovery_time,
             Named("S_NbrDeg") = S_NbrDeg,
             Named("Infect_num_rnd") = Infect_num_rnd,
-            Named("Infector_rnd") = Infector_rnd
+            Named("Infector_rnd") = Infector_rnd,
+            Named("Init") = InitIndex
         );
 
         return List::create(
             Named("FinalStat") = FinalStat,
             Named("Details") = Details,
-            Named("Reff") = Reff,
-            Named("Init") = InitIndex
+            Named("Reff") = Reff
         );
     } else {
-        return List::create(Named("FinalStat") = FinalStat);
+        return List::create(Named("FinalStat") = FinalStat,
+                            Named("Init") = InitIndex);
     }
 }
 

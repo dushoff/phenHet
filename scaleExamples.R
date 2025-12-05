@@ -10,7 +10,7 @@ sourceFiles()
 #### Disease Parameter
 beta <- 0.25
 gamma <- 0.2
-N <- 40000
+N <- 20000
 r <- 1
 lambda <- 5
 
