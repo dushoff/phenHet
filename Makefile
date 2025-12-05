@@ -18,8 +18,7 @@ mirrors += resources
 Sources += $(wildcard *.md)
 Sources += $(wildcard *.tex)
 Sources += $(wildcard *.pl)
-
-## Why I still can't visualize???
+Sources += $(wildcard *.cpp)
 
 gillespie_tests.Rout: gillespie_tests.R
 
