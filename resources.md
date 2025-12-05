@@ -23,6 +23,6 @@ _DE: these files are not on the repo..._
 
 _DE: this file is not on the repo..._
 
-- resources/rempala.pdf
+- [refs/rempala.pdf](refs/rempala.pdf)
 
 The paper itself seems not that interesting since it focuses only on the Poisson case, which we already kind of think is not that interesting.
