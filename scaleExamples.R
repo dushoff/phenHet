@@ -46,7 +46,7 @@ Adj_list <- as_adj_list(  G
 )
 
 ### Rcpp Version
-sourceCpp('NetSimulator.cpp')
+sourceCpp(matchFile(exts=c("cpp", "Cpp")))
 set.seed(2941)
 system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
 # print(profile_cpp)
