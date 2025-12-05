@@ -1,0 +1,263 @@
+#include <Rcpp.h>
+#include <vector>
+#include <unordered_set>
+#include <limits>
+#include <cmath>
+#include <cstdint>
+
+using namespace Rcpp;
+
+struct Edge { int src; int dst; };
+
+inline int rand_index(int n) {
+	int idx = (int)std::floor(R::runif(0.0, 1.0) * (double)n);
+	if (idx >= n) idx = n - 1;
+	return idx;
+}
+
+// Swap-delete on a preallocated array of indices with capacity guard
+inline void vuln_add(int *vuln, int &vsize, int vcap, std::vector<int> &pos_map, int eidx, bool &capacity_dropped) {
+	if (pos_map[eidx] >= 0) return; // already present
+	if (vsize >= vcap) { capacity_dropped = true; return; }
+	pos_map[eidx] = vsize;
+	vuln[vsize] = eidx;
+	vsize += 1;
+}
+inline void vuln_remove(int *vuln, int &vsize, std::vector<int> &pos_map, int eidx) {
+	int pos = pos_map[eidx];
+	if (pos < 0) return; // not present
+	if (vsize <= 0) return; // guard
+	int last_eidx = vuln[vsize - 1];
+	vuln[pos] = last_eidx;
+	pos_map[last_eidx] = pos;
+	vsize -= 1;
+	pos_map[eidx] = -1;
+}
+
+// [[Rcpp::export]]
+List GilAlgoCpp(
+	List adjList,
+	int size,
+	double beta,
+	double gamma,
+	double MaxTime,
+	int InitInfSize = 1,
+	int TMAX = 1000
+) {
+	int N = size;
+	double t = 0.0;
+
+	// --- Node state ---
+	IntegerVector Status(N, 0); // 0=S, 1=I, 2=R
+
+	// --- Precompute degrees and initial sampling weights ---
+	NumericVector prob(N);
+	for (int i = 0; i < N; ++i) {
+		IntegerVector neighbors = adjList[i];
+		int deg = neighbors.size();
+		prob[i] = deg;
+	}
+	double prob_sum = sum(prob);
+	if (prob_sum > 0.0) prob = prob / prob_sum;
+
+	// --- Pick initial infected (0-based) ---
+	IntegerVector noseq = seq(0, N - 1);
+	IntegerVector InitIndex = Rcpp::sample(noseq, InitInfSize, false, prob);
+
+	// --- Build unique undirected edge set ---
+	struct PairHash { size_t operator()(const std::pair<int,int>& p) const noexcept {
+		return (static_cast<uint64_t>(p.first) << 32) ^ static_cast<uint64_t>(p.second);
+	}};
+	std::unordered_set<std::pair<int,int>, PairHash> seen;
+	seen.reserve(N * 4);
+	std::vector< std::pair<int,int> > undirected;
+	undirected.reserve(N * 2);
+
+	for (int i = 0; i < N; ++i) {
+		IntegerVector neighbors = adjList[i];
+		for (int j1 : neighbors) {
+			int j = j1 - 1; // 1-based -> 0-based
+			if (i == j) continue; // skip self-loops
+			int u = (i < j ? i : j);
+			int v = (i < j ? j : i);
+			auto key = std::make_pair(u, v);
+			if (seen.insert(key).second) undirected.push_back(key);
+		}
+	}
+	int M_undirected = (int)undirected.size();
+
+	// --- Emit directed edges both ways ---
+	std::vector<Edge> edges;
+	edges.reserve(M_undirected * 2);
+	std::vector< std::vector<int> > out_edges(N), in_edges(N);
+	int ecount = 0;
+	for (auto &uv : undirected) {
+		int u = uv.first;
+		int v = uv.second;
+		// u -> v
+		edges.push_back({u, v});
+		out_edges[u].push_back(ecount);
+		in_edges[v].push_back(ecount);
+		ecount++;
+		// v -> u
+		edges.push_back({v, u});
+		out_edges[v].push_back(ecount);
+		in_edges[u].push_back(ecount);
+		ecount++;
+	}
+
+	// --- Vulnerable edges preallocated array with strict capacity M ---
+	std::vector<int> pos_in_vuln(ecount, -1);
+	std::vector<int> vuln_storage(M_undirected, -1);
+	int *vuln = vuln_storage.data();
+	int vuln_size = 0;
+	bool capacity_dropped = false; // record if we ever skipped add due to capacity
+
+	// --- Infected set (for uniform recovery) ---
+	std::vector<int> infected; infected.reserve(N);
+	std::vector<int> pos_infected(N, -1);
+
+	// --- Initialize counts ---
+	int S_cnt = N - InitInfSize;
+	int I_cnt = InitInfSize;
+	int R_cnt = 0;
+
+	// Mark initial infected and build infected set
+	for (int k = 0; k < InitInfSize; ++k) {
+		int idx = InitIndex[k];
+		Status[idx] = 1;
+		pos_infected[idx] = (int)infected.size();
+		infected.push_back(idx);
+	}
+
+	// Populate initial vulnerable edges from infected sources
+	for (int k = 0; k < (int)infected.size(); ++k) {
+		int i = infected[k];
+		for (int eidx : out_edges[i]) {
+			int j = edges[eidx].dst;
+			if (Status[j] == 0) vuln_add(vuln, vuln_size, M_undirected, pos_in_vuln, eidx, capacity_dropped);
+		}
+	}
+
+	// --- Integer-time logging setup (clipped, no NAs) ---
+	int Kmax = std::min(TMAX, (int)std::floor(MaxTime));
+	std::vector<double> t_series(Kmax + 1);
+	std::vector<double> S_series(Kmax + 1);
+	std::vector<double> I_series(Kmax + 1);
+	std::vector<double> R_series(Kmax + 1);
+	for (int k = 0; k <= Kmax; ++k) t_series[k] = (double)k;
+	int last_logged = 0;
+	S_series[0] = (double)S_cnt / N;
+	I_series[0] = (double)I_cnt / N;
+	R_series[0] = (double)R_cnt / N;
+
+	// --- Main loop ---
+	while (t < MaxTime && I_cnt > 0) {
+		// Total rate
+		double lambda = beta * (double)vuln_size + gamma * (double)I_cnt;
+		if (lambda <= 0.0) break;
+
+		double r1 = R::runif(0.0, 1.0);
+		double r2 = R::runif(0.0, 1.0);
+		double Tstep = -std::log(r2) / lambda;
+		double t_old = t;
+		t += Tstep;
+
+		// Log integer marks in (t_old, t]
+		int start_k = (int)std::floor(t_old) + 1;
+		int end_k = (int)std::floor(t);
+		if (end_k > Kmax) end_k = Kmax;
+		for (int k = start_k; k <= end_k; ++k) {
+			if (k >= 0 && k <= Kmax) {
+				S_series[k] = (double)S_cnt / N;
+				I_series[k] = (double)I_cnt / N;
+				R_series[k] = (double)R_cnt / N;
+				last_logged = k;
+			}
+		}
+
+		bool infection_event = (r1 * lambda < beta * (double)vuln_size);
+		if (!infection_event) {
+			// Recovery: pick infected uniformly
+			int idx_pos = rand_index(I_cnt);
+			int i = infected[idx_pos];
+			Status[i] = 2;
+			I_cnt--; R_cnt++;
+
+			// Remove vulnerable edges originating at i
+			for (int eidx : out_edges[i]) {
+				int j = edges[eidx].dst;
+				if (Status[j] == 0) vuln_remove(vuln, vuln_size, pos_in_vuln, eidx);
+			}
+
+			// Remove i from infected set
+			int last = infected.back();
+			infected[idx_pos] = last;
+			pos_infected[last] = idx_pos;
+			infected.pop_back();
+			pos_infected[i] = -1;
+
+		} else {
+			// Infection: pick vulnerable edge uniformly
+			if (vuln_size <= 0) continue; // safety
+			int vpos = rand_index(vuln_size);
+			int eidx = vuln[vpos];
+			int i = edges[eidx].src;
+			int j = edges[eidx].dst;
+
+			Status[j] = 1;
+			S_cnt--; I_cnt++;
+
+			// Remove vulnerable edges incoming to j
+			for (int ein : in_edges[j]) {
+				int src = edges[ein].src;
+				if (Status[src] == 1) vuln_remove(vuln, vuln_size, pos_in_vuln, ein);
+			}
+
+			// Add j to infected set
+			pos_infected[j] = (int)infected.size();
+			infected.push_back(j);
+
+			// Add vulnerable edges from j
+			for (int eout : out_edges[j]) {
+				int dst = edges[eout].dst;
+				if (Status[dst] == 0) vuln_add(vuln, vuln_size, M_undirected, pos_in_vuln, eout, capacity_dropped);
+			}
+		}
+	}
+
+	// Fill remaining marks up to Kmax with final state
+	for (int k = last_logged + 1; k <= Kmax; ++k) {
+		S_series[k] = (double)S_cnt / N;
+		I_series[k] = (double)I_cnt / N;
+		R_series[k] = (double)R_cnt / N;
+	}
+
+	// Wrap outputs
+	NumericVector t_vec = wrap(t_series);
+	NumericVector S_vec = wrap(S_series);
+	NumericVector I_vec = wrap(I_series);
+	NumericVector R_vec = wrap(R_series);
+
+	DataFrame State = DataFrame::create(
+		Named("t") = t_vec,
+		Named("S") = S_vec,
+		Named("I") = I_vec,
+		Named("R") = R_vec
+	);
+
+	DataFrame FinalStat = DataFrame::create(
+		Named("FinishTime") = t,
+		Named("Ssize") = (double)S_cnt / N,
+		Named("Isize") = (double)I_cnt / N,
+		Named("Rsize") = (double)R_cnt / N
+	);
+
+	return List::create(
+		Named("FinalStat") = FinalStat,
+		Named("State") = State,
+		Named("Init") = InitIndex,
+		Named("M_undirected") = M_undirected,
+		Named("capacity_dropped") = capacity_dropped
+	);
+}

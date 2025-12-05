@@ -35,6 +35,10 @@ scaleExamples.Rout: scaleExamples.R scaleFuns.R NetSimulator.cpp
 scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 	$(pipeR)
 
+scaleEdges.rds: scaleExamples.R scaleFuns.R edgelist.cpp
+scaleEdges.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
+	$(pipeR)
+
 NetworkExamples.Rout: NetworkExamples.R NetworkSimulator.R
 
 ## Current rcpp implementation

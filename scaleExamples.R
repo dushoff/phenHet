@@ -8,9 +8,9 @@ library(shellpipes)
 sourceFiles()
 
 #### Disease Parameter
-beta <- 0.25
-gamma <- 0.2
-N <- 20000
+beta <- 1
+gamma <- 1
+N <- 1e6
 r <- 1
 lambda <- 5
 
@@ -44,6 +44,9 @@ Adj_list <- as_adj_list(  G
                         , loops = "once"
                         , multiple = TRUE
 )
+
+## rds(Save Adj_list)
+## quit()
 
 ### Rcpp Version
 sourceCpp(matchFile(exts=c("cpp", "Cpp")))
