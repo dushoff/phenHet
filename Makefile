@@ -31,7 +31,12 @@ approaches.html: approaches.md
 notes_NovoANDNetwork.html: notes_NovoANDNetwork.md
 	$(rmdh_r)
 
-NetworkExamples.Rout: NetworkExamples.R
+scaleExamples.Rout: scaleExamples.R scaleFuns.R NetSimulator.cpp
+
+scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
+	$(pipeR)
+
+NetworkExamples.Rout: NetworkExamples.R NetworkSimulator.R
 
 ## Current rcpp implementation
 NetworkSimulator.Rout: NetworkSimulator.R
