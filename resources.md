@@ -16,8 +16,8 @@ Romanescu epidemics effective reproductive
 
 _DE: these files are not on the repo..._
 
-- resources/millerNote.pdf
-- resources/volzDynamics.pdf
+- refs/millerNote.pdf
+- refs/volzDynamics.pdf
 
 ## Synthesis with citations to presumably-good other ways of looking at this.
 
