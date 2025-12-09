@@ -17,23 +17,21 @@ lambda <- 5
 # Seed
 set.seed(2639)
 
-r
-seq <- rnbinom(N,r,mu=lambda)
-while(!CheckSeq(seq)){
-  seq <- rnbinom(N,r,mu=lambda)
+nseq <- rnbinom(N,r,mu=lambda)
+while(!CheckSeq(nseq)){
+  nseq <- rnbinom(N,r,mu=lambda)
 }
 
-CheckSeq(seq)
+CheckSeq(nseq)
 # generating graph
-G <- sample_degseq(  seq
+G <- sample_degseq(  nseq
                    , method = "fast.heur.simple"
                    #, method = "configuration.simple"
                    )
 
 
 # check realization is successful
-# should be True
-!any(sort(degree(G))-sort(seq)!=0)
+stopifnot(!any(sort(degree(G))-sort(nseq)!=0))
 
 #igraph::simple_cycles(G)
 
