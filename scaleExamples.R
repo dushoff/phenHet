@@ -5,12 +5,13 @@ library(Rcpp)
 ## library(RcppClock)
 
 library(shellpipes)
+manageConflicts()
 sourceFiles()
 
 #### Disease Parameter
 beta <- 1
 gamma <- 1
-N <- 1e6
+N <- 1e4
 r <- 1
 lambda <- 5
 
