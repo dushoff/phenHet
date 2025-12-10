@@ -9,14 +9,15 @@ manageConflicts()
 sourceFiles()
 
 #### Disease Parameter
-beta <- 1
-gamma <- 1
-N <- 1e4
+gamma <- 0.05
+beta <- gamma
+MaxTime <- 80
+N <- 1e5
 r <- 1
 lambda <- 5
 
 # Seed
-set.seed(2639)
+set.seed(2637)
 
 nseq <- rnbinom(N,r,mu=lambda)
 while(!CheckSeq(nseq)){
@@ -50,6 +51,8 @@ Adj_list <- as_adj_list(  G
 ### Rcpp Version
 sourceCpp(matchFile(exts=c("cpp", "Cpp")))
 set.seed(2941)
-system.time(Cpp_result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime = 100))
+system.time(result <- GilAlgoCpp(Adj_list, N, beta, gamma, MaxTime))
 # print(profile_cpp)
-Cpp_result$FinalStat
+result$FinalStat
+
+saveEnvironment()

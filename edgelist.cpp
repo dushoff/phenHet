@@ -15,17 +15,16 @@ inline int rand_index(int n) {
 	return idx;
 }
 
-// Swap-delete on a preallocated array of indices with simple capacity guard
 inline void vuln_add(int *vuln, int &vsize, int vcap, std::vector<int> &pos_map, int eidx) {
-	if (pos_map[eidx] >= 0) return; // already present
-	if (vsize >= vcap) return;      // capacity reached (shouldn't happen for undirected inputs)
+	if (pos_map[eidx] >= 0) return;
+	if (vsize >= vcap) return; // capacity guard; should not trigger for undirected inputs
 	pos_map[eidx] = vsize;
 	vuln[vsize] = eidx;
 	vsize += 1;
 }
 inline void vuln_remove(int *vuln, int &vsize, std::vector<int> &pos_map, int eidx) {
 	int pos = pos_map[eidx];
-	if (pos < 0) return; // not present
+	if (pos < 0) return;
 	int last_eidx = vuln[vsize - 1];
 	vuln[pos] = last_eidx;
 	pos_map[last_eidx] = pos;
@@ -40,13 +39,12 @@ List GilAlgoCpp(
 	double beta,
 	double gamma,
 	double MaxTime,
-	int InitInfSize = 1,
-	int TMAX = 1000
+	int InitInfSize = 1
 ) {
 	int N = size;
 	double t = 0.0;
 
-	// --- Node state ---
+	// --- Node state & per-node outputs ---
 	IntegerVector Status(N, 0); // 0=S, 1=I, 2=R
 	NumericVector Infect_time(N, NA_REAL);
 	NumericVector Recovery_time(N, NA_REAL);
@@ -107,7 +105,7 @@ List GilAlgoCpp(
 	std::vector<int> pos_in_vuln(ecount, -1);
 	std::vector<int> vuln_storage(std::max(M_undirected, 1), -1);
 	int *vuln = vuln_storage.data();
-	int vuln_size = 0;
+	int vuln_size = 0; // equals |SI| (number of vulnerable edges)
 
 	// --- Infected set (for uniform recovery) ---
 	std::vector<int> infected; infected.reserve(N);
@@ -134,14 +132,14 @@ List GilAlgoCpp(
 		}
 	}
 
-	// --- Integer-time logging setup (clipped, no NAs) ---
-	int Kmax = std::min(TMAX, (int)std::floor(MaxTime));
-	std::vector<double> t_series(Kmax + 1);
-	std::vector<double> S_series(Kmax + 1);
-	std::vector<double> I_series(Kmax + 1);
-	std::vector<double> R_series(Kmax + 1);
-	std::vector<double> VE_series(Kmax + 1);
-	for (int k = 0; k <= Kmax; ++k) t_series[k] = (double)k;
+	// --- Integer-time logging setup (no TMAX; allocate to ceil(MaxTime)+1) ---
+	int Kalloc = (int)std::ceil(MaxTime);
+	std::vector<double> t_series(Kalloc + 1);
+	std::vector<double> S_series(Kalloc + 1);
+	std::vector<double> I_series(Kalloc + 1);
+	std::vector<double> R_series(Kalloc + 1);
+	std::vector<double> VE_series(Kalloc + 1);
+	for (int k = 0; k <= Kalloc; ++k) t_series[k] = (double)k;
 	int last_logged = 0;
 	S_series[0] = (double)S_cnt / N;
 	I_series[0] = (double)I_cnt / N;
@@ -159,19 +157,18 @@ List GilAlgoCpp(
 		double Tstep = -std::log(r2) / lambda;
 		double t_old = t;
 		t += Tstep;
+		if (t > MaxTime) t = MaxTime; // enforce ceiling
 
 		// Log integer marks in (t_old, t]
 		int start_k = (int)std::floor(t_old) + 1;
 		int end_k = (int)std::floor(t);
-		if (end_k > Kmax) end_k = Kmax;
+		if (end_k > Kalloc) end_k = Kalloc;
 		for (int k = start_k; k <= end_k; ++k) {
-			if (k >= 0 && k <= Kmax) {
-				S_series[k] = (double)S_cnt / N;
-				I_series[k] = (double)I_cnt / N;
-				R_series[k] = (double)R_cnt / N;
-				VE_series[k] = (double)vuln_size;
-				last_logged = k;
-			}
+			S_series[k] = (double)S_cnt / N;
+			I_series[k] = (double)I_cnt / N;
+			R_series[k] = (double)R_cnt / N;
+			VE_series[k] = (double)vuln_size;
+			last_logged = k;
 		}
 
 		bool infection_event = (r1 * lambda < beta * (double)vuln_size);
@@ -228,20 +225,25 @@ List GilAlgoCpp(
 		}
 	}
 
-	// Fill remaining marks up to Kmax with final state
-	for (int k = last_logged + 1; k <= Kmax; ++k) {
+	// Fill remaining marks up to ceil(FinishTime) with final state
+	int Kret = (int)std::ceil(t);
+	if (Kret > Kalloc) Kret = Kalloc; // guard if rounding pushes over
+	for (int k = last_logged + 1; k <= Kret; ++k) {
 		S_series[k] = (double)S_cnt / N;
 		I_series[k] = (double)I_cnt / N;
 		R_series[k] = (double)R_cnt / N;
 		VE_series[k] = (double)vuln_size;
 	}
 
-	// Wrap outputs
-	NumericVector t_vec = wrap(t_series);
-	NumericVector S_vec = wrap(S_series);
-	NumericVector I_vec = wrap(I_series);
-	NumericVector R_vec = wrap(R_series);
-	NumericVector VE_vec = wrap(VE_series);
+	// Wrap outputs: truncate to 0..Kret
+	NumericVector t_vec(Kret + 1), S_vec(Kret + 1), I_vec(Kret + 1), R_vec(Kret + 1), VE_vec(Kret + 1);
+	for (int k = 0; k <= Kret; ++k) {
+		t_vec[k] = t_series[k];
+		S_vec[k] = S_series[k];
+		I_vec[k] = I_series[k];
+		R_vec[k] = R_series[k];
+		VE_vec[k] = VE_series[k];
+	}
 
 	DataFrame State = DataFrame::create(
 		Named("t") = t_vec,

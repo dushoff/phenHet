@@ -35,8 +35,18 @@ scaleExamples.Rout: scaleExamples.R scaleFuns.R NetSimulator.cpp
 scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 	$(pipeR)
 
+######################################################################
+
+## Current AI-assisted edgelist pipeline
+
 scaleEdges.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 	$(pipeR)
+
+## postEdges.Rout: postEdges.R scaleExamples.R
+postEdges.Rout: postEdges.R scaleEdges.rda
+	$(pipeR)
+
+######################################################################
 
 NetworkExamples.Rout: NetworkExamples.R NetworkSimulator.R
 
