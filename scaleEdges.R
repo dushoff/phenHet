@@ -9,8 +9,8 @@ loadEnvironments()
 sourceFiles()
 
 #### Disease Parameter
-beta <- 1
-gamma <- 1
+beta <- 0.1
+gamma <- 0.1
 N <- 1e5
 r <- 1
 lambda <- 5
@@ -47,5 +47,9 @@ Adj_list <- as_adj_list(  G
 
 sourceCpp(matchFile(exts=c("cpp", "Cpp")))
 
-system.time(Cpp_result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
-Cpp_result$FinalStat
+system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
+
+print(result$FinalStat)
+
+saveEnvironment()
+
