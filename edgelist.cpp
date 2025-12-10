@@ -33,7 +33,7 @@ inline void vuln_remove(int *vuln, int &vsize, std::vector<int> &pos_map, int ei
 }
 
 // [[Rcpp::export]]
-List GilAlgoCpp(
+List simFun(
 	List adjList,
 	int size,
 	double beta,

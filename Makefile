@@ -38,13 +38,24 @@ scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 
 ######################################################################
 
-## Current AI-assisted edgelist pipeline
 
-scaleEdges.Rout: scaleExamples.R scaleFuns.R edgeonly.cpp
+## scaleExamples has mysterious changes that seem to slow it down
+scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
+	$(pipeR)
+
+######################################################################
+
+## Current AI-assisted edgelist pipeline
+scaleEdges.Rout: scaleEdges.R scaleFuns.R edgelist.cpp
 	$(pipeR)
 
 ## postEdges.Rout: postEdges.R scaleExamples.R
 postEdges.Rout: postEdges.R scaleEdges.rda
+	$(pipeR)
+
+## The separate compilation part has been so painful!
+## STOP!!!!!!
+%.cpp.Rout: cppSim.R edgelist.cpp
 	$(pipeR)
 
 ######################################################################
