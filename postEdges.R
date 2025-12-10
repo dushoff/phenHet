@@ -13,7 +13,7 @@ summary(State)
 summary(Infector)
 
 State <- (State
-	|> mutate(Ri = VE/(N*I)/gamma)
+	|> mutate(Ri = beta*VE/(N*I)/gamma)
 )
 
 print(ggplot(State)
