@@ -12,7 +12,7 @@ sourceFiles()
 gamma <- 0.05
 beta <- gamma
 MaxTime <- 80
-N <- 1e5
+N <- 1e6
 r <- 1
 lambda <- 5
 

@@ -40,7 +40,7 @@ scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 
 ## Current AI-assisted edgelist pipeline
 
-scaleEdges.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
+scaleEdges.Rout: scaleExamples.R scaleFuns.R edgeonly.cpp
 	$(pipeR)
 
 ## postEdges.Rout: postEdges.R scaleExamples.R
