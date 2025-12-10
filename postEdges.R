@@ -18,7 +18,7 @@ State <- (State
 
 print(ggplot(State)
 	+ aes(t, VE)
-	+ geom_line()
+	+ geom_point()
 	+ geom_smooth()
 )
 
