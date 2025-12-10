@@ -13,7 +13,10 @@ summary(State)
 summary(Infector)
 
 State <- (State
-	|> mutate(Ri = beta*VE/(N*I)/gamma)
+	|> mutate(
+		, Ri = beta*VE/(N*I)/gamma
+		, Rcstar = Ri*gamma/(beta+gamma)
+	)
 )
 
 print(ggplot(State)
@@ -26,6 +29,8 @@ cplot <- (ggplot(State)
 	+ aes(t, Ri)
 	+ geom_line()
 	+ geom_smooth(color="black")
+	+ geom_line(aes(y=Rcstar), color="red")
+	+ geom_smooth(aes(y=Rcstar), color="red")
 	+ geom_smooth(data=Infector
 		, aes(InfectTime, NumInfected)
 	)
