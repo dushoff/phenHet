@@ -9,8 +9,8 @@ loadEnvironments()
 sourceFiles()
 
 #### Disease Parameter
-beta <- 0.1
-gamma <- 0.1
+beta <- 0.2
+gamma <- 0.25
 N <- 1e6
 r <- 1
 lambda <- 5
