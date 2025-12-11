@@ -1,21 +1,19 @@
-library(shellpipes)
+system.time(library(shellpipes))
 
-manageConflicts()
-library(igraph)
-library(Rcpp)
-## library(RcppClock)
+system.time(manageConflicts())
+system.time(library(igraph))
+system.time(library(Rcpp))
 
-loadEnvironments()
-Adj_list <- rdsRead()
+system.time(loadEnvironments())
+system.time(Adj_list <- rdsRead())
 
-# Seed
-set.seed(seed)
+system.time(set.seed(seed))
 
-sourceCpp(matchFile(exts=c("cpp", "Cpp")))
+system.time(sourceCpp(matchFile(exts=c("cpp", "Cpp"))))
 
-system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
+system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime))
 
-print(result$FinalStat)
+system.time(print(result$FinalStat))
 
-rdsSave(result)
+system.time(rdsSave(result))
 

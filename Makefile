@@ -55,11 +55,35 @@ postEdges.Rout: postEdges.R scaleEdges.rda
 
 ######################################################################
 
-## Flex pipeline?
+## Flex pipeline
 
 impmakeR += params
 %.params.Rout: %.params.R
 	$(pipeR)
+
+## big.post.Rout: post.R
+%.post.Rout: post.R slowtarget/%.netsim.rds %.params.rda
+	$(pipeR)
+impmakeR += post
+
+## giant.plots.Rout: plots.R
+%.plots.Rout: plots.R %.post.rds
+## %.params.rda
+	$(pipeR)
+impmakeR += plots
+
+## slowtarget/giant.netsim.Rout: netsim.R big.params.R
+## slowtarget/big.netsim.Rout: netsim.R big.params.R
+slowtarget/%.netsim.Rout: netsim.R %.params.rda  scaleFuns.rda edgelist.cpp
+	$(pipeR)
+impmakeR += netsim
+
+scaleFuns.Rout: scaleFuns.R
+	$(wrapR)
+
+######################################################################
+
+## It is much more expensive to save an adjacency list than to make a network, so we're not doing that for now. Not sure if there are work-arounds.
 
 impmakeR += net
 ## base.net.Rout: net.R base.params.R
@@ -71,23 +95,12 @@ impmakeR += sim
 %.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
 	$(pipeR)
 
-## base.post.Rout: post.R
-%.post.Rout: post.R %.sim.rds %.params.rda
-	$(pipeR)
-impmakeR += post
-
+## slowtarget/big.sim.Rout: sim.R big.params.R
 slowtarget/%.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
 	$(pipeR)
 
-## seven.bigpost.Rout: post.R seven.params.R
-%.bigpost.Rout: post.R slow/%.sim.rds %.params.rda
-	$(pipeR)
-impmakeR += bigpost
-
-scaleFuns.Rout: scaleFuns.R
-	$(wrapR)
-
 ######################################################################
+
 
 ## The separate compilation part has been so painful!
 ## STOP!!!!!!

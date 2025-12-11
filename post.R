@@ -1,41 +1,46 @@
 library(shellpipes)
 manageConflicts()
 
-library(ggplot2); theme_set(theme_bw())
 library(dplyr)
+library(tidyr)
 
 loadEnvironments()
 result <- rdsRead()
 
-names(result)
 attach(result)
+stopifnot(FinalStat$Isize == 0)
 
-summary(State)
-summary(Infector)
-
+## This code used to calculate Rcstar -- but not correctly
+## Need to know about _new_ infectors, which means going back to the sim.
 State <- (State
-	|> mutate(
-		, Ri = beta*VE/(N*I)/gamma
-		, Rcstar = Ri*gamma/(beta+gamma)
-	)
+	|> mutate(Ri = beta*VE/(N*I)/gamma)
+	|> filter(I>0)
 )
 
-print(ggplot(State)
-	+ aes(t, VE)
-	+ geom_point()
-	+ geom_smooth()
+Infector <- (Infector
+	|> filter(!is.na(RecoveryTime))
 )
 
-cplot <- (ggplot(State)
-	+ aes(t, Ri)
-	+ geom_line()
-	+ geom_smooth(color="black")
-	+ geom_line(aes(y=Rcstar), color="red")
-	+ geom_smooth(aes(y=Rcstar), color="red")
-	+ geom_smooth(data=Infector
-		, aes(InfectTime, NumInfected)
-	)
-	+ coord_cartesian(xlim=c(0, 50))
+## summary(State)
+## summary(Infector)
+
+Cohort <- (Infector
+	|> mutate(t = round(InfectTime))
+	|> group_by(t)
+	|> summarize(I = n()/N, value = mean(NumInfected))
+	|> mutate(name="Rc")
 )
-print(cplot)
-print(cplot + scale_y_log10())
+
+summary(Cohort)
+
+## TODO: get I values and use them as sizes
+Obs <- (State
+	|> select(t, Ri)
+	|> pivot_longer(-t)
+)
+
+summary(Obs)
+
+Rf <- bind_rows(Obs, Cohort)
+
+rdsSave(Rf)
