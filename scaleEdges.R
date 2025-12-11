@@ -1,19 +1,20 @@
-### Package Part
 library(igraph)
 library(cbinom)
 library(Rcpp)
 ## library(RcppClock)
 
 library(shellpipes)
+rpcall("scaleEdges.Rout scaleEdges.R scaleFuns.R edgelist.cpp")
 loadEnvironments()
 sourceFiles()
 
 #### Disease Parameter
-beta <- 1
-gamma <- 1
+beta <- 0.2
+gamma <- 0.25
 N <- 1e6
 r <- 1
 lambda <- 5
+MaxTime <- 1000
 
 # Seed
 set.seed(2639)
@@ -47,9 +48,9 @@ Adj_list <- as_adj_list(  G
 
 sourceCpp(matchFile(exts=c("cpp", "Cpp")))
 
-system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
+system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime))
 
 print(result$FinalStat)
 
-saveEnvironment()
+saveVars(result)
 

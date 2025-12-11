@@ -6,7 +6,6 @@ library(dplyr)
 
 loadEnvironments()
 
-names(result)
 attach(result)
 
 print(FinalStat)

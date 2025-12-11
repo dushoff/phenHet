@@ -44,14 +44,14 @@ scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 
 ######################################################################
 
-## Current AI-assisted edgelist pipeline
+## Original AI-assisted edgelist pipeline
 
 scaleEdges.Rout: scaleEdges.R scaleFuns.R edgelist.cpp
-	$(pipeR)
+	$(pipeRcall)
 
 ## postEdges.Rout: postEdges.R scaleExamples.R
 postEdges.Rout: postEdges.R scaleEdges.rda
-	$(pipeR)
+	$(pipeRcall)
 
 ######################################################################
 
