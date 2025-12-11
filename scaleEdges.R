@@ -4,6 +4,7 @@ library(Rcpp)
 ## library(RcppClock)
 
 library(shellpipes)
+rpcall("scaleEdges.Rout scaleEdges.R scaleFuns.R edgelist.cpp")
 loadEnvironments()
 sourceFiles()
 
@@ -51,5 +52,5 @@ system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime))
 
 print(result$FinalStat)
 
-saveEnvironment()
+saveVars(result)
 
