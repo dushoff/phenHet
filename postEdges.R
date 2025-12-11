@@ -9,8 +9,7 @@ loadEnvironments()
 names(result)
 attach(result)
 
-summary(State)
-summary(Infector)
+print(FinalStat)
 
 State <- (State
 	|> mutate(
@@ -18,6 +17,13 @@ State <- (State
 		, Rcstar = Ri*gamma/(beta+gamma)
 	)
 )
+
+Infector <- (Infector
+	|> filter(!is.na(InfectTime))
+)
+
+summary(State)
+summary(Infector)
 
 print(ggplot(State)
 	+ aes(t, VE)

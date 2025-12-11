@@ -61,8 +61,6 @@ impmakeR += params
 %.params.Rout: %.params.R
 	$(pipeR)
 
-%.bigparams.Rout: %.bigparams.R
-
 impmakeR += net
 ## base.net.Rout: net.R base.params.R
 %.net.Rout: net.R %.params.rda scaleFuns.rda
@@ -73,10 +71,18 @@ impmakeR += sim
 %.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
 	$(pipeR)
 
-impmakeR += post
 ## base.post.Rout: post.R
 %.post.Rout: post.R %.sim.rds %.params.rda
 	$(pipeR)
+impmakeR += post
+
+slowtarget/%.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
+	$(pipeR)
+
+## seven.bigpost.Rout: post.R seven.params.R
+%.bigpost.Rout: post.R slow/%.sim.rds %.params.rda
+	$(pipeR)
+impmakeR += bigpost
 
 scaleFuns.Rout: scaleFuns.R
 	$(wrapR)

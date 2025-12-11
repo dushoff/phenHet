@@ -47,7 +47,7 @@ Adj_list <- as_adj_list(  G
 
 sourceCpp(matchFile(exts=c("cpp", "Cpp")))
 
-system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
+system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 1000))
 
 print(result$FinalStat)
 
