@@ -53,9 +53,15 @@ scaleEdges.Rout: scaleEdges.R scaleFuns.R edgelist.cpp
 postEdges.Rout: postEdges.R scaleEdges.rda
 	$(pipeR)
 
+######################################################################
+
 ## The separate compilation part has been so painful!
 ## STOP!!!!!!
-%.cpp.Rout: cppSim.R edgelist.cpp
+%.cpp.Rout: simFun.R %.cpp
+	$(pipeR)
+
+## Why does this not work?
+compiled.Rout: compiled.R simFun.cpp.rda scaleFuns.R
 	$(pipeR)
 
 ######################################################################
