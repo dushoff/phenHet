@@ -26,7 +26,9 @@ summary(Infector)
 Cohort <- (Infector
 	|> mutate(t = round(InfectTime))
 	|> group_by(t)
-	|> summarize(obs = n()/N, Rc = mean(NumInfected), Rcstar=mean(Targets))
+	|> summarize(obs = n()/N, Rc = mean(NumInfected)
+		, Rcstar = rho*mean(Targets)/(rho+1)
+	)
 	|> pivot_longer(c(Rc, Rcstar))
 )
 

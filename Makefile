@@ -67,7 +67,8 @@ slowtarget/%.post.Rout: post.R %.netsim.rds %.params.rda
 	$(pipeR)
 impmakeR += post
 
-## base.plots.Rout: plots.R
+## giant.plots.Rout.final: plots.R
+## giant.plots.Rout: plots.R
 %.plots.Rout: plots.R slow/%.post.rds
 	$(pipeR)
 impmakeR += plots
