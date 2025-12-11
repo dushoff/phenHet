@@ -9,9 +9,9 @@ loadEnvironments()
 sourceFiles()
 
 #### Disease Parameter
-beta <- 0.1
-gamma <- 0.1
-N <- 1e5
+beta <- 1
+gamma <- 1
+N <- 1e6
 r <- 1
 lambda <- 5
 
@@ -33,7 +33,7 @@ G <- sample_degseq(  seq
 
 # check realization is successful
 # should be True
-stopifnot(!any(sort(degree(G))-sort(nseq)!=0))
+stopifnot(!any(sort(degree(G))-sort(seq)!=0))
 
 #igraph::simple_cycles(G)
 
@@ -47,7 +47,7 @@ Adj_list <- as_adj_list(  G
 
 sourceCpp(matchFile(exts=c("cpp", "Cpp")))
 
-system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 1000))
+system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
 
 print(result$FinalStat)
 
