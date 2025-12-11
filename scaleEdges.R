@@ -33,7 +33,7 @@ G <- sample_degseq(  seq
 
 # check realization is successful
 # should be True
-!any(sort(degree(G))-sort(seq)!=0)
+stopifnot(!any(sort(degree(G))-sort(nseq)!=0))
 
 #igraph::simple_cycles(G)
 
