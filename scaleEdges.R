@@ -11,9 +11,10 @@ sourceFiles()
 #### Disease Parameter
 beta <- 0.1
 gamma <- 0.1
-N <- 1e5
+N <- 1e6
 r <- 1
 lambda <- 5
+MaxTime <- 1000
 
 # Seed
 set.seed(2639)
@@ -47,7 +48,7 @@ Adj_list <- as_adj_list(  G
 
 sourceCpp(matchFile(exts=c("cpp", "Cpp")))
 
-system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
+system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime))
 
 print(result$FinalStat)
 
