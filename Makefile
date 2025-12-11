@@ -59,23 +59,24 @@ postEdges.Rout: postEdges.R scaleEdges.rda
 Sources += $(wildcard slow/*)
 
 impmakeR += params
-%.params.Rout: %.params.R
+%.params.Rout: params.R %.params.R
 	$(pipeR)
 
-## big.post.Rout: post.R
-%.post.Rout: post.R slowtarget/%.netsim.rds %.params.rda
+## slowtarget/base.post.Rout: post.R base.params.R
+slowtarget/%.post.Rout: post.R %.netsim.rds %.params.rda
 	$(pipeR)
 impmakeR += post
 
+## giant.plots.Rout.final: plots.R
 ## giant.plots.Rout: plots.R
-%.plots.Rout: plots.R %.post.rds
-## %.params.rda
+%.plots.Rout: plots.R slow/%.post.rds
 	$(pipeR)
 impmakeR += plots
 
-## slowtarget/giant.netsim.Rout: netsim.R big.params.R
-## slowtarget/big.netsim.Rout: netsim.R big.params.R
-slowtarget/%.netsim.Rout: netsim.R %.params.rda  scaleFuns.rda edgelist.cpp
+## netsim is still outputting a bit data frame
+## We're making the netsim post-processing as the slow step
+## base.netsim.Rout: netsim.R edgelist.cpp
+%.netsim.Rout: netsim.R %.params.rda  scaleFuns.rda edgelist.cpp
 	$(pipeR)
 impmakeR += netsim
 
@@ -163,7 +164,7 @@ Paper.html: Paper.md
 
 ######################################################################
 
-autopipeR = defined 
+## autopipeR = defined 
 
 ## Pubmed stuff for scoping review
 

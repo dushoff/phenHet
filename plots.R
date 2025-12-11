@@ -16,3 +16,4 @@ cplot <- (ggplot(Rf)
 )
 print(cplot)
 print(cplot + scale_y_log10())
+
