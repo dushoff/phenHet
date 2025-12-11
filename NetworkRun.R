@@ -266,8 +266,7 @@ CM_Opt$RInfinity*N
 
 # visualization
 dat_sim_out<-as.data.frame(result$Reff)
-dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
-),]
+dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time),]
 #dat_Rsim[1,]
 dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
 
