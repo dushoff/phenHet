@@ -1,10 +1,10 @@
+
 #include <Rcpp.h>
 #include <vector>
 #include <unordered_set>
 #include <limits>
 #include <cmath>
 #include <cstdint>
-
 using namespace Rcpp;
 
 struct Edge { int src; int dst; };
@@ -17,11 +17,12 @@ inline int rand_index(int n) {
 
 inline void vuln_add(int *vuln, int &vsize, int vcap, std::vector<int> &pos_map, int eidx) {
 	if (pos_map[eidx] >= 0) return;
-	if (vsize >= vcap) return; // capacity guard; should not trigger for undirected inputs
+	if (vsize >= vcap) return; // capacity guard; at most one vulnerable directed edge per undirected pair
 	pos_map[eidx] = vsize;
 	vuln[vsize] = eidx;
 	vsize += 1;
 }
+
 inline void vuln_remove(int *vuln, int &vsize, std::vector<int> &pos_map, int eidx) {
 	int pos = pos_map[eidx];
 	if (pos < 0) return;
@@ -49,6 +50,7 @@ List simFun(
 	NumericVector Infect_time(N, NA_REAL);
 	NumericVector Recovery_time(N, NA_REAL);
 	IntegerVector Infect_num(N, 0);
+	IntegerVector Targets(N, NA_INTEGER); // susceptible-neighbor count at own infection time
 
 	// --- Initial sampling weights: degree-based ---
 	NumericVector prob(N);
@@ -105,7 +107,7 @@ List simFun(
 	std::vector<int> pos_in_vuln(ecount, -1);
 	std::vector<int> vuln_storage(std::max(M_undirected, 1), -1);
 	int *vuln = vuln_storage.data();
-	int vuln_size = 0; // equals |SI| (number of vulnerable edges)
+	int vuln_size = 0; // number of vulnerable directed edges (I->S), at most M_undirected
 
 	// --- Infected set (for uniform recovery) ---
 	std::vector<int> infected; infected.reserve(N);
@@ -132,7 +134,18 @@ List simFun(
 		}
 	}
 
-	// --- Integer-time logging setup (no TMAX; allocate to ceil(MaxTime)+1) ---
+	// NEW: Targets for initial infecteds (count S-neighbors at t=0)
+	for (int k = 0; k < (int)infected.size(); ++k) {
+		int i = infected[k];
+		int tgt = 0;
+		for (int eidx : out_edges[i]) {
+			int j = edges[eidx].dst;
+			if (Status[j] == 0) tgt++;
+		}
+		Targets[i] = tgt;
+	}
+
+	// --- Integer-time logging setup ---
 	int Kalloc = (int)std::ceil(MaxTime);
 	std::vector<double> t_series(Kalloc + 1);
 	std::vector<double> S_series(Kalloc + 1);
@@ -144,14 +157,13 @@ List simFun(
 	S_series[0] = (double)S_cnt / N;
 	I_series[0] = (double)I_cnt / N;
 	R_series[0] = (double)R_cnt / N;
-	VE_series[0] = (double)vuln_size;
+	VE_series[0] = (double)vuln_size / N; // normalized
 
 	// --- Main loop ---
 	while (t < MaxTime && I_cnt > 0) {
 		// Total rate
 		double lambda = beta * (double)vuln_size + gamma * (double)I_cnt;
 		if (lambda <= 0.0) break;
-
 		double r1 = R::runif(0.0, 1.0);
 		double r2 = R::runif(0.0, 1.0);
 		double Tstep = -std::log(r2) / lambda;
@@ -161,13 +173,13 @@ List simFun(
 
 		// Log integer marks in (t_old, t]
 		int start_k = (int)std::floor(t_old) + 1;
-		int end_k = (int)std::floor(t);
+		int end_k   = (int)std::floor(t);
 		if (end_k > Kalloc) end_k = Kalloc;
 		for (int k = start_k; k <= end_k; ++k) {
 			S_series[k] = (double)S_cnt / N;
 			I_series[k] = (double)I_cnt / N;
 			R_series[k] = (double)R_cnt / N;
-			VE_series[k] = (double)vuln_size;
+			VE_series[k] = (double)vuln_size / N; // normalized
 			last_logged = k;
 		}
 
@@ -179,20 +191,17 @@ List simFun(
 			Status[i] = 2;
 			Recovery_time[i] = t;
 			I_cnt--; R_cnt++;
-
 			// Remove vulnerable edges originating at i
 			for (int eidx : out_edges[i]) {
 				int j = edges[eidx].dst;
 				if (Status[j] == 0) vuln_remove(vuln, vuln_size, pos_in_vuln, eidx);
 			}
-
 			// Remove i from infected set (swap-delete)
 			int last = infected.back();
 			infected[idx_pos] = last;
 			pos_infected[last] = idx_pos;
 			infected.pop_back();
 			pos_infected[i] = -1;
-
 		} else {
 			// Infection: pick vulnerable edge uniformly
 			if (vuln_size <= 0) continue; // safety
@@ -200,23 +209,30 @@ List simFun(
 			int eidx = vuln[vpos];
 			int i = edges[eidx].src;
 			int j = edges[eidx].dst;
-
 			// Infect j
 			Status[j] = 1;
 			Infect_time[j] = t;
 			S_cnt--; I_cnt++;
 			Infect_num[i] += 1;
 
+			// NEW: record Targets[j] at its infection time (count S-neighbors now)
+			{
+				int tgt = 0;
+				for (int eout : out_edges[j]) {
+					int dst = edges[eout].dst;
+					if (Status[dst] == 0) tgt++;
+				}
+				Targets[j] = tgt;
+			}
+
 			// Remove vulnerable edges incoming to j (from infected neighbors)
 			for (int ein : in_edges[j]) {
 				int src = edges[ein].src;
 				if (Status[src] == 1) vuln_remove(vuln, vuln_size, pos_in_vuln, ein);
 			}
-
 			// Add j to infected set
 			pos_infected[j] = (int)infected.size();
 			infected.push_back(j);
-
 			// Add vulnerable edges from j -> susceptible neighbors
 			for (int eout : out_edges[j]) {
 				int dst = edges[eout].dst;
@@ -232,7 +248,7 @@ List simFun(
 		S_series[k] = (double)S_cnt / N;
 		I_series[k] = (double)I_cnt / N;
 		R_series[k] = (double)R_cnt / N;
-		VE_series[k] = (double)vuln_size;
+		VE_series[k] = (double)vuln_size / N; // normalized
 	}
 
 	// Wrap outputs: truncate to 0..Kret
@@ -244,21 +260,44 @@ List simFun(
 		R_vec[k] = R_series[k];
 		VE_vec[k] = VE_series[k];
 	}
-
 	DataFrame State = DataFrame::create(
 		Named("t") = t_vec,
 		Named("S") = S_vec,
 		Named("I") = I_vec,
 		Named("R") = R_vec,
-		Named("VE") = VE_vec
+		Named("VE") = VE_vec // normalized by N
 	);
 
-	IntegerVector nodes = seq(1, N);
+	// Build infected-only Infector frame (omit Node, exclude never-infected)
+	std::vector<double> InfectTime_inf;
+	std::vector<double> RecoveryTime_inf;
+	std::vector<int>    NumInfected_inf;
+	std::vector<int>    Targets_inf;
+
+	InfectTime_inf.reserve(N);
+	RecoveryTime_inf.reserve(N);
+	NumInfected_inf.reserve(N);
+	Targets_inf.reserve(N);
+
+	for (int i = 0; i < N; ++i) {
+		if (!Rcpp::NumericVector::is_na(Infect_time[i])) {
+			InfectTime_inf.push_back(Infect_time[i]);
+			RecoveryTime_inf.push_back(Recovery_time[i]);
+			NumInfected_inf.push_back(Infect_num[i]);
+			Targets_inf.push_back(Targets[i]);
+		}
+	}
+
+	NumericVector InfectTime_vec(InfectTime_inf.begin(), InfectTime_inf.end());
+	NumericVector RecoveryTime_vec(RecoveryTime_inf.begin(), RecoveryTime_inf.end());
+	IntegerVector NumInfected_vec(NumInfected_inf.begin(), NumInfected_inf.end());
+	IntegerVector Targets_vec(Targets_inf.begin(), Targets_inf.end());
+
 	DataFrame Infector = DataFrame::create(
-		Named("Node") = nodes,
-		Named("InfectTime") = Infect_time,
-		Named("RecoveryTime") = Recovery_time,
-		Named("NumInfected") = Infect_num
+		Named("InfectTime")   = InfectTime_vec,
+		Named("RecoveryTime") = RecoveryTime_vec,
+		Named("NumInfected")  = NumInfected_vec,
+		Named("Targets")      = Targets_vec
 	);
 
 	DataFrame FinalStat = DataFrame::create(
@@ -270,8 +309,8 @@ List simFun(
 
 	return List::create(
 		Named("FinalStat") = FinalStat,
-		Named("State") = State,
-		Named("Infector") = Infector,
-		Named("Init") = InitIndex
+		Named("State")     = State,
+		Named("Infector")  = Infector,
+		Named("Init")      = InitIndex
 	);
 }
