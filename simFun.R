@@ -13,4 +13,4 @@ print(dll_path)
 
 stopifnot(file.copy(dll_path, targetname(ext=".so"), overwrite = TRUE))
 
-rdsSave(simFun)
+saveEnvironment()
