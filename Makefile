@@ -38,7 +38,6 @@ scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 
 ######################################################################
 
-
 ## scaleExamples has mysterious changes that seem to slow it down
 scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 	$(pipeR)
@@ -46,12 +45,37 @@ scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 ######################################################################
 
 ## Current AI-assisted edgelist pipeline
+
 scaleEdges.Rout: scaleEdges.R scaleFuns.R edgelist.cpp
 	$(pipeR)
 
 ## postEdges.Rout: postEdges.R scaleExamples.R
 postEdges.Rout: postEdges.R scaleEdges.rda
 	$(pipeR)
+
+######################################################################
+
+## Flex pipeline?
+
+%.params.Rout: %.params.R
+	$(pipeR)
+
+%.bigparams.Rout: %.bigparams.R
+
+## base.net.Rout: net.R base.params.R
+%.net.Rout: net.R %.params.rda scaleFuns.rda
+	$(pipeR)
+
+## base.sim.Rout: sim.R
+%.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
+	$(pipeR)
+
+## base.post.Rout: post.R
+%.post.Rout: post.R %.sim.rds %.params.rda
+	$(pipeR)
+
+scaleFuns.Rout: scaleFuns.R
+	$(wrapR)
 
 ######################################################################
 
@@ -154,6 +178,7 @@ makestuff:
 -include makestuff/texj.mk
 -include makestuff/rmd.mk
 -include makestuff/pandoc.mk
+-include makestuff/slowtarget.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
