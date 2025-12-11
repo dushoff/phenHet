@@ -57,19 +57,23 @@ postEdges.Rout: postEdges.R scaleEdges.rda
 
 ## Flex pipeline?
 
+impmakeR += params
 %.params.Rout: %.params.R
 	$(pipeR)
 
 %.bigparams.Rout: %.bigparams.R
 
+impmakeR += net
 ## base.net.Rout: net.R base.params.R
 %.net.Rout: net.R %.params.rda scaleFuns.rda
 	$(pipeR)
 
+impmakeR += sim
 ## base.sim.Rout: sim.R
 %.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
 	$(pipeR)
 
+impmakeR += post
 ## base.post.Rout: post.R
 %.post.Rout: post.R %.sim.rds %.params.rda
 	$(pipeR)
