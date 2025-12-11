@@ -56,6 +56,7 @@ postEdges.Rout: postEdges.R scaleEdges.rda
 ######################################################################
 
 ## Flex pipeline
+Sources += $(wildcard slow/*)
 
 impmakeR += params
 %.params.Rout: %.params.R
