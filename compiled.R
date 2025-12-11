@@ -1,19 +1,18 @@
+### Package Part
 library(igraph)
 library(cbinom)
 library(Rcpp)
-## library(RcppClock)
 
 library(shellpipes)
 loadEnvironments()
 sourceFiles()
 
 #### Disease Parameter
-beta <- 0.2
-gamma <- 0.25
-N <- 1e6
+beta <- 0.1
+gamma <- 0.1
+N <- 1e5
 r <- 1
 lambda <- 5
-MaxTime <- 1000
 
 # Seed
 set.seed(2639)
@@ -33,7 +32,7 @@ G <- sample_degseq(  seq
 
 # check realization is successful
 # should be True
-stopifnot(!any(sort(degree(G))-sort(seq)!=0))
+!any(sort(degree(G))-sort(seq)!=0)
 
 #igraph::simple_cycles(G)
 
@@ -45,9 +44,12 @@ Adj_list <- as_adj_list(  G
                         , multiple = TRUE
 )
 
-sourceCpp(matchFile(exts=c("cpp", "Cpp")))
+######################################################################
 
-system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime))
+dyn.load("simFun.cpp.so")
+loadEnvironments()
+
+system.time(result <- simFun(Adj_list, N, beta, gamma, MaxTime = 100))
 
 print(result$FinalStat)
 

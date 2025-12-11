@@ -5,11 +5,13 @@ library(ggplot2); theme_set(theme_bw())
 library(dplyr)
 
 loadEnvironments()
+result <- rdsRead()
 
 names(result)
 attach(result)
 
-print(FinalStat)
+summary(State)
+summary(Infector)
 
 State <- (State
 	|> mutate(
@@ -17,13 +19,6 @@ State <- (State
 		, Rcstar = Ri*gamma/(beta+gamma)
 	)
 )
-
-Infector <- (Infector
-	|> filter(!is.na(InfectTime))
-)
-
-summary(State)
-summary(Infector)
 
 print(ggplot(State)
 	+ aes(t, VE)

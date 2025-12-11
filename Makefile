@@ -38,7 +38,6 @@ scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 
 ######################################################################
 
-
 ## scaleExamples has mysterious changes that seem to slow it down
 scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 	$(pipeR)
@@ -46,6 +45,7 @@ scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 ######################################################################
 
 ## Current AI-assisted edgelist pipeline
+
 scaleEdges.Rout: scaleEdges.R scaleFuns.R edgelist.cpp
 	$(pipeR)
 
@@ -53,9 +53,49 @@ scaleEdges.Rout: scaleEdges.R scaleFuns.R edgelist.cpp
 postEdges.Rout: postEdges.R scaleEdges.rda
 	$(pipeR)
 
+######################################################################
+
+## Flex pipeline?
+
+impmakeR += params
+%.params.Rout: %.params.R
+	$(pipeR)
+
+impmakeR += net
+## base.net.Rout: net.R base.params.R
+%.net.Rout: net.R %.params.rda scaleFuns.rda
+	$(pipeR)
+
+impmakeR += sim
+## base.sim.Rout: sim.R
+%.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
+	$(pipeR)
+
+## base.post.Rout: post.R
+%.post.Rout: post.R %.sim.rds %.params.rda
+	$(pipeR)
+impmakeR += post
+
+slowtarget/%.sim.Rout: sim.R %.net.rds %.params.rda edgelist.cpp
+	$(pipeR)
+
+## seven.bigpost.Rout: post.R seven.params.R
+%.bigpost.Rout: post.R slow/%.sim.rds %.params.rda
+	$(pipeR)
+impmakeR += bigpost
+
+scaleFuns.Rout: scaleFuns.R
+	$(wrapR)
+
+######################################################################
+
 ## The separate compilation part has been so painful!
 ## STOP!!!!!!
-%.cpp.Rout: cppSim.R edgelist.cpp
+%.cpp.Rout: simFun.R %.cpp
+	$(pipeR)
+
+## Why does this not work?
+compiled.Rout: compiled.R simFun.cpp.rda scaleFuns.R
 	$(pipeR)
 
 ######################################################################
@@ -148,6 +188,7 @@ makestuff:
 -include makestuff/texj.mk
 -include makestuff/rmd.mk
 -include makestuff/pandoc.mk
+-include makestuff/slowtarget.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
