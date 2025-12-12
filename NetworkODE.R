@@ -2,9 +2,9 @@
 ## wd <- getwd()
 
 ### Package Part
-library(pracma)
+#library(pracma)
 #library(zoo)
-library(gsl)
+#library(gsl)
 library(deSolve)
 #library(igraph)
 library(ggplot2)
