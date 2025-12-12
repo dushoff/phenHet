@@ -62,12 +62,12 @@ impmakeR += params
 %.params.Rout: params.R %.params.R
 	$(pipeR)
 
-## slowtarget/base.post.Rout: post.R base.params.R
+## slow/seed.post.rds: post.R base.params.R
 slowtarget/%.post.Rout: post.R %.netsim.rds %.params.rda
 	$(pipeR)
 impmakeR += post
 
-## giant.plots.Rout.final: plots.R
+## seed.plots.Rout: plots.R
 ## giant.plots.Rout: plots.R
 %.plots.Rout: plots.R slow/%.post.rds
 	$(pipeR)
