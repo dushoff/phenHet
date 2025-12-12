@@ -62,14 +62,13 @@ impmakeR += params
 %.params.Rout: params.R %.params.R
 	$(pipeR)
 
-## slow/seed.post.rds: post.R base.params.R
 slowtarget/%.post.Rout: post.R %.netsim.rds %.params.rda
 	$(pipeR)
 impmakeR += post
 
-## seed.plots.Rout: plots.R
+## giant.plots.Rout.finalview: plots.R
 ## giant.plots.Rout: plots.R
-%.plots.Rout: plots.R slow/%.post.rds
+%.plots.Rout: plots.R slow/%.post.rds %.params.rda
 	$(pipeR)
 impmakeR += plots
 
@@ -187,7 +186,7 @@ Sources += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 
-Makefile: makestuff/03.stamp
+Makefile: makestuff/04.stamp
 makestuff/%.stamp: | makestuff
 	- $(RM) makestuff/*.stamp
 	cd makestuff && $(MAKE) pull
