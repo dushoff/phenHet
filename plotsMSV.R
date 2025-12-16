@@ -1,4 +1,5 @@
 library(shellpipes)
+rpcall("plotsMSV.Rout plotsMSV.R scaleFuns.rda big.params.R slow/big.post.rds NetworkODE.R")
 manageConflicts()
 rpcall("scaleFuns.R edgelist.cpp big.params.R slow/big.post.rds NetworkODE.R")
 sourceFiles()

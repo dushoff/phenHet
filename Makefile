@@ -67,7 +67,7 @@ slowtarget/%.post.Rout: post.R %.netsim.rds %.params.rda
 impmakeR += post
 
 ## giant.plots.Rout.finalview: plots.R
-## giant.plots.Rout: plots.R params.R
+## big.plots.Rout: plots.R params.R
 ## seed.plots.Rout.finalview: plots.R big.params.R
 %.plots.Rout: plots.R slow/%.post.rds %.params.rda
 	$(pipeR)
@@ -82,6 +82,10 @@ impmakeR += netsim
 
 scaleFuns.Rout: scaleFuns.R
 	$(wrapR)
+
+## Richard has added MSV technology, but I don't understand the piping yet.
+plotsMSV.Rout: plotsMSV.R scaleFuns.rda big.params.R slow/big.post.rds NetworkODE.R
+	$(pipeRcall)
 
 ######################################################################
 
