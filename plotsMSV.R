@@ -23,7 +23,7 @@ Eigen_R <- EigenR(DDist, beta, gamma, lambda, init_omega = it_omega)
 ### MSV with eigen direction
 CM_Opt<- ModProc_CM(  DDist,beta,gamma
                       , ODEmaxTime = 100
-                      , ODEstep = 2e-2
+                      , ODEstep = 1e-1
                       , init_omega = it_omega
                       , TrackDyn = TRUE
                       , init_R = Eigen_R
@@ -34,7 +34,7 @@ CM_out <- CM_Opt$Dynamic
 
 #### Reverse ODE for p(t) and R_c
 theta_inf
-tps <- 5001
+tps <- length(CM_out[,1])
 # print(CM_out[tps,])
 
 Rvs_vec<-as.numeric(CM_out[tps,])
@@ -50,7 +50,7 @@ RVS_args <- list(  DDist
                    , theta_Rvs
                    , R_Rvs
                    , ODEmaxTime = t_Rvs
-                   , ODEstep = 2e-2)
+                   , ODEstep = 1e-1)
 
 Rvs_out <- do.call("Rvs_ODE", c(RVS_args))
 
@@ -88,7 +88,7 @@ Rf <- rdsRead("slow/big.post.rds")
 pal <- okabe_ito <- c("#E69F00", "#56B4E9", "#009E73") 
 
 cplot <- (ggplot(Rf)
-	+ aes(t+1, value, color=name, linetype="Sim")
+	+ aes(t+1.1, value, color=name, linetype="Sim")
 	+ geom_line()
 	+ geom_point(aes(size=obs),alpha=0.2)
 	+ geom_line(data=MSV,aes(time,R_c,color = "Rc", linetype="MSV"))
