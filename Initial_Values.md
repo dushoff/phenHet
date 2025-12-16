@@ -107,11 +107,10 @@ For $N=500,000, \gamma=0.20, \beta=0.25, I_0=1$
 ![P_rvs](docs/pix/P_rvs.png)
 
 
-In [Rc.tex](./Rc.tex)/[Rc.pdf](./outputs/Rc.pdf), TP tried to estimate $p(0)$ using linearization. We are also interested to know how $p(0)$ connects to $N$, so we have a better idea for how large the network should be so that competing infection could be rear, at least at the very beginning s.t. $$p(0)\approx\frac{\beta}{\beta+\gamma} \Leftrightarrow \mathcal{R}^*_c(0)\approx\mathcal{R}_c(0)$$
+In [Rc.tex](./Rc.tex)/[Rc.pdf](./outputs/Rc.pdf), Todd tried to estimate $p(0)$ using linearization. We are also interested to know how $p(0)$ connects to $N$, so we have a better idea for how large the network should be so that competing infection could be rear, at least at the very beginning s.t. $$p(0)\approx\frac{\beta}{\beta+\gamma} \Leftrightarrow \mathcal{R}^*_c(0)\approx\mathcal{R}_c(0)$$
 
 As an alternative way, we would like to see if we can use similar "eigendirection" idea to estimate $p(0)$ like $R(0)$.
-
-- But RZ doubt if it works, especially for smaller $\gamma$ case where $\frac{d}{dt}p(t)|_{t=0}$ seems to be quite different with $\frac{d}{dt}p(t)|_{t=-\infty}$. 
+- But RZ doubt if it works, especially for larger $\rho=\frac{\beta}{\gamma}$ case where $\frac{d}{dt}p(t)|_{t=0}$ seems to be quite different with $\frac{d}{dt}p(t)|_{t=-\infty}$. 
 - Increasing $N$ seems lower $\omega(0)$ and make $p(0)$ closer to $p(-\infty)$.
 
 Consider $q(t)=\frac{\beta}{\beta+\gamma}-p(t)$, then$$\dot{q}(t)=\frac{d}{dt}q(t)=-\frac{d}{dt}p(t)=+\beta \frac{G''_p(\phi(t))}{\delta}-(\beta+\gamma)(\frac{\beta}{\beta+\gamma}-q(t))$$
