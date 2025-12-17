@@ -90,6 +90,16 @@ plotsMSV.Rout: plotsMSV.R scaleFuns.rda big.params.R slow/big.post.rds NetworkOD
 
 ######################################################################
 
+## piping and modifying
+## new.approx.Rout: approx.R odeFuns.R
+%.approx.Rout: approx.R slow/%.post.rds %.params.rda scaleFuns.rda odeFuns.rda
+	$(pipeR)
+
+odeFuns.Rout: odeFuns.R
+	$(pipeR)
+
+######################################################################
+
 ## It is much more expensive to save an adjacency list than to make a network, so we're not doing that for now. Not sure if there are work-arounds.
 
 impmakeR += net

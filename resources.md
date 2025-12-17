@@ -1,6 +1,4 @@
 
-----------------------------------------------------------------------
-
 Romanescu epidemics effective reproductive
 - [refs/Roma+23_Epidemics_Reff_COVID.pdf](Roma+23_Epidemics_Reff_COVID.pdf)
 - https://www.sciencedirect.com/science/article/pii/S1755436523000440
@@ -14,14 +12,10 @@ Romanescu epidemics effective reproductive
 
 ### more MSV resources
 
-_DE: these files are not on the repo..._
-
 - refs/millerNote.pdf
 - refs/volzDynamics.pdf
 
 ## Synthesis with citations to presumably-good other ways of looking at this.
-
-_DE: this file is not on the repo..._
 
 - [refs/rempala.pdf](refs/rempala.pdf)
 
