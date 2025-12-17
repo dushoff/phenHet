@@ -17,7 +17,6 @@ DDist <- data.frame(kvalue,Pk)
 
 # source("NetworkODE.R")
 it_omega <- Init_omega_func(1,N)
-S0Count <- PGFG0(1-it_omega,DDist)*N
 Eigen_R <- EigenR(DDist, beta, gamma, lambda, init_omega = it_omega)
 
 ### MSV with eigen direction
@@ -64,16 +63,32 @@ CM_df <- as.data.frame(CM_out)
 
 ### R_c*
 theta<-CM_df$theta
-R_cstar <- beta/(beta+gamma)*PGFd2G0(theta,DDist)/lambda
+S <- CM_df$S_out
+
+### GF version
+# R_cstar <- beta/(beta+gamma)*PGFd2G0(theta,DDist)/lambda
+
+### Analytically +S
+R_cstar <- beta/(beta+gamma)*(omega-1)*S^(2*kappa+1)
 
 ### R_c
 PLen<-length(Rvs_df$P)
-R_c <- Rvs_df$P*(PGFd2G0(theta[1:PLen],DDist)/PGFd1G0(theta[1:PLen],DDist))
+### GF version
+# R_c <- Rvs_df$P*(PGFd2G0(theta[1:PLen],DDist)/PGFd1G0(theta[1:PLen],DDist))
+
+### Analytically +S
+R_c <- Rvs_df$P*(lambda*(omega-1)*S^(2*kappa+1)/(S*lambda/(1+kappa*lambda-theta*kappa*lambda)))
 # Rvs_df$R_c <- R_c
 
 ### R_i
-theta_dot <- -beta*theta+gamma*(1-theta)+beta/lambda*PGFd1G0(theta,DDist)
-S_dot <- theta_dot*PGFd1G0(theta,DDist)
+### GF version
+# theta_dot <- -beta*theta+gamma*(1-theta)+beta/lambda*PGFd1G0(theta,DDist)
+# S_dot <- theta_dot*PGFd1G0(theta,DDist)
+
+### Analytically +S
+theta_dot <- -beta*theta+gamma*(1-theta)+beta/lambda*(S*lambda/(1+kappa*lambda-theta*kappa*lambda))
+S_dot <- theta_dot*(S*lambda/(1+kappa*lambda-theta*kappa*lambda))
+
 R_i <- -S_dot/(CM_df$I_out*gamma)
 
 time <- Rvs_df$time
