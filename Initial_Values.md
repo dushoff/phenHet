@@ -1,3 +1,4 @@
+# 1. "Eigendirection" of recovered $R(t)$
 We would like to derive the "eigenvector" initial condition for $R(0)$ and a small enough $\phi(0)$, such that $$\mathcal{R}_{i,0}=\mathcal{R}_i(0)=\max(\mathcal{R}_i)$$ as in [NoteForR_i](./NoteForR_i.md).
 
 We start with MSV ODE system:
@@ -89,7 +90,10 @@ R(0)=\frac{\delta\gamma}{\gamma+\eta}\times\omega(0)
 $$
 This should give us a initial condition on the eigen-direction.
 
-### Migrating to $p(0)$
+This estimation works well s.t. the $\mathcal{R}_i$(Red curve on top, "non-Eigen" is a typo) match with the theoretical $max(R_i)$ (black horizontal line):
+![](SimData/50K_g020_sol.png)
+
+# 2. Migrating to $p(0)$
 Based on Todd's [Rc.tex](./Rc.tex)/[Rc.pdf](./outputs/Rc.pdf) note, we have an additional ODE for $p(t)$: the probability of a newly infected nodes infect one of its neighbour before recovery.
 $$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)=-\beta \frac{G''_p(\phi(t))}{\delta}+(\beta+\gamma)p(t)$$
 
@@ -97,15 +101,19 @@ We have conclude this should be a final value problem, since when $t\rightarrow 
 
 Then we could derived the $\mathcal{R}_c$ using $p(t)$:
 $$\mathcal{R}_c(t)=\frac{p(t)}{\phi(t)} \times (\mathbb{E}[K_I^*]-1)=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
-**TP, RZ and JD have some (not resolved?) issue for the $\frac{\phi(t)}{p(t)}$ term**, but this derivation seems fits well with simulation:
 For $N=50,000, \gamma=0.20, \beta=0.25, I_0=1$: 16 simulation ![](SimData/50K_g020_16sim.png)
+For $N=1,000,000, \gamma=\beta=0.1, I_0=1$: New simulation![](docs/pix/plotsMSV.png)
 
-However, as observed in the simulation, network size $N$ not large enough (and $\gamma$ is small, infectious duration is long), there is a good possibility that competing infection occurs, even for nodes infected at $t\rightarrow0$ but being infectious for a long time, s.t. $$\frac{d}{dt}p(t)|_{t=0}\neq 0 \Leftrightarrow p(0)\neq \frac{\beta}{\beta+\gamma}$$
+However, as observed in the old simulation, if network size $N$ not large enough (and $\gamma$ is small, i.e. infectious duration $D$ is long), there is a good possibility that competing infection occurs, even for nodes infected at $t\rightarrow0$ but being infectious for a long time, s.t. $$\frac{d}{dt}p(t)|_{t=0}\neq 0 \Leftrightarrow p(0)\neq \frac{\beta}{\beta+\gamma}$$
 But we could still say $$p(-\infty)=\frac{\beta}{\beta+\gamma}$$
 Currently, we reversely solve the ODEs from some $t_{end}$ that close to the end of the outbreak for $p(t)$.
 For $N=500,000, \gamma=0.20, \beta=0.25, I_0=1$
 ![P_rvs](docs/pix/P_rvs.png)
+**So for $N=50,000$ case, even $\phi(0)$ at $t=0$ is still very close to its initial value $\phi(-\infty)=1$ (i.e. still governed by on its eigenvector), $p(0)$ is already away from $p(-\infty)$. Even if we do the eigenvector estimation, the magnitude of $\omega=1-\phi=2\times10^{-5}$ could not match with $q(0)=\frac{\beta}{\beta+\gamma}-p(0) \approx 1 \times 10^{-1}$.
 
+Thus RZ doubt if this eigenvector idea still work for NOT large enough $N$.** We might have to find the proper magnitude for $N$ for this estimation idea to work, like what Todd tried to do in [Rc.pdf](resources/Rc.pdf). 
+
+As network size $N$ increase (e.g. $N=1\times10^7$), competing infection would be extremely rare at the beginning, s.t. $p(0)$ is much close to $p(-\infty)$, then this estimation would work better.
 
 In [Rc.tex](./Rc.tex)/[Rc.pdf](./outputs/Rc.pdf), Todd tried to estimate $p(0)$ using linearization. We are also interested to know how $p(0)$ connects to $N$, so we have a better idea for how large the network should be so that competing infection could be rear, at least at the very beginning s.t. $$p(0)\approx\frac{\beta}{\beta+\gamma} \Leftrightarrow \mathcal{R}^*_c(0)\approx\mathcal{R}_c(0)$$
 
@@ -160,4 +168,5 @@ q(0)
 \Leftrightarrow
 q(0)=\frac{\beta\times\frac{G''_p(1)}{\delta}}{(\beta+\gamma)-\eta}\times\omega(0)<0
 $$
-(???)
+
+**??? $q(0)=\frac{\beta}{\beta+\gamma}-p(0)$ should be positive. RZ verified the derivation several times (also via maple), still not be able to find the mistake. A second opinion would be appreciated**
