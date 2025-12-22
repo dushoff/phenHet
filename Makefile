@@ -92,6 +92,9 @@ plotsMSV.Rout: plotsMSV.R scaleFuns.rda big.params.R slow/big.post.rds NetworkOD
 simMSV.Rout: simMSV.R scaleFuns.rda big.params.rda NetworkODE.R
 	$(pipeRcall)
 
+viewMSV.Rout: viewMSV.R simMSV.rda
+	$(pipeRcall)
+
 ######################################################################
 
 ## piping and modifying

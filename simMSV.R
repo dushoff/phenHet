@@ -93,3 +93,5 @@ R_i <- -S_dot/(CM_df$I_out*gamma)
 
 time <- Rvs_df$time
 MSV<-as.data.frame(cbind(time, R_cstar, R_c, R_i))
+
+saveEnvironment()
