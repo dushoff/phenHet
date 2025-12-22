@@ -1,7 +1,10 @@
 library(shellpipes)
 rpcall("plotsMSV.Rout plotsMSV.R scaleFuns.rda big.params.R slow/big.post.rds NetworkODE.R")
+rpcall("simMSV.Rout simMSV.R scaleFuns.rda big.params.rda NetworkODE.R")
 manageConflicts()
 rpcall("scaleFuns.R edgelist.cpp big.params.R slow/big.post.rds NetworkODE.R")
+
+loadEnvironments()
 sourceFiles()
 
 gamma <- 1/D
@@ -90,26 +93,3 @@ R_i <- -S_dot/(CM_df$I_out*gamma)
 
 time <- Rvs_df$time
 MSV<-as.data.frame(cbind(time, R_cstar, R_c, R_i))
-
-library(ggplot2); theme_set(theme_bw())
-loadEnvironments()
-Rf <- rdsRead("slow/big.post.rds")
-
-pal <- okabe_ito <- c("#E69F00", "#56B4E9", "#009E73") 
-
-cplot <- (ggplot(Rf)
-	+ aes(t+1.1, value, color=name, linetype="Sim")
-	+ geom_line()
-	+ geom_point(aes(size=obs),alpha=0.2)
-	+ geom_line(data=MSV,aes(time,R_c,color = "Rc", linetype="MSV"))
-	+ geom_line(data=MSV,aes(time,R_cstar,color = "Rcstar", linetype="MSV"))
-	+ geom_line(data=MSV,aes(time,R_i,color = "Ri", linetype="MSV"))
-	+ coord_cartesian(xlim=c(0, 80))
-	+ scale_color_manual(values = pal)
-	+ scale_size_area()
-	+ geom_hline(yintercept=Ri0, color=pal[[3]])
-	+ geom_hline(yintercept=Rc0, color=pal[[2]])
-)
-print(cplot)
-# print(cplot + scale_y_log10())
-

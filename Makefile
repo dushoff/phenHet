@@ -88,6 +88,10 @@ scaleFuns.Rout: scaleFuns.R
 plotsMSV.Rout: plotsMSV.R scaleFuns.rda big.params.R slow/big.post.rds NetworkODE.R
 	$(pipeRcall)
 
+## Split the plotting and the simulating
+simMSV.Rout: simMSV.R scaleFuns.rda big.params.rda NetworkODE.R
+	$(pipeRcall)
+
 ######################################################################
 
 ## piping and modifying
