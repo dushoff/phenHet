@@ -105,6 +105,8 @@ viewMSV.Rout: viewMSV.R simMSV.rda
 odeFuns.Rout: odeFuns.R
 	$(pipeR)
 
+test:
+	echo $$R_LIBS_USER
 ######################################################################
 
 ## It is much more expensive to save an adjacency list than to make a network, so we're not doing that for now. Not sure if there are work-arounds.

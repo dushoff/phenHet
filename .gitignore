@@ -8,7 +8,10 @@ makestuff/
 *~
 *.json
 .RData
+.Rout
+.rda
 
 
 .obsidian/
+.idea/
 SimData/
