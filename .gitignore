@@ -10,6 +10,7 @@ makestuff/
 .RData
 .Rout
 .rda
+.Rlog
 
 
 .obsidian/
