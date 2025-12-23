@@ -8,9 +8,9 @@ makestuff/
 *~
 *.json
 .RData
-.Rout
-.rda
-.Rlog
+*.Rout
+*.rda
+*.Rlog
 
 
 .obsidian/
