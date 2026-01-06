@@ -1,6 +1,6 @@
 ## Resources 
 
-[This notes document](notes_NovoANDNetwork.md) has the netSusc result; try to pull it out and contextualize a bit more.
+[This notes document](notes_NovoANDNetwork.md) has the netSusceptibility result; try to pull it out and contextualize a bit more.
 
 ## Draft
 
@@ -17,11 +17,17 @@ The Dwyer-Parsons approach accounts for “over-dispersion” (continuous hetero
 
 Recently, Richard and Jonathan have come up with an approach that generalizes these two for a negative binomial degree-distribution, maybe call it the network-susceptibility approach. A straightforward argument gives:
 $$σ=S^κ+\frac{S^κ-1}{κ \delta}, $$
-where $\kappa$ is the Dushoff-style squared CV of an underlying continuous distribution (in this case, the Gamma distribution that underlies the negative binomial), so that $\kappa=0$ corresponds to the Poisson, with  $\sigma=1+\frac{log(S)}{\delta}$ (the Novozhilov Poisson result), $\delta\to\infty$ corresponds to the Gamma, with $\sigma=S^{\kappa}$(the Dwyer result), and $\kappa=1$ corresponds to the geometric case, where $\sigma=S+\frac{S-1}{\delta}$ (an equivalent result has been derived by  [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708))
+where $\kappa$ is the Dushoff-style squared CV of an underlying continuous distribution (in this case, the Gamma distribution that underlies the negative binomial), so that $\kappa=0$ corresponds to the Poisson, with  $\sigma=1+\frac{log(S)}{\delta}$ (the Novozhilov Poisson result), $\delta\to\infty$ corresponds to the Gamma, with $\sigma=S^{\kappa}$(the Dwyer result), and $\kappa=1$ corresponds to the geometric case, where $\sigma=S+\frac{S-1}{\delta}$ (an equivalent result has been derived by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) and [Novozhilov(2008)](./refs/Novozhilov2008.pdf), with different settings.)
 
 This approach still focuses only on changing susceptibility (not changes in average infectiousness of infectors); this should be the next thing to think about. We're also not addressing locality, which will be more difficult, but we should not shy away from that, because there is too much shying away going on.
 
-We are particularly interested in mining more from the Miller approach, and seeing if we can come up with simple approaches that account for changes in both infectiousness and susceptibility. We anticipate some difficulties here in terms of accounting for recovery.
+We are particularly interested in mining more from the MSV approach, and seeing if we can come up with simple approaches that account for changes in both infectiousness and susceptibility. We anticipate some difficulties here in terms of accounting for recovery.
+
+Romanescu claim that their result could be applied on specific degree distributions in random-network framework, but have some issues and provide little verification. 
+
+Based on their result, we further applied corrections such that our result match the MSV approach and simulation.
+
+
 
 <!-- Dictation code
 

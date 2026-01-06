@@ -2,6 +2,9 @@
 The main background document is [JR_NegBinom_Result](JR_NegBinom_Result.md), which is compiled as html here:
 
 https://dushoff.github.io/phenHet/JR_NegBinom_Result.html
+(Hyperlink in .html version not working due to folder issue)
+
+A quick summary is [approaches](approaches.md)
 
 See also the [resources](resources.md) notes.
 
