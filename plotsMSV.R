@@ -96,7 +96,7 @@ loadEnvironments()
 Rf <- rdsRead("slow/big.post.rds")
 
 pal <- okabe_ito <- c("#E69F00", "#56B4E9", "#009E73") 
-
+Rf[1:4,]
 cplot <- (ggplot(Rf)
 	+ aes(t+1.1, value, color=name, linetype="Sim")
 	+ geom_line()

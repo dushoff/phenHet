@@ -1,10 +1,10 @@
+[resources.md](./resources.md): Summary notes for related literatures and previous investigations:
 
-The main background document is [JR_NegBinom_Result](JR_NegBinom_Result.md), which is compiled as html here:
+[approaches.md](approaches.md): A quick summary document 
 
-https://dushoff.github.io/phenHet/JR_NegBinom_Result.html
-(Hyperlink in .html version not working due to folder issue)
+[JR_NegBinom_Result.md](JR_NegBinom_Result.md): The main background and proceeding document for current MSV random network. RZ is working on summarize recent progress to update this document.   
+- Compiled as html here: https://dushoff.github.io/phenHet/JR_NegBinom_Result.html (Hyperlink in .html version not working due to folder issue)
 
-A quick summary is [approaches](approaches.md)
 
 See also the [resources](resources.md) notes.
 

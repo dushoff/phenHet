@@ -21,11 +21,21 @@ where $\kappa$ is the Dushoff-style squared CV of an underlying continuous distr
 
 This approach still focuses only on changing susceptibility (not changes in average infectiousness of infectors); this should be the next thing to think about. We're also not addressing locality, which will be more difficult, but we should not shy away from that, because there is too much shying away going on.
 
-We are particularly interested in mining more from the MSV approach, and seeing if we can come up with simple approaches that account for changes in both infectiousness and susceptibility. We anticipate some difficulties here in terms of accounting for recovery.
+The result is elegant and match well with the past, but we need more clear descriptions for this susceptibility-only network framework (Conjecture: in-degree model)
 
-Romanescu claim that their result could be applied on specific degree distributions in random-network framework, but have some issues and provide little verification. 
+We are particularly interested in mining more from the MSV configuration approach, and seeing if we can come up with simple approaches that account for changes in both infectiousness and susceptibility. We anticipate some difficulties here in terms of accounting for recovery.
 
-Based on their result, we further applied corrections such that our result match the MSV approach and simulation.
+Romanescu claim that their result for effective reproduction number could be applied on specific degree distributions in random-network framework, but have some logic and definition problems and provide little validation to simulation. As mentioned earlier, we find their result agree with the susceptibility only heterogeneity results (ours with network, Novozhilov without network)
+
+Based on their result, we further applied corrections to the derivation and generate the "ideal" case reproductive number $\mathcal{R}^*_c(t)$: the (counterfactual) expected number of infections caused by a new case during its infectious duration, if it is infected at time $t$ and not consider competing infections of its susceptible neighbours (all susceptible neighbors of the focal case can only infected by the focal case). We generate an nice expression for $\mathcal{R}^*_c(t)$.
+
+We further considered the probability of competing infection and derived an extra ODE for $p(t)$, the "real" infection probability susceptible neighbour of a case infected at time $t$. As a final value problem, $p(t)$ could be solved reversely from the MSV ODE system. We are trying to find a good estimation for initial value $p(0)$ but not yet successful.
+
+Using $p(t)$ to modify $\mathcal{R}^*_c(t)$ expression give us the "real" case reproductive number $\mathcal{R}_c(t)$ that considering the competing infection. $\mathcal{R}_c(t)$ is no lager than $\mathcal{R}^*_c(t)$ and converge to $\mathcal{R}^*_c(t)$ eventually as outbreak ends. If the network size $N$ is large enough
+
+$\mathcal{R}_i$
+
+We created vertex based and a much faster (new?) edge-based Gillespie algorithm on network transmission to verify our results match the MSV approach and simulation.
 
 
 

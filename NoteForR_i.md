@@ -267,7 +267,4 @@ Unlike the $\mathcal{R}_{0,c}$ or $\mathcal{R}^*_{c}$ , $max(\mathcal{R}_{i})|_{
 $$max(\mathcal{R}_\text{eff})|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]==\frac{0.2}{0.1}[\frac{20}{5}-1]=6>k=5$$
 - We need a better definition for this!
 
-
-
-
-
+**TODO: Verify the R_i ODE**
