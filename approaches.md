@@ -31,12 +31,14 @@ Based on their result, we further applied corrections to the derivation and gene
 
 We further considered the probability of competing infection and derived an extra ODE for $p(t)$, the "real" infection probability susceptible neighbour of a case infected at time $t$. As a final value problem, $p(t)$ could be solved reversely from the MSV ODE system. We are trying to find a good estimation for initial value $p(0)$ but not yet successful.
 
-Using $p(t)$ to modify $\mathcal{R}^*_c(t)$ expression give us the "real" case reproductive number $\mathcal{R}_c(t)$ that considering the competing infection. $\mathcal{R}_c(t)$ is no lager than $\mathcal{R}^*_c(t)$ and converge to $\mathcal{R}^*_c(t)$ eventually as outbreak ends. If the network size $N$ is large enough
+Using $p(t)$ to modify $\mathcal{R}^*_c(t)$ expression give us the "real" case reproductive number $\mathcal{R}_c(t)$ that considering the competing infection. $\mathcal{R}_c(t)$ is no lager than $\mathcal{R}^*_c(t)$ and converge to $\mathcal{R}^*_c(t)$ eventually as outbreak ends. If the network size $N$ is large enough such that loops in the network are rare enough, we expecting $\mathcal{R}_c(0)$ is close to $\mathcal{R}^*_c(0)$. But we are not able to find a good estimation for the difference.
 
-$\mathcal{R}_i$
+On the other hand, we could define the instantaneous effective reproductive number $\mathcal{R}_i$ as the average number of new infection caused by a randomly chosen infectious case at time $t$, i.e.$$\mathcal{R}_i(t)=-\frac{\dot{S}}{\gamma I}$$
+Unlike in the homogeneous model where $\mathcal{R}_i(t)$ are monotonically decreasing, in MSV network with a purely naive population, $\mathcal{R}_i(t)$ might increase for a while to reach the transmission's "eigen-status" and then monotonically decrease to 0 until the outbreak ends. We have find expression for the peak of $\mathcal{R}_i(t)$ and use the eigenvector idea find out the initial-status s.t. $\mathcal{R}_i(0)$ agree with the peak.
 
-We created vertex based and a much faster (new?) edge-based Gillespie algorithm on network transmission to verify our results match the MSV approach and simulation.
+The problem of $\mathcal{R}_i(t)$ in MSV is that we does not have explicit expression for $I(t)$, so it is hard to derive the $\mathcal{R}_i(t)$ curve without solve the whole ODE system for $I(t)$. An ODE of $\dot{\mathcal{R}}_i(t)$ that not dependent on $I(t)$ is generated, but we not yet find useful understanding yet. We are also thinking about connection between $\mathcal{R}_i(t)$ and $\mathcal{R}_c(t)$
 
+We created vertex based and a much faster (and new?) edge-based Gillespie algorithm on network transmission. The simulation results match our expression in number of runs, but we might need to verify this in a more systematic way.
 
 
 <!-- Dictation code

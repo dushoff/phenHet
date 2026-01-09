@@ -6,7 +6,6 @@
 - Compiled as html here: https://dushoff.github.io/phenHet/JR_NegBinom_Result.html (Hyperlink in .html version not working due to folder issue)
 
 
-See also the [resources](resources.md) notes.
 
 ## simulator info
 

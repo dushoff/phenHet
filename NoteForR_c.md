@@ -1,7 +1,7 @@
 # 1. Reproductive number by case $\mathcal{R}^*_c$ with no competing infection
 As mentioned in [JR_Negbinom_Result](JR_Negbinom_Result.md), the Zhao 2 result leads to 
 $$\begin{align}
-\mathcal{R}_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
+\mathcal{R}^*_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
 & =\mathbb{E}_{K_I^*}[\mu(K_I^*-1)]
 \\
