@@ -151,6 +151,8 @@ max(\mathcal{R}_{i}) & =\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}
 \\
 &=\frac{1}{\gamma}\times[\beta\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-(\beta+\gamma)]+1
 \\
+&=\frac{\beta+\gamma}{\gamma}\times[\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]+1
+\\
 &=\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]
 \\
 &=\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi-\frac{\gamma}{\beta}(1-\phi)-\frac{G'_p(\phi)}{\delta}}{\frac{G'_p(\phi)}{\delta}})-1]
@@ -201,6 +203,8 @@ $$\begin{align}
 \frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t) & =\gamma \mathcal{R}_i \times [\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i]
 \\
 & =\gamma \mathcal{R}_i \times \{\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]-\mathcal{R}_i\}
+\\
+& = \gamma\mathcal{R}_i \times \{\frac{\beta+\gamma}{\gamma}[\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})]-\frac{\beta}{\gamma}-\mathcal{R}_i\}
 \end{align}$$
 
 #### Homogeneous SIR

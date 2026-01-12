@@ -457,14 +457,14 @@ $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\ka
 We have a elegant expression for $\mathcal{R}_c^*(t)$ :$$\mathcal{R}^*_c(t)=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi(t))}{\delta}$$
 For $\mathcal{R}_c$, we have an expression using similar derivation idea:
 $$\mathcal{R}_c(t)=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
-However, this expression is based on Todd's ODE for $p(t)$, which can be solved together with MSV ODE: $$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
+However, this expression is based on Todd's ODE ([NoteForR_c.md](NoteForR_c.md)) for $p(t)$, which can be solved together with MSV ODE: $$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
 We could reversely solve $p(t)$ as a final-value problem as we know $\frac{d}{dt}p(t)=0$ at $t=\infty$.
 
 We are still investigating if we can find an estimation for $p(0)$ to solve $p(t)$ as time increase. 
 - $p(0)$ should be very close to $\frac{\beta}{\beta+\gamma}$ for very large network size $N$ and this is verified by simulation.
 - $p(0)$ could be quite lower than $\frac{\beta}{\beta+\gamma}$ if $N$ is large but not large enough.
 - This difference between $p(0)$ and $\frac{\beta}{\beta+\gamma}$, and its relationship with $N$ and degree distribution could be important for dynamic of $p(t)$.
-See [NoteForR_c](./NoteForR_c.md) for more details.
+See [NoteForR_c.md](./NoteForR_c.md) for more details.
 
 We don't have a good representation for $\mathcal{R}_i(t)$, but a quasi-equilibrium type ODE
 $$
@@ -472,12 +472,10 @@ $$
 $$
 See [NoteForR_i](NoteForR_i.md) for more details.
 
-
-
-the Zhao2 result $\sigma^* S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$. 
+The Zhao2 result $\sigma^* S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$. 
 
 ### Eigen Directions
-See [NoteForR_c](NoteForR_c.md)
+See [Initial_Values](Initial_Values.md)
 ![](docs/pix/InsEstimation.png)
 For the increasing of $\mathcal{R}_i$ at the beginning, JD and RZ tried to use eigenvector methods to find out initial recovered $R(0)$ value such that the outbreak starts at the eigendirection, which makes $\mathcal{R}_{i,0}=max(\mathcal{R}_i)$
 ![EigenInitR](docs/pix/EigenInitR.png)
@@ -485,3 +483,4 @@ For the increasing of $\mathcal{R}_i$ at the beginning, JD and RZ tried to use e
 # 6. Simulation
 BB suggest to run an simulation of large random network to see how $\mathcal{R}_c$ and $\mathcal{R}^*_c$ compare to the simulation.
 
+[Simulation.md](Simulation.md)

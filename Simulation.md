@@ -144,4 +144,8 @@ Thoughts: Comparing ODE for $p(t)$ and $\phi(t)$
 $$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
 $$\frac{d}{dt}\phi(t)=+\beta \phi_S(t)-(\beta+\gamma)\phi(t)+\gamma$$
 
+## Edge based simulation
+JD developed the edge-based Gillespie simulation in R_cpp which seems to be faster for large networks
 
+Negative binomial degree distribution with mean degree $\lambda=5, \kappa=0$. $\beta=\gamma=0.1, N=10^6$
+![plotsMSV](docs/pix/plotsMSV.png)
