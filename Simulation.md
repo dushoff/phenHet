@@ -136,14 +136,6 @@ For larger network size $N=250,000$, 1 simulation due to time consumption:
 
 TODO: figure out the scale of $N$ s.t. $\mathcal{R}_c(0) \approx \mathcal{R}^*_c(0)$
 
-
-
-
-
-Thoughts: Comparing ODE for $p(t)$ and $\phi(t)$
-$$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
-$$\frac{d}{dt}\phi(t)=+\beta \phi_S(t)-(\beta+\gamma)\phi(t)+\gamma$$
-
 ## Edge based simulation
 JD developed the edge-based Gillespie simulation in R_cpp which seems to be faster for large networks
 
