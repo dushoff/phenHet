@@ -191,7 +191,7 @@ $$\begin{align}
 \end{align}$$
 This agree with the previous derivation of $max(\mathcal{R}_i)$: when $\dot{\mathcal{R}}_i(t)=0$, we must have
 $$\begin{align}
-\mathcal{R}_i & =\frac{\ddot{S}}{\gamma\dot{S}}+1=\frac{\ddot{S}+\gamma \dot{S}}{\gamma\dot{S}}
+max(\mathcal{R}_i) & =\frac{\ddot{S}}{\gamma\dot{S}}+1=\frac{\ddot{S}+\gamma \dot{S}}{\gamma\dot{S}}
 \\
 & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]
 \\
@@ -200,13 +200,17 @@ $$\begin{align}
 where does not rely on expression of $I(t)$.
 Take this into previous differential equation, we have 
 $$\begin{align}
-\frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t) & =\gamma \mathcal{R}_i \times [\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i]
+\frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t) & =\gamma \mathcal{R}_i \times \Bigl[\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i \Bigr]
 \\
-& =\gamma \mathcal{R}_i \times \{\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]-\mathcal{R}_i\}
+& =\gamma \mathcal{R}_i \times \Bigl\{\frac{\beta}{\gamma}\Bigl[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1 \Bigr]-\mathcal{R}_i\}
 \\
-& = \gamma\mathcal{R}_i \times \{\frac{\beta+\gamma}{\gamma}[\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})]-\frac{\beta}{\gamma}-\mathcal{R}_i\}
+& = \gamma\mathcal{R}_i \times \Big\{\frac{\beta+\gamma}{\gamma}\Big[\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})\Big]-\frac{\beta}{\gamma}-\mathcal{R}_i\Big\}
+\\
+& = \mathcal{R}_i \times \Big\{(\beta+\gamma)\Big[ \mathcal{R}^*_c (1-\frac{\phi_I}{\phi_S}) \Big]-\beta-\gamma\mathcal{R}_i \Big\}
 \end{align}$$
 
+
+ 
 #### Homogeneous SIR
 Note this derivation also applies to homogeneous SIR model.
 $$\begin{align}

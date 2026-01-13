@@ -137,7 +137,12 @@ For larger network size $N=250,000$, 1 simulation due to time consumption:
 TODO: figure out the scale of $N$ s.t. $\mathcal{R}_c(0) \approx \mathcal{R}^*_c(0)$
 
 ## Edge based simulation
-JD developed the edge-based Gillespie simulation in R_cpp which seems to be faster for large networks
+JD developed the edge-based Gillespie simulation in `R_cpp` which seems to be faster for large networks
 
 Negative binomial degree distribution with mean degree $\lambda=5, \kappa=0$. $\beta=\gamma=0.1, N=10^6$
 ![plotsMSV](docs/pix/plotsMSV.png)
+
+
+- Testing other parameters and average on small network (expected working less well).
+- Systematic Time-shifting: logistic regression? epidemic momentum approach? Throw out the stochastic part(match a starting point) set up a condition to matching $\phi,I$ or $+R$
+- Initial condition estimation for $p(0)$ [Rc.pdf](refs/Rc.pdf)
