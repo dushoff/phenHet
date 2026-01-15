@@ -190,15 +190,12 @@ $$\begin{align}
 & = \gamma \mathcal{R}_i \times [\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i]
 \end{align}$$
 This agree with the previous derivation of $max(\mathcal{R}_i)$: when $\dot{\mathcal{R}}_i(t)=0$, we must have
-$$\begin{align}
-max(\mathcal{R}_i) & =\frac{\ddot{S}}{\gamma\dot{S}}+1=\frac{\ddot{S}+\gamma \dot{S}}{\gamma\dot{S}}
-\\
-& =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]
-\\
-& = \frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
-\end{align}$$
+$$
+max(\mathcal{R}_i) =\frac{\ddot{S}}{\gamma\dot{S}}+1=\frac{\ddot{S}+\gamma \dot{S}}{\gamma\dot{S}}
+$$
 where does not rely on expression of $I(t)$.
-Take this into previous differential equation, we have 
+
+Take $\ddot{S}$ and $\dot{S}$ expression into previous differential equation, we have 
 $$\begin{align}
 \frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t) & =\gamma \mathcal{R}_i \times \Bigl[\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i \Bigr]
 \\
@@ -208,9 +205,15 @@ $$\begin{align}
 \\
 & = \mathcal{R}_i \times \Big\{(\beta+\gamma)\Big[ \mathcal{R}^*_c (1-\frac{\phi_I}{\phi_S}) \Big]-\beta-\gamma\mathcal{R}_i \Big\}
 \end{align}$$
+Note we have 
+$$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}=\frac{\beta}{\beta+\gamma}\frac{\phi_s}{\phi} \times \mathbb{E}\Big[ K^*_I-1\Big]$$ where $\frac{\phi_s}{\phi} \times \mathbb{E}\Big[ K^*_I-1\Big]$ could be interpreted as average number of susceptible neighbours of newly infected focal vertex.
+So $$\mathcal{R}^*_c \times \frac{\phi_I}{\phi_S}\propto \frac{\phi_I}{\phi}\times\mathbb{E}\Big[ K^*_I-1\Big]$$
+which is the average infected neighbors (except its infector represented by the $-1$) of the newly infected focal node. ??Related to the existing infection in the past.
+
+Similar $S-I$ structure could also been seen in the following homogeneous version.
 
 
- 
+**TODO: Verify the R_i ODE in simulation**
 #### Homogeneous SIR
 Note this derivation also applies to homogeneous SIR model.
 $$\begin{align}
@@ -225,7 +228,14 @@ $$\begin{align}
 & = \gamma \mathcal{R}_i\times[-\frac{\beta}{\gamma}(I-S+\frac{\gamma}{\beta})+1-\mathcal{R}_i]
 \\
 & =\gamma \mathcal{R}_i\times[\frac{\beta}{\gamma}(S-I)-\mathcal{R}_i]
+\\
+& =\gamma \mathcal{R}_i\times[\mathcal{R}_c-\frac{\beta}{\gamma}I-\mathcal{R}_i]
+\\
+& =-\beta \mathcal{R}_i\times I
 \end{align}$$
+
+Note for homogeneous SIR, we have $$\mathcal{R}_c=\mathcal{R}_i=-\frac{1}{\gamma}\times\frac{\dot{S}}{I}=\frac{\beta}{\gamma}S$$
+
 
 ### 3.2 Poisson
 For Poisson distribution with:
@@ -275,4 +285,3 @@ Unlike the $\mathcal{R}_{0,c}$ or $\mathcal{R}^*_{c}$ , $max(\mathcal{R}_{i})|_{
 $$max(\mathcal{R}_\text{eff})|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]==\frac{0.2}{0.1}[\frac{20}{5}-1]=6>k=5$$
 - We need a better definition for this!
 
-**TODO: Verify the R_i ODE**
