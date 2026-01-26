@@ -1,0 +1,187 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows,decorations.pathreplacing,tikzmark,calc}
+\tikzset{break/.style={fill=white, inner sep=1pt}}
+\tikzset{inline/.style={column sep = 2.5em,inner sep = 1pt}}
+\usetikzlibrary{arrows,positioning}
+
+\usepackage{amsmath,amsfonts,amsthm,amssymb,thmtools,mathtools,mathrsfs,dsfont}
+\usepackage{bbold}
+\usepackage{graphics}
+\usepackage{caption}
+%\usepackage{subcaption}
+\usepackage{epstopdf}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{etex}
+\usepackage{setspace}
+\usepackage{chngpage}
+\usepackage{soul}
+\usepackage{ifthen}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{lineno}
+\usepackage{natbib}
+\usepackage[caption = false]{subfig}
+\usepackage[margin=1in]{geometry}
+%\linenumbers
+\allowdisplaybreaks
+
+\usepackage[labelfont=bf]{caption}
+\usepackage{multirow}
+
+
+
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -ENVIRONMENTS-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{algorithm}[theorem]{Algorithm}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+%\newtheorem{running example}[theorem]{Running Example}
+%\newtheorem*{construction}{Construction}
+
+%\newtheorem*{note}{Note}
+%\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem*{notation}{Notation}
+
+
+\newcommand{\simplex}{\mathcal{S}}
+
+\title{Title}
+\author{Author}
+%\author*[1,2]{\fnm{First} \sur{Author}}\email{iauthor@gmail.com}
+
+%\author[2,3]{\fnm{Second} \sur{Author}}\email{iiauthor@gmail.com}
+%\equalcont{These authors contributed equally to this work.}
+
+%\author[1,2]{\fnm{Third} \sur{Author}}\email{iiiauthor@gmail.com}
+%\equalcont{These authors contributed equally to this work.}
+
+%\affil*[1]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{100190}, \state{State}, \country{Country}}}
+
+%\affil[2]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{10587}, \state{State}, \country{Country}}}
+
+%\affil[3]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{610101}, \state{State}, \country{Country}}}
+\date{}
+
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+\bigskip
+Abstract
+\end{abstract}
+
+\section{Introduction}
+\label{sec: Intro}
+
+\subsection{SubSection}
+\label{sec: sub1}
+\textit{Treponema pallidum} subspecies pallidum \cite{DeSchryverMeheus:1990, GhanemHook:2020}.
+
+Itemize
+\begin{itemize}
+\item a
+
+\item b
+
+\item c
+	\begin{itemize}
+
+	\item (1)
+
+	\item (2)
+
+\end{itemize} 
+
+In practice, diagnoses of early versus late latent stages are determined based on serological testing and clinical input.
+
+\item d
+
+\end{itemize}
+
+\section{Data}
+\label{sec: data}
+
+
+\section{Model Setup}
+\label{sec: model}
+
+Enumerate
+\begin{enumerate}
+\item [(H1)] Assumption
+\end{enumerate}
+
+\subsection{Subsection}
+\label{sec: sub 2}
+
+
+Equation
+\begin{equation}
+    \mathbb{P}(K=k) \propto k^{-\alpha}
+    \label{eqn: power law}
+\end{equation} 
+
+package \verb#fit_power_law# function from the \verb#igraph# R package
+
+Eqref: \eqref{eqn: power law}.
+
+Class Eqns
+\begin{equation}
+\label{eqn: CM ODE}
+    \begin{cases}
+        S(t) & = G_p(\theta(t)) \\
+        I(t) & = 1-S(t)-R(t) \\
+        \dot{R}(t) & = \gamma I(t) \\
+        \dot{\theta}(t) & = -\beta \theta +\beta \frac{G'_p(\theta)}{G'_p(1)}+\gamma (1-\theta)
+    \end{cases} 
+\end{equation}
+
+
+
+\section{Comparing the network-SIR and MA-SIR models}
+\label{sec: MA compare}
+
+
+\section{Conclusions}
+\label{sec: Conclusion}
+
+
+\section*{Acknowledgements}
+We thank XX for his help with the literature review. 
+
+\section*{Funding Statement}
+Funding
+
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{Bibliography.bib}
+
+\newpage
+\include{supplement}
+
+
+\end{document}

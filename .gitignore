@@ -12,6 +12,9 @@ makestuff/
 *.rda
 *.Rlog
 
+*.aux
+*.log
+*.gz
 
 .obsidian/
 .idea/

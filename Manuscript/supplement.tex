@@ -1,0 +1,217 @@
+%% Supplementary materials
+%% Reset all counters and include S at the beginning of 
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{section}{0}
+\setcounter{page}{1}
+\makeatletter
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thesection}{S\arabic{section}}
+%\renewcommand{\bibnumfmt}[1]{[S#1]}
+%\renewcommand{\citenumfont}[1]{S#1}
+
+\begin{center}
+{\huge \sc   Supplementary Information}
+\end{center}
+
+\section{Section}
+\label{sec: sup 1}
+
+
+\begin{center}
+    \begin{table}[htbp]
+    \centering
+\caption{Table Exp}
+    \label{table: example}
+        \begin{tabular}{|C{1.0in}|C{1.0in}|C{0.8in}|C{0.8in}|C{0.8in}|}
+            \hline
+            \multicolumn{3}{|c|}{Age Groups} & \multicolumn{2}{c|}{Scaling Parameters}
+            \\
+            \hline
+            Age range & Risk Level & Proportion & Symbol & Value
+            \\
+            \hline
+            $[18,20)$ & Medium & 1.25\% & $a_1$ & 0.150
+            \\
+            \hline
+            $[20,30)$ & High & 26.97\% & $a_2$ & 0.250
+            \\
+            \hline
+            $[30,40)$ & Medium & 40.66\% & $a_3$ & 0.150
+            \\
+            \hline
+            $[40,50)$ & Low-Medium & 21.16\% & $a_4$ & 0.050
+            \\
+            \hline
+            $[50,\infty)$ & Low & 9.96\% & $a_5$ & 0.025
+            \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{center}
+
+
+
+\begin{center}
+    \begin{table}[htbp]
+    \centering
+\caption{Complex Table Example}
+\label{table: Complex}
+\begin{tabular}{|C{2.4in}|C{0.4in}|C{0.9in}|C{0.7in}|C{0.7in}|}
+            \hline
+            \multicolumn{3}{|c|}{Risk Factor Groups} & \multicolumn{2}{c|}{Scaling Parameters}
+            \\
+            \hline
+            Factor Description & Count & Group & Symbol & Value 
+            \\
+            \hline
+            Anonymous Sex & 42 & \multirow{3}{0.7in}{\centering Anonymous Sex} & \multirow{3}{*}{$r_1$} & \multirow{3}{*}{$0.6$} 
+            \\
+            \cline{1-2}
+            Met contact through internet & 5 & & &
+            \\
+            \cline{1-2}
+            Bath house & 1 &  &  &
+            \\
+            \hline
+            Repeat STI & 55 & \multirow{5}{0.7in}{\centering STI} & \multirow{5}{*}{$r_2$} & \multirow{5}{*}{$0.2$} 
+            \\
+            \cline{1-2}
+            Co-Infection with other STI & 10 & & &
+            \\
+            \cline{1-2}
+            HIV Status & 5 &  &  &
+            \\
+            \cline{1-2}
+            PrEP for HIV & 4 &  &  &
+            \\
+            \cline{1-2}
+            HIV positive contact & 1 &  &  &
+            \\
+            \hline
+            Pregnant & 16 & \multirow{8}{0.7in}{\centering Pregnancy Related} & \multirow{8}{*}{$r_3$} & \multirow{8}{*}{$0.0$} 
+            \\
+            \cline{1-2}
+            Tested during first Trimester & 4 & & &
+            \\
+            \cline{1-2}
+            Treated $>4$ weeks prior to delivery  & 2 &  &  &
+            \\
+            \cline{1-2}
+            Received prenatal care & 2 &  &  &
+            \\
+            \cline{1-2}
+            Tested at delivery & 1 &  &  &
+            \\
+            \cline{1-2}
+            Tested at 28-32 Weeks & 1 &  &  &  
+            \\
+            \cline{1-2}
+            Tested $>4$ weeks prior to delivery & 1 &  &  &  
+            \\
+            \hline
+            Correctional facility & 20 & \multirow{1}{0.7in}{\centering Prison} & \multirow{1}{*}{$r_4$} & \multirow{1}{*}{$0.2$} 
+            \\
+            \hline
+            Under-housed/Homeless & 28 & \multirow{1}{0.7in}{\centering SES} & \multirow{1}{*}{$r_5$} & \multirow{1}{*}{$0.0$} 
+            \\
+            \hline
+            No condom used & 55 & \multirow{4}{0.7in}{\centering Sex Behavior} & \multirow{4}{*}{$r_6$} & \multirow{4}{*}{$0.0$}
+            \\
+            \cline{1-2}
+            More than one sex contacts & 22 &  &  & 
+            \\
+            \cline{1-2}
+            Shared sex toys & 1 &  &  & 
+            \\
+            \cline{1-2}
+            New sex contact in past 2 months & 23 &  &  & 
+            \\
+            \hline
+            Sex trade worker & 11 & \multirow{2}{0.7in}{\centering Sex Trade} & \multirow{2}{*}{$r_7$} & \multirow{2}{*}{$1.0$} 
+            \\
+            \cline{1-2}
+            Sex with sex trade worker & 6 &  &  & 
+            \\
+            \hline
+            Sex with same sex & 45 & \multirow{1}{0.7in}{\centering Same Sex} & \multirow{1}{*}{$r_8$} & \multirow{1}{*}{$0.6$} 
+            \\
+            \hline
+            Injection drug use & 38 & \multirow{6}{0.7in}{\centering Substance} & \multirow{6}{*}{$r_9$} & \multirow{6}{*}{$0.3$} 
+            \\
+            \cline{1-2}
+            Inhalation drug use & 43 &  &  & 
+            \\
+            \cline{1-2}
+            Judgement impaired by alcohol/drugs & 8 &  &  & 
+            \\
+            \cline{1-2}
+            Shared other drug equipment & 6 &  &  & 
+            \\
+            \cline{1-2}
+            Sex for drugs/shelter/food & 3 &  &  & 
+            \\
+            \cline{1-2}
+            Shared needles & 2 &  &  & 
+            \\
+            \hline
+            Tattoo and piercing & 5 & \multirow{5}{0.7in}{\centering Unknown} & \multirow{5}{*}{$r_{10}$} & \multirow{5}{*}{$0.0$} 
+            \\
+            \cline{1-2}
+            Travel outside province & 4 &  &  &
+            \\
+            \cline{1-2}
+            Other social venue & 1 &  &  & 
+            \\
+            \cline{1-2}
+            Unknown & 248 &  &  & 
+            \\
+            \cline{1-2}
+            Other & 7 &  &  & 
+            \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{center}
+
+%\begin{figure}[htbp]
+%    \begin{center}
+%        \includegraphics[width=0.9\textwidth]{Images/plotsMSV.png}
+%    \end{center}
+    %\caption[Example Plot}
+%    \label{fig: Exp}
+%\end{figure}
+
+\section{Section}
+\label{sec: sup 2}
+
+%\begin{figure}[htbp]
+%    \centering
+%    \begin{subfigure}[b]{0.30\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Images/plotsMSV.png}
+%         \caption{subplot1}
+%    \end{subfigure}
+%    \begin{subfigure}[b]{0.31\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Images/plotsMSV.png}
+%         \caption{subplot2}
+%    \end{subfigure}
+%    \begin{subfigure}[b]{0.33\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Images/plotsMSV.png}
+%         \caption{subplot3}
+%    \end{subfigure}
+%    \caption{Multi-plot}
+%    \label{fig: multi}
+%\end{figure}
+
+\section{Section}
+\label{sec: sup 3}
+literature~\cite{LiljerosEtAl:2003, LiljerosEtAl:2001, AnneEtAl:2004} and our data.
+
+\section{Section}
+\label{sec: sup 4}
