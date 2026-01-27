@@ -10,14 +10,13 @@
 [NoteForMu.md](NoteForMu.md): Discussion of expression of $\mu$ in $\mathcal{R}_c$ (need to update JD&TP's discussion email)
 
 
-[[Rc.tex]]([.pdf](Rc.pdf)): Todd version note for ODE of $p(t)$ and $\mathcal{R}_c$ and IV problem for $p(0)$
-- [[Rc_SIR.tex]]([[Rc_SIR.pdf|.pdf]]) simpler idea for shooting methods
-- [[p0Note|p0Note.md]]([[p0Note.pdf|.pdf]]): Richard's take on $p(0)$ problem
+[Rc.tex](Rc.tex)([.pdf](Rc.pdf)): Todd version note for ODE of $p(t)$ and $\mathcal{R}_c$ and IV problem for $p(0)$
+- [Rc_SIR.tex](Rc_SIR.tex)([.pdf](outputs/Rc_SIR.pdf)) simpler idea for shooting methods
+- [p0Note.md](p0Note.md)([.pdf](outputs/p0Note.pdf)): Richard's attempt on $p(0)$ problem
 
 [Initial_Values.md](Initial_Values.md)([.pdf](outputs/Initial_Values.pdf)): Eigen-direction idea for initial values of $R(0)$ and $\mathcal{R}_c(0)$
 
 [Simulation.md](Simulation.md): Summary notes of simulation results.
-
 
 [/Manuscript/main.tex](/Manuscript/main.tex): Main .tex file for the manuscript. Just templates now.
 - [Paper.md](Paper.md): Structure skeleton of the paper
