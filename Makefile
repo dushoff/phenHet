@@ -194,6 +194,7 @@ Paper.html: Paper.md
 
 Sources += $(wildcard *.R)
 
+## I guess never implemented a pathway for this
 Ignore += secrets.mk
 -include secrets.mk
 Rentrez.Rout: Rentrez.R
