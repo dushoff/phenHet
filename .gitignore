@@ -19,3 +19,7 @@ makestuff/
 .obsidian/
 .idea/
 SimData/
+
+*.bbl
+*.blg
+Manuscript/*.pdf  

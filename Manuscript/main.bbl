@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{KermMcKe}
+W.O. Kermack and A.G. McKendrick.
+\newblock A contribution to the mathematical theory of epidemics.
+\newblock {\em Proceedings of the Royal Society A}, 115:700--721, 1927.
+
 \bibitem{DushoffEtAl:2004}
 Jonathan Dushoff, Joshua~B. Plotkin, Simon~A. Levin, and David J.~D. Earn.
 \newblock Dynamical resonance can account for seasonality of influenza
