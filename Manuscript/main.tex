@@ -12,7 +12,7 @@
 \usepackage{graphics}
 \usepackage{caption}
 %\usepackage{subcaption}
-\usepackage{epstopdf}
+% \usepackage{epstopdf}
 \usepackage{enumerate}
 \usepackage{enumitem}
 \usepackage{etex}
@@ -30,20 +30,17 @@
 \usepackage{lineno}
 \usepackage{natbib}
 \usepackage[caption = false]{subfig}
-\usepackage[margin=1in]{geometry}
+\usepackage{geometry}
 %\linenumbers
 \allowdisplaybreaks
 
 \usepackage[labelfont=bf]{caption}
 \usepackage{multirow}
 
-
-
 \usepackage{array}
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% -ENVIRONMENTS-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,7 +63,6 @@
 %\newtheorem{conjecture}[theorem]{Conjecture}
 %\newtheorem*{notation}{Notation}
 
-
 \newcommand{\simplex}{\mathcal{S}}
 
 \title{Nonlinear Incidence Caused by Phenomenological Heterogeneity in Infectious Disease Dynamics with Random Network Approaches}
@@ -86,7 +82,6 @@
 %\affil[3]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{610101}, \state{State}, \country{Country}}}
 \date{}
 
-
 \begin{document}
 
 \maketitle
@@ -103,14 +98,14 @@ Compartmental models with dynamics controlled by a system of ordinary differenti
 \begin{figure}[htbp]
 	\begin{center}
 		\begin{tikzpicture}[->, >=stealth',shorten >=1pt,auto, node distance=3cm, thick, main node/.style={rectangle,draw, font = \sffamily\Large\bfseries}]
-			
+
 			\node[main node] (S) {$S$};
 			\node[main node] (I) [right of=S] {$I$};
 			\node[main node] (R) [right of=I] {$R$};
 			\draw[thick,->] (S) -- (I) node[midway,sloped,above,rotate=0] {$\beta S I$};
-			
+
 			\draw[thick,->] (I) -- (R) node[midway,sloped,above,rotate=0] {$\gamma I$};
-			
+
 		\end{tikzpicture}
 	\end{center}
 	\caption[Basic SIR model]{Flow diagram of a simple version of SIR model. The susceptible, infectious and recovered/removed compartments are represented by $S$, $I$ and $R$ respectively. The incidence of infection has a rate equal to the product of $S$ and $I$ times a constant per-infected transmission rate of $\beta$, which governs the flow from $S$ to $I$. The flow from $I$ to $R$ represents recovery of infectious individuals with a per capita rate $\gamma$. Figure was created using Latex Tikz Picture.}
@@ -138,8 +133,6 @@ Very rare to discuss connectivity with locality i.e. stable social structure.
 Network and random network approach: from Pastor-Satorras, to Newman, to MSV, to Zhao-Magpantay
 
 Here in this manuscript, we investigate phenomenological heterogeneity of susceptibility, connectivity and locality together under the MSV random network framework to reveal new perspective and understanding of nonlinear incidence.
-
-
 
 \subsection{SubSection}
 \label{sec: sub1}
@@ -169,7 +162,6 @@ In practice, diagnoses of early versus late latent stages are determined based o
 \section{Data}
 \label{sec: data}
 
-
 \section{Model Setup}
 \label{sec: model}
 
@@ -180,7 +172,6 @@ Enumerate
 
 \subsection{Subsection}
 \label{sec: sub 2}
-
 
 Equation
 \begin{equation}
@@ -203,15 +194,11 @@ Class Eqns
     \end{cases} 
 \end{equation}
 
-
-
 \section{Comparing the network-SIR and MA-SIR models}
 \label{sec: MA compare}
 
-
 \section{Conclusions}
 \label{sec: Conclusion}
-
 
 \section*{Acknowledgments}
 We thank XX for his help with the literature review. 
@@ -225,6 +212,5 @@ Funding
 
 \newpage
 \include{supplement}
-
 
 \end{document}
