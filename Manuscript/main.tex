@@ -98,7 +98,46 @@ Abstract
 \section{Introduction}
 \label{sec: Intro}
 
-Compartmental models with dynamics controlled by a system of ordinary differential equations, like the susceptible-infectious-recovered (SIR) model discussed by Kermack \& McKendrick\cite{KermMcKe}, are commonly used when modeling disease transmission. 
+Compartmental models with dynamics controlled by a system of ordinary differential equations, like the well-known susceptible-infectious-recovered (SIR) model discussed by Kermack \& McKendrick\cite{KermMcKe}, are commonly used when modeling disease transmission. 
+
+\begin{figure}[htbp]
+	\begin{center}
+		\begin{tikzpicture}[->, >=stealth',shorten >=1pt,auto, node distance=3cm, thick, main node/.style={rectangle,draw, font = \sffamily\Large\bfseries}]
+			
+			\node[main node] (S) {$S$};
+			\node[main node] (I) [right of=S] {$I$};
+			\node[main node] (R) [right of=I] {$R$};
+			\draw[thick,->] (S) -- (I) node[midway,sloped,above,rotate=0] {$\beta S I$};
+			
+			\draw[thick,->] (I) -- (R) node[midway,sloped,above,rotate=0] {$\gamma I$};
+			
+		\end{tikzpicture}
+	\end{center}
+	\caption[Basic SIR model]{Flow diagram of a simple version of SIR model. The susceptible, infectious and recovered/removed compartments are represented by $S$, $I$ and $R$ respectively. The incidence of infection has a rate equal to the product of $S$ and $I$ times a constant per-infected transmission rate of $\beta$, which governs the flow from $S$ to $I$. The flow from $I$ to $R$ represents recovery of infectious individuals with a per capita rate $\gamma$. Figure was created using Latex Tikz Picture.}
+	\label{fig: MA-SIR}
+\end{figure}
+
+These models often assumes that the population is homogeneous and fully mixed, while the contacts between individual follows the law of mass-action, such that the new infection is governed by a incidence term that is linear with respect to each involved compartment size, like the $\beta S I$ flow of the example SIR model in Figure~\ref{fig: MA-SIR}.
+
+Such assumptions simplify the dynamic system and keep the model analysis mathematically tractable, but they are hard to associated with the heterogeneous nature of the population, where individuals could vary in different parameters that affect the transmission, like susceptibility, contact rates and infectivity.
+Already back to when the model is developed (McKendrick 1939), such inconsistency drove the modelers to alternative these assumptions when fitting the data. 
+
+To take such parametric heterogeneity into compartmental models while keep reasonable level of tractability, the common way is to divide population into limited number of groups that each have different characteristic parameter for transmission. 
+Such approaches often assume that each group are homogeneous and still assumes that the population is fully mixed, so the new incidence is still governed by linear terms with respected to involved compartment size.
+A important disadvantage of this approach is heterogeneity within a group cannot be incorporated with a small number of groups (Novozhilov 08), which might not align well with the variation in individuals.
+Also, the fully mixing assumption limits the ability to consider heterogeneity in contact patterns.
+
+\textbf{Another approach is to consider parametric heterogeneity of population in a more phenomenological way, such that the incidence is governed by some non-linear, functional format of the current state of the dynamic system. }
+
+Early approaches (literature): the nonlinear incidence are raised to fit data, but lack of solid mechanistic understanding.
+
+Later, Novozhilov \& DwyerParsons approaches provide more mechanistic explanation to some nonlinear incidence term like $I S^p$ but focus only on parametric heterogeneity of susceptibility.
+Some attempts are made for consider infectivity and connectivity(identical in and out degree), but with limitations.
+Very rare to discuss connectivity with locality i.e. stable social structure. 
+
+Network and random network approach: from Pastor-Satorras, to Newman, to MSV, to Zhao-Magpantay
+
+Here in this manuscript, we investigate phenomenological heterogeneity of susceptibility, connectivity and locality together under the MSV random network framework to reveal new perspective and understanding of nonlinear incidence.
 
 
 
