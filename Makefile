@@ -38,6 +38,12 @@ scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 
 ######################################################################
 
+alldirs += Manuscript
+
+Ignore += $(alldirs)
+
+######################################################################
+
 ## scaleExamples has mysterious changes that seem to slow it down
 scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 	$(pipeR)
