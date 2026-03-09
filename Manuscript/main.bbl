@@ -17,4 +17,25 @@ S.~Bansal and L.A. Meyers.
 \newblock The impact of past epidemics on future disease dynamics.
 \newblock {\em Journal of Theoretical Biology}, 309:176--184, 2012.
 
+\bibitem{Newman:2003}
+M.E.J. Newman.
+\newblock The structure and function of complex networks.
+\newblock {\em SIAM Review}, 45(2):167--256, 2003.
+
+\bibitem{MolloyReed:1995}
+M.~Molloy and B.~Reed.
+\newblock A critical point for random graphs with a given degree sequence.
+\newblock {\em Random Struct. Algorithms}, 6:161--180, 1995.
+
+\bibitem{MolloyReed:1998}
+M.~Molloy and B.~Reed.
+\newblock The size of the giant component of a random graph with a given degree
+  sequence.
+\newblock {\em Combinatorics, Probability and Computing}, 7(3):295–305, 1998.
+
+\bibitem{MillerSlimVolz:2012}
+J.C. Miller, A.~C. Slim, and E.~M. Volz.
+\newblock Edge-based compartmental modelling for infectious disease spread.
+\newblock {\em Journal of The Royal Society Interface}, 9(70):890--906, 2012.
+
 \end{thebibliography}

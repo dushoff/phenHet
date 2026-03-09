@@ -159,11 +159,35 @@ In practice, diagnoses of early versus late latent stages are determined based o
 
 \end{itemize}
 
-\section{Data}
-\label{sec: data}
+\section{Random Network Models for Infectious Disease}
+\label{sec: Network}
 
-\section{Model Setup}
+The phenomenological heterogeneity models mentioned previously focus more on biological difference, like susceptibility and infectivity between individuals, while assuming homogeneity for social connections, i.e. population is fully mixed, so the probability of any pair of individual encounter is the same. 
+
+Graph, or more specifically, random network approaches are considered to be a good way to introduce social heterogeneity into compartment models while keeping dynamic information and mathematical tractability.
+Many of these models employ a network composed of an undirected graph whose vertices represent individuals in a host population and edges are connections that allow infection to be transmitted.
+
+%%% Degree distribution.
+
+\cite{Newman:2003} introduce percolation-based transmission over random networks following \cite{MolloyReed:1995, MolloyReed:1998}, provide basic reproductive number $\mathcal{R}_0$ as outbreak threshold and expectation of final infection size $R(\infty)$ for all possible random network realizations with the same degree distribution.  
+
+Based on Newman's work, \cite{MillerSlimVolz:2012} developed their new framework for random network models, such that the outbreak dynamic .
+
+we use probability generating functions (PGFs) to find the expectation of these component sizes for network with large size $N$ and prove that such expectation provides an equivalent estimate as in Theorem~\ref{thm: Giant Component Size}. This PGF approach will also give a threshold parameter for the existence of giant component equivalent to the threshold using $\Lambda$.
+This will allow us to extend the ideas later on  in Section~\ref{sec: perco} to accommodate transmissibility of diseases to the PGF method.
+
+We always assume in this section that we have a random graph $\mathbb{G}_{N, \textbf{d}}$ with large enough size $N \rightarrow \infty$, generated from a degree sequence $\textbf{d}$ and corresponding degree distribution $p_k$.
+Recall that if $K$ is the degree of a randomly chosen vertex in the network we use the notation $p_k=P(K=k)$ for its probability mass function. The corresponding probability generating function is given by,
+\begin{equation}
+	\label{eqn: pgfgp}
+	G_p(x)=\sum_{k=1}^\infty p_k x^k.
+\end{equation}
+Properties of PGFs are reviewed in Appendix~\ref{sec: pgf}.
+
+\section{Connecting Phenomenological Heterogeneity with Random Network}
 \label{sec: model}
+
+
 
 Enumerate
 \begin{enumerate}
