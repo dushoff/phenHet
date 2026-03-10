@@ -1,6 +1,6 @@
 ## This is the MS subdirectory of phenHet
 
-current: target
+current: main.pdf
 -include target.mk
 Ignore = target.mk
 
