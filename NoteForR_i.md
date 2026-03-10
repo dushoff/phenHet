@@ -205,6 +205,8 @@ $$\begin{align}
 \\
 & = \mathcal{R}_i \times \Big\{(\beta+\gamma)\Big[ \mathcal{R}^*_c (1-\frac{\phi_I}{\phi_S}) \Big]-\beta-\gamma\mathcal{R}_i \Big\}
 \end{align}$$
+??Question(**To do for Todd**): Can we solve this ODE in some way or can we connect this ode with the $p$ or $R_c$ dynamics?
+
 Note we have 
 $$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}=\frac{\beta}{\beta+\gamma}\frac{\phi_s}{\phi} \times \mathbb{E}\Big[ K^*_I-1\Big]$$ where $\frac{\phi_s}{\phi} \times \mathbb{E}\Big[ K^*_I-1\Big]$ could be interpreted as average number of susceptible neighbours of newly infected focal vertex.
 So $$\mathcal{R}^*_c \times \frac{\phi_I}{\phi_S}\propto \frac{\phi_I}{\phi}\times\mathbb{E}\Big[ K^*_I-1\Big]$$
@@ -213,7 +215,7 @@ which is the average infected neighbors (except its infector represented by the 
 Similar $S-I$ structure could also been seen in the following homogeneous version.
 
 
-**TODO: Verify the R_i ODE in simulation**
+**TODO for Richard: Verify the R_i ODE in simulation**
 #### Homogeneous SIR
 Note this derivation also applies to homogeneous SIR model.
 $$\begin{align}
