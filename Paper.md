@@ -16,16 +16,17 @@ The .tex file for the manuscript is [/Manuscript/main.tex](Manuscript/main.tex)
 		- [ZhaoMagpantay2025]([https://doi.org/10.1002/mma.10963](https://doi.org/10.1002/mma.10963))
 		- Section 1 of [JR_NegBinom_Result.md](JR_NegBinom_Result.md)
 	- Zhao1 Result: no locality, heterogeneity of in-degree
-		- Assumptions (**Need some Help from @JD here**)
+		- Assumptions (**Need some help from @JD here to formalize the model behind Zhao1 result**)
 		- Section 2 of [JR_NegBinom_Result.md](JR_NegBinom_Result.md)
 		- Connection with known results of Novozhilov and Dwyer & Parsons
 		- [JD_RZ_curves.R](JD_RZ_curves.R)
-	- MFSH (**refer to literature**): no locality, heterogeneity of general degree(equal in and out degree)
-		- Assumptions
+	- MFSH (**refer to literature: MSV + Novozhilov**): no locality, heterogeneity of general degree(equal in and out degree)
+		- Assumptions: in-degree and out-degree are the same but neighbors keep changing instantaneously (i.e. random paring for edges happens all the time) 
 	- MSV configuration model: Heterogeneity of general degree with locality
 		- Assumptions: same as MSV config model
 		- Section 3 of [JR_NegBinom_Result.md](JR_NegBinom_Result.md)
-		- [Initial_Values.md](Initial_Values.md): Discussion about the initial value for $R(0)$ (works well) and $p(0)$ (not working)
+		- [Initial_Values.md](Initial_Values.md): Discussion about the initial value for $R(0)$ (works well with linear approx.) and $p(0)$ (not working with linear approx.)
+			- **Need to better understand [Todd's note](outputs/Rc.pdf)** for $p(0)$ working file: [p0Note.md](p0Note.md)
 		- $\mathcal{R}^*_c$ Result: [NoteForR_c.md](NoteForR_c.md)
 			- Comparison to simulation [Simulation.md](Simulation.md) 
 		- Discussion of $\mathcal{R}_c$ vs $\mathcal{R}^*_c$: competing infection
