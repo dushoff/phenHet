@@ -15,10 +15,10 @@ The .tex file for the manuscript is [/Manuscript/main.tex](Manuscript/main.tex)
 2. Random Network Approaches
 	- Introduction to MSV type of random network framework
 		- [MillerSlimVolz2011](./refs/MillerSlimVolz2011.pdf)
-		- [ZhaoMagpantay2025]([https://doi.org/10.1002/mma.10963](https://doi.org/10.1002/mma.10963))
+		- [ZhaoMagpantay2025](https://doi.org/10.1002/mma.10963](https://doi.org/10.1002/mma.10963)
 		- Section 1 of [JR_NegBinom_Result.md](JR_NegBinom_Result.md)
 	- Zhao1 Result: no locality, heterogeneity of in-degree
-		- Assumptions (**Need some help from @JD here to formalize the model behind Zhao1 result**)
+		- Assumptions (**Need some help from @JD here to formalize the network model behind Zhao1 result**)
 		- Section 2 of [JR_NegBinom_Result.md](JR_NegBinom_Result.md)
 		- Connection with known results of Novozhilov and Dwyer & Parsons
 		- [JD_RZ_curves.R](JD_RZ_curves.R)
