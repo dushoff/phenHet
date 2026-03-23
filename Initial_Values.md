@@ -101,7 +101,6 @@ We have conclude this should be a final value problem, since when $t\rightarrow 
 
 Then we could derived the $\mathcal{R}_c$ using $p(t)$:
 $$\mathcal{R}_c(t)=\frac{p(t)}{\phi(t)} \times (\mathbb{E}[K_I^*]-1)=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
-For $N=50,000, \gamma=0.20, \beta=0.25, I_0=1$: 16 simulation ![](SimData/50K_g020_16sim.png)
 For $N=1,000,000, \gamma=\beta=0.1, I_0=1$: New simulation![](docs/pix/plotsMSV.png)
 
 However, as observed in the old simulation, if network size $N$ not large enough (and $\gamma$ is small, i.e. infectious duration $D$ is long), there is a good possibility that competing infection occurs, even for nodes infected at $t\rightarrow0$ but being infectious for a long time, s.t. $$\frac{d}{dt}p(t)|_{t=0}\neq 0 \Leftrightarrow p(0)\neq \frac{\beta}{\beta+\gamma}$$
