@@ -1,9 +1,21 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{KermMcKe}
 W.O. Kermack and A.G. McKendrick.
 \newblock A contribution to the mathematical theory of epidemics.
 \newblock {\em Proceedings of the Royal Society A}, 115:700--721, 1927.
+
+\bibitem{McKendrick:1940}
+
+
+\bibitem{Novozhilov:2008}
+Artem~S. Novozhilov.
+\newblock On the spread of epidemics in a closed heterogeneous population.
+\newblock {\em Mathematical Biosciences}, 215(2):177--185, 2008.
+
+\bibitem{Dushoff:1999}
+Host heterogeneity and disease endemicity: A moment-based approach.
+\newblock {\em Theoretical Population Biology}, 56(3):325--335, 1999.
 
 \bibitem{DushoffEtAl:2004}
 Jonathan Dushoff, Joshua~B. Plotkin, Simon~A. Levin, and David J.~D. Earn.

@@ -108,26 +108,33 @@ Compartmental models with dynamics controlled by a system of ordinary differenti
 
 		\end{tikzpicture}
 	\end{center}
-	\caption[Basic SIR model]{Flow diagram of a simple version of SIR model. The susceptible, infectious and recovered/removed compartments are represented by $S$, $I$ and $R$ respectively. The incidence of infection has a rate equal to the product of $S$ and $I$ times a constant per-infected transmission rate of $\beta$, which governs the flow from $S$ to $I$. The flow from $I$ to $R$ represents recovery of infectious individuals with a per capita rate $\gamma$. Figure was created using Latex Tikz Picture.}
+	\caption[Basic SIR model]{Flow diagram of a simple version of SIR model. The susceptible, infectious and recovered/removed compartments are represented by $S$, $I$ and $R$ respectively. The incidence of infection has a rate equal to the product of $S$ and $I$ times a constant per-infected transmission rate of $\beta$, which governs the flow from $S$ to $I$. The flow from $I$ to $R$ represents recovery of infectious individuals with a per capita rate $\gamma$.}
 	\label{fig: MA-SIR}
 \end{figure}
 
 These models often assumes that the population is homogeneous and fully mixed, while the contacts between individual follows the law of mass-action, such that the new infection is governed by a incidence term that is linear with respect to each involved compartment size, like the $\beta S I$ flow of the example SIR model in Figure~\ref{fig: MA-SIR}.
 
-Such assumptions simplify the dynamic system and keep the model analysis mathematically tractable, but they are hard to associated with the heterogeneous nature of the population, where individuals could vary in different parameters that affect the transmission, like susceptibility, contact rates and infectivity.
-Already back to when the model is developed (McKendrick 1939), such inconsistency drove the modelers to alternative these assumptions when fitting the data. 
+Such assumptions simplify the dynamic system and keep the model analysis mathematically tractable, but they are hard to associated with the heterogeneous nature of the population, where individuals could vary in different parameters that affect the transmission, like susceptibility, infectivity and contact rates.
+Already back to when the model is developed (McKendrick 1939)\cite{McKendrick:1940}, such inconsistency drove the modelers to alternative these assumptions when fitting the data. 
+
+Some early approaches (literature): the nonlinear incidence are raised to fit data, but lack of solid mechanistic understanding.
+
+Dushoff\cite{Dushoff:1999} Dwyer(\textbf{Papers}) start to think about “parametric” heterogeneity as being underlain by unknowable distributions in population and to use moment transformations and moment-closure approximations to attempt to understand the behavior of a model without knowing the exact functions that parameterize it.
 
 To take such parametric heterogeneity into compartmental models while keep reasonable level of tractability, the common way is to divide population into limited number of groups that each have different characteristic parameter for transmission. 
-Such approaches often assume that each group are homogeneous and still assumes that the population is fully mixed, so the new incidence is still governed by linear terms with respected to involved compartment size.
-A important disadvantage of this approach is heterogeneity within a group cannot be incorporated with a small number of groups (Novozhilov 08), which might not align well with the variation in individuals.
+Such approaches often assume that each group are homogeneous while the whole population is fully mixed, so the new incidence is still governed by linear terms with respected to involved compartment size.
+An important disadvantage of this approach is heterogeneity within a group cannot be incorporated with a small number of groups\cite{Novozhilov:2008}, which might not align well with the variation in individuals.
 Also, the fully mixing assumption limits the ability to consider heterogeneity in contact patterns.
 
-\textbf{Another approach is to consider parametric heterogeneity of population in a more phenomenological way, such that the incidence is governed by some non-linear, functional format of the current state of the dynamic system. }
+\textbf{Another approach is to consider parametric heterogeneity of population in a more phenomenological way assuming , such that the incidence is governed by some non-linear, functional format of the current state of the dynamic system. }
 
-Early approaches (literature): the nonlinear incidence are raised to fit data, but lack of solid mechanistic understanding.
 
-Later, Novozhilov \& DwyerParsons approaches provide more mechanistic explanation to some nonlinear incidence term like $I S^p$ but focus only on parametric heterogeneity of susceptibility.
-Some attempts are made for consider infectivity and connectivity(identical in and out degree), but with limitations.
+
+
+Later, Novozhilov\cite{Novozhilov:2008}  look into heterogeneity in disease parameters which are considered as inherent and invariant property of individuals.
+Such provide more mechanistic explanation to some nonlinear incidence term like $I S^p$ but it focus more on parametric heterogeneity of susceptibility.
+
+Some attempts(citation!) are made for consider infectivity and connectivity(identical in and out degree), but with limitations.
 Very rare to discuss connectivity with locality i.e. stable social structure. 
 
 Network and random network approach: from Pastor-Satorras, to Newman, to MSV, to Zhao-Magpantay
