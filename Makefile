@@ -184,6 +184,8 @@ NoteForR_c.pdf: NoteForR_c.md
 NoteForR_i.pdf:  NoteForR_i.md
 	$(rmdp_r)
 
+## NoteForR_i.fix.pdf: 
+## NoteForR_i.md.tex:  NoteForR_i.md
 ## NoteForR_i.md.tex:  NoteForR_i.md
 
 ## Rnotes.pdf: Rnotes.tex
