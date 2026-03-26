@@ -2,6 +2,8 @@ This is the skeleton file for the manuscript with the structure and hyperlinks t
 
 The .tex file for the manuscript is [/Manuscript/main.tex](Manuscript/main.tex)
 
+Update functions of **align** to **aligned** for formulas.
+
 1. Introduction:
 	- What is PhenHet
 	- Why PhenHet is important
@@ -22,7 +24,7 @@ The .tex file for the manuscript is [/Manuscript/main.tex](Manuscript/main.tex)
 		- Section 2 of [JR_NegBinom_Result.md](JR_NegBinom_Result.md)
 		- Connection with known results of Novozhilov and Dwyer & Parsons
 		- [JD_RZ_curves.R](JD_RZ_curves.R)
-	- MFSH (**refer to literature: MSV + Novozhilov**): no locality, heterogeneity of general degree(equal in and out degree)
+	- Mean Field Social Heterogeneity (**refer to literature: MSV + Novozhilov**): no locality, heterogeneity of general degree(equal in and out degree)
 		- Assumptions: in-degree and out-degree are the same but neighbors keep changing instantaneously (i.e. random paring for edges happens all the time) 
 	- MSV configuration model: Heterogeneity of general degree with locality
 		- Assumptions: same as MSV config model

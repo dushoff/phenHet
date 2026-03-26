@@ -31,11 +31,10 @@
 * `scaleExamples.R` is set up to use *either* machinery, based on what's in the Makefile: compare `scaleEdges.Rout` with `scaleExamples.Rout`. `compareSims.R` (not yet plumbed) is the beginning of machinery to compare the two approaches.
 
 ## Other code files
-JD's file: see [Makefile](Makefile)
+JD's R file: see [Makefile](Makefile)
 
 - `NetworkODE.R`: MSV style ODE numeric solving machine
 - `NetworkRun.R`: Working file for comparing vertex-based simulations and results. Need to update with new edge-based machinery 
 - `NetworkSimulator.R`: Vertex-based network transmission simulator in R based on Gillespie Algorithm
 - `simMSV.R` compares the $\mathcal{R}_i$ and $\mathcal{R}_c$ result with the edge-based simulations. 
 - `JD_RZ_curves` generate Zhao1 result curves for primary investigation of Zhao1 result
-- 

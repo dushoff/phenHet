@@ -22,7 +22,7 @@ $$\begin{cases}
 \end{cases}$$
 
 Similar with the derivation of $\mathcal{R}_{c,0}$, using first order approximation, we have:
-$$\begin{align}
+$$\begin{aligned}
 G_p(\phi(t))&= G_p(1-\omega(t)) = \sum_kp_k(1-\omega)^k
 \\
 & =\sum_k p_k [1-k\omega+o(\omega^2)]
@@ -30,9 +30,9 @@ G_p(\phi(t))&= G_p(1-\omega(t)) = \sum_kp_k(1-\omega)^k
 & \approx \sum_k p_k- \omega\sum_k k p_k
 \\
 &= 1-\delta\omega
-\end{align}$$
+\end{aligned}$$
 and
-$$\begin{align}
+$$\begin{aligned}
 G'_p(\phi(t))&= G'_p(1-\omega(t)) = \sum_k k p_k(1-\omega)^{k-1}
 \\
 & =\sum_k k p_k [1-(k-1)\omega+o(\omega^2)]
@@ -40,7 +40,7 @@ G'_p(\phi(t))&= G'_p(1-\omega(t)) = \sum_k k p_k(1-\omega)^{k-1}
 & \approx \sum_k k p_k- \omega\sum_k k(k-1) p_k
 \\
 &= \delta(1-\frac{G''_p(1)}{\delta}\times\omega)
-\end{align}$$
+\end{aligned}$$
 
 Using these approximation, the linearized ODEs near $t \rightarrow 0$ are
 $$\begin{cases}
