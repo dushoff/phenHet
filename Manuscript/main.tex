@@ -170,22 +170,15 @@ In practice, diagnoses of early versus late latent stages are determined based o
 \section{Random Network Models for Infectious Disease}
 \label{sec: Network}
 
-The phenomenological heterogeneity models mentioned previously focus more on epidemiological differences at individual level, like susceptibility and infectivity, while assuming homogeneity for social connections, i.e. population is fully mixed, so the probability of any pair of individual encounter is the same. 
+The phenomenological heterogeneity models mentioned previously focus more on epidemiological and biological differences against infection at individual level, like susceptibility and infectivity, while assuming homogeneity for social connections, i.e. population is fully mixed, so the probabilities of any random pair of individuals encounter are the same.
 
 Graph, or more specifically, random network approaches are considered to be a good way to introduce social heterogeneity into compartment models while keeping dynamic information and mathematical tractability.
-Many of these models employ a network composed of an undirected graph whose vertices represent individuals in a host population and edges are connections that allow infection to be transmitted.
+Many of these models employ a network composed of an graph whose vertices represent individuals in a host population and edges are connections that allow infection to be transmitted.
 
 The random network we will discussed is a representation of large population characterized by the distribution of the network's vertex degrees (i.e. degree distribution).
+The degree of vertices, which is defined as number of edges connected to the vertex, is reflecting the corresponding individual's social connections that allows the infection to transmit, affecting the susceptibility and infectivity from the social perspective.
 
-
-
-The degree of vertices, which is defined as number of edges connected to the vertex, is reflecting the corresponding individual's social connections while affecting the susceptibility and infectivity from the social perspective.
-
-
-
-
-The network is random in a sense that the
-
+With the specific degree distribution, these networks models have random topology of the edges, where stubs(half-edges for undirected graph) or directed edges are first assigned to vertices according to the degree distribution, then all individuals are connected following a uniformly random pairing process. 
 %%% Degree distribution.
 Molloy \& Reed~\cite{MolloyReed:1995, MolloyReed:1998} provided 
 
@@ -195,7 +188,8 @@ Later, \cite{MillerSlimVolz:2012} developed their new framework for random netwo
 
 A thorough, explicit list of assumptions and the discussion about relationship between different models in this series of continuously developed work was summarized and presented in Zhao \& Magpantay\cite{ZhaoMagpantay:2024}.
 
-Following their approaches, we will use probability generating functions (PGFs) to find the expectation of these component sizes for network with large size $N$ and prove that such expectation provides an equivalent estimate as in Theorem~\ref{thm: Giant Component Size}. This PGF approach will also give a threshold parameter for the existence of giant component equivalent to the threshold using $\Lambda$.
+Following their approaches, this manuscript will use probability generating function(PGF) to find the expectation of these component sizes for network with large size $N$ and prove that such expectation provides an equivalent estimate as in Theorem~\ref{thm: Giant Component Size}. 
+This PGF approach will also give a threshold parameter for the existence of giant component equivalent to the threshold using $\Lambda$.
 This will allow us to extend the ideas later on  in Section~\ref{sec: perco} to accommodate transmissibility of diseases to the PGF method.
 
 We always assume in this section that we have a random graph $\mathbb{G}_{N, \textbf{d}}$ with large enough size $N \rightarrow \infty$, generated from a degree sequence $\textbf{d}$ and corresponding degree distribution $p_k$.
