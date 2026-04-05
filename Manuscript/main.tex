@@ -173,14 +173,18 @@ In practice, diagnoses of early versus late latent stages are determined based o
 The phenomenological heterogeneity models mentioned previously focus more on epidemiological and biological differences against infection at individual level, like susceptibility and infectivity, while assuming homogeneity for social connections, i.e. population is fully mixed, so the probabilities of any random pair of individuals encounter are the same.
 
 Graph, or more specifically, random network approaches are considered to be a good way to introduce social heterogeneity into compartment models while keeping dynamic information and mathematical tractability.
-Many of these models employ a network composed of an graph whose vertices represent individuals in a host population and edges are connections that allow infection to be transmitted.
 
-The random network we will discussed is a representation of large population characterized by the distribution of the network's vertex degrees (i.e. degree distribution).
-The degree of vertices, which is defined as number of edges connected to the vertex, is reflecting the corresponding individual's social connections that allows the infection to transmit, affecting the susceptibility and infectivity from the social perspective.
+Many of these models for infectious disease employ a network composed of an simple graph whose vertices represent individuals in a host population and edges are connections that allow infection to be transmitted. 
+The network we will discussed is a representation of communities with large population, characterized by the distribution of the network's vertex degrees (i.e. degree distribution). 
+The degree, which is defined as number of edges connected to the vertex, reflect the corresponding individual's social connections that allows the infection to transmit, affecting the susceptibility and infectivity from the social perspective.
 
-With the specific degree distribution, these networks models have random topology of the edges, where stubs(half-edges for undirected graph) or directed edges are first assigned to vertices according to the degree distribution, then all individuals are connected following a uniformly random pairing process. 
+The idea of random network model approaches is not considering any graph with specific edge topology, but the common property related to disease transmission among the set of all possible network with the same degree distribution.
+Each possible network with specific edge topology is an element of the set and called a realization of the random network:
+For each realization, stubs(half-edges for undirected graph) or directed edges are first assigned to vertices according to the degree distribution, then all individuals are connected following a uniformly random pairing process of stubs or between directed edges and vertices, such that every realization in the set has equal possibility to be chosen.
 %%% Degree distribution.
-Molloy \& Reed~\cite{MolloyReed:1995, MolloyReed:1998} provided 
+Molloy \& Reed~\cite{MolloyReed:1995, MolloyReed:1998} provided a series of results for some mean-field graph properties of random networks with large enough size based on random graph theory. 
+They further proved that the such graph properties of each realization will converge to their mean-field approximation asymptotically as the network size increase. 
+Such approaches 
 
 Newman~\cite{Newman:2002,Newman:2003, Newman:2010} introduced percolation-based transmission model for infectious disease on heterogeneous, which provides basic reproductive number $\mathcal{R}_0$ as outbreak threshold and expectation of final infection size $R(\infty)$ for all possible random network realizations with the same degree distribution.  
 
