@@ -10,7 +10,7 @@ Ignore = target.mk
 -include makestuff/perl.def
 
 vim_session:
-	bash -cl "vmt todo.md resources.md README.md"
+	bash -ic "vmt todo.md resources.md README.md"
 
 ######################################################################
 
