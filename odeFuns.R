@@ -1,0 +1,4 @@
+.libPaths()
+library(shellpipes)
+
+saveEnvironment()

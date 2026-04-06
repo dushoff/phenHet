@@ -1,0 +1,260 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows,decorations.pathreplacing,tikzmark,calc}
+\tikzset{break/.style={fill=white, inner sep=1pt}}
+\tikzset{inline/.style={column sep = 2.5em,inner sep = 1pt}}
+\usetikzlibrary{arrows,positioning}
+
+\usepackage{amsmath,amsfonts,amsthm,amssymb,thmtools,mathtools,mathrsfs,dsfont}
+\usepackage{bbold}
+\usepackage{graphics}
+\usepackage{caption}
+%\usepackage{subcaption}
+% \usepackage{epstopdf}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{etex}
+\usepackage{setspace}
+\usepackage{chngpage}
+\usepackage{soul}
+\usepackage{ifthen}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{lineno}
+\usepackage{natbib}
+\usepackage[caption = false]{subfig}
+\usepackage{geometry}
+%\linenumbers
+\allowdisplaybreaks
+
+\usepackage[labelfont=bf]{caption}
+\usepackage{multirow}
+
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -ENVIRONMENTS-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{algorithm}[theorem]{Algorithm}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+%\newtheorem{running example}[theorem]{Running Example}
+%\newtheorem*{construction}{Construction}
+
+%\newtheorem*{note}{Note}
+%\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem*{notation}{Notation}
+
+\newcommand{\simplex}{\mathcal{S}}
+
+\title{Nonlinear Incidence Caused by Phenomenological Heterogeneity in Infectious Disease Dynamics with Random Network Approaches}
+\author{Author}
+%\author*[1,2]{\fnm{First} \sur{Author}}\email{iauthor@gmail.com}
+
+%\author[2,3]{\fnm{Second} \sur{Author}}\email{iiauthor@gmail.com}
+%\equalcont{These authors contributed equally to this work.}
+
+%\author[1,2]{\fnm{Third} \sur{Author}}\email{iiiauthor@gmail.com}
+%\equalcont{These authors contributed equally to this work.}
+
+%\affil*[1]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{100190}, \state{State}, \country{Country}}}
+
+%\affil[2]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{10587}, \state{State}, \country{Country}}}
+
+%\affil[3]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{610101}, \state{State}, \country{Country}}}
+\date{}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+\bigskip
+Abstract
+\end{abstract}
+
+\section{Introduction}
+\label{sec: Intro}
+
+Compartmental models with dynamics controlled by a system of ordinary differential equations, like the well-known susceptible-infectious-recovered (SIR) model discussed by Kermack \& McKendrick\cite{KermMcKe}, are commonly used when modeling disease transmission. 
+
+\begin{figure}[htbp]
+	\begin{center}
+		\begin{tikzpicture}[->, >=stealth',shorten >=1pt,auto, node distance=3cm, thick, main node/.style={rectangle,draw, font = \sffamily\Large\bfseries}]
+
+			\node[main node] (S) {$S$};
+			\node[main node] (I) [right of=S] {$I$};
+			\node[main node] (R) [right of=I] {$R$};
+			\draw[thick,->] (S) -- (I) node[midway,sloped,above,rotate=0] {$\beta S I$};
+
+			\draw[thick,->] (I) -- (R) node[midway,sloped,above,rotate=0] {$\gamma I$};
+
+		\end{tikzpicture}
+	\end{center}
+	\caption[Basic SIR model]{Flow diagram of a simple version of SIR model. The susceptible, infectious and recovered/removed compartments are represented by $S$, $I$ and $R$ respectively. The incidence of infection has a rate equal to the product of $S$ and $I$ times a constant per-infected transmission rate of $\beta$, which governs the flow from $S$ to $I$. The flow from $I$ to $R$ represents recovery of infectious individuals with a per capita rate $\gamma$.}
+	\label{fig: MA-SIR}
+\end{figure}
+
+These models often assumes that the population is homogeneous and fully mixed, while the contacts between individual follows the law of mass-action, such that the new infection is governed by a incidence term that is linear with respect to each involved compartment size, like the $\beta S I$ flow of the example SIR model in Figure~\ref{fig: MA-SIR}.
+
+Such assumptions simplify the dynamic system and keep the model analysis mathematically tractable, but they are hard to associated with the heterogeneous nature of the population, where individuals could vary in different parameters that affect the transmission, like susceptibility, infectivity and contact rates.
+Already back to when the model is developed (McKendrick 1939)\cite{McKendrick:1940}, such inconsistency drove the modelers to alternative these assumptions when fitting the data. 
+
+Some early approaches (\textbf{literature}): the nonlinear incidence are raised to fit data, but lack of solid mechanistic understanding.
+
+Dushoff\cite{Dushoff:1999} Dwyer(\textbf{Papers}) start to think about “parametric” heterogeneity as being underlain by unknowable distributions in population and to use moment transformations and moment-closure approximations to attempt to understand the behavior of a model without knowing the exact functions that parameterize it.
+
+To take such parametric heterogeneity into compartmental models while keep reasonable level of tractability, the common way is to divide population into limited number of groups that each have different characteristic parameter for transmission. 
+Such approaches often assume that each group are homogeneous while the whole population is fully mixed, so the new incidence is still governed by linear terms with respected to involved compartment size.
+An important disadvantage of this approach is heterogeneity within a group cannot be incorporated with a small number of groups\cite{Novozhilov:2008}, which might not align well with the variation in individuals.
+Also, the fully mixing assumption limits the ability to consider heterogeneity in contact patterns.
+
+\textbf{Another approach is to consider parametric heterogeneity of population in a more phenomenological way assuming , such that the incidence is governed by some non-linear, functional format of the current state of the dynamic system. }
+
+Follow this approach, Novozhilov\cite{Novozhilov:2008} look into heterogeneity in disease parameters which are considered as inherent and invariant property of individuals.
+Such result provide more mechanistic explanation to the commonly used nonlinear incidence term like $I S^p$ but it focus more on parametric heterogeneity of susceptibility.
+The paper further generalized its mechanic framework to cover $S^p I^q$ and more generalized separable $h(p) g(q)$ incidence terms, but such generalization is highly depend on the assumption that infected individuals will inherit their disease infectivity parameter from its infector.
+Such assumption is somehow reasonable when consider pathogen strains, but could be less plausible for heterogeneity at individual level, especially for heterogeneity of the contact structure.
+
+Some other attempts(MFSH type model:citation!) are made to consider infectivity and connectivity at the same time(identical in and out degree), but with limitations.
+These attempts Very rare to discuss connectivity with locality i.e. stable social structure.
+
+Network and random network approach: from Pastor-Satorras, to Newman, to MSV, to Zhao-Magpantay.
+
+Romanescue: network approach with extensions and  flaws.
+
+Here in this manuscript, we investigate phenomenological heterogeneity of susceptibility, connectivity and locality together under the MSV random network framework to reveal new perspective to understand mechanism that derives nonlinear incidence in the infectious dynamics.
+
+\subsection{SubSection}
+\label{sec: sub1}
+\textit{Treponema pallidum} subspecies pallidum\cite{DushoffEtAl:2004,BansalMeyers:2012}.
+
+Itemize
+\begin{itemize}
+\item a
+
+\item b
+
+\item c
+	\begin{itemize}
+
+	\item (1)
+
+	\item (2)
+
+\end{itemize} 
+
+In practice, diagnoses of early versus late latent stages are determined based on serological testing and clinical input.
+
+\item d
+
+\end{itemize}
+
+\section{Random Network Models for Infectious Disease}
+\label{sec: Network}
+
+The phenomenological heterogeneity models mentioned previously focus more on epidemiological and biological differences against infection at individual level, like susceptibility and infectivity, while assuming homogeneity for social connections, i.e. population is fully mixed, so the probabilities of any random pair of individuals encounter are the same.
+
+Graph, or more specifically, random network approaches are considered to be a good way to introduce social heterogeneity into compartment models while keeping dynamic information and mathematical tractability.
+
+Many of these models for infectious disease employ a network composed of an simple graph whose vertices represent individuals in a host population and edges are connections that allow infection to be transmitted. 
+The network we will discussed is a representation of communities with large population, characterized by the distribution of the network's vertex degrees (i.e. degree distribution). 
+The degree, which is defined as number of edges connected to the vertex, reflect the corresponding individual's social connections that allows the infection to transmit, affecting the susceptibility and infectivity from the social perspective.
+
+The idea of random network model approaches is not considering any graph with specific edge topology, but the common property related to disease transmission among the set of all possible network with the same degree distribution.
+Each possible network with specific edge topology is an element of the set and called a realization of the random network:
+For each realization, stubs(half-edges for undirected graph) or directed edges are first assigned to vertices according to the degree distribution, then all individuals are connected following a uniformly random pairing process of stubs or between directed edges and vertices, such that every realization in the set has equal possibility to be chosen.
+%%% Degree distribution.
+Molloy \& Reed~\cite{MolloyReed:1995, MolloyReed:1998} provided a series of results for some mean-field graph properties of random networks with large enough size based on random graph theory. 
+They further proved that the such graph properties of each realization will converge to their mean-field approximation asymptotically as the network size increase. 
+Such approaches 
+
+Newman~\cite{Newman:2002,Newman:2003, Newman:2010} introduced percolation-based transmission model for infectious disease on heterogeneous, which provides basic reproductive number $\mathcal{R}_0$ as outbreak threshold and expectation of final infection size $R(\infty)$ for all possible random network realizations with the same degree distribution.  
+
+Later, \cite{MillerSlimVolz:2012} developed their new framework for random network models, such that the outbreak dynamic on random networks could be described by tractable, SIR-like ODE systems.
+
+A thorough, explicit list of assumptions and the discussion about relationship between different models in this series of continuously developed work was summarized and presented in Zhao \& Magpantay\cite{ZhaoMagpantay:2024}.
+
+Following their approaches, this manuscript will use probability generating function(PGF) to find the expectation of these component sizes for network with large size $N$ and prove that such expectation provides an equivalent estimate as in Theorem~\ref{thm: Giant Component Size}. 
+This PGF approach will also give a threshold parameter for the existence of giant component equivalent to the threshold using $\Lambda$.
+This will allow us to extend the ideas later on  in Section~\ref{sec: perco} to accommodate transmissibility of diseases to the PGF method.
+
+We always assume in this section that we have a random graph $\mathbb{G}_{N, \textbf{d}}$ with large enough size $N \rightarrow \infty$, generated from a degree sequence $\textbf{d}$ and corresponding degree distribution $p_k$.
+Recall that if $K$ is the degree of a randomly chosen vertex in the network we use the notation $p_k=P(K=k)$ for its probability mass function. The corresponding probability generating function is given by,
+\begin{equation}
+	\label{eqn: pgfgp}
+	G_p(x)=\sum_{k=1}^\infty p_k x^k.
+\end{equation}
+Properties of PGFs are reviewed in Appendix~\ref{sec: pgf}.
+
+\section{Connecting Phenomenological Heterogeneity with Random Network}
+\label{sec: model}
+
+
+
+Enumerate
+\begin{enumerate}
+\item [(H1)] Assumption
+\end{enumerate}
+
+\subsection{Subsection}
+\label{sec: sub 2}
+
+Equation
+\begin{equation}
+    \mathbb{P}(K=k) \propto k^{-\alpha}
+    \label{eqn: power law}
+\end{equation} 
+
+package \verb#fit_power_law# function from the \verb#igraph# R package
+
+Eqref: \eqref{eqn: power law}.
+
+Class Eqns
+\begin{equation}
+\label{eqn: CM ODE}
+    \begin{cases}
+        S(t) & = G_p(\theta(t)) \\
+        I(t) & = 1-S(t)-R(t) \\
+        \dot{R}(t) & = \gamma I(t) \\
+        \dot{\theta}(t) & = -\beta \theta +\beta \frac{G'_p(\theta)}{G'_p(1)}+\gamma (1-\theta)
+    \end{cases} 
+\end{equation}
+
+\section{Comparing the network-SIR and MA-SIR models}
+\label{sec: MA compare}
+
+\section{Conclusions}
+\label{sec: Conclusion}
+
+\section*{Acknowledgments}
+We thank XX for his help with the literature review. 
+
+\section*{Funding Statement}
+Funding
+
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{Bibliography}
+
+\newpage
+\include{supplement}
+
+\end{document}

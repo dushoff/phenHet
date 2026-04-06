@@ -36,7 +36,7 @@ NOTE: In probabilities, AND is denoted by $\wedge$ and condition is denoted by $
 
 MSV framework use $\phi_S(t), \phi_I(t), \phi_R(t)$ to denote the probability that a vertex connected to unoccupied edge $E$ **AND** being susceptible, infected or recovered.
 So based on the two perspective, we have two event with the same probability.
-$$\begin{align}
+$$\begin{aligned}
 \phi_S(t) = & \ \mathbb{P}(\text{A random vertex } b \text{ is susceptible  at time } t 
 \\
 & \wedge b \text{ attached to the unoccupied edge } E \text{ attached to } a)
@@ -44,23 +44,23 @@ $$\begin{align}
 = & \ \mathbb{P}(\text{For random vertex } a \text{, one of its random edge } E \text{ is unoccupied } 
 \\ 
 & \wedge E \text{ attached to a suseptible neighbour } b)
-\end{align}$$Similar for $\phi_I$ and $\phi_R$.
+\end{aligned}$$Similar for $\phi_I$ and $\phi_R$.
 
 Use the same language for $\phi(t)$, we get the partition:
-$$\begin{align}
+$$\begin{aligned}
 \phi(t) &= \mathbb{P}(\text{A random edge } E \text{ is unoccupied at } t )
 \\
 & = \mathbb{P}(\text{For random vertex } a \text{, one of its random edge } E \text{ is unoccupied})
 \\
 & = \phi_S(t) + \phi_I(t) + \phi_R(t)
-\end{align}$$
+\end{aligned}$$
 And further we have the full partition of all edges in the network:
 $$\\
 1 =  (1-\phi(t)) + \phi(t) = (1-\phi(t)) + (\phi_S(t) + \phi_I(t) + \phi_R(t))
 $$
 ### 1.5 Definition of $\phi_S$
 The expression for $\phi_S$ is derived from the definition without $a$ involved:
-$$\begin{align}
+$$\begin{aligned}
 \phi_S(t) & =  \mathbb{P}(\text{A random vertex } b \text{ is susceptible  at time } t \wedge b \text{ attached to a unoccupied edge } E )
 \\
 & = \frac{G'_p(\phi(t))}{\delta}=\frac{G'_p(\phi(t))}{G'_p(1)}
@@ -70,7 +70,7 @@ $$\begin{align}
 & =\frac{1}{\delta}\sum_k k (\frac{ \phi \times p_k \times\phi^{k-1}}{\phi})
 \\
 & = \frac{1}{\delta}\sum_k k (\frac{\mathbb{P}(E \text{ is unoccupied} \wedge b \text{ has degree k }  \wedge b \text{ has no other occupied edge}) }{\mathbb{P}(E \text{ is unoccupied})})
-\end{align}$$
+\end{aligned}$$
 So indeed as Todd point out, this is conditioned on the focal edge $E$ is unoccupied, but only from $b$ and $E$'s perspective.
 
 

@@ -1,0 +1,102 @@
+
+R version 4.4.0 (2024-04-24) -- "Puppy Cup"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(shellpipes)
+> manageConflicts()
+> 
+> library(dplyr)
+> library(tidyr)
+> 
+> loadEnvironments()
+> result <- rdsRead()
+> 
+> attach(result)
+> stopifnot(FinalStat$Isize == 0)
+> 
+> ## This code used to calculate Rcstar -- but not correctly
+> ## Need to know about _new_ infectors, which means going back to the sim.
+> State <- (State
++ 	|> mutate(Ri = rho*VE/I)
++ 	|> filter(I>0)
++ )
+> summary(State)
+       t                S                I                   R         
+ Min.   :  0.00   Min.   :0.3061   Min.   :0.0000001   Min.   :0.0000  
+ 1st Qu.: 43.75   1st Qu.:0.3061   1st Qu.:0.0000069   1st Qu.:0.5868  
+ Median : 87.50   Median :0.3062   Median :0.0004052   Median :0.6924  
+ Mean   : 87.50   Mean   :0.4006   Mean   :0.0394257   Mean   :0.5599  
+ 3rd Qu.:131.25   3rd Qu.:0.3117   3rd Qu.:0.0197935   3rd Qu.:0.6938  
+ Max.   :175.00   Max.   :1.0000   Max.   :0.3514328   Max.   :0.6939  
+       VE                  Ri           
+ Min.   :0.0000000   Min.   : 0.000000  
+ 1st Qu.:0.0000000   1st Qu.: 0.000000  
+ Median :0.0000038   Median : 0.003691  
+ Mean   :0.0394093   Mean   : 1.154224  
+ 3rd Qu.:0.0014358   3rd Qu.: 0.094730  
+ Max.   :0.8552770   Max.   :14.000000  
+> 
+> Infector <- (Infector
++ 	|> filter(!is.na(RecoveryTime))
++ )
+> summary(Infector)
+   InfectTime      RecoveryTime      NumInfected    Targets      
+ Min.   :  0.00   Min.   :  3.515   Min.   : 0   Min.   : 0.000  
+ 1st Qu.: 20.23   1st Qu.: 25.484   1st Qu.: 0   1st Qu.: 0.000  
+ Median : 22.32   Median : 30.750   Median : 0   Median : 2.000  
+ Mean   : 23.47   Mean   : 33.471   Mean   : 1   Mean   : 3.571  
+ 3rd Qu.: 25.36   3rd Qu.: 38.583   3rd Qu.: 1   3rd Qu.: 5.000  
+ Max.   :116.02   Max.   :175.987   Max.   :44   Max.   :81.000  
+> 
+> Cohort <- (Infector
++ 	|> mutate(t = round(InfectTime))
++ 	|> group_by(t)
++ 	|> summarize(obs = n()/N, Rc = mean(NumInfected)
++ 		, Rcstar = rho*mean(Targets)/(rho+1)
++ 	)
++ 	|> pivot_longer(c(Rc, Rcstar))
++ )
+> 
+> summary(Cohort)
+       t               obs                name               value       
+ Min.   :  0.00   Min.   :1.000e-07   Length:204         Min.   :0.0000  
+ 1st Qu.: 26.00   1st Qu.:1.500e-06   Class :character   1st Qu.:0.1427  
+ Median : 51.50   Median :5.695e-05   Mode  :character   Median :0.1650  
+ Mean   : 51.93   Mean   :6.802e-03                      Mean   :1.0070  
+ 3rd Qu.: 77.00   3rd Qu.:1.876e-03                      3rd Qu.:0.6736  
+ Max.   :116.00   Max.   :8.490e-02                      Max.   :8.0000  
+> 
+> ## TODO: get I values and use them as sizes
+> Obs <- (State
++ 	|> select(t, obs=I, Ri)
++ 	|> pivot_longer(Ri)
++ )
+> 
+> summary(Obs)
+       t               obs                name               value          
+ Min.   :  0.00   Min.   :0.0000001   Length:176         Min.   : 0.000000  
+ 1st Qu.: 43.75   1st Qu.:0.0000069   Class :character   1st Qu.: 0.000000  
+ Median : 87.50   Median :0.0004052   Mode  :character   Median : 0.003691  
+ Mean   : 87.50   Mean   :0.0394257                      Mean   : 1.154224  
+ 3rd Qu.:131.25   3rd Qu.:0.0197935                      3rd Qu.: 0.094730  
+ Max.   :175.00   Max.   :0.3514328                      Max.   :14.000000  
+> 
+> Rf <- bind_rows(Obs, Cohort)
+> 
+> rdsSave(Rf)
+> 

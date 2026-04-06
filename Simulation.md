@@ -22,13 +22,13 @@ In the random events, lets set the following random variables for time:
 With these RVs, we can interpret $p(t)$ in the following probability: $$p(t)=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}$$ where $t+T_c < (t+T_r) \wedge T_n \ \Leftrightarrow \min((t+T_r),T_n)$.
 
 Since $T_r$ and $T_n$ are independent, we can further derive: 
-$$\begin{align}
+$$\begin{aligned}
 \mathbb{P}\{ (t+T_r) \wedge T_n > t+u \} & = \mathbb{P}\{ T_r>u\} \mathbb{P}\{T_n>t+u \}
 \\
 & = e^{-\gamma u} \phi_S(t+u)
-\end{align}$$
+\end{aligned}$$
 Then we can rewrite the expression for $p(t)$ based on law of total probability:
-$$\begin{align}
+$$\begin{aligned}
 p(t) &=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}
 \\
 &=\int_0^{\infty}\mathbb{P}\{t+u<(t+T_r) \wedge T_n | t+T_c =t+u\}\times\mathbb{P}\{ t+T_c =t+u\}du
@@ -40,9 +40,9 @@ p(t) &=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}
 &=\int_0^{\infty}[e^{-\gamma u} \phi_S(t+u)]\times [\beta e^{-\beta u}]du
 \\
 &=\int_0^{\infty}\beta e^{-(\beta+\gamma)u}\phi_S(t+u)du
-\end{align}$$
+\end{aligned}$$
 and we have
-$$\begin{align}
+$$\begin{aligned}
 \frac{d}{dt}p(t) &=\frac{d}{dt}\int_0^{\infty}\beta e^{-(\beta+\gamma)u}\phi_S(t+u)du
 \\
 &=\int_0^{\infty}\beta e^{-(\beta+\gamma)u} \times [\frac{d}{dt}\phi_S(t+u)] du
@@ -54,7 +54,7 @@ $$\begin{align}
 &= -\beta \phi_S(t)+(\beta+\gamma)\int_0^{\infty}\beta e^{-(\beta+\gamma)u} \phi_S(t+u) du
 \\
 &=-\beta \phi_S(t)+(\beta+\gamma)p(t)
-\end{align}$$
+\end{aligned}$$
 as a ODE of $p(t)$.
 
 At $t=0$, we expect to have $\phi_S(0)=1$ and $p(0)=\frac{\beta}{\beta+\gamma}$, so take these initial value into the ODE gives us $$\frac{d}{dt}p(t)=-\beta+(\beta+\gamma)\times\frac{\beta}{\beta+\gamma}=0$$ which agree with our expectation.
@@ -136,12 +136,13 @@ For larger network size $N=250,000$, 1 simulation due to time consumption:
 
 TODO: figure out the scale of $N$ s.t. $\mathcal{R}_c(0) \approx \mathcal{R}^*_c(0)$
 
+## Edge based simulation
+JD developed the edge-based Gillespie simulation in `R_cpp` which seems to be faster for large networks
+
+Negative binomial degree distribution with mean degree $\lambda=5, \kappa=0$. $\beta=\gamma=0.1, N=10^6$
+![plotsMSV](docs/pix/plotsMSV.png)
 
 
-
-
-Thoughts: Comparing ODE for $p(t)$ and $\phi(t)$
-$$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
-$$\frac{d}{dt}\phi(t)=+\beta \phi_S(t)-(\beta+\gamma)\phi(t)+\gamma$$
-
-
+- Testing other parameters and average on small network (expected working less well).
+- Systematic Time-shifting: logistic regression? epidemic momentum approach? Throw out the stochastic part(match a starting point) set up a condition to matching $\phi,I$ or $+R$
+- Initial condition estimation for $p(0)$ [Rc.pdf](refs/Rc.pdf)

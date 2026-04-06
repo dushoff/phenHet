@@ -38,6 +38,12 @@ scaleFancy.Rout: scaleExamples.R scaleFuns.R fenwick.cpp
 
 ######################################################################
 
+alldirs += Manuscript
+
+Ignore += $(alldirs)
+
+######################################################################
+
 ## scaleExamples has mysterious changes that seem to slow it down
 scale.Rout: scaleExamples.R scaleFuns.R edgelist.cpp
 	$(pipeR)
@@ -62,12 +68,14 @@ impmakeR += params
 %.params.Rout: params.R %.params.R
 	$(pipeR)
 
+## slow/big.post.Rout.final: post.R slow/big.post.Rout
 slowtarget/%.post.Rout: post.R %.netsim.rds %.params.rda
 	$(pipeR)
 impmakeR += post
 
 ## giant.plots.Rout.finalview: plots.R
-## giant.plots.Rout: plots.R params.R
+## big.plots.Rout: plots.R params.R
+## seed.plots.Rout.finalview: plots.R big.params.R
 %.plots.Rout: plots.R slow/%.post.rds %.params.rda
 	$(pipeR)
 impmakeR += plots
@@ -82,6 +90,29 @@ impmakeR += netsim
 scaleFuns.Rout: scaleFuns.R
 	$(wrapR)
 
+## Richard has added MSV technology, but I don't understand the piping yet.
+plotsMSV.Rout: plotsMSV.R scaleFuns.rda big.params.R slow/big.post.rds NetworkODE.R
+	$(pipeRcall)
+
+## Split the plotting and the simulating
+simMSV.Rout: simMSV.R scaleFuns.rda big.params.rda NetworkODE.R
+	$(pipeRcall)
+
+viewMSV.Rout: viewMSV.R simMSV.rda
+	$(pipeRcall)
+
+######################################################################
+
+## piping and modifying
+## new.approx.Rout: approx.R odeFuns.R
+%.approx.Rout: approx.R slow/%.post.rds %.params.rda scaleFuns.rda odeFuns.rda
+	$(pipeR)
+
+odeFuns.Rout: odeFuns.R
+	$(pipeR)
+
+test:
+	echo $$R_LIBS_USER
 ######################################################################
 
 ## It is much more expensive to save an adjacency list than to make a network, so we're not doing that for now. Not sure if there are work-arounds.
@@ -153,6 +184,9 @@ NoteForR_c.pdf: NoteForR_c.md
 NoteForR_i.pdf:  NoteForR_i.md
 	$(rmdp_r)
 
+Ignore += *.md.tex
+## NoteForR_i.fix.pdf: 
+## NoteForR_i.md.tex:  NoteForR_i.md
 ## NoteForR_i.md.tex:  NoteForR_i.md
 
 ## Rnotes.pdf: Rnotes.tex
@@ -169,8 +203,7 @@ Paper.html: Paper.md
 
 Sources += $(wildcard *.R)
 
-Sources += pubmed_notes.md
-
+## I guess never implemented a pathway for this
 Ignore += secrets.mk
 -include secrets.mk
 Rentrez.Rout: Rentrez.R
