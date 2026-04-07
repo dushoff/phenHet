@@ -175,39 +175,120 @@ The phenomenological heterogeneity models mentioned previously focus more on epi
 Graph, or more specifically, random network approaches are considered to be a good way to introduce social heterogeneity into compartment models while keeping dynamic information and mathematical tractability.
 
 Many of these models for infectious disease employ a network composed of an simple graph whose vertices represent individuals in a host population and edges are connections that allow infection to be transmitted. 
-The network we will discussed is a representation of communities with large population, characterized by the distribution of the network's vertex degrees (i.e. degree distribution). 
 The degree, which is defined as number of edges connected to the vertex, reflect the corresponding individual's social connections that allows the infection to transmit, affecting the susceptibility and infectivity from the social perspective.
 
-The idea of random network model approaches is not considering any graph with specific edge topology, but the common property related to disease transmission among the set of all possible network with the same degree distribution.
+The random network we will discussed is a representation of human communities with a large enough population, where individual heterogeneity in connections is characterized by a distribution of network's vertex degrees.
+Consider $K$ being the random variable for degree of a uniformly randomly chosen vertex in a given network, we then denote the probability that $K=k \in \mathbb{Z}^+$ being $p_k=P(K=k)$, which could also be treated as probability density function of the degree distribution. 
+
+The idea of random network model approach is not considering any graph with specific edge topology, but the common property related to disease transmission, among the set of all possible network with the same degree distribution.
 Each possible network with specific edge topology is an element of the set and called a realization of the random network:
 For each realization, stubs(half-edges for undirected graph) or directed edges are first assigned to vertices according to the degree distribution, then all individuals are connected following a uniformly random pairing process of stubs or between directed edges and vertices, such that every realization in the set has equal possibility to be chosen.
 %%% Degree distribution.
+
 Molloy \& Reed~\cite{MolloyReed:1995, MolloyReed:1998} provided a series of results for some mean-field graph properties of random networks with large enough size based on random graph theory. 
 They further proved that the such graph properties of each realization will converge to their mean-field approximation asymptotically as the network size increase. 
-Such approaches 
+As a result, such approaches fit well with infectious disease transmission within large population, where data of connections topology is not accessible or too costly to collect, the degree distributions could be more easily estimated with certain proxy data to characterize the heterogeneity in social connections. 
 
-Newman~\cite{Newman:2002,Newman:2003, Newman:2010} introduced percolation-based transmission model for infectious disease on heterogeneous, which provides basic reproductive number $\mathcal{R}_0$ as outbreak threshold and expectation of final infection size $R(\infty)$ for all possible random network realizations with the same degree distribution.  
-
-Later, \cite{MillerSlimVolz:2012} developed their new framework for random network models, such that the outbreak dynamic on random networks could be described by tractable, SIR-like ODE systems.
-
+Newman~\cite{Newman:2002,Newman:2003, Newman:2010} introduced percolation-based transmission model for infectious disease on heterogeneous networks, which provides basic reproductive number $\mathcal{R}_0$ as outbreak threshold and expectation of final infection size $R(\infty)$ for among random network realizations with arbitrary degree distribution.
+Later, Miller, Slim \& Volz\cite{MillerSlimVolz:2012} developed their framework for random network models, such that the transmission dynamic of outbreak could be described by tractable, SIR-like ODE systems.
 A thorough, explicit list of assumptions and the discussion about relationship between different models in this series of continuously developed work was summarized and presented in Zhao \& Magpantay\cite{ZhaoMagpantay:2024}.
 
-Following their approaches, this manuscript will use probability generating function(PGF) to find the expectation of these component sizes for network with large size $N$ and prove that such expectation provides an equivalent estimate as in Theorem~\ref{thm: Giant Component Size}. 
-This PGF approach will also give a threshold parameter for the existence of giant component equivalent to the threshold using $\Lambda$.
-This will allow us to extend the ideas later on  in Section~\ref{sec: perco} to accommodate transmissibility of diseases to the PGF method.
-
-We always assume in this section that we have a random graph $\mathbb{G}_{N, \textbf{d}}$ with large enough size $N \rightarrow \infty$, generated from a degree sequence $\textbf{d}$ and corresponding degree distribution $p_k$.
-Recall that if $K$ is the degree of a randomly chosen vertex in the network we use the notation $p_k=P(K=k)$ for its probability mass function. The corresponding probability generating function is given by,
+For any given degree distribution with probability dense function $p_k$, we following the mentioned models to define its probability generating function(PGF). 
+The corresponding probability generating function is given by,
 \begin{equation}
 	\label{eqn: pgfgp}
 	G_p(x)=\sum_{k=1}^\infty p_k x^k.
 \end{equation}
-Properties of PGFs are reviewed in Appendix~\ref{sec: pgf}.
+A useful expression would be the mean degree $\delta$ is given by:
+\begin{equation}
+	\delta=\sum_{k=0}^{\infty}k p_k=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)
+\end{equation}
+
 
 \section{Connecting Phenomenological Heterogeneity with Random Network}
 \label{sec: model}
 
+To connecting the random network framework with existing results for phenomenological heterogeneity model, we start with a specific directed network model with no locality, i.e. edges or neighbors are not fixed and kept changing instantaneously with time, such that the dynamic is equivalent to Novozhilov's\cite{Novozhilov:2008} result for heterogeneity in susceptibility. 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textcolor{red}{Need help for formalize the model description here!}
+
+If we imagine that both the number of susceptible neighbors of a random vertex and their mean susceptibility are shaped by a uniform probability of transmission on each edge, then we can solve for each of them in terms of this probability
+And further  consider the relationship between number of susceptible and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Discussion of $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$
+
+
+
+Consider the effective reproductive number term using:
+\begin{equation}
+	\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0}}=\frac{\sigma_{\phi}}{\sigma_0}
+\end{equation} 
+where $\sigma_{\phi}$ is the expected number of edges of susceptible vertices, such that
+\begin{equation}
+	\sigma_{\phi}=\sum_{k=0}^{\infty}p_k \times k \times(1-\phi)^{k}=\sum_{k=0}^{\infty}p_k \times k \times \phi^{k}=\phi\sum_{k=0}^{\infty}p_k \times k \times\phi^{k-1}=\phi G_p'(\phi)
+\end{equation}
+- At $t=0$, we have $\sigma_\phi(0)=\sigma_0$: 
+$$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\phi\rightarrow1} \phi G_p'(\phi)=\delta$$
+- Therefore, 
+$$\rho=\frac{\phi G_p'(\phi)}{\delta}$$
+
+Consider the Negative binomial distribution as degree distribution, which could also be seen as a continuous mixture of Poisson distribution and Gamma distribution.
+For this family of distributions (Negative Binomial, Poisson, Geometric), the PGF $G_p$ could be written easily in closed form and the distributions are connected such that other distributions could be deduced from the Negative Binomial distribution.
+
+Typical PMF of negative binomial distribution is given by:
+$$p_d=\binom{d+r-1}{d}(1-p)^dp^r$$ with mean 
+$$\delta=\frac{r(1-p)}{p}$$ and variance 
+$$\text{Var}=\frac{r(1-p)}{p^2}$$
+For better understanding, we parameterize the distribution using mean $\delta$ and Dushoff-style squared CV $\kappa$, such that 
+
+\begin{align} 
+	r & =\frac{1}{\kappa}
+	\\
+	p & =\frac{1}{1+\kappa\delta}
+\end{align}
+
+This gives us the variance $\text{Var}=\delta(1+\kappa\delta)>\delta$, as these family of distributions are always over-dispersed, and further never converge to homogeneous case.
+
+Now consider the PGFs of this family:
+- Negative Binomial distribution:
+$$G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}$$
+- Poisson: As $\kappa \rightarrow 0$, NegBinom converge to Poisson distribution with 
+$$G_p(\phi)=e^{\delta(\phi-1)}$$
+- Verification: As 
+$$\lim_{a\rightarrow \infty}(1+\frac{x}{a})^a=e^x =\lim_{b\rightarrow0}(1-x \times b)^{-\frac{1}{b}}$$we have
+$$\lim_{\kappa\rightarrow 0} (\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}=\lim_{\kappa\rightarrow 0} (1-\kappa \times\delta(\phi-1))^{-\frac{1}{\kappa}}=e^{\delta(\phi-1)}$$
+- Geometric: As $\kappa=1$, NegBinom is Geometric distribution by definition, with PGF: 
+$$G_p(\phi)=\frac{1}{1+\delta-\phi\times\delta}$$
+
+Just consider the general Negative Binomial case, as from the MSV framework, we got
+$$S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\Rightarrow\phi=G^{-1}_p(S)=1+\frac{1-S^{-\kappa}}{\kappa\delta}$$
+and 
+$$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}$$
+Take this into $\rho$ gives us for Negative Binomial:
+\begin{align}
+	\rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0,c}}=\frac{\phi G'_p(\phi)}{\delta}=\frac{S\phi}{1+\kappa\delta-\phi\times\kappa\delta}
+	\\
+	&=S\times \frac{1+\frac{1-S^{-\kappa}}{\kappa\delta}}{1+\kappa\delta-(1+\frac{1-S^{-\kappa}}{\kappa\delta})\kappa\delta}
+	\\
+	&=S\times(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})
+\end{align}
+
+- Gamma: as $\delta \rightarrow \infty$ we have 
+$$\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}$$ which agree with the Dwyer-Parsons result with Gamma distribution
+- Poisson: as $\kappa\rightarrow0$ we have
+$$\lim_{\kappa\rightarrow0}\rho=S\lim_{\kappa\rightarrow0}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times (1+\frac{\log(S)}{\delta})$$which agree with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Poisson distribution.
+- Derivation: 
+$$\lim_{\kappa\rightarrow0}\frac{S^{\kappa}-1}{\kappa}=\log(S)$$as $S \in [0,1]$
+- Geometric: as $\kappa=1$ we have 
+$$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometric distribution.
+- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
+
+For further illustration, we define 
+$$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
 
 Enumerate
 \begin{enumerate}
