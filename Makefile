@@ -185,7 +185,7 @@ NoteForR_i.pdf:  NoteForR_i.md
 	$(rmdp_r)
 
 Ignore += *.md.tex
-## NoteForR_i.fix.pdf: 
+## NoteForR_i.pdf: 
 ## NoteForR_i.md.tex:  NoteForR_i.md
 ## NoteForR_i.md.tex:  NoteForR_i.md
 
