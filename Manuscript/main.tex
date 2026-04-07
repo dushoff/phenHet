@@ -7,20 +7,20 @@
 \tikzset{inline/.style={column sep = 2.5em,inner sep = 1pt}}
 \usetikzlibrary{arrows,positioning}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage{amsmath,amsfonts,amsthm,amssymb,thmtools,mathtools,mathrsfs,dsfont}
 \usepackage{bbold}
 \usepackage{graphics}
 \usepackage{caption}
-%\usepackage{subcaption}
-% \usepackage{epstopdf}
 \usepackage{enumerate}
 \usepackage{enumitem}
 \usepackage{etex}
 \usepackage{setspace}
-\usepackage{chngpage}
+%% \usepackage{chngpage}
 \usepackage{soul}
 \usepackage{ifthen}
-\usepackage{indentfirst}
+%% \usepackage{indentfirst}
 \usepackage{listings}
 \usepackage{url}
 \usepackage{longtable}
@@ -34,6 +34,8 @@
 %\linenumbers
 \allowdisplaybreaks
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage[labelfont=bf]{caption}
 \usepackage{multirow}
 
@@ -42,7 +44,7 @@
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% -ENVIRONMENTS-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -64,6 +66,22 @@
 %\newtheorem*{notation}{Notation}
 
 \newcommand{\simplex}{\mathcal{S}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\comment}{\showcomment}
+%% \newcommand{\comment}{\nocomment}
+
+\newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
+\newcommand{\nocomment}[3]{}
+
+%% teal, violet
+\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
+\newcommand{\rz}[1]{\comment{magenta}{RZ}{#1}}
+\newcommand{\tp}[1]{\comment{olive}{TP}{#1}}
+\newcommand{\bmb}[1]{\comment{blue}{BMB}{#1}}
+\newcommand{\djde}[1]{\comment{purple}{DJDE}{#1}}
+\newcommand{\help}[1]{\comment{red}{HELP}{#1}}
 
 \title{Nonlinear Incidence Caused by Phenomenological Heterogeneity in Infectious Disease Dynamics with Random Network Approaches}
 \author{Author}
@@ -102,20 +120,20 @@ Compartmental models with dynamics controlled by a system of ordinary differenti
 			\node[main node] (S) {$S$};
 			\node[main node] (I) [right of=S] {$I$};
 			\node[main node] (R) [right of=I] {$R$};
-			\draw[thick,->] (S) -- (I) node[midway,sloped,above,rotate=0] {$\beta S I$};
+			\draw[thick,->] (S) -- (I) node[midway,sloped,above,rotate=0] {$\beta I/N$};
 
-			\draw[thick,->] (I) -- (R) node[midway,sloped,above,rotate=0] {$\gamma I$};
+			\draw[thick,->] (I) -- (R) node[midway,sloped,above,rotate=0] {$\gamma$};
 
 		\end{tikzpicture}
 	\end{center}
-	\caption[Basic SIR model]{Flow diagram of a simple version of SIR model. The susceptible, infectious and recovered/removed compartments are represented by $S$, $I$ and $R$ respectively. The incidence of infection has a rate equal to the product of $S$ and $I$ times a constant per-infected transmission rate of $\beta$, which governs the flow from $S$ to $I$. The flow from $I$ to $R$ represents recovery of infectious individuals with a per capita rate $\gamma$.}
-	\label{fig: MA-SIR}
+	\caption[Basic SIR model]{Flow diagram of a simple SIR model, showing susceptible, infectious and recovered/removed compartments. Susceptible individuals are infected at per-capita rate equal to the product of a contact rate, $\beta$, and the proportion of the population infectious, $I/N$. Infectious individuals at per-capita rate $\gamma$.}
+	\label{fig:SIR}
 \end{figure}
 
-These models often assumes that the population is homogeneous and fully mixed, while the contacts between individual follows the law of mass-action, such that the new infection is governed by a incidence term that is linear with respect to each involved compartment size, like the $\beta S I$ flow of the example SIR model in Figure~\ref{fig: MA-SIR}.
+\jd{I feel we should use the standard-incidence formulation ($I/N$) instead of mass-action, and also not really talk about it much.}
 
-Such assumptions simplify the dynamic system and keep the model analysis mathematically tractable, but they are hard to associated with the heterogeneous nature of the population, where individuals could vary in different parameters that affect the transmission, like susceptibility, infectivity and contact rates.
-Already back to when the model is developed (McKendrick 1939)\cite{McKendrick:1940}, such inconsistency drove the modelers to alternative these assumptions when fitting the data. 
+These models often assume that the population is homogeneous and fully mixed, such that disease incidence depends bilinearly on $S$ and $I$, as in Figure~\ref{fig:SIR}. Such simple models have led to many valuable insights, but often miss important features, since population heterogeneity often has dramatic effects on disease spread. 
+Even very early work on this model \cite{McKendrick:1940} recognized this problem and proposed alternative approaches. 
 
 Some early approaches (\textbf{literature}): the nonlinear incidence are raised to fit data, but lack of solid mechanistic understanding.
 
@@ -126,7 +144,7 @@ Such approaches often assume that each group are homogeneous while the whole pop
 An important disadvantage of this approach is heterogeneity within a group cannot be incorporated with a small number of groups\cite{Novozhilov:2008}, which might not align well with the variation in individuals.
 Also, the fully mixing assumption limits the ability to consider heterogeneity in contact patterns.
 
-\textbf{Another approach is to consider parametric heterogeneity of population in a more phenomenological way assuming , such that the incidence is governed by some non-linear, functional format of the current state of the dynamic system. }
+\textbf{Another approach is to consider parametric heterogeneity of population in a more phenomenological way assuming, such that the incidence is governed by some non-linear, functional format of the current state of the dynamic system. }
 
 Follow this approach, Novozhilov\cite{Novozhilov:2008} look into heterogeneity in disease parameters which are considered as inherent and invariant property of individuals.
 Such result provide more mechanistic explanation to the commonly used nonlinear incidence term like $I S^p$ but it focus more on parametric heterogeneity of susceptibility.
@@ -212,7 +230,7 @@ To connecting the random network framework with existing results for phenomenolo
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\textcolor{red}{Need help for formalize the model description here!}
+\help{Need help for formalize the model description here!}
 
 If we imagine that both the number of susceptible neighbors of a random vertex and their mean susceptibility are shaped by a uniform probability of transmission on each edge, then we can solve for each of them in terms of this probability
 And further  consider the relationship between number of susceptible and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
