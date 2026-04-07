@@ -15,7 +15,7 @@ We are interested in sensible functional forms for $\sigma$ in a variety of scen
 
 The Dwyer-Parsons approach accounts for “over-dispersion” (continuous heterogeneity). It can be derived either with a moment approximation, or via a gamma assumption, and is equivalent to $σ=S^{κ}$. The Novozhilov approach accounts for discrete contacts, but none of the other factors. 
 
-Recently, Richard and Jonathan have come up with an approach that generalizes these two for a negative binomial degree-distribution, maybe call it the network-susceptibility approach. A straightforward argument gives:
+Our first approach generalizes these two for a negative binomial degree-distribution, maybe call it the network-susceptibility approach. A straightforward argument gives:
 $$σ=S^κ+\frac{S^κ-1}{κ \delta}, $$
 where $\kappa$ is the Dushoff-style squared CV of an underlying continuous distribution (in this case, the Gamma distribution that underlies the negative binomial), so that $\kappa=0$ corresponds to the Poisson, with  $\sigma=1+\frac{log(S)}{\delta}$ (the Novozhilov Poisson result), $\delta\to\infty$ corresponds to the Gamma, with $\sigma=S^{\kappa}$(the Dwyer result), and $\kappa=1$ corresponds to the geometric case, where $\sigma=S+\frac{S-1}{\delta}$ (an equivalent result has been derived by [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) and [Novozhilov(2008)](./refs/Novozhilov2008.pdf), with different settings.)
 
@@ -39,16 +39,3 @@ Unlike in the homogeneous model where $\mathcal{R}_i(t)$ are monotonically decre
 The problem of $\mathcal{R}_i(t)$ in MSV is that we does not have explicit expression for $I(t)$, so it is hard to derive the $\mathcal{R}_i(t)$ curve without solve the whole ODE system for $I(t)$. An ODE of $\dot{\mathcal{R}}_i(t)$ that not dependent on $I(t)$ is generated, but we not yet find useful understanding yet. We are also thinking about connection between $\mathcal{R}_i(t)$ and $\mathcal{R}_c(t)$
 
 We created vertex based and a much faster (and new?) edge-based Gillespie algorithm on network transmission. The simulation results match our expression in number of runs, but we might need to verify this in a more systematic way.
-
-
-<!-- Dictation code
-
-Ignore this.
-
-:%s/Arnold\c/R0/g
-:%s/Arthur\c/Reff/g
-:%s/Sigma\c/σ/g
-:%s/Nova\c/Novozhilov/g
-
--->
-
