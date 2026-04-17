@@ -160,30 +160,7 @@ Romanescue: network approach with extensions and  flaws.
 
 Here in this manuscript, we investigate phenomenological heterogeneity of susceptibility, connectivity and locality together under the MSV random network framework to reveal new perspective to understand mechanism that derives nonlinear incidence in the infectious dynamics.
 
-\subsection{SubSection}
-\label{sec: sub1}
-\textit{Treponema pallidum} subspecies pallidum\cite{DushoffEtAl:2004,BansalMeyers:2012}.
 
-Itemize
-\begin{itemize}
-\item a
-
-\item b
-
-\item c
-	\begin{itemize}
-
-	\item (1)
-
-	\item (2)
-
-\end{itemize} 
-
-In practice, diagnoses of early versus late latent stages are determined based on serological testing and clinical input.
-
-\item d
-
-\end{itemize}
 
 \section{Random Network Models for Infectious Disease}
 \label{sec: Network}
@@ -212,7 +189,7 @@ Later, Miller, Slim \& Volz\cite{MillerSlimVolz:2012} developed their framework 
 A thorough, explicit list of assumptions and the discussion about relationship between different models in this series of continuously developed work was summarized and presented in Zhao \& Magpantay\cite{ZhaoMagpantay:2024}.
 
 For any given degree distribution with probability dense function $p_k$, we following the mentioned models to define its probability generating function(PGF). 
-The corresponding probability generating function is given by,
+The corresponding PGF is given by,
 \begin{equation}
 	\label{eqn: pgfgp}
 	G_p(x)=\sum_{k=1}^\infty p_k x^k.
@@ -220,6 +197,16 @@ The corresponding probability generating function is given by,
 A useful expression would be the mean degree $\delta$ is given by:
 \begin{equation}
 	\delta=\sum_{k=0}^{\infty}k p_k=\frac{d}{dx}G_p(x)|_{x=1}=G_p'(1)
+\end{equation}
+
+For random network model, Excess degree could also be important, as during the outbreak, any newly infected vertex with degree $k$ could only infect at most $k-1$ of its susceptible neighbors, as its infection must come from one neighbor that already being infected.
+Based on given degree distribution with PDF $p_k$, we could define the distribution of excess degree with PDF denoted by $q_k$, such that:
+\begin{equation}
+	\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_d d}{\delta}
+\end{equation}
+The corresponding PGF for excess degree is given by
+\begin{equation}
+	G_q(x)=\frac{G_p'(x)}{\delta}
 \end{equation}
 
 \section{Connecting Phenomenological Heterogeneity with Random Network}
@@ -234,7 +221,31 @@ If we imagine that both the number of susceptible neighbors of a random vertex a
 And further  consider the relationship between number of susceptible and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Discussion of $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$
+\textcolor{red}{Discussion of $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}(t)$}
+
+In such network model, the basic reproductive number $\mathcal{R}_0$, which defined as the average number of secondary infections produced by a single infected individual in a completely susceptible population, is different with homogeneous model.
+Consider the degree distribution with PDF $p_k$ and corresponding excess degree $q_k$, we have: 
+\begin{align}
+	\mathcal{R}_{0}&=\sum_{k=1} q_{k-1} \times(k-1)\times \frac{\beta}{\beta+\gamma}
+	\\
+	&= \frac{\beta}{\beta+\gamma} \sum_{k=1} \frac{p_k \times k}{\delta} \times(k-1)
+	\\
+	&=\frac{\beta}{\beta+\gamma} \frac{\sum_{k=1} p_k \times k \times(k-1)}{\delta}
+	\\
+	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}
+	\\
+	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{G'_p(1)}
+\end{align}
+where $q_{k-1}$ and $k-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
+$T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a focal infected vertex $a$ infects one of its susceptible neighbor $b$ prior to recovering, assuming any of the $b$'s neighbors other than $a$ will not infect $b$ before $a$ infect $b$.
+Such assumption is true for a completely susceptible population for $\mathcal{R}_0$, but should be considered more carefully as the prevalence increase in the population for network model, which will be discussed later.
+
+\textcolor{red}{Rethink about this part for independence.}
+As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $d$ will follow a binomial distribution $\text{Binom}(d-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(d-1)\times \frac{\beta}{\beta+\gamma}$ 
+
+
+\textcolor{red}{Define $\mathcal{R}_\text{eff}$}
+
 
 Consider the effective reproductive number term using:
 \begin{equation}
@@ -244,19 +255,24 @@ where $\sigma_{\phi}$ is the expected number of edges of susceptible vertices, s
 \begin{equation}
 	\sigma_{\phi}=\sum_{k=0}^{\infty}p_k \times k \times(1-\phi)^{k}=\sum_{k=0}^{\infty}p_k \times k \times \phi^{k}=\phi\sum_{k=0}^{\infty}p_k \times k \times\phi^{k-1}=\phi G_p'(\phi)
 \end{equation}
-- At $t=0$, we have $\sigma_\phi(0)=\sigma_0$: 
-$$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\phi\rightarrow1} \phi G_p'(\phi)=\delta$$
-- Therefore, 
-$$\rho=\frac{\phi G_p'(\phi)}{\delta}$$
+At $t=0$, we have $\sigma_\phi(0)=\sigma_0$, s.t.: 
+\begin{equation}
+	\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\phi\rightarrow1} \phi G_p'(\phi)=\delta
+\end{equation}
+therefore, 
+\begin{equation}
+	\rho=\frac{\phi G_p'(\phi)}{\delta}
+\end{equation}
 
 Consider the Negative binomial distribution as degree distribution, which could also be seen as a continuous mixture of Poisson distribution and Gamma distribution.
 For this family of distributions (Negative Binomial, Poisson, Geometric), the PGF $G_p$ could be written easily in closed form and the distributions are connected such that other distributions could be deduced from the Negative Binomial distribution.
 
-Typical PMF of negative binomial distribution is given by:
-$$p_d=\binom{d+r-1}{d}(1-p)^dp^r$$ with mean 
-$$\delta=\frac{r(1-p)}{p}$$ and variance 
-$$\text{Var}=\frac{r(1-p)}{p^2}$$
-For better understanding, we parameterize the distribution using mean $\delta$ and Dushoff-style squared CV $\kappa$, such that 
+Typical probability mass function (PMF) of negative binomial distribution is given by:
+\begin{equation}
+	p_k=\binom{k+r-1}{k}(1-p)^k p^r
+\end{equation} with mean $\delta=\frac{r(1-p)}{p}$ and variance 
+$\text{var}=\frac{r(1-p)}{p^2}$.
+For better understanding, we parameterize the distribution using mean $\delta$ and a squared Constant of variance $\kappa$, such that 
 
 \begin{align} 
 	r & =\frac{1}{\kappa}
@@ -302,6 +318,32 @@ $$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](htt
 
 For further illustration, we define 
 $$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+
+
+\subsection{SubSection}
+\label{sec: sub1}
+\textit{Treponema pallidum} subspecies pallidum\cite{DushoffEtAl:2004,BansalMeyers:2012}.
+
+Itemize
+\begin{itemize}
+	\item a
+	
+	\item b
+	
+	\item c
+	\begin{itemize}
+		
+		\item (1)
+		
+		\item (2)
+		
+	\end{itemize} 
+	
+	In practice, diagnoses of early versus late latent stages are determined based on serological testing and clinical input.
+	
+	\item d
+	
+\end{itemize}
 
 Enumerate
 \begin{enumerate}
