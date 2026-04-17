@@ -11,7 +11,7 @@ vim_session:
 
 ######################################################################
 
-Sources += $(wildcard *.tex)
+Sources += $(wildcard *.tex *.bib)
 
 ## main.pdf: main.tex
 
