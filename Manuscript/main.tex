@@ -202,7 +202,7 @@ A useful expression would be the mean degree $\delta$ is given by:
 For random network model, Excess degree could also be important, as during the outbreak, any newly infected vertex with degree $k$ could only infect at most $k-1$ of its susceptible neighbors, as its infection must come from one neighbor that already being infected.
 Based on given degree distribution with PDF $p_k$, we could define the distribution of excess degree with PDF denoted by $q_k$, such that:
 \begin{equation}
-	\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_d d}{\delta}
+	\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_k k}{\delta}
 \end{equation}
 The corresponding PGF for excess degree is given by
 \begin{equation}
@@ -214,37 +214,77 @@ The corresponding PGF for excess degree is given by
 
 To connecting the random network framework with existing results for phenomenological heterogeneity model, we start with a specific directed network model with no locality, i.e. edges or neighbors are not fixed and kept changing instantaneously with time, such that the dynamic is equivalent to Novozhilov's\cite{Novozhilov:2008} result for heterogeneity in susceptibility. 
 
+For this target, we construct a SIR network model with the same Susceptible($S$), Infected($I$) and Recovered($R$) class of vertex/individual and the same disease development flow like the homogeneous compartmental SIR model described in Section~\ref{sec: Intro} and in the literature~\cite{Novozhilov:2008}.
+As the population is close with size $N$, we normalize the compartment size with the population size and denote $S(t)$, $I(t)$ and $R(t)$ be the proportion of vertices of each corresponding compartment at time $t$. 
+
+Instead of assuming heterogeneity in individual level susceptibility with a fully-mixed population, we assume the susceptibility is homogeneous among all vertices, but the disease causing connections between individuals is phenomenologically heterogeneous with a random network structure governed by a degree distribution, as described in Section~\ref{sec: Network}.
+As a result, we use $\beta$ now to denote the uniform transmission rate for each edge between a pair of susceptible and infected vertices, and $\gamma$ is the recovery rate for each infected individual.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\help{Need help for formalize the model description here!}
+\help{Need help for formalize the in-degree, no locality model description here!}
 
-If we imagine that both the number of susceptible neighbors of a random vertex and their mean susceptibility are shaped by a uniform probability of transmission on each edge, then we can solve for each of them in terms of this probability
-And further  consider the relationship between number of susceptible and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+If we imagine that both the number of susceptible neighbors of a random vertex and their mean susceptibility are shaped by a uniform probability of transmission on each edge, then we can solve for each of them in terms of this probability.
+And further consider the relationship between number of susceptible and total susceptibility of the population as a possible functional form for phenomenological heterogeneity.
 
+In this specific model, we constructed a directed simple random graph, where every vertex is assigned with only in-degree $K$ following the degree distribution with PMF $\mathbb{P}(K=k)=p_k$, i.e. for a randomly chose vertex $u$, $K_u$ edges are attached to such vertex and all of such $K_u$ edges can allow infection only transmit in the direction towards $u$.
+We name such $K_u$ edges be the in-edges of $u$. 
+We also assume the neighbors keep changing with a uniformly random paring process instantaneously, i.e. at any time $t$, all vertices in the network other than $u$, are equally possible to connect with one of the $K_u$ edges of $u$ on the other side.
+
+\textcolor{red}{Consider the this part more carefully:} For network with large enough size $N \rightarrow \infty$, the probability that any random vertex $v$ is connected to focal vertex $u$ with one of its the $K_u$ in-edge is $1/N$.
+So the probability that $v$ is connected with $u$ with more than one of $u$'s in-edges is $o(1/N)\rightarrow 0$, which can be treat as almost surely(a.s.) impossible.
+Therefore, we could treat such random graph a.s. being simple (i.e. no multi-edges among any pair of vertices) and further treat all edge paring process being independent at any time point $t$.
+With similar argument for large network size, the probability than random in-edge of $u$ is connected to susceptible, infected or recovered vertex at any time $t$ can be treated as the same with $S(t)$, $I(t)$ and $R(t)$ correspondingly.
+Such probability arguments and approximation significantly simplified the mathematical derivation of all later results for large random network with only sacrifice negligible accuracy.
+
+\textcolor{red}{Maybe a graph here later for the in-degree}
+
+For the random network framework we discussed, a very brilliant, useful and novel approach is to consider the network from the perspective of edges and vertices together. 
+For the our network model with heterogeneity of in-degree and independent random paring process for all edges at any given time $t$, we define $\phi(t)$ being a randomly chosen (in-)edge has not yet transmitted the infection towards its target vertex.
+Then the probability $S$, which is a randomly chosen focal vertex $u$ being susceptible, should be the same with the probability that its has $K_u=k$ in-edges and none of the $k$ edges has not yet transmitted the infection to $u$ at time $t$.
+With the independence of paring process and total probability theorem, this leads to:
+\begin{align}
+	S(t) &=\sum_{k}\mathbb{P}(K_u=k)\mathbb{P}(\text{none of the } k \text{ edge has transmitted the infection to }u |K_u=k)
+	\\
+	&= \sum_{k} p_k \phi^k(t) = G_p(\phi(t))
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Discussion of reproductive number}
 \textcolor{red}{Discussion of $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}(t)$}
 
-In such network model, the basic reproductive number $\mathcal{R}_0$, which defined as the average number of secondary infections produced by a single infected individual in a completely susceptible population, is different with homogeneous model.
-Consider the degree distribution with PDF $p_k$ and corresponding excess degree $q_k$, we have: 
+The basic reproductive number $\mathcal{R}_0$, which defined as the average number of secondary infections produced by a single infected individual in a completely susceptible population, is a key parameter for compartmental infectious disease model, as $\mathcal{R}_0>1$ is often the threshold such that  
+
+
+, is different with homogeneous model
+Consider the degree distribution with PDF $p_k$, we have: 
 \begin{align}
-	\mathcal{R}_{0}&=\sum_{k=1} q_{k-1} \times(k-1)\times \frac{\beta}{\beta+\gamma}
+	\mathcal{R}_{0}&=\sum_{k=1} p_{k} k\times \frac{\beta}{\beta+\gamma}
 	\\
 	&= \frac{\beta}{\beta+\gamma} \sum_{k=1} \frac{p_k \times k}{\delta} \times(k-1)
 	\\
 	&=\frac{\beta}{\beta+\gamma} \frac{\sum_{k=1} p_k \times k \times(k-1)}{\delta}
 	\\
 	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}
-	\\
-	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{G'_p(1)}
 \end{align}
 where $q_{k-1}$ and $k-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
 $T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a focal infected vertex $a$ infects one of its susceptible neighbor $b$ prior to recovering, assuming any of the $b$'s neighbors other than $a$ will not infect $b$ before $a$ infect $b$.
 Such assumption is true for a completely susceptible population for $\mathcal{R}_0$, but should be considered more carefully as the prevalence increase in the population for network model, which will be discussed later.
 
-\textcolor{red}{Rethink about this part for independence.}
-As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $d$ will follow a binomial distribution $\text{Binom}(d-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(d-1)\times \frac{\beta}{\beta+\gamma}$ 
+\textcolor{red}{Rethink about this part of independence argument after the assumptions for Zhao1 model is clear.}
+As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $d$ will follow a binomial distribution $\text{Binom}(d-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(d-1)\times \frac{\beta}{\beta+\gamma}$.
+
+\textcolor{red}{Define $\phi$ and $\mathcal{R}_\text{eff}$ for this model}
+
+As outbreak develops, the prevalence increases such that a fair proportion of the population is no longer susceptible, which change the average susceptibility 
 
 
-\textcolor{red}{Define $\mathcal{R}_\text{eff}$}
+
+
+
+
+
+
+
 
 
 Consider the effective reproductive number term using:
