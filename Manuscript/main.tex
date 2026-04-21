@@ -202,7 +202,7 @@ A useful expression would be the mean degree $\delta$ is given by:
 For random network model, Excess degree could also be important, as during the outbreak, any newly infected vertex with degree $k$ could only infect at most $k-1$ of its susceptible neighbors, as its infection must come from one neighbor that already being infected.
 Based on given degree distribution with PDF $p_k$, we could define the distribution of excess degree with PDF denoted by $q_k$, such that:
 \begin{equation}
-	\mathbb{P}(\text{excess degree}=d-1)=q_{d-1}=\frac{p_d d}{\sum_{k=0}^{\infty}p_k k}=\frac{p_k k}{\delta}
+	\mathbb{P}(\text{excess degree}k-1)=q_{k-1}=\frac{p_k k}{\sum_{d=0}^{\infty}p_d d}=\frac{p_k k}{\delta}
 \end{equation}
 The corresponding PGF for excess degree is given by
 \begin{equation}
@@ -241,69 +241,109 @@ Such probability arguments and approximation significantly simplified the mathem
 For the random network framework we discussed, a very brilliant, useful and novel approach is to consider the network from the perspective of edges and vertices together. 
 For the our network model with heterogeneity of in-degree and independent random paring process for all edges at any given time $t$, we define $\phi(t)$ being a randomly chosen (in-)edge has not yet transmitted the infection towards its target vertex.
 Then the probability $S$, which is a randomly chosen focal vertex $u$ being susceptible, should be the same with the probability that its has $K_u=k$ in-edges and none of the $k$ edges has not yet transmitted the infection to $u$ at time $t$.
+For simplicity in later probability arguments, we denote $u \in S(t)$ as vertex $u$ belongs to susceptible compartment at time $t$, similar notation will apply to infected and recovered vertices accordingly.
 With the independence of paring process and total probability theorem, this leads to:
-\begin{align}
-	S(t) &=\sum_{k}\mathbb{P}(K_u=k)\mathbb{P}(\text{none of the } k \text{ edge has transmitted the infection to }u |K_u=k)
-	\\
-	&= \sum_{k} p_k \phi^k(t) = G_p(\phi(t))
-\end{align}
+\begin{equation}
+	\label{eqn: Seqn}
+	\begin{aligned}		
+		S(t) &=\sum_{k}\mathbb{P}(K_u=k)\mathbb{P}(\text{none of the } k \text{ edge has transmitted the infection to }u |K_u=k)
+		\\
+		&=\sum_{k}\mathbb{P}(K_u=k)\mathbb{P}(u\in S(t) |K_u=k)
+		\\
+		&=\sum_{k}\mathbb{P}(K_u=k \cap u\in S(t))
+		\\
+		&= \sum_{k} p_k \phi^k(t) = G_p(\phi(t))
+	\end{aligned}
+\end{equation}
+
+As the individual recovery process is irrelevant of the network model, the dynamic of $I(t)$ and $R(t)$ is governed by the same ODE of the homogeneous SIR model:
+\begin{equation}
+	\label{eqn: Ieqn}
+	\frac{d}{dt}I(t)=\dot{I}(t)=-\dot{S}(t)-\gamma I(t)
+\end{equation}
+\begin{equation}
+	\label{eqn: Reqn}
+	\frac{d}{dt}R(t)=\dot{R}(t)=+\gamma I(t)
+\end{equation}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Discussion of reproductive number}
 \textcolor{red}{Discussion of $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}(t)$}
 
-The basic reproductive number $\mathcal{R}_0$, which defined as the average number of secondary infections produced by a single infected individual in a completely susceptible population, is a key parameter for compartmental infectious disease model, as $\mathcal{R}_0>1$ is often the threshold such that  
+The basic reproductive number $\mathcal{R}_0$, which defined as the average number of secondary infections produced by a single infected individual in a completely susceptible population, is a key parameter for compartmental infectious disease model, as $\mathcal{R}_0>1$ is often the threshold such that the outbreak is guaranteed to happen and it is also often used to estimate the infectiousness of the disease.
 
-
-, is different with homogeneous model
-Consider the degree distribution with PDF $p_k$, we have: 
-\begin{align}
-	\mathcal{R}_{0}&=\sum_{k=1} p_{k} k\times \frac{\beta}{\beta+\gamma}
-	\\
-	&= \frac{\beta}{\beta+\gamma} \sum_{k=1} \frac{p_k \times k}{\delta} \times(k-1)
-	\\
-	&=\frac{\beta}{\beta+\gamma} \frac{\sum_{k=1} p_k \times k \times(k-1)}{\delta}
-	\\
-	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}
-\end{align}
-where $q_{k-1}$ and $k-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
-$T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a focal infected vertex $a$ infects one of its susceptible neighbor $b$ prior to recovering, assuming any of the $b$'s neighbors other than $a$ will not infect $b$ before $a$ infect $b$.
-Such assumption is true for a completely susceptible population for $\mathcal{R}_0$, but should be considered more carefully as the prevalence increase in the population for network model, which will be discussed later.
-
-\textcolor{red}{Rethink about this part of independence argument after the assumptions for Zhao1 model is clear.}
-As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $d$ will follow a binomial distribution $\text{Binom}(d-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(d-1)\times \frac{\beta}{\beta+\gamma}$.
-
-\textcolor{red}{Define $\phi$ and $\mathcal{R}_\text{eff}$ for this model}
-
-As outbreak develops, the prevalence increases such that a fair proportion of the population is no longer susceptible, which change the average susceptibility 
-
-
-
-
-
-
-
-
-
-
-
-Consider the effective reproductive number term using:
+For homogeneous SIR model introduced in Section~\ref{sec: Intro}, a commonly known result of its basic reproductive number is given by:
 \begin{equation}
-	\rho=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0}}=\frac{\sigma_{\phi}}{\sigma_0}
-\end{equation} 
-where $\sigma_{\phi}$ is the expected number of edges of susceptible vertices, such that
-\begin{equation}
-	\sigma_{\phi}=\sum_{k=0}^{\infty}p_k \times k \times(1-\phi)^{k}=\sum_{k=0}^{\infty}p_k \times k \times \phi^{k}=\phi\sum_{k=0}^{\infty}p_k \times k \times\phi^{k-1}=\phi G_p'(\phi)
-\end{equation}
-At $t=0$, we have $\sigma_\phi(0)=\sigma_0$, s.t.: 
-\begin{equation}
-	\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\phi\rightarrow1} \phi G_p'(\phi)=\delta
-\end{equation}
-therefore, 
-\begin{equation}
-	\rho=\frac{\phi G_p'(\phi)}{\delta}
+	\mathcal{R}_0=\frac{\beta}{\gamma}
 \end{equation}
 
+As the outbreak dynamic develops, the prevalence increases such that a fair proportion of the population is no longer susceptible, so follow the idea of $\mathcal{R}_0$, we can similarly define the effective reproductive number $\mathcal{R}_\text{eff}(t)$ as the average number of secondary infections produced by a single infected individual at any time $t$.
+Based on such definition, we could derive the following expression:
+\begin{equation}
+	\mathcal{R}_\text{eff}(t)=-\frac{\dot{S}(t)}{I}\times \frac{1}{\gamma}
+\end{equation}
+where the $\dot(S)(t)=\frac{d}{dt}S(t)$ is the instantaneous incidence at time $t$ and $\frac{1}{\gamma}$ is the average duration of infection.
+If the initially the population is assumed to be fully naive to the infection, as $S(t) \rightarrow 1$ as $t \rightarrow 0$, then naturally we should have $\lim_{t \rightarrow 0}\mathcal{R}_\text{eff}(t) \rightarrow \mathcal{R}_0$.
+
+For both homogeneous SIR model and the random network model we are discussing, the prevalence is always governed by the ODE~\eqref{eqn: Ieqn}, so that $\mathcal{R}_\text{eff}(t)=1 \Leftrightarrow \dot{I}(t)=0$, making $\mathcal{R}_\text{eff}(t)$ actually reflects the tendency and peak of prevalence $I(t)$ of the outbreak dynamic.
+
+For homogeneous, fully mixed SIR model with linear incidence $\dot{S}=-\beta SI$, we have 
+\begin{equation}
+	\label{eqn: rhoHom}
+	\mathcal{R}_\text{eff}(t)=-\frac{\dot{S}}{I}\times \frac{1}{\gamma}=\frac{\beta}{\gamma}S(t)=\mathcal{R}_0\times S(t)
+	\Leftrightarrow \rho=\frac{\mathcal{R}_\text{eff}(t)}{\mathcal{R}_0}=S(t)
+\end{equation}
+s.t. the susceptible proportion $S(t)$ is the ratio $\rho$ between effective and basic reproductive number.
+With similar idea, we could use such ratio $\rho$ as an alternative representation of the difference between homogeneity and phenomenological heterogeneity.
+
+For the heterogeneous random network model we are currently discussing, its $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$ is naturally different with homogeneous model, and should depend on the degree distribution.
+
+Based on previous assumption, an infected focal vertex $u$ will transmit its infection to a target susceptible vertex $v$ connected to $u$ through $v$'s in-edges at rate $\beta$ for the entire time $u$ is infected, with the average duration of infection is $1/\gamma$.
+Because $u$ has a new set of neighbors at each moment in a large enough network, we do not have to account its infection source, nor the fact that it cannot infect the same vertex again.
+
+\textcolor{red}{How to define $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}$ for this model?}
+\textcolor{red}{Define $\mathcal{R}_\text{eff}(t)$ for general $t$ in this model first and converge to $\mathcal{R}_0$ seems to be easier.}
+
+Since edge paring process is random and independent, the probability $P_u(K_v)$ that a random vertex $v$ with in-degree $K_v$ is connected to $u$ by $v$'s in-degree with should be proportional to $K_v$.
+Consider total number of edges in the whole network $\sum_{k}N p_k k=N\delta$, we could derive the expression of $P_u(k)$: 
+\begin{equation}
+	\mathbb{P}(v \text{'s in-edge is connected to } u|K_v=k)=P_u(k)=\frac{k}{N\delta}
+\end{equation}
+
+As discussed in equation~\eqref{eqn: Reqn}, for the randomly chosen $v$ with in-degree $K_v$ also being susceptible at the same time, we further have:
+\begin{equation}
+	\mathbb{P}(v\in S(t) \cap K_v=k)=\mathbb{P}(K_v=k) \mathbb{P}(v\in S(t)| K_v=k )=p_k \phi^k (t)
+\end{equation}
+Then the probability that in-edge of such $v$ is connected to a focal vertex $u$ is given by:
+\begin{equation}
+	\mathbb{P}(v \text{'s in-edge is connected to } u \cap v\in S(t) \cap K_v =k)=P_u(k) p_k \phi^k=\frac{k p_k \phi^k}{N\delta}
+\end{equation}
+Therefore, the expected number of susceptible vertices that $u$ are able to transmit infection to at any time $t$, is given by:
+\begin{equation}
+	\sigma_{\phi}(t)=\sum_{k}\frac{k p_k \phi^k}{\delta}=\phi \frac{\sum_{k} p_k \times k \times\phi^{k-1}}{\delta}=\frac{\phi G_p'(\phi)}{\delta}
+\end{equation}
+
+If the randomly chose focal vertex $u$ is infected, it transmits new infections at rate $\beta$ through the single in-edge to each susceptible neighbor for the entire time it is infected.
+The average duration of infection for vertex is $1/\gamma$ at any time $t$, so the expected number of infections $u$ caused, which is also the effective reproductive number, is given by:
+\begin{equation}
+	\mathcal{R}_\text{eff}(t)=\frac{\beta}{\gamma}\times \frac{\phi G_p'(\phi)}{\delta}
+\end{equation}
+
+In a the completely susceptible network, we could further derive the basic reproductive number as:
+\begin{equation}
+	\lim_{\phi \rightarrow 1} \mathcal{R}_\text{eff}=\mathcal{R}_0 =\frac{\beta}{\gamma}
+\end{equation}
+which looks the same as the homogeneous SIR model.
+
+However, the phenomenological heterogeneity ratio $\rho(t)$ is no longer equals to $S(t)$ as shown in homogeneous SIR model result~\eqref{eqn: rhoHom}:
+\begin{equation}
+	\label{eqn: rhoHet}
+	\rho(t)=\frac{\mathcal{R}_{\text{eff}}(t)}{\mathcal{R}_{0}}=\frac{\phi G_p'(\phi)}{\delta}
+\end{equation}
+the corresponding outbreak dynamic is varying 
+
+\subsection{Specific Distributions}
 Consider the Negative binomial distribution as degree distribution, which could also be seen as a continuous mixture of Poisson distribution and Gamma distribution.
 For this family of distributions (Negative Binomial, Poisson, Geometric), the PGF $G_p$ could be written easily in closed form and the distributions are connected such that other distributions could be deduced from the Negative Binomial distribution.
 
@@ -414,8 +454,34 @@ Class Eqns
     \end{cases} 
 \end{equation}
 
-\section{Comparing the network-SIR and MA-SIR models}
-\label{sec: MA compare}
+\section{MFSH model}
+\label{sec: MFSH}
+
+\section{MSV Configuration Model}
+\label{sec: Config}
+
+\textcolor{red}{Saved for later, not properly edited}
+Consider the degree distribution with PDF $p_k$ and corresponding excess degree distribution $q_k$ as defined in Section~\ref{sec: Network}, we have: 
+\begin{align}
+	\mathcal{R}_{0}&=\sum_{k=1} q_{k} k\times \frac{\beta}{\beta+\gamma}
+	\\
+	&= \frac{\beta}{\beta+\gamma} \sum_{k=1} \frac{p_k \times k}{\delta} \times(k-1)
+	\\
+	&=\frac{\beta}{\beta+\gamma} \frac{\sum_{k=1} p_k \times k \times(k-1)}{\delta}
+	\\
+	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}
+\end{align}
+where $q_{k-1}$ and $k-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
+
+$T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a focal infected vertex $a$ infects one of its susceptible neighbor $b$ prior to recovering, assuming any of the $b$'s neighbors other than $a$ will not infect $b$ before $a$ infect $b$.
+Such assumption is true for a completely susceptible population for $\mathcal{R}_0$, but should be considered more carefully as the prevalence increase in the population for network model, which will be discussed later.
+
+\textcolor{red}{Rethink about this part of independence argument after the assumptions is clear.}
+As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $k$ will follow a binomial distribution $\text{Binom}(k-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(k-1)\times \frac{\beta}{\beta+\gamma}$.
+
+
+
+
 
 \section{Conclusions}
 \label{sec: Conclusion}

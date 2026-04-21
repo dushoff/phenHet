@@ -141,7 +141,7 @@ Follow JD's idea:
 
 $$\rho=\frac{\mathcal{R}_{c}}{\mathcal{R}_{0,c}}=\frac{\sigma_{\phi}}{\sigma_0}$$
 - $\sigma_{\phi}$: Expected number of edges of susceptible vertices
-$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times(1-\phi)^{d}=\sum_{d=0}^{\infty}p_d \times d \times \phi^{d}=\phi\sum_{d=0}^{\infty}p_d \times d \times\phi^{d-1}=\phi G_p'(\phi)$$
+$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times \phi^{d}=\phi\sum_{d=0}^{\infty}p_d \times d \times\phi^{d-1}=\phi G_p'(\phi)$$
 - At $t=0$, we have $\sigma_\phi(0)=\sigma_0$: 
 $$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\phi\rightarrow1} \phi G_p'(\phi)=\delta$$
 - Therefore, 
