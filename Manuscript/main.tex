@@ -365,7 +365,7 @@ If two model have same ratio function, we know that the dynamic of incidence/pre
 
 \subsection{Specific Distributions}
 To connect the results we derived in Section~\ref{sec: Reff} with literature~\cite{Novozhilov:2008}, (Romanescue)
-(Dwyer paper?), we would like to apply the general results to the a more general family of degree distributions, which has not yet been discussed systematically, while its sub cases agree with some known models in literature.
+(Dwyer paper?), we would like to apply the general results to the a more general family of degree distributions, which has not yet been discussed systematically, while its sub-cases agree with some known models in literature.
 
 Consider the degree distribution of the in-degree follows  negative binomial distribution, which could also be seen as a continuous mixture of Poisson distribution and Gamma distribution.
 For this family of distributions, the PGF $G_p(x)$ could be written easily in closed form and the distributions are connected such that other distributions could be deduced from the negative binomial distribution.
@@ -376,109 +376,96 @@ Typical probability mass function (PMF) of negative binomial distribution with p
 \end{equation} 
 with mean $\delta=\frac{r(1-p)}{p}$ and variance $\text{var}=\frac{r(1-p)}{p^2}$.
 
-For better understanding, we parameterize the distribution using mean $\delta$ and a squared constant of variance $\kappa$, such that 
+For simplicity of expressions, we re-parameterize the distribution using mean $\delta$ and a constant based on variance $\kappa$, such that 
 \begin{align} 
 	r & =\frac{1}{\kappa}
 	\\
 	p & =\frac{1}{1+\kappa\delta}
 \end{align}
-
 This gives us the variance $\text{Var}=\delta(1+\kappa\delta)>\delta$, as these family of distributions are always over-dispersed, and further never converge to homogeneous case.
 
-Now consider the PGFs of this family:
-- Negative Binomial distribution:
-$$G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}$$
-- Poisson: As $\kappa \rightarrow 0$, NegBinom converge to Poisson distribution with 
-$$G_p(\phi)=e^{\delta(\phi-1)}$$
-- Verification: As 
-$$\lim_{a\rightarrow \infty}(1+\frac{x}{a})^a=e^x =\lim_{b\rightarrow0}(1-x \times b)^{-\frac{1}{b}}$$we have
-$$\lim_{\kappa\rightarrow 0} (\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}=\lim_{\kappa\rightarrow 0} (1-\kappa \times\delta(\phi-1))^{-\frac{1}{\kappa}}=e^{\delta(\phi-1)}$$
-- Geometric: As $\kappa=1$, NegBinom is Geometric distribution by definition, with PGF: 
-$$G_p(\phi)=\frac{1}{1+\delta-\phi\times\delta}$$
-
-Just consider the general Negative Binomial case, as from the MSV framework, we got
-$$S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\Rightarrow\phi=G^{-1}_p(S)=1+\frac{1-S^{-\kappa}}{\kappa\delta}$$
-and 
-$$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}$$
-Take this into $\rho$ gives us for Negative Binomial:
-\begin{align}
-	\rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0,c}}=\frac{\phi G'_p(\phi)}{\delta}=\frac{S\phi}{1+\kappa\delta-\phi\times\kappa\delta}
-	\\
-	&=S\times \frac{1+\frac{1-S^{-\kappa}}{\kappa\delta}}{1+\kappa\delta-(1+\frac{1-S^{-\kappa}}{\kappa\delta})\kappa\delta}
-	\\
-	&=S\times(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})
-\end{align}
-
-- Gamma: as $\delta \rightarrow \infty$ we have 
-$$\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}$$ which agree with the Dwyer-Parsons result with Gamma distribution
-- Poisson: as $\kappa\rightarrow0$ we have
-$$\lim_{\kappa\rightarrow0}\rho=S\lim_{\kappa\rightarrow0}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times (1+\frac{\log(S)}{\delta})$$which agree with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Poisson distribution.
-- Derivation: 
-$$\lim_{\kappa\rightarrow0}\frac{S^{\kappa}-1}{\kappa}=\log(S)$$as $S \in [0,1]$
-- Geometric: as $\kappa=1$ we have 
-$$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometric distribution.
-- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
-
-For further illustration, we define 
-$$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
-
-
-\subsection{SubSection}
-\label{sec: sub1}
-\textit{Treponema pallidum} subspecies pallidum\cite{DushoffEtAl:2004,BansalMeyers:2012}.
-
-Itemize
-\begin{itemize}
-	\item a
-	
-	\item b
-	
-	\item c
-	\begin{itemize}
-		
-		\item (1)
-		
-		\item (2)
-		
-	\end{itemize} 
-	
-	In practice, diagnoses of early versus late latent stages are determined based on serological testing and clinical input.
-	
-	\item d
-	
-\end{itemize}
-
-Enumerate
-\begin{enumerate}
-\item [(H1)] Assumption
-\end{enumerate}
-
-\subsection{Subsection}
-\label{sec: sub 2}
-
-Equation
+Now consider the PGFs of the Negative Binomial distribution:
 \begin{equation}
-    \mathbb{P}(K=k) \propto k^{-\alpha}
-    \label{eqn: power law}
-\end{equation} 
-
-package \verb#fit_power_law# function from the \verb#igraph# R package
-
-Eqref: \eqref{eqn: power law}.
-
-Class Eqns
-\begin{equation}
-\label{eqn: CM ODE}
-    \begin{cases}
-        S(t) & = G_p(\theta(t)) \\
-        I(t) & = 1-S(t)-R(t) \\
-        \dot{R}(t) & = \gamma I(t) \\
-        \dot{\theta}(t) & = -\beta \theta +\beta \frac{G'_p(\theta)}{G'_p(1)}+\gamma (1-\theta)
-    \end{cases} 
+	G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}
 \end{equation}
+
+If $\kappa \rightarrow 0$, such distribution converges to a Poisson distribution with PGF
+\begin{equation}
+G_p(\phi)=\lim_{\kappa\rightarrow 0} (\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}=\lim_{\kappa\rightarrow 0} (1-\kappa \times\delta(\phi-1))^{-\frac{1}{\kappa}}=e^{\delta(\phi-1)}
+\end{equation}
+
+On the other hand, if $\kappa=1$ the Negative Binomial distribution is the same as Geometric distribution by definition, with PGF: 
+\begin{equation}
+	G_p(\phi)=\frac{1}{1+\delta-\phi\times\delta}
+\end{equation}
+
+To consider the general Negative Binomial case, from equation~\eqref{eqn: Seqn} we got
+\begin{equation}
+	\begin{aligned}
+		&S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}
+		\\
+		\Rightarrow & \phi=G^{-1}_p(S)=1+\frac{1-S^{-\kappa}}{\kappa\delta}
+		\\
+		\Rightarrow & G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}
+	\end{aligned}
+\end{equation}
+
+Take this into the $\rho(t)$ ratio function for Negative Binomial give us:
+\begin{equation}
+	\label{eqn: rhoNB}
+	\begin{aligned}
+		\rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0,c}}=\frac{\phi G'_p(\phi)}{\delta}=\frac{S\phi}{1+\kappa\delta-\phi\times\kappa\delta}
+		\\
+		&=S\times \frac{1+\frac{1-S^{-\kappa}}{\kappa\delta}}{1+\kappa\delta-(1+\frac{1-S^{-\kappa}}{\kappa\delta})\kappa\delta}
+		\\
+		&=S\times(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})
+	\end{aligned}
+\end{equation}
+
+Now we can considered the two special distribution mentioned previously.
+
+For the Geometric case, take $\kappa=1$ into \eqref{eqn: rhoNB}, we have 
+\begin{equation}
+	\rho=S\times(S+\frac{S-1}{\delta})
+\end{equation} which agree with [RomanescuEtAL(2023)] result with Geometric degree distribution random network also following approaches in \cite{MillerSlimVolz:2012}.
+\textcolor{brown}{Optional: However, the model they proposed is a configuration random network with fixed neighbor relationship, which we will discuss in [Section X] later. 
+But in their derivation of effective reproductive numbers, the paring process described was more closed to the directed random network with instantaneous neighborhood we described here.   
+}
+
+For the Poisson distribution case, take $\kappa\rightarrow 0$ into \eqref{eqn: rhoNB} we have
+\begin{equation}
+	\lim_{\kappa\rightarrow0}\rho=S\lim_{\kappa\rightarrow0}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times (1+\frac{\log(S)}{\delta})
+\end{equation}
+%since \begin{equation}
+%	\lim_{\kappa\rightarrow0}\frac{S^{\kappa}-1}{\kappa}=\log(S)
+%\end{equation}
+when $S \in [0,1]$ as a proportion of population.
+Such result match with the $\rho(t)$ function derived from \cite{Novozhilov:2008} if assume the transmissibility $\beta$ follows a Poisson distribution as the source population level heterogeneity, instead of heterogeneity of contact edges.
+This connect our work with the literature of phenomenological heterogeneity, while also revealing the fact that different heterogeneity model settings could generate the dynamics.
+
+One could further try to modify the presented actual degree model with discrete degree distribution into a expected degree model with continuous distribution following \cite{MillerSlimVolz:2012}'s approach and verifying its similarity with other continuous distribution results in \cite{Novozhilov:2008}.
+
+Since the scope of this manuscript is more focus on mechanistic understanding of phenomenological heterogeneity on actual discrete degree random network, we will not present detailed models and discussions in such direction.
+But as the general result we derived is based on negative binomial distribution, which could also been seen as a Poisson-Gamma Mixture \textcolor{red}{[Citations or more explanation here?]}, we could briefly illustrate the potential equivalence for the Gamma distribution:
+
+As $\delta \rightarrow \infty$, the negative binomial distribution is converge to a Gamma distribution. 
+Although we could not define PGF for the continuous distribution, we could applying such limit to \eqref{eqn: rhoNB} and get:
+\begin{equation}
+	\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}
+\end{equation}
+which agree with the Gamma distributed result in \cite{Novozhilov:2008} and the Dwyer-Parsons result (literature?)
+
+For further illustration of the heterogeneity of different distributions, we define $\sigma(S)=\frac{\rho}{S}$ and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value in [Fig X]. 
+Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+
+\textcolor{red}{[FIG later]}
 
 \section{MFSH model}
 \label{sec: MFSH}
+
+In Section~\ref{sec: model} we proposed a directed random network model.
+
+
 
 \section{MSV Configuration Model}
 \label{sec: Config}
@@ -508,6 +495,61 @@ As the neighbors are independent, then the number of neighbors that will be infe
 
 \section{Conclusions}
 \label{sec: Conclusion}
+
+
+\subsection{SubSection}
+\label{sec: sub1}
+\textit{Treponema pallidum} subspecies pallidum\cite{DushoffEtAl:2004,BansalMeyers:2012}.
+
+Itemize
+\begin{itemize}
+	\item a
+	
+	\item b
+	
+	\item c
+	\begin{itemize}
+		
+		\item (1)
+		
+		\item (2)
+		
+	\end{itemize} 
+	
+	In practice, diagnoses of early versus late latent stages are determined based on serological testing and clinical input.
+	
+	\item d
+	
+\end{itemize}
+
+Enumerate
+\begin{enumerate}
+	\item [(H1)] Assumption
+\end{enumerate}
+
+\subsection{Subsection}
+\label{sec: sub 2}
+
+Equation
+\begin{equation}
+	\mathbb{P}(K=k) \propto k^{-\alpha}
+	\label{eqn: power law}
+\end{equation} 
+
+package \verb#fit_power_law# function from the \verb#igraph# R package
+
+Eqref: \eqref{eqn: power law}.
+
+Class Eqns
+\begin{equation}
+	\label{eqn: CM ODE}
+	\begin{cases}
+		S(t) & = G_p(\theta(t)) \\
+		I(t) & = 1-S(t)-R(t) \\
+		\dot{R}(t) & = \gamma I(t) \\
+		\dot{\theta}(t) & = -\beta \theta +\beta \frac{G'_p(\theta)}{G'_p(1)}+\gamma (1-\theta)
+	\end{cases} 
+\end{equation}
 
 \section*{Acknowledgments}
 We thank XX for his help with the literature review. 
