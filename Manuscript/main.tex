@@ -463,12 +463,56 @@ Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
 \section{MFSH model}
 \label{sec: MFSH}
 
-In Section~\ref{sec: model} we proposed a directed random network model.
+In Section~\ref{sec: model} we proposed a directed random network model with heterogeneity of in-degrees, which is more close to susceptibility as a susceptible vertex with high in-degree will have more chances to be infected than those with lower in-degree.
 
+Similarly we can define out-edges and out-degree for "infectivity". 
+\textcolor{red}{For future: Out-degree models?}
 
+Intuitively, network models are closer to the social network, such that the edges are the connections between individuals that allows the disease to transmit.
+A natural assumption would be consider the heterogeneity "connectivity", such that the edges are no longer directed, and individuals are more socially active, i.e. vertices with higher degree, are more likely to being infected and being able to infect others at the same time.
+(in-degree = out-degree ignores the infection direction and overestimate the neighborhood size)
+
+If we still assume the instantaneously changing neighborhood as in Section~\ref{sec: model}, we will get the Mean-Field Social Heterogeneity model as described in \cite{MillerSlimVolz:2012}.
+
+Model description
+
+With slightly different background and assumptions, similar or equivalent model has been investigate in the literature.
+
+$\mathcal{R}_0$ from MSV
+
+\textcolor{red}{TODO: Derive $\mathcal{R}_\text{eff}$ and $\rho$ for this model?}
 
 \section{MSV Configuration Model}
 \label{sec: Config}
+
+Description of Configuration model
+
+Now with locality in configuration model, the neighborhood is no longer changing so the (better language!)edges could running out in a infected neighborhood, which change the mean-field/fully mixed assumption and the dynamic significantly.
+
+Now we should have define two version of 
+$\mathcal{R}_\text{eff}$
+
+\subsection{Case Reproductive Number}
+
+Ideal, non-competitive $\mathcal{R}^*_\text{c}$
+
+True $\mathcal{R}_\text{c}$ with competitive infection and $p(t)$ ODE
+
+Simulation \& Results
+
+\subsection{Instantaneous Reproductive Number}
+
+Initial value for "eigen"-state transmission
+
+$\mathcal{R}^*_\text{i}$ ODE
+
+\textcolor{red}{TODO: Relationship between $\mathcal{R}^*_\text{c}$ and $\mathcal{R}^*_\text{i}$}
+
+
+\section{Conclusions}
+\label{sec: Conclusion}
+
+
 
 \textcolor{red}{Saved for later, not properly edited}
 Consider the degree distribution with PDF $p_k$ and corresponding excess degree distribution $q_k$ as defined in Section~\ref{sec: Network}, we have: 
@@ -488,13 +532,6 @@ Such assumption is true for a completely susceptible population for $\mathcal{R}
 
 \textcolor{red}{Rethink about this part of independence argument after the assumptions is clear.}
 As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $k$ will follow a binomial distribution $\text{Binom}(k-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(k-1)\times \frac{\beta}{\beta+\gamma}$.
-
-
-
-
-
-\section{Conclusions}
-\label{sec: Conclusion}
 
 
 \subsection{SubSection}
