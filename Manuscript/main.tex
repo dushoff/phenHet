@@ -111,7 +111,10 @@ Abstract
 \section{Introduction}
 \label{sec: Intro}
 
-Compartmental models with dynamics controlled by a system of ordinary differential equations, like the well-known susceptible-infectious-recovered (SIR) model discussed by Kermack \& McKendrick\cite{KermMcKe}, are commonly used when modeling disease transmission. 
+Compartmental models with dynamics controlled by a system of ordinary differential equations, like the well-known susceptible-infectious-recovered (SIR) model discussed by Kermack \& McKendrick\cite{KermMcKe}, are commonly used when modeling disease transmission.
+
+Here we present a simplified version assuming closed population with no birth, migration or death.
+One could define $S(t)$, $I(t)$ and $R(t)$ as the proportion of population for susceptible, infected and recovered compartment accordingly at given time $t$. 
 
 \begin{figure}[htbp]
 	\begin{center}
@@ -120,20 +123,31 @@ Compartmental models with dynamics controlled by a system of ordinary differenti
 			\node[main node] (S) {$S$};
 			\node[main node] (I) [right of=S] {$I$};
 			\node[main node] (R) [right of=I] {$R$};
-			\draw[thick,->] (S) -- (I) node[midway,sloped,above,rotate=0] {$\beta I/N$};
+			\draw[thick,->] (S) -- (I) node[midway,sloped,above,rotate=0] {$\beta I$};
 
 			\draw[thick,->] (I) -- (R) node[midway,sloped,above,rotate=0] {$\gamma$};
 
 		\end{tikzpicture}
 	\end{center}
-	\caption[Basic SIR model]{Flow diagram of a simple SIR model, showing susceptible, infectious and recovered/removed compartments. Susceptible individuals are infected at per-capita rate equal to the product of a contact rate, $\beta$, and the proportion of the population infectious, $I/N$. Infectious individuals at per-capita rate $\gamma$.}
+	\caption[Basic SIR model]{Flow diagram of a simple SIR model, showing susceptible, infectious and recovered/removed compartments. Susceptible individuals are infected at per-capita rate equal to the product of a contact rate, $\beta$, and the proportion of the population infectious, $I$. Infectious individuals at per-capita rate $\gamma$.}
 	\label{fig:SIR}
 \end{figure}
 
 \jd{I feel we should use the standard-incidence formulation ($I/N$) instead of mass-action, and also not really talk about it much.}
 
-These models often assume that the population is homogeneous and fully mixed, such that disease incidence depends bilinearly on $S$ and $I$, as in Figure~\ref{fig:SIR}. Such simple models have led to many valuable insights, but often miss important features, since population heterogeneity often has dramatic effects on disease spread. 
-Even very early work on this model \cite{McKendrick:1940} recognized this problem and proposed alternative approaches. 
+The dynamic of each compartment is then given by the following ODE system:
+\begin{equation}
+	\label{eqn: MASIR}
+	\begin{cases}
+		\dot{S}(t) & = -\beta S(t) I(t) \\
+		\dot{I}(t) & = -\dot{S}(t)-\gamma I(t) = -\beta S(t) I(t) \\
+		\dot{R}(t) & = \hat{\gamma} I(t) 
+	\end{cases} 
+\end{equation}
+
+These compartmental models often assume that the population is homogeneous and fully mixed, such that disease incidence depends bilinearly on $S$ and $I$, as in Figure~\ref{fig:SIR}. 
+Such simple models have led to many valuable insights, but often miss important features, since population heterogeneity often has dramatic effects on disease spread. 
+Even very early work on this model~\cite{McKendrick:1940} recognized this problem and proposed alternative approaches. 
 
 Some early approaches (\textbf{literature}): the nonlinear incidence are raised to fit data, but lack of solid mechanistic understanding.
 
@@ -156,10 +170,11 @@ These attempts Very rare to discuss connectivity with locality i.e. stable socia
 
 Network and random network approach: from Pastor-Satorras, to Newman, to MSV, to Zhao-Magpantay.
 
-Romanescue: network approach with extensions and  flaws.
+Romanescue: network approach with extensions and flaws.
+
+Rand \& Keeling's closure approach 
 
 Here in this manuscript, we investigate phenomenological heterogeneity of susceptibility, connectivity and locality together under the MSV random network framework to reveal new perspective to understand mechanism that derives nonlinear incidence in the infectious dynamics.
-
 
 
 \section{Random Network Models for Infectious Disease}
@@ -176,7 +191,7 @@ The random network we will discussed is a representation of human communities wi
 Consider $K$ being the random variable for degree of a uniformly randomly chosen vertex in a given network, we then denote the probability that $K=k \in \mathbb{Z}^+$ being $p_k=P(K=k)$, which could also be treated as probability density function of the degree distribution. 
 
 The idea of random network model approach is not considering any graph with specific edge topology, but the common property related to disease transmission, among the set of all possible network with the same degree distribution.
-Each possible network with specific edge topology is an element of the set and called a realization of the random network:
+Each possible network with specific edge topology is an element of the set and called a realization of the random network.
 For each realization, stubs(half-edges for undirected graph) or directed edges are first assigned to vertices according to the degree distribution, then all individuals are connected following a uniformly random pairing process of stubs or between directed edges and vertices, such that every realization in the set has equal possibility to be chosen.
 %%% Degree distribution.
 
@@ -185,6 +200,7 @@ They further proved that the such graph properties of each realization will conv
 As a result, such approaches fit well with infectious disease transmission within large population, where data of connections topology is not accessible or too costly to collect, the degree distributions could be more easily estimated with certain proxy data to characterize the heterogeneity in social connections. 
 
 Newman~\cite{Newman:2002,Newman:2003, Newman:2010} introduced percolation-based transmission model for infectious disease on heterogeneous networks, which provides basic reproductive number $\mathcal{R}_0$ as outbreak threshold and expectation of final infection size $R(\infty)$ for among random network realizations with arbitrary degree distribution.
+
 Later, Miller, Slim \& Volz\cite{MillerSlimVolz:2012} developed their framework for random network models, such that the transmission dynamic of outbreak could be described by tractable, SIR-like ODE systems.
 A thorough, explicit list of assumptions and the discussion about relationship between different models in this series of continuously developed work was summarized and presented in Zhao \& Magpantay\cite{ZhaoMagpantay:2024}.
 
@@ -215,7 +231,7 @@ The corresponding PGF for excess degree is given by
 To connecting the random network framework with existing results for phenomenological heterogeneity model, we start with a specific directed network model with no locality, i.e. edges or neighbors are not fixed and kept changing instantaneously with time, such that the dynamic is equivalent to Novozhilov's\cite{Novozhilov:2008} result for heterogeneity in susceptibility. 
 
 For this target, we construct a SIR network model with the same Susceptible($S$), Infected($I$) and Recovered($R$) class of vertex/individual and the same disease development flow like the homogeneous compartmental SIR model described in Section~\ref{sec: Intro} and in the literature~\cite{Novozhilov:2008}.
-As the population is close with size $N$, we normalize the compartment size with the population size and denote $S(t)$, $I(t)$ and $R(t)$ be the proportion of vertices of each corresponding compartment at time $t$. 
+As the closed population have size $N$, we normalize the compartment size with the population size and denote $S(t)$, $I(t)$ and $R(t)$ be the proportion of vertices of each corresponding compartment at time $t$. 
 
 Instead of assuming heterogeneity in individual level susceptibility with a fully-mixed population, we assume the susceptibility is homogeneous among all vertices, but the disease causing connections between individuals is phenomenologically heterogeneous with a random network structure governed by a degree distribution, as described in Section~\ref{sec: Network}.
 As a result, we use $\beta$ now to denote the uniform transmission rate for each edge between a pair of susceptible and infected vertices, and $\gamma$ is the recovery rate for each infected individual.
@@ -269,6 +285,7 @@ As the individual recovery process is irrelevant of the network model, the dynam
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Discussion of reproductive number}
+\label{sec: Reff}
 \textcolor{red}{Discussion of $\mathcal{R}_0$ and $\mathcal{R}_\text{eff}(t)$}
 
 The basic reproductive number $\mathcal{R}_0$, which defined as the average number of secondary infections produced by a single infected individual in a completely susceptible population, is a key parameter for compartmental infectious disease model, as $\mathcal{R}_0>1$ is often the threshold such that the outbreak is guaranteed to happen and it is also often used to estimate the infectiousness of the disease.
@@ -336,68 +353,191 @@ In a the completely susceptible network, we could further derive the basic repro
 \end{equation}
 which looks the same as the homogeneous SIR model.
 
-However, the phenomenological heterogeneity ratio $\rho(t)$ is no longer equals to $S(t)$ as shown in homogeneous SIR model result~\eqref{eqn: rhoHom}:
+However, the phenomenological heterogeneity ratio function $\rho(t)$ is no longer equals to $S(t)$ as shown in homogeneous SIR model result~\eqref{eqn: rhoHom}:
 \begin{equation}
 	\label{eqn: rhoHet}
 	\rho(t)=\frac{\mathcal{R}_{\text{eff}}(t)}{\mathcal{R}_{0}}=\frac{\phi G_p'(\phi)}{\delta}
 \end{equation}
-the corresponding outbreak dynamic is varying 
+so the corresponding outbreak dynamic is also different.
+
+Similar ratio functions $\rho(t)$ could be defined for compartmental infectious disease models with phenomenological heterogeneity.
+If two model have same ratio function, we know that the dynamic of incidence/prevalence will be the same between models if the $\mathcal{R}_0$ is the same.
 
 \subsection{Specific Distributions}
-Consider the Negative binomial distribution as degree distribution, which could also be seen as a continuous mixture of Poisson distribution and Gamma distribution.
-For this family of distributions (Negative Binomial, Poisson, Geometric), the PGF $G_p$ could be written easily in closed form and the distributions are connected such that other distributions could be deduced from the Negative Binomial distribution.
+To connect the results we derived in Section~\ref{sec: Reff} with literature~\cite{Novozhilov:2008}, (Romanescue)
+(Dwyer paper?), we would like to apply the general results to the a more general family of degree distributions, which has not yet been discussed systematically, while its sub-cases agree with some known models in literature.
 
-Typical probability mass function (PMF) of negative binomial distribution is given by:
+Consider the degree distribution of the in-degree follows  negative binomial distribution, which could also be seen as a continuous mixture of Poisson distribution and Gamma distribution.
+For this family of distributions, the PGF $G_p(x)$ could be written easily in closed form and the distributions are connected such that other distributions could be deduced from the negative binomial distribution.
+
+Typical probability mass function (PMF) of negative binomial distribution with parameter $p$ and $r$ is given by:
 \begin{equation}
 	p_k=\binom{k+r-1}{k}(1-p)^k p^r
-\end{equation} with mean $\delta=\frac{r(1-p)}{p}$ and variance 
-$\text{var}=\frac{r(1-p)}{p^2}$.
-For better understanding, we parameterize the distribution using mean $\delta$ and a squared Constant of variance $\kappa$, such that 
+\end{equation} 
+with mean $\delta=\frac{r(1-p)}{p}$ and variance $\text{var}=\frac{r(1-p)}{p^2}$.
 
+For simplicity of expressions, we re-parameterize the distribution using mean $\delta$ and a constant based on variance $\kappa$, such that 
 \begin{align} 
 	r & =\frac{1}{\kappa}
 	\\
 	p & =\frac{1}{1+\kappa\delta}
 \end{align}
-
 This gives us the variance $\text{Var}=\delta(1+\kappa\delta)>\delta$, as these family of distributions are always over-dispersed, and further never converge to homogeneous case.
 
-Now consider the PGFs of this family:
-- Negative Binomial distribution:
-$$G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}$$
-- Poisson: As $\kappa \rightarrow 0$, NegBinom converge to Poisson distribution with 
-$$G_p(\phi)=e^{\delta(\phi-1)}$$
-- Verification: As 
-$$\lim_{a\rightarrow \infty}(1+\frac{x}{a})^a=e^x =\lim_{b\rightarrow0}(1-x \times b)^{-\frac{1}{b}}$$we have
-$$\lim_{\kappa\rightarrow 0} (\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}=\lim_{\kappa\rightarrow 0} (1-\kappa \times\delta(\phi-1))^{-\frac{1}{\kappa}}=e^{\delta(\phi-1)}$$
-- Geometric: As $\kappa=1$, NegBinom is Geometric distribution by definition, with PGF: 
-$$G_p(\phi)=\frac{1}{1+\delta-\phi\times\delta}$$
+Now consider the PGFs of the Negative Binomial distribution:
+\begin{equation}
+	G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}
+\end{equation}
 
-Just consider the general Negative Binomial case, as from the MSV framework, we got
-$$S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\Rightarrow\phi=G^{-1}_p(S)=1+\frac{1-S^{-\kappa}}{\kappa\delta}$$
-and 
-$$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}$$
-Take this into $\rho$ gives us for Negative Binomial:
+If $\kappa \rightarrow 0$, such distribution converges to a Poisson distribution with PGF
+\begin{equation}
+G_p(\phi)=\lim_{\kappa\rightarrow 0} (\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}=\lim_{\kappa\rightarrow 0} (1-\kappa \times\delta(\phi-1))^{-\frac{1}{\kappa}}=e^{\delta(\phi-1)}
+\end{equation}
+
+On the other hand, if $\kappa=1$ the Negative Binomial distribution is the same as Geometric distribution by definition, with PGF: 
+\begin{equation}
+	G_p(\phi)=\frac{1}{1+\delta-\phi\times\delta}
+\end{equation}
+
+To consider the general Negative Binomial case, from equation~\eqref{eqn: Seqn} we got
+\begin{equation}
+	\begin{aligned}
+		&S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}
+		\\
+		\Rightarrow & \phi=G^{-1}_p(S)=1+\frac{1-S^{-\kappa}}{\kappa\delta}
+		\\
+		\Rightarrow & G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}
+	\end{aligned}
+\end{equation}
+
+Take this into the $\rho(t)$ ratio function for Negative Binomial give us:
+\begin{equation}
+	\label{eqn: rhoNB}
+	\begin{aligned}
+		\rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0,c}}=\frac{\phi G'_p(\phi)}{\delta}=\frac{S\phi}{1+\kappa\delta-\phi\times\kappa\delta}
+		\\
+		&=S\times \frac{1+\frac{1-S^{-\kappa}}{\kappa\delta}}{1+\kappa\delta-(1+\frac{1-S^{-\kappa}}{\kappa\delta})\kappa\delta}
+		\\
+		&=S\times(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})
+	\end{aligned}
+\end{equation}
+
+Now we can considered the two special distribution mentioned previously.
+
+For the Geometric case, take $\kappa=1$ into \eqref{eqn: rhoNB}, we have 
+\begin{equation}
+	\rho=S\times(S+\frac{S-1}{\delta})
+\end{equation} which agree with [RomanescuEtAL(2023)] result with Geometric degree distribution random network also following approaches in \cite{MillerSlimVolz:2012}.
+\textcolor{brown}{Optional: However, the model they proposed is a configuration random network with fixed neighbor relationship, which we will discuss in [Section X] later. 
+But in their derivation of effective reproductive numbers, the paring process described was more closed to the directed random network with instantaneous neighborhood we described here.   
+}
+
+For the Poisson distribution case, take $\kappa\rightarrow 0$ into \eqref{eqn: rhoNB} we have
+\begin{equation}
+	\lim_{\kappa\rightarrow0}\rho=S\lim_{\kappa\rightarrow0}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times (1+\frac{\log(S)}{\delta})
+\end{equation}
+%since \begin{equation}
+%	\lim_{\kappa\rightarrow0}\frac{S^{\kappa}-1}{\kappa}=\log(S)
+%\end{equation}
+when $S \in [0,1]$ as a proportion of population.
+Such result match with the $\rho(t)$ function derived from \cite{Novozhilov:2008} if assume the transmissibility $\beta$ follows a Poisson distribution as the source population level heterogeneity, instead of heterogeneity of contact edges.
+This connect our work with the literature of phenomenological heterogeneity, while also revealing the fact that different heterogeneity model settings could generate the dynamics.
+
+One could further try to modify the presented actual degree model with discrete degree distribution into a expected degree model with continuous distribution following \cite{MillerSlimVolz:2012}'s approach and verifying its similarity with other continuous distribution results in \cite{Novozhilov:2008}.
+
+Since the scope of this manuscript is more focus on mechanistic understanding of phenomenological heterogeneity on actual discrete degree random network, we will not present detailed models and discussions in such direction.
+But as the general result we derived is based on negative binomial distribution, which could also been seen as a Poisson-Gamma Mixture \textcolor{red}{[Citations or more explanation here?]}, we could briefly illustrate the potential equivalence for the Gamma distribution:
+
+As $\delta \rightarrow \infty$, the results is equivalent with the result raised from gamma distribution in literature, by applying such limit to \eqref{eqn: rhoNB} and get:
+
+%the negative binomial distribution is converge to a Gamma distribution. 
+\begin{equation}
+	\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}
+\end{equation}
+which agree with the Gamma distributed result in \cite{Novozhilov:2008} and the Dwyer-Parsons result (literature?)
+
+For further illustration of the heterogeneity of different distributions, we define $\sigma(S)=\frac{\rho}{S}$ and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value in [Fig X]. 
+Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+
+\textcolor{red}{[FIG later]}
+
+\section{MFSH model}
+\label{sec: MFSH}
+
+In Section~\ref{sec: model} we proposed a directed random network model with heterogeneity of in-degrees, which is more close to susceptibility as a susceptible vertex with high in-degree will have more chances to be infected than those with lower in-degree.
+
+Similarly we can define out-edges and out-degree for "infectivity". 
+\textcolor{red}{ @Jonathan, can you add a short paragraph and some literature for Out-degree models?}
+
+Intuitively, network models are closer to the social network, such that the edges are the connections between individuals that allows the  to transmit.
+A natural assumption would be consider the heterogeneity "connectivity", such that the edges are no longer directed, and individuals are more socially active, i.e. vertices with higher degree, are more likely to being infected and being able to infect others at the same time.
+(in-degree = out-degree ignores the infection direction and overestimate the neighborhood size)
+
+If we still assume the instantaneously changing neighborhood as in Section~\ref{sec: model}, we will get the Mean-Field Social Heterogeneity model as described in \cite{MillerSlimVolz:2012}.
+
+Model description
+
+With slightly different background and assumptions, similar or equivalent model has been investigate in the literature.
+
+$\mathcal{R}_0$ from MSV
+
+\textcolor{red}{TODO: Try to derive $\mathcal{R}_\text{eff}$ and $\rho$ for this model, if possible}
+
+\section{MSV Configuration Model}
+\label{sec: Config}
+
+Description of Configuration model
+
+Now with locality in configuration model, the neighborhood is no longer changing so the (better language!)edges could running out in a infected neighborhood, which change the mean-field/fully mixed assumption and the dynamic significantly.
+
+Now we should have define two version of 
+$\mathcal{R}_\text{eff}$
+
+\subsection{Case Reproductive Number}
+
+Ideal, non-competitive $\mathcal{R}^*_\text{c}$
+
+True $\mathcal{R}_\text{c}$ with competitive infection and $p(t)$ ODE
+
+Simulation \& Results
+
+\subsection{Instantaneous Reproductive Number}
+
+Initial value for "eigen"-state transmission
+
+$\mathcal{R}^*_\text{i}$ ODE
+
+\textcolor{red}{TODO: Relationship between $\mathcal{R}^*_\text{c}$ and $\mathcal{R}^*_\text{i}$}
+
+
+
+
+
+
+\section{Conclusions}
+\label{sec: Conclusion}
+
+
+
+\textcolor{red}{The following part is something saved for later, not properly edited.}
+
+Consider the degree distribution with PDF $p_k$ and corresponding excess degree distribution $q_k$ as defined in Section~\ref{sec: Network}, we have: 
 \begin{align}
-	\rho&=\frac{\mathcal{R}_{\text{eff}}}{\mathcal{R}_{0,c}}=\frac{\phi G'_p(\phi)}{\delta}=\frac{S\phi}{1+\kappa\delta-\phi\times\kappa\delta}
+	\mathcal{R}_{0}&=\sum_{k=1} q_{k} k\times \frac{\beta}{\beta+\gamma}
 	\\
-	&=S\times \frac{1+\frac{1-S^{-\kappa}}{\kappa\delta}}{1+\kappa\delta-(1+\frac{1-S^{-\kappa}}{\kappa\delta})\kappa\delta}
+	&= \frac{\beta}{\beta+\gamma} \sum_{k=1} \frac{p_k \times k}{\delta} \times(k-1)
 	\\
-	&=S\times(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})
+	&=\frac{\beta}{\beta+\gamma} \frac{\sum_{k=1} p_k \times k \times(k-1)}{\delta}
+	\\
+	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}
 \end{align}
+where $q_{k-1}$ and $k-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
 
-- Gamma: as $\delta \rightarrow \infty$ we have 
-$$\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}$$ which agree with the Dwyer-Parsons result with Gamma distribution
-- Poisson: as $\kappa\rightarrow0$ we have
-$$\lim_{\kappa\rightarrow0}\rho=S\lim_{\kappa\rightarrow0}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times (1+\frac{\log(S)}{\delta})$$which agree with [Novozhilov(2008)](./refs/Novozhilov2008.pdf) and [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Poisson distribution.
-- Derivation: 
-$$\lim_{\kappa\rightarrow0}\frac{S^{\kappa}-1}{\kappa}=\log(S)$$as $S \in [0,1]$
-- Geometric: as $\kappa=1$ we have 
-$$\rho=S\times(S+\frac{S-1}{\delta})$$which agree with [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) result with Geometric distribution.
-- Derivation: They use a weird parameterization (maybe since they rely more on PMFs instead of PGFs) such that $p=1-e^{1/a} \Rightarrow \delta=\frac{e^{-1/a}}{1-e^{-1/a}}$. Take this into $\rho$ provides their result.
+$T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a focal infected vertex $a$ infects one of its susceptible neighbor $b$ prior to recovering, assuming any of the $b$'s neighbors other than $a$ will not infect $b$ before $a$ infect $b$.
+Such assumption is true for a completely susceptible population for $\mathcal{R}_0$, but should be considered more carefully as the prevalence increase in the population for network model, which will be discussed later.
 
-For further illustration, we define 
-$$\sigma(S)=\frac{\rho}{S}$$and present the $\sigma(S)$ curve on $[0,1]$ for the distributions mentioned and different $\delta$ and $\kappa$ value. Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
+\textcolor{red}{Rethink about this part of independence argument after the assumptions is clear.}
+As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $k$ will follow a binomial distribution $\text{Binom}(k-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(k-1)\times \frac{\beta}{\beta+\gamma}$.
 
 
 \subsection{SubSection}
@@ -427,7 +567,7 @@ Itemize
 
 Enumerate
 \begin{enumerate}
-\item [(H1)] Assumption
+	\item [(H1)] Assumption
 \end{enumerate}
 
 \subsection{Subsection}
@@ -435,8 +575,8 @@ Enumerate
 
 Equation
 \begin{equation}
-    \mathbb{P}(K=k) \propto k^{-\alpha}
-    \label{eqn: power law}
+	\mathbb{P}(K=k) \propto k^{-\alpha}
+	\label{eqn: power law}
 \end{equation} 
 
 package \verb#fit_power_law# function from the \verb#igraph# R package
@@ -445,46 +585,14 @@ Eqref: \eqref{eqn: power law}.
 
 Class Eqns
 \begin{equation}
-\label{eqn: CM ODE}
-    \begin{cases}
-        S(t) & = G_p(\theta(t)) \\
-        I(t) & = 1-S(t)-R(t) \\
-        \dot{R}(t) & = \gamma I(t) \\
-        \dot{\theta}(t) & = -\beta \theta +\beta \frac{G'_p(\theta)}{G'_p(1)}+\gamma (1-\theta)
-    \end{cases} 
+	\label{eqn: CM ODE}
+	\begin{cases}
+		S(t) & = G_p(\theta(t)) \\
+		I(t) & = 1-S(t)-R(t) \\
+		\dot{R}(t) & = \gamma I(t) \\
+		\dot{\theta}(t) & = -\beta \theta +\beta \frac{G'_p(\theta)}{G'_p(1)}+\gamma (1-\theta)
+	\end{cases} 
 \end{equation}
-
-\section{MFSH model}
-\label{sec: MFSH}
-
-\section{MSV Configuration Model}
-\label{sec: Config}
-
-\textcolor{red}{Saved for later, not properly edited}
-Consider the degree distribution with PDF $p_k$ and corresponding excess degree distribution $q_k$ as defined in Section~\ref{sec: Network}, we have: 
-\begin{align}
-	\mathcal{R}_{0}&=\sum_{k=1} q_{k} k\times \frac{\beta}{\beta+\gamma}
-	\\
-	&= \frac{\beta}{\beta+\gamma} \sum_{k=1} \frac{p_k \times k}{\delta} \times(k-1)
-	\\
-	&=\frac{\beta}{\beta+\gamma} \frac{\sum_{k=1} p_k \times k \times(k-1)}{\delta}
-	\\
-	&=\frac{\beta}{\beta+\gamma} \times\frac{G''_p(1)}{\delta}
-\end{align}
-where $q_{k-1}$ and $k-1$ comes from the fact that a newly infected vertex must have its infector, which can no longer be infected.
-
-$T=\frac{\beta}{\beta+\gamma}$ is the per-edge probability that transmission really happen, i.e. the probability a focal infected vertex $a$ infects one of its susceptible neighbor $b$ prior to recovering, assuming any of the $b$'s neighbors other than $a$ will not infect $b$ before $a$ infect $b$.
-Such assumption is true for a completely susceptible population for $\mathcal{R}_0$, but should be considered more carefully as the prevalence increase in the population for network model, which will be discussed later.
-
-\textcolor{red}{Rethink about this part of independence argument after the assumptions is clear.}
-As the neighbors are independent, then the number of neighbors that will be infected by an infected vertex with degree $k$ will follow a binomial distribution $\text{Binom}(k-1,\frac{\beta}{\beta+\gamma})$ at $t=0$, so the expectation would just be $(k-1)\times \frac{\beta}{\beta+\gamma}$.
-
-
-
-
-
-\section{Conclusions}
-\label{sec: Conclusion}
 
 \section*{Acknowledgments}
 We thank XX for his help with the literature review. 
