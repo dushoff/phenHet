@@ -20,6 +20,7 @@ Sources += $(wildcard *.md)
 Sources += $(wildcard *.tex)
 Sources += $(wildcard *.pl)
 Sources += $(wildcard *.cpp)
+Sources += .gitignore
 
 gillespie_tests.Rout: gillespie_tests.R
 
