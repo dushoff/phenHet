@@ -448,8 +448,9 @@ One could further try to modify the presented actual degree model with discrete 
 Since the scope of this manuscript is more focus on mechanistic understanding of phenomenological heterogeneity on actual discrete degree random network, we will not present detailed models and discussions in such direction.
 But as the general result we derived is based on negative binomial distribution, which could also been seen as a Poisson-Gamma Mixture \textcolor{red}{[Citations or more explanation here?]}, we could briefly illustrate the potential equivalence for the Gamma distribution:
 
-As $\delta \rightarrow \infty$, the negative binomial distribution is converge to a Gamma distribution. 
-Although we could not define PGF for the continuous distribution, we could applying such limit to \eqref{eqn: rhoNB} and get:
+As $\delta \rightarrow \infty$, the results is equivalent with the result raised from gamma distribution in literature, by applying such limit to \eqref{eqn: rhoNB} and get:
+
+%the negative binomial distribution is converge to a Gamma distribution. 
 \begin{equation}
 	\lim_{\delta\rightarrow\infty}\rho=S\lim_{\delta\rightarrow\infty}(S^{\kappa}+\frac{S^{\kappa}-1}{\kappa\delta})=S \times S^{\kappa}
 \end{equation}
@@ -466,9 +467,9 @@ Note the horizontal line at $\sigma\equiv1$ represent the homogeneous case.
 In Section~\ref{sec: model} we proposed a directed random network model with heterogeneity of in-degrees, which is more close to susceptibility as a susceptible vertex with high in-degree will have more chances to be infected than those with lower in-degree.
 
 Similarly we can define out-edges and out-degree for "infectivity". 
-\textcolor{red}{For future: Out-degree models?}
+\textcolor{red}{ @Jonathan, can you add a short paragraph and some literature for Out-degree models?}
 
-Intuitively, network models are closer to the social network, such that the edges are the connections between individuals that allows the disease to transmit.
+Intuitively, network models are closer to the social network, such that the edges are the connections between individuals that allows the  to transmit.
 A natural assumption would be consider the heterogeneity "connectivity", such that the edges are no longer directed, and individuals are more socially active, i.e. vertices with higher degree, are more likely to being infected and being able to infect others at the same time.
 (in-degree = out-degree ignores the infection direction and overestimate the neighborhood size)
 
@@ -480,7 +481,7 @@ With slightly different background and assumptions, similar or equivalent model 
 
 $\mathcal{R}_0$ from MSV
 
-\textcolor{red}{TODO: Derive $\mathcal{R}_\text{eff}$ and $\rho$ for this model?}
+\textcolor{red}{TODO: Try to derive $\mathcal{R}_\text{eff}$ and $\rho$ for this model, if possible}
 
 \section{MSV Configuration Model}
 \label{sec: Config}
@@ -509,12 +510,17 @@ $\mathcal{R}^*_\text{i}$ ODE
 \textcolor{red}{TODO: Relationship between $\mathcal{R}^*_\text{c}$ and $\mathcal{R}^*_\text{i}$}
 
 
+
+
+
+
 \section{Conclusions}
 \label{sec: Conclusion}
 
 
 
-\textcolor{red}{Saved for later, not properly edited}
+\textcolor{red}{The following part is something saved for later, not properly edited.}
+
 Consider the degree distribution with PDF $p_k$ and corresponding excess degree distribution $q_k$ as defined in Section~\ref{sec: Network}, we have: 
 \begin{align}
 	\mathcal{R}_{0}&=\sum_{k=1} q_{k} k\times \frac{\beta}{\beta+\gamma}
