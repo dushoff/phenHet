@@ -75,13 +75,13 @@ This is in contrast to (homogeneous) compartment models in which the number of n
 
 ## 2. Attempt to Derive $\mathcal{R}_{i}$ from stochastic process
 Consider the Bayesian Formula and a randomly chose edge/stub $u$:
-$$\begin{align}
+$$\begin{aligned}
 \mathbb{P}(u\in\phi \Leftrightarrow u \in\phi_I|u \text{ connect to a vertex }\in I) & = \frac{\mathbb{P}(u\in\phi_I|u\in\phi)\mathbb{P}(u\in\phi)}{\mathbb{P}(u \text{ connect to a vertex }\in I)}
 \\
 & =\frac{\frac{\phi_I}{\phi}\times \phi}{\frac{NI\times \mathbb{E}(K_I)}{N\delta}}
 \\
 & =\frac{\phi_I \delta}{I(t) \mathbb{E}[K_I]}
-\end{align}$$
+\end{aligned}$$
 
 Following idea for **newly** infected vertex, we could slightly modify this probability argument by replacing $K_I$ with $K_I-1$ as we are sure for each infected (other than the initial patient-zero) vertex, there is one and only one edge comes from its infector, thus can no longer transmit the infection.
 
@@ -121,7 +121,7 @@ $$\dot{\phi}=\frac{d}{dt}\phi(t)=-\beta\phi_I$$
 $$\phi_S=\frac{G'_p(\phi)}{\delta} \Rightarrow\dot{\phi}_S=\frac{G''_p(\phi)}{\delta}\times\dot{\phi}=-\beta\phi_I \times \frac{G''_p(\phi)}{\delta}$$
 $$\dot{\phi}_I=-(\beta+\gamma)\phi_I+(-\dot{\phi}_S)=[-(\beta+\gamma)+\beta\frac{G''_p(\phi)}{\delta}] \phi_I$$
 We have expression for $\dot{S}$ and $\ddot{S}$
-$$\begin{align}
+$$\begin{aligned}
 \dot{S}(t) & =\frac{d}{dt}S(t)=\frac{d}{dt}G_p(\phi(t))
 \\
 & = G'_p(\phi)\times \dot{\phi}
@@ -129,9 +129,9 @@ $$\begin{align}
 & = \delta \times \frac{G'_p(\phi)}{\delta} \times(-\beta\phi_I)
 \\
 & = -\beta \delta \phi_S\phi_I
-\end{align}$$
+\end{aligned}$$
 and
-$$\begin{align}
+$$\begin{aligned}
 \ddot{S}(t) & =\frac{d}{dt}\dot{S}(t)=\frac{d}{dt}(-\beta\delta\phi_S(t)\phi_I(t))
 \\
 & = -\beta\delta(\dot{\phi}_S\phi_I+\dot{\phi}_I\phi_S)
@@ -141,22 +141,24 @@ $$\begin{align}
 & = -\beta\delta\phi_S\phi_I \times [-\beta\frac{G''_p(\phi)}{\delta}\times\frac{\phi_I}{\phi_S}-(\beta+\gamma)+\beta\frac{G''_p(\phi)}{\delta}]
 \\
 & = \dot{S} \times[\beta\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-(\beta+\gamma)]
-\end{align}$$
+\end{aligned}$$
 
 Take into the previous relationships for $\dot{S}$ and $\ddot{S}$ we have:
-$$\begin{align}
+$$\begin{aligned}
 max(\mathcal{R}_{i}) & =\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}
 \\
 &=\frac{\ddot{S}}{\gamma\dot{S}}+1
 \\
 &=\frac{1}{\gamma}\times[\beta\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-(\beta+\gamma)]+1
 \\
+&=\frac{\beta+\gamma}{\gamma}\times[\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]+1
+\\
 &=\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]
 \\
 &=\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi-\frac{\gamma}{\beta}(1-\phi)-\frac{G'_p(\phi)}{\delta}}{\frac{G'_p(\phi)}{\delta}})-1]
 \\
 &=\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
-\end{align}$$
+\end{aligned}$$
 If we consider evaluate $max(\mathcal{R}_i(t))$ at the eigenstate as $t\rightarrow0 \Rightarrow \phi(t)\rightarrow 1, \phi_S \rightarrow 1, \phi_I \rightarrow 0$, we believe this function equals to: 
 $$\mathcal{R}_{i,0}=max(\mathcal{R}_i)|_{t\rightarrow0}=\frac{\ddot{S}+\gamma\dot{S}}{\gamma\dot{S}}|_{t\rightarrow0}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}(2-\delta\times\frac{\beta-\gamma(1-1)}{\beta G'_p(1)})-1]=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]$$
 This amount equals to 1 iff $\mathcal{R}_{0,c}=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}=1$.
@@ -170,7 +172,7 @@ A direct observation from this derivation gives us the extra $-1$ comes from the
 
 #### 3.1 DE of $\mathcal{R}_i$
 A more straight forward or maybe more useful derivation gives an differential equation of $\mathcal{R}_i(t)$, gives the same peak value result and does not involve $I(t)$:
-$$\begin{align}
+$$\begin{aligned}
 \frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t)&=\frac{d}{dt}(\frac{-\dot{S}(t)}{\gamma I(t)})
 \\
 & =-\frac{1}{\gamma}\times\frac{\ddot{S}I-\dot{S}\dot{I}}{I^2}
@@ -186,26 +188,37 @@ $$\begin{align}
 & = \gamma \mathcal{R}_i \times [\frac{\ddot{S}}{\gamma\dot{S}}+1-\frac{-\dot{S}}{\gamma I}]
 \\
 & = \gamma \mathcal{R}_i \times [\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i]
-\end{align}$$
+\end{aligned}$$
 This agree with the previous derivation of $max(\mathcal{R}_i)$: when $\dot{\mathcal{R}}_i(t)=0$, we must have
-$$\begin{align}
-\mathcal{R}_i & =\frac{\ddot{S}}{\gamma\dot{S}}+1=\frac{\ddot{S}+\gamma \dot{S}}{\gamma\dot{S}}
-\\
-& =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]
-\\
-& = \frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
-\end{align}$$
+$$
+max(\mathcal{R}_i) =\frac{\ddot{S}}{\gamma\dot{S}}+1=\frac{\ddot{S}+\gamma \dot{S}}{\gamma\dot{S}}
+$$
 where does not rely on expression of $I(t)$.
-Take this into previous differential equation, we have 
-$$\begin{align}
-\frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t) & =\gamma \mathcal{R}_i \times [\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i]
-\\
-& =\gamma \mathcal{R}_i \times \{\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]-\mathcal{R}_i\}
-\end{align}$$
 
+Take $\ddot{S}$ and $\dot{S}$ expression into previous differential equation, we have 
+$$\begin{aligned}
+\frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t) & =\gamma \mathcal{R}_i \times \Bigl[\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i \Bigr]
+\\
+& =\gamma \mathcal{R}_i \times \Bigl\{\frac{\beta}{\gamma}\Bigl[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1 \Bigr]-\mathcal{R}_i\}
+\\
+& = \gamma\mathcal{R}_i \times \Big\{\frac{\beta+\gamma}{\gamma}\Big[\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})\Big]-\frac{\beta}{\gamma}-\mathcal{R}_i\Big\}
+\\
+& = \mathcal{R}_i \times \Big\{(\beta+\gamma)\Big[ \mathcal{R}^*_c (1-\frac{\phi_I}{\phi_S}) \Big]-\beta-\gamma\mathcal{R}_i \Big\}
+\end{aligned}$$
+??Question(**To do for Todd**): Can we solve this ODE in some way or can we connect this ode with the $p$ or $R_c$ dynamics?
+
+Note we have 
+$$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}=\frac{\beta}{\beta+\gamma}\frac{\phi_s}{\phi} \times \mathbb{E}\Big[ K^*_I-1\Big]$$ where $\frac{\phi_s}{\phi} \times \mathbb{E}\Big[ K^*_I-1\Big]$ could be interpreted as average number of susceptible neighbours of newly infected focal vertex.
+So $$\mathcal{R}^*_c \times \frac{\phi_I}{\phi_S}\propto \frac{\phi_I}{\phi}\times\mathbb{E}\Big[ K^*_I-1\Big]$$
+which is the average infected neighbors (except its infector represented by the $-1$) of the newly infected focal node. ??Related to the existing infection in the past.
+
+Similar $S-I$ structure could also been seen in the following homogeneous version.
+
+
+**TODO for Richard: Verify the R_i ODE in simulation**
 #### Homogeneous SIR
 Note this derivation also applies to homogeneous SIR model.
-$$\begin{align}
+$$\begin{aligned}
 \frac{d}{dt}\mathcal{R}_i(t)=\dot{\mathcal{R}}_i(t) & =\gamma \mathcal{R}_i \times [\frac{\ddot{S}}{\gamma\dot{S}}+1-\mathcal{R}_i]
 \\
 & = \gamma \mathcal{R}_i \times [\frac{-\beta(\dot{S}I+\dot{I}S)}{\gamma\dot{S}}+1-\mathcal{R}_i]
@@ -217,20 +230,27 @@ $$\begin{align}
 & = \gamma \mathcal{R}_i\times[-\frac{\beta}{\gamma}(I-S+\frac{\gamma}{\beta})+1-\mathcal{R}_i]
 \\
 & =\gamma \mathcal{R}_i\times[\frac{\beta}{\gamma}(S-I)-\mathcal{R}_i]
-\end{align}$$
+\\
+& =\gamma \mathcal{R}_i\times[\mathcal{R}_c-\frac{\beta}{\gamma}I-\mathcal{R}_i]
+\\
+& =-\beta \mathcal{R}_i\times I
+\end{aligned}$$
+
+Note for homogeneous SIR, we have $$\mathcal{R}_c=\mathcal{R}_i=-\frac{1}{\gamma}\times\frac{\dot{S}}{I}=\frac{\beta}{\gamma}S$$
+
 
 ### 3.2 Poisson
 For Poisson distribution with:
 $$G_p(\phi)=e^{-\delta(1-\phi)}$$
 $$G'_p(\phi)=\delta e^{-\delta(1-\phi)}$$
 $$G''_p(\phi)=\delta^2 e^{-\delta(1-\phi)}$$we have
-$$\begin{align}
+$$\begin{aligned}
 max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta e^{-\delta(1-\phi)}(2-\frac{\beta\phi-\gamma(1-\phi)}{\beta e^{-\delta(1-\phi)}})-1]
 \\
 & = \frac{\beta}{\gamma}[2\delta e^{-\delta(1-\phi)}-\delta\phi+\frac{\gamma}{\beta}(1-\phi)\delta-1] 
-\end{align}$$
+\end{aligned}$$
 
 If we consider $\phi \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to our observation:
 $$\lim_{\phi\rightarrow1}{max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(2\delta -\delta-1)=\frac{\beta}{\gamma}(\delta-1)$$
@@ -240,13 +260,13 @@ For general NB distribution with:
 $$S=G_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}$$
 $$G'_p(\phi)=(\frac{1}{1+\kappa\delta-\phi\times\kappa\delta})^{\frac{1}{\kappa}}\times\frac{\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\frac{S\delta}{1+\kappa\delta-\phi\times\kappa\delta}=\delta S^{\kappa+1}$$
 $$G''_p(\phi)=\delta^2(\kappa+1)S^{2\kappa+1}$$we have
-$$\begin{align}
+$$\begin{aligned}
 max(\mathcal{R}_{i}) & =\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(2-\delta\times\frac{\beta\phi-\gamma(1-\phi)}{\beta G'_p(\phi)})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta (\kappa+1)S^{2\kappa+1}(2-\frac{\beta\phi-\gamma(1-\phi)}{\beta S^{\kappa+1}})-1]
 \\
 & =\frac{\beta}{\gamma}[\delta (\kappa+1)(2S^{2\kappa+1}-S^{\kappa}(\phi-\frac{\gamma}{\beta}(1-\phi)))-1]
-\end{align}$$
+\end{aligned}$$
 
 If we consider $\phi \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to:
 $$\lim_{\phi\rightarrow1}{max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
@@ -266,8 +286,4 @@ Unlike the $\mathcal{R}_{0,c}$ or $\mathcal{R}^*_{c}$ , $max(\mathcal{R}_{i})|_{
 - E.g. consider a network with every nodes has degree $k=5$, then $\delta=5$ and $G''_p(1)=k^2-k=20$, assume $\beta=0.2$ and $\gamma=0.1$, then
 $$max(\mathcal{R}_\text{eff})|_{\phi=1}=\frac{\beta}{\gamma}[\frac{G''_p(1)}{\delta}-1]==\frac{0.2}{0.1}[\frac{20}{5}-1]=6>k=5$$
 - We need a better definition for this!
-
-
-
-
 

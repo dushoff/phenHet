@@ -25,7 +25,7 @@ r <- 1/kappa
 (p<-1/(1+kappa*lambda))
 (v<-lambda/p)
 
-N <- 250000
+N <- 500000
 
 kvalue <- seq(0,400)
 #Pk <- dpois(kvalue,lambda)
@@ -41,8 +41,8 @@ DDist <- data.frame(kvalue,Pk)
 
 ##### Disease Parameter
 beta <- 0.25
-gamma <- 0.75
-#gamma <- 0.2
+#gamma <- 0.75
+gamma <- 0.2
 
 #### Eigen Direction R(0)
 (Eigen_R <- EigenR(DDist, beta, gamma, lambda, init_omega = it_omega))
@@ -70,7 +70,7 @@ CM_I <- CM_out[,5]
 #### Reverse ODE for Todd's p(t) idea
 # manually picking point
 theta_inf
-tps <- 451
+tps <- 501
 print(CM_out[tps,])
 
 (P_inf <- beta/(beta+gamma)*PGFd1G0(theta_inf,DDist)/lambda)
@@ -88,26 +88,33 @@ RVS_args <- list(  DDist
                  , gamma
                  , theta_Rvs
                  , R_Rvs
-                 , ODEmaxTime = t_Rvs
-                 , ODEstep = 5e-2)
+                 , ODEmaxTime = t_Rvs+10
+                 , ODEstep = 2e-2)
 
 Rvs_out <- do.call("Rvs_ODE", c(RVS_args))
 
-Rvs_out[,1]<- max(Rvs_out[,1])-Rvs_out[,1]
+Rvs_out[,1]<- t_Rvs-Rvs_out[,1]
 Rvs_out <- Rvs_out[order(Rvs_out[,1]),]
 
 Rvs_df<-as.data.frame(Rvs_out)
-Rvs_df$I_out[1:30]
-
+#Rvs_df$I_out[1:30]
 #### Check RVS: check with CM ODE for S and I
 CM_df <- as.data.frame(CM_out)
 
+EP<-beta/(beta+gamma)
+1-Rvs_df$theta[1]
+PGFd1G0(1-it_omega,DDist)/lambda
+
 ggplot()+theme_bw()+
-  geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S_Rvs"), alpha=0.1)+
-  geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
+  geom_point(data=Rvs_df, aes(x=time, y=P, color="P"), alpha=0.1)+
+  geom_point(data=Rvs_df, aes(x=time, y=theta, color="phi"), alpha=0.1)+
+  #geom_point(data=Rvs_df, aes(x=time, y=S_out, color="S_Rvs"), alpha=0.1)+
+  #geom_line(data=CM_df, aes(x=time, y=S_out,color="S"))+
   geom_point(data=Rvs_df, aes(x=time, y=I_out, color="I_Rvs"), alpha=0.1)+
   geom_line(data=CM_df, aes(x=time, y=I_out,color="I"))+
-  xlim(0,10)+
+  ylim(-0.05,1)+
+  geom_hline(yintercept=EP,color="orange")+
+  geom_vline(xintercept=0,color="black")+
   labs(y = "Proportion")
 
 ##################################
@@ -132,6 +139,7 @@ R_imax <- beta/gamma*(PGFd2G0(1,DDist)/lambda-1)
 R_i <- -S_dot/(CM_I*gamma)
 
 R_cstar <- beta/(beta+gamma)*PGFd2G0(theta,DDist)/lambda
+R_cNoPhi <- beta/(beta+gamma)*theta*PGFd2G0(theta,DDist)/lambda
 #R_cstar <- R_c0*CM_S^(1+2*kappa)
 
 PLen<-length(Rvs_df$P)
@@ -147,24 +155,41 @@ dat_reff <- cbind(time
                   ,R_i
                   #,cal_reff
                   ,R_cstar
+                  ,R_cNoPhi
                   #,est
                   #,theta
                   #,R_c
                   #,R_c1
                   )
+# CM_df[200:210,c(1,2,4,5)]
+# Rvs_df[200:210,c(1,2,4,5,6)]
+# S_dot[200:210]
 
+(Eigen_P <- EigenP(DDist, beta, gamma, lambda, init_omega = it_omega))
+(beta*PGFd2G0(1,DDist)/lambda)/(beta*PGFd2G0(1,DDist)/lambda-2*(beta+gamma))*it_omega
+Eigen_P
+R_c0
+
+Rvs_df[1,]
+
+Rvs_df$P[1]/EP
+
+ggplot(data = Rvs_df)+theme_bw()+
+  geom_line(aes(x=time, y=P,color="P"))+
+  geom_hline(yintercept=EP,color="black")
 
 ggplot(data=dat_reff)+theme_bw()+
-  geom_line(aes(x=time, y=R_i,color="non-Eigen R_i"))+
+  #geom_line(aes(x=time, y=R_i,color="Eigen R_i"))+
   geom_line(aes(x=time, y=R_cstar,color="R_c*"))+
+  #geom_line(aes(x=time, y=R_cNoPhi,color="R_c* without /phi"))+
   geom_line(data=Rvs_df,aes(x=time, y=R_c,color="R_c"))+
   #geom_line(data=Rvs_df,aes(x=time, y=R_c1,color="R_c(K+1)"))+
   #geom_line(data=Rvs_df, aes(x=time, y=P*(lambda^2*(kappa+1))/lambda, color="Rev P"))+
   #geom_line(aes(x=time, y=theta, color="theta x10"))+
-  geom_hline(yintercept=R_imax,color="black")+
+  #geom_hline(yintercept=R_imax,color="black")+
   geom_hline(yintercept=R_c0,color="orange")+
-  ylim(0,5)+
-  xlim(0,15)+
+  ylim(0,10)+
+  xlim(0,5)+
   #scale_color_manual(values=c("red", "black","brown"))
   labs(y = "R_eff") 
 Rvs_df[1,]$R_c
@@ -241,8 +266,7 @@ CM_Opt$RInfinity*N
 
 # visualization
 dat_sim_out<-as.data.frame(result$Reff)
-dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time
-),]
+dat_Rsim<- dat_sim_out[!is.na(dat_sim_out$Infect_time),]
 #dat_Rsim[1,]
 dat_Rsim<-dat_Rsim[order(dat_Rsim$Infect_time),]
 

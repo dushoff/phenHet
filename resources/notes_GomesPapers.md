@@ -16,7 +16,7 @@ bibliography: phenHet.bib
 More model details in [A. Montalban, RM. Corder and MGM. Gomes(2022)](https://doi.org/10.1007/s00285-022-01771-x).
 
 Assuming
-1.  random mixing
+1. random mixing
 2. heterogeneous susceptibility with continuous trait $x$ where the susceptibility of an individual at level $x$ is proportional to $x$
 	- In other words, if we compare an individual at level $x$ and an individual at level $y$, the one at level $x$ is $x/y$ times more likely to get infected than the one with susceptibility $y$.
 

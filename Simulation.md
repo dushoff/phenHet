@@ -5,7 +5,8 @@ We would like to compute:
 $$p(t)=\mathbb{P}\{\text{a node infected at time } t \text{ infects a randomly given neighbour}\}$$
 - As in MSV framework, we assume infection of neighbors are independent, thus the number of infected neighbors follows binomial distribution. Follow the idea of Zhao2 result/derivation:
 	- For newly infected vertices, we condition on that the neighbor must not be the infector of the focal vertex, i.e. the edge has not transmitted the infection yet s.t. $$\mu(t)=\frac{p(t)}{\phi(t)}$$
-	- Then, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
+	- Then, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(
+t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
 - (**Wrong here**)Initially at $t=0$, there should be no competing infection among neighbors, all neighbors of focal infected node can only be infected by the focal node.
 	- This leads to $$p(0)=\tau=\frac{\beta}{\beta+\gamma}$$ as initial value of $p(t)$.
 	- Furthermore, this agree with the initial value for $\mathcal{R}_c$, s.t.$$\mathcal{R}_{c}(0)=\mathcal{R}^*_{c}(0)=\mathcal{R}_{c,0}=\frac{\beta}{\beta+\gamma}\times\frac{G''_p(1)}{\delta}$$
@@ -21,13 +22,13 @@ In the random events, lets set the following random variables for time:
 With these RVs, we can interpret $p(t)$ in the following probability: $$p(t)=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}$$ where $t+T_c < (t+T_r) \wedge T_n \ \Leftrightarrow \min((t+T_r),T_n)$.
 
 Since $T_r$ and $T_n$ are independent, we can further derive: 
-$$\begin{align}
+$$\begin{aligned}
 \mathbb{P}\{ (t+T_r) \wedge T_n > t+u \} & = \mathbb{P}\{ T_r>u\} \mathbb{P}\{T_n>t+u \}
 \\
 & = e^{-\gamma u} \phi_S(t+u)
-\end{align}$$
+\end{aligned}$$
 Then we can rewrite the expression for $p(t)$ based on law of total probability:
-$$\begin{align}
+$$\begin{aligned}
 p(t) &=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}
 \\
 &=\int_0^{\infty}\mathbb{P}\{t+u<(t+T_r) \wedge T_n | t+T_c =t+u\}\times\mathbb{P}\{ t+T_c =t+u\}du
@@ -39,9 +40,9 @@ p(t) &=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}
 &=\int_0^{\infty}[e^{-\gamma u} \phi_S(t+u)]\times [\beta e^{-\beta u}]du
 \\
 &=\int_0^{\infty}\beta e^{-(\beta+\gamma)u}\phi_S(t+u)du
-\end{align}$$
+\end{aligned}$$
 and we have
-$$\begin{align}
+$$\begin{aligned}
 \frac{d}{dt}p(t) &=\frac{d}{dt}\int_0^{\infty}\beta e^{-(\beta+\gamma)u}\phi_S(t+u)du
 \\
 &=\int_0^{\infty}\beta e^{-(\beta+\gamma)u} \times [\frac{d}{dt}\phi_S(t+u)] du
@@ -53,7 +54,7 @@ $$\begin{align}
 &= -\beta \phi_S(t)+(\beta+\gamma)\int_0^{\infty}\beta e^{-(\beta+\gamma)u} \phi_S(t+u) du
 \\
 &=-\beta \phi_S(t)+(\beta+\gamma)p(t)
-\end{align}$$
+\end{aligned}$$
 as a ODE of $p(t)$.
 
 At $t=0$, we expect to have $\phi_S(0)=1$ and $p(0)=\frac{\beta}{\beta+\gamma}$, so take these initial value into the ODE gives us $$\frac{d}{dt}p(t)=-\beta+(\beta+\gamma)\times\frac{\beta}{\beta+\gamma}=0$$ which agree with our expectation.
@@ -116,7 +117,7 @@ To further verify the $\mathcal{R}_c(t)$ and $p(t)$ result, I comparing the curv
 For $N=50,000, \gamma=0.20, \beta=0.25, I_0=1$: 1 simulation
 ![](SimData/50K_g020_1sim.png)
 Timely-overlapped results for 16 simulation: (4 case with large phase shifting removed for 20 random runs)
-![](SimData/50K_g020_16sim.png)
+	![](SimData/50K_g020_16sim.png)
 For larger network size , 1 simulation due to time consumption:
 ![](SimData/250K_g020_1sim.png)
 
@@ -135,12 +136,13 @@ For larger network size $N=250,000$, 1 simulation due to time consumption:
 
 TODO: figure out the scale of $N$ s.t. $\mathcal{R}_c(0) \approx \mathcal{R}^*_c(0)$
 
+## Edge based simulation
+JD developed the edge-based Gillespie simulation in `R_cpp` which seems to be faster for large networks
+
+Negative binomial degree distribution with mean degree $\lambda=5, \kappa=0$. $\beta=\gamma=0.1, N=10^6$
+![plotsMSV](docs/pix/plotsMSV.png)
 
 
-
-
-Thoughts: Comparing ODE for $p(t)$ and $\phi(t)$
-$$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
-$$\frac{d}{dt}\phi(t)=+\beta \phi_S(t)-(\beta+\gamma)\phi(t)+\gamma$$
-
-
+- Testing other parameters and average on small network (expected working less well).
+- Systematic Time-shifting: logistic regression? epidemic momentum approach? Throw out the stochastic part(match a starting point) set up a condition to matching $\phi,I$ or $+R$
+- Initial condition estimation for $p(0)$ [Rc.pdf](refs/Rc.pdf)

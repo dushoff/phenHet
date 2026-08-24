@@ -4,6 +4,9 @@ Result agreed with a recent paper by [RomanescuEtAL(2023)](https://doi.org/10.10
 
 Quick Summary: [approaches.md](./approaches.md)
 
+#### Note about notation
+- MSV use $\theta$ where we use $\phi$ (since it is a sum of subscripted $\phi$'s)
+- MSV use $\Psi$ where we use $G$ for the generating function
 
 #### (To Do) Assumptions
 1. Neighbors are independent
@@ -138,7 +141,7 @@ Follow JD's idea:
 
 $$\rho=\frac{\mathcal{R}_{c}}{\mathcal{R}_{0,c}}=\frac{\sigma_{\phi}}{\sigma_0}$$
 - $\sigma_{\phi}$: Expected number of edges of susceptible vertices
-$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times(1-\phi)^{d}=\sum_{d=0}^{\infty}p_d \times d \times \phi^{d}=\phi\sum_{d=0}^{\infty}p_d \times d \times\phi^{d-1}=\phi G_p'(\phi)$$
+$$\sigma_{\phi}=\sum_{d=0}^{\infty}p_d \times d \times \phi^{d}=\phi\sum_{d=0}^{\infty}p_d \times d \times\phi^{d-1}=\phi G_p'(\phi)$$
 - At $t=0$, we have $\sigma_\phi(0)=\sigma_0$: 
 $$\sigma_0=\lim_{t\rightarrow0}\sigma_{\phi}=\lim_{\phi\rightarrow1} \phi G_p'(\phi)=\delta$$
 - Therefore, 
@@ -237,21 +240,21 @@ To derive $X_t$
 	- [RomanescuEtAL(2023)](https://doi.org/10.1016/j.epidem.2023.100708) claim that $\mu= \frac{\beta}{\beta+\gamma} S(t)$ where $\frac{\beta}{\beta+\gamma}$ is the per-edge infection probability/transmissibility and on average, only a fraction $S(t)$ of its contacts will still be susceptible.
 	- ==RZ believe here they might make a mistake here, since this $\mu$ probability should correspond to edge-forming process, where the probability should related to the proportion of edges connected to $S$ vertices, not the proportion of $S$ vertices.==
 	- ==They did not explicitly state that this derivation also assume that every edge connect to this $I$ vertex are still being able to transmit the infection other than the known one connect to its infector. This is the same to assume the vertex is newly infected and not yet infect any others.
-	- An correction would be $\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\phi}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
+	- An correction would be $\mu^*=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}$ if we considering that the vertex is newly infected, where $\frac{\phi_S}{\phi}$ is the probability that an edge is connected to a susceptible node given that it has not transmitted infection.
 - Therefore, with law of total expectation, for a randomly newly infected node we know the expectation number $X_t$ of infected vertices it can generate would be:
 $$\begin{align}
 \mathcal{R}^*_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
-& =\mathbb{E}_{K_I^*}[\mu(K_I^*-1)]
+& =\mathbb{E}_{K_I^*}[\mu^*(K_I^*-1)]
 \\
-& =\mu \mathbb{E}[K_I^*-1]
+& =\mu^* \mathbb{E}[K_I^*-1]
 \\
-& = \mu (\mathbb{E}[K_I^*]-1)
+& = \mu^* (\mathbb{E}[K_I^*]-1)
 \\
-& = \mu \phi\frac{G''_p(\phi)}{G'_p(\phi)}
+& = \mu^* \phi\frac{G''_p(\phi)}{G'_p(\phi)}
 \end{align}$$
 
-Take into the idea that $$\mu=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\phi)}{\phi G'_p(1)}$$, we have:$$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}$$
+Take into the idea that $$\mu^*=\frac{\beta}{\beta+\gamma}\times \frac{\phi_S}{\phi}=\frac{\beta}{\beta+\gamma}\times\frac{G'_p(\phi)}{\phi G'_p(1)}$$, we have:$$\mathcal{R}^*_c=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi)}{\delta}$$
 As $t\rightarrow 0 \Leftrightarrow \phi \rightarrow 1$, $\mathcal{R}^*_c$ converge to $$\mathcal{R}_{0,c}=\frac{\beta}{\beta+\gamma}\frac{G''_p(1)}{\delta}$$
 Similar as how MSV verifying their $\mathcal{R}_{0,c}$ with dynamic, $\mathcal{R}^*_c=1$ is where $\dot{\phi}_I=0$. which verify the definition.
 
@@ -450,12 +453,34 @@ $$\begin{align}
 If we consider $\phi \rightarrow 1 \Leftrightarrow S \rightarrow 1$ we have $max(\mathcal{R}_{i})$ converge to:
 $$\lim_{\phi\rightarrow1}{\max(\mathcal{R}_{i})}=\frac{\beta}{\gamma}(\delta(\kappa+1)-1)$$
 
-### Test Idea
-Test: the Zhao2 result $\sigma^* S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$
-See [NetworkExamples.R](NetworkExamples.R)
+## 5. Relation between $\mathcal{R}_i$, $\mathcal{R}^*_c$ and $\mathcal{R}_c$
+We have a elegant expression for $\mathcal{R}_c^*(t)$ :$$\mathcal{R}^*_c(t)=\frac{\beta}{\beta+\gamma}\frac{G''_p(\phi(t))}{\delta}$$
+For $\mathcal{R}_c$, we have an expression using similar derivation idea:
+$$\mathcal{R}_c(t)=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
+However, this expression is based on Todd's ODE ([NoteForR_c.md](NoteForR_c.md)) for $p(t)$, which can be solved together with MSV ODE: $$\frac{d}{dt}p(t)=-\beta \phi_S(t)+(\beta+\gamma)p(t)$$
+We could reversely solve $p(t)$ as a final-value problem as we know $\frac{d}{dt}p(t)=0$ at $t=\infty$.
+
+We are still investigating if we can find an estimation for $p(0)$ to solve $p(t)$ as time increase. 
+- $p(0)$ should be very close to $\frac{\beta}{\beta+\gamma}$ for very large network size $N$ and this is verified by simulation.
+- $p(0)$ could be quite lower than $\frac{\beta}{\beta+\gamma}$ if $N$ is large but not large enough.
+- This difference between $p(0)$ and $\frac{\beta}{\beta+\gamma}$, and its relationship with $N$ and degree distribution could be important for dynamic of $p(t)$.
+See [NoteForR_c.md](./NoteForR_c.md) for more details.
+
+We don't have a good representation for $\mathcal{R}_i(t)$, but a quasi-equilibrium type ODE
+$$
+\frac{d}{dt}\mathcal{R}_i(t) =\gamma \mathcal{R}_i \times \{\frac{\beta}{\gamma}[\frac{G''_p(\phi)}{\delta}(1-\frac{\phi_I}{\phi_S})-1]-\mathcal{R}_i\}
+$$
+See [NoteForR_i](NoteForR_i.md) for more details.
+
+The Zhao2 result $\sigma^* S \times max(\mathcal{R}_{i})$ does not match $\mathcal{R}_{i}$. 
+
+### Eigen Directions
+See [Initial_Values](Initial_Values.md)
 ![](docs/pix/InsEstimation.png)
+For the increasing of $\mathcal{R}_i$ at the beginning, JD and RZ tried to use eigenvector methods to find out initial recovered $R(0)$ value such that the outbreak starts at the eigendirection, which makes $\mathcal{R}_{i,0}=max(\mathcal{R}_i)$
+![EigenInitR](docs/pix/EigenInitR.png)
 
+# 6. Simulation
+BB suggest to run an simulation of large random network to see how $\mathcal{R}_c$ and $\mathcal{R}^*_c$ compare to the simulation.
 
-# 5. Simulation
-Ben suggest to run an simulation of large random network to see how $\mathcal{R}_c$ and $\mathcal{R}^*_c$ compare to the simulation.
-Working on this now.
+[Simulation.md](Simulation.md)

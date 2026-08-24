@@ -1,7 +1,7 @@
 # 1. Reproductive number by case $\mathcal{R}^*_c$ with no competing infection
 As mentioned in [JR_Negbinom_Result](JR_Negbinom_Result.md), the Zhao 2 result leads to 
-$$\begin{align}
-\mathcal{R}_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
+$$\begin{aligned}
+\mathcal{R}^*_c=\mathbb{E}[X_t]&=\mathbb{E}_{K_I^*}[\mathbb{E}[X_t|K_I^*]]
 \\
 & =\mathbb{E}_{K_I^*}[\mu(K_I^*-1)]
 \\
@@ -10,7 +10,7 @@ $$\begin{align}
 & = \mu (\mathbb{E}[K_I^*]-1)
 \\
 & = \mu \phi\frac{G''_p(\phi)}{G'_p(\phi)}
-\end{align}$$
+\end{aligned}$$
 
 $\mu$ should be the probability that a random neighbor of the newly infected focal vertex is eventually infected by the focal vertex.
 - For each stub(half-edge) connected to the newly infected focal vertex, except the one connected to its infector (thus the edge belongs to $K_I^*-1$).
@@ -43,7 +43,7 @@ $$
 The problem now comes to how to find $\hat{\phi}_S$ with such integration.
 
 Some thoughts for simplifying the integration:
-$$\begin{align}
+$$\begin{aligned}
 & \int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT 
 \\
 = &[\phi(t+T)(-e^{-\gamma T})]
@@ -56,21 +56,21 @@ $$\begin{align}
 =&\phi(t)-\frac{\beta+\gamma}{\gamma}\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT+\int_0^{+\infty}\gamma e^{-\gamma T} dT+\frac{1}{\gamma}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT
 \\
 =&\phi(t)+\frac{1}{\gamma}-\frac{\beta+\gamma}{\gamma}\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT+\frac{1}{\gamma}\int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T} dT
-\end{align}$$
+\end{aligned}$$
 Rearrange the term give us:
 $$
 \int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT=-\gamma\phi(t)-1+(\beta+2 \gamma)\int_0^{+\infty}\phi(t+T) \gamma e^{-\gamma T} dT
 $$
 
 If ITB with $G'_p(\phi)$ directly, we have:
-$$\begin{align}
+$$\begin{aligned}
 & \int_0^{+\infty}G'_p(\phi(t+T)) \gamma e^{-\gamma T}dT
 \\
 =& [G'_p(\phi(t+T))(-e^{-\gamma T})]
 \bigg| ^{+\infty}_{0}- \int_0^{+\infty}G''_p(\phi(t+T))\dot{\phi}(t+T) (-e^{-\gamma T}) dT
 \\
 =& G'_p(\phi(t))-\int_0^{+\infty}G''_p(\phi(t+T))\dot{\phi}(t+T) (-e^{-\gamma T}) dT
-\end{align}$$
+\end{aligned}$$
 Might get something if we take in the NegBinom distribution????
 
 ## 2.1 ODE Correction Term
@@ -83,8 +83,8 @@ We would like to compute:
 $$p(t)=\mathbb{P}\{\text{a node infected at time } t \text{ infects a given (?) neighbour}\}$$
 Notes: condition on neighbors infection?
 - As in MSV framework, we assume infection of neighbors are independent, thus the number of infected neighbors follows binomial distribution. Follow the idea of Zhao2 result/derivation:
-	- We count the condition that the neighbor must be susceptible $\phi_S(t)$ in $p(t)$ s.t. $$\mu(t)=p(t)$$
-	- Furthermore, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=p(t)\times\phi(t)\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
+	- We count the condition that the neighbor must be susceptible $\phi_S(t)$ in $p(t)$ s.t. $$\mu(t)=\frac{p(t)}{\phi(t)}$$
+	- Furthermore, correspond to $\mathcal{R}^*_{c}$, we have $$\mathcal{R}_c(t)=\mu(t) \times (\mathbb{E}[K_I^*]-1)=\frac{p(t)}{\phi(t)}\times\phi(t)\frac{G''_p(\phi(t))}{G'_p(\phi(t))}=p(t)\times\frac{G''_p(\phi(t))}{G'_p(\phi(t))}$$
 - Initially at $t=0$, there should be no competing infection among neighbors, all neighbors of focal infected node can only be infected by the focal node.
 	- This leads to $$p(0)=\tau=\frac{\beta}{\beta+\gamma}$$ as initial value of $p(t)$.
 	- Furthermore, this agree with the initial value for $\mathcal{R}_c$, s.t.$$\mathcal{R}_{c}(0)=\mathcal{R}^*_{c}(0)=\mathcal{R}_{c,0}=\frac{\beta}{\beta+\gamma}\times\frac{G''_p(1)}{\delta}$$
@@ -100,13 +100,13 @@ In the random events, lets set the following random variables for time:
 With these RVs, we can interpret $p(t)$ in the following probability: $$p(t)=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}$$ where $t+T_c < (t+T_r) \wedge T_n \ \Leftrightarrow \min((t+T_r),T_n)$.
 
 Since $T_r$ and $T_n$ are independent, we can further derive: 
-$$\begin{align}
+$$\begin{aligned}
 \mathbb{P}\{ (t+T_r) \wedge T_n > t+u \} & = \mathbb{P}\{ T_r>u\} \mathbb{P}\{T_n>t+u \}
 \\
 & = e^{-\gamma u} \phi_S(t+u)
-\end{align}$$
+\end{aligned}$$
 Then we can rewrite the expression for $p(t)$ based on law of total probability:
-$$\begin{align}
+$$\begin{aligned}
 p(t) &=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}
 \\
 &=\int_0^{\infty}\mathbb{P}\{t+u<(t+T_r) \wedge T_n | t+T_c =t+u\}\times\mathbb{P}\{ t+T_c =t+u\}du
@@ -118,9 +118,9 @@ p(t) &=\mathbb{P}\{ t+T_c < (t+T_r) \wedge T_n \}
 &=\int_0^{\infty}[e^{-\gamma u} \phi_S(t+u)]\times [\beta e^{-\beta u}]du
 \\
 &=\int_0^{\infty}\beta e^{-(\beta+\gamma)u}\phi_S(t+u)du
-\end{align}$$
+\end{aligned}$$
 and we have
-$$\begin{align}
+$$\begin{aligned}
 \frac{d}{dt}p(t) &=\frac{d}{dt}\int_0^{\infty}\beta e^{-(\beta+\gamma)u}\phi_S(t+u)du
 \\
 &=\int_0^{\infty}\beta e^{-(\beta+\gamma)u} \times [\frac{d}{dt}\phi_S(t+u)] du
@@ -132,7 +132,7 @@ $$\begin{align}
 &= -\beta \phi_S(t)+(\beta+\gamma)\int_0^{\infty}\beta e^{-(\beta+\gamma)u} \phi_S(t+u) du
 \\
 &=-\beta \phi_S(t)+(\beta+\gamma)p(t)
-\end{align}$$
+\end{aligned}$$
 as a ODE of $p(t)$.
 
 At $t=0$, we expect to have $\phi_S(0)=1$ and $p(0)=\frac{\beta}{\beta+\gamma}$, so take these initial value into the ODE gives us $$\frac{d}{dt}p(t)=-\beta+(\beta+\gamma)\times\frac{\beta}{\beta+\gamma}=0$$ which agree with our expectation.

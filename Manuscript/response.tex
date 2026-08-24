@@ -1,0 +1,95 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{natbib}
+\usepackage{xcolor}
+\usepackage{xr}
+\usepackage{url}
+\usepackage{array}
+
+\externaldocument{main}
+\externaldocument{supplement}
+% package needed for optional arguments
+\usepackage{xifthen}
+% define counters for reviewers and their points
+\newcounter{reviewer}
+\setcounter{reviewer}{0}
+\newcounter{point}[reviewer]
+\setcounter{point}{0}
+
+% This refines the format of how the reviewer/point reference will appear.
+\renewcommand{\thepoint}{\arabic{point}} 
+
+% command declarations for reviewer points and our responses
+\newcommand{\reviewersection}{\stepcounter{reviewer} \bigskip \hrule
+\section*{Referee \thereviewer}}
+
+\newenvironment{point}
+   {\refstepcounter{point} \bigskip \noindent {\textbf{\thepoint}. } }
+   {\par }
+
+\newcommand{\shortpoint}[1]{\refstepcounter{point}.  \bigskip \noindent 
+	{\textbf{\thepoint} } ---~#1\par }
+
+\newenvironment{reply}
+   {\medskip \noindent \begin{sf}\textbf{Reply}:\  \color{brown} }
+   {\medskip \end{sf}}
+
+\newcommand{\shortreply}[2][]{\medskip \noindent \begin{sf}\textbf{Reply}:\  #2
+	\ifthenelse{\equal{#1}{}}{}{ \hfill \footnotesize (#1)}%
+	\medskip \end{sf}}
+
+
+
+
+
+
+\begin{document}
+
+
+\section*{Response to the Reviewers}
+
+\begin{sf}
+We are very grateful to the reviewers for their careful reading of our manuscript and positive assessment of our work. 
+Here we address their concerns point by point. 
+\end{sf}
+
+\reviewersection
+
+The questions/comments are listed below:
+
+\begin{point}
+Question.
+\\
+\end{point}
+
+\begin{reply}
+Reply
+\end{reply}
+
+\reviewersection
+
+The questions/comments are listed below:
+
+\begin{point} 
+Question.
+\\
+\end{point}
+
+
+\begin{reply}
+Reply
+\\
+
+{\color{blue}
+Colored
+}
+\\
+\end{reply}
+
+\bibliographystyle{unsrt}
+
+
+
+\end{document}

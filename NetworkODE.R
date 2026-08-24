@@ -2,9 +2,9 @@
 ## wd <- getwd()
 
 ### Package Part
-library(pracma)
+#library(pracma)
 #library(zoo)
-library(gsl)
+#library(gsl)
 library(deSolve)
 #library(igraph)
 library(ggplot2)
@@ -260,6 +260,12 @@ EigenR <- function(Pk, beta, gamma, lambda, init_omega){
   R_c0 <- beta/(beta+gamma)*PGFd2G0(1,DDist)/lambda
   Eigen_R <- lambda*gamma/(gamma+(beta+gamma)*(R_c0-1))*init_omega
   return(Eigen_R)
+}
+
+EigenP <- function(Pk, beta, gamma, lambda, init_omega){
+  X <- beta*PGFd2G0(1,Pk)/lambda
+  Eigen_P <- X/(X-2*(beta+gamma))*init_omega
+  return(Eigen_P)
 }
 
 #### Reverse ODE for P
